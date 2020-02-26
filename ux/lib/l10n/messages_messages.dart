@@ -3,21 +3,27 @@
 // messages from the main program should be duplicated here with the same
 // function name.
 
+// Ignore issues from commonly used lints in this file.
+// ignore_for_file:unnecessary_brace_in_string_interps, unnecessary_new
+// ignore_for_file:prefer_single_quotes,comment_references, directives_ordering
+// ignore_for_file:annotate_overrides,prefer_generic_function_type_aliases
+// ignore_for_file:unused_import, file_names
+
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
 final messages = new MessageLookup();
 
-// ignore: unused_element
-final _keepAnalysisHappy = Intl.defaultLocale;
-
-// ignore: non_constant_identifier_names
-typedef MessageIfAbsent(String message_str, List args);
+typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  get localeName => 'messages';
+  String get localeName => 'messages';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) =>
-      {"title": MessageLookupByLibrary.simpleMessage("Team Fuse")};
+  static _notInlinedMessages(_) => <String, Function> {
+    "Add Game" : MessageLookupByLibrary.simpleMessage("Add Game"),
+    "Add Team" : MessageLookupByLibrary.simpleMessage("Add Team"),
+    "Basketball stats" : MessageLookupByLibrary.simpleMessage("Basketball stats"),
+    "Loading..." : MessageLookupByLibrary.simpleMessage("Loading...")
+  };
 }
