@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="classes1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ux/build/cloud_firestore/intermediates/runtime_library_classes/debug/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="out9">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ux/build/firebase_auth/intermediates/merged_java_res/debug/out.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="out8">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ux/build/firebase_crashlytics/intermediates/merged_java_res/debug/out.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

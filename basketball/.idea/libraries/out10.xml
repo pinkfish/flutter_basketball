@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="out10">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../ux/build/sqflite/intermediates/merged_java_res/debug/out.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
