@@ -13,14 +13,11 @@ abstract class BasketballDatabase {
   /// Gets all the currently known teams.
   Stream<BuiltList<Team>> getTeams();
 
-  /// Gets all the games associated with the specific team.
-  Stream<BuiltList<Game>> getGames({@required String teamUid});
+  /// Gets all the updates for this speific game.
+  Stream<Game> getGame({@required String gameUid});
 
-  /// Gets all the players associated with a team.
-  Stream<BuiltList<Player>> getTeamPlayers({@required String teamUid});
-
-  /// Gets all the players associated with the game.
-  Stream<BuiltList<Player>> getGamePlayers({@required String gameUid});
+  /// Gets the stream associated with this specific player.
+  Stream<Player> getPlayer({@required String playerUid});
 
   /// Adds the game event into the database
   Future<void> addGameEvent(
@@ -37,6 +34,9 @@ abstract class BasketballDatabase {
 
   /// Updates the game in the database.
   Future<void> updateGame({@required Game game});
+
+  /// Updates the player in the database.
+  Future<void> updatePlayer({@required Player player});
 
   Future<void> deleteGame({@required String gameUid});
 

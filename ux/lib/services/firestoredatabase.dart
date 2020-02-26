@@ -68,19 +68,13 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Player>> getGamePlayers({String gameUid}) {
-    // TODO: implement getGamePlayers
-    return null;
-  }
-
-  @override
-  Stream<BuiltList<Game>> getGames({String teamUid}) {
+  Stream<Game> getGame({String gameUid}) {
     // TODO: implement getGames
     return null;
   }
 
   @override
-  Stream<BuiltList<Player>> getTeamPlayers({String teamUid}) {
+  Stream<Player> getPlayer({String playerUid}) {
     // TODO: implement getTeamPlayers
     return null;
   }
@@ -107,6 +101,12 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> updateTeam({Team team}) {
     // TODO: implement updateTeam
+    return null;
+  }
+
+  @override
+  Future<void> updatePlayer({Player player}) {
+    // TODO: implement updatePlayer
     return null;
   }
 }

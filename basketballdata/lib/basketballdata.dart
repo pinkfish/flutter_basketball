@@ -3,7 +3,6 @@ library basketballdata;
 export 'bloc/add/addgamebloc.dart';
 export 'bloc/add/additemstate.dart';
 export 'bloc/add/addteambloc.dart';
-export 'bloc/gamesbloc.dart';
 export 'bloc/singlegamebloc.dart';
 export 'bloc/singleteambloc.dart';
 export 'bloc/teamsbloc.dart';

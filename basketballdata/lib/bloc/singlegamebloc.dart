@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../data/game.dart';
 import '../data/player.dart';
-import 'gamesbloc.dart';
 
 abstract class SingleGameState extends Equatable {
   final Game game;
@@ -67,6 +67,13 @@ class SingleGameDeleted extends SingleGameState {
   String toString() {
     return 'SingleGameDeleted{}';
   }
+}
+
+///
+/// What the system has not yet read the game state.
+///
+class SingleGameUninitialized extends SingleGameState {
+  SingleGameUninitialized() : super(game: null);
 }
 
 abstract class SingleGameEvent extends Equatable {}
@@ -137,39 +144,35 @@ class _SingleGameDeleted extends SingleGameEvent {
 /// Bloc to handle updates and state of a specific game.
 ///
 class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
-  final GamesBloc gameBloc;
   final String gameUid;
+  final BasketballDatabase db;
 
-  StreamSubscription<GamesBlocState> _gameSub;
+  StreamSubscription<Game> _gameSub;
 
-  SingleGameBloc({@required this.gameBloc, @required this.gameUid}) {
-    _gameSub = gameBloc.listen((GamesBlocState gameState) {
-      Game game = gameState.games
-          .firstWhere((g) => g.uid == gameUid, orElse: () => null);
-      if (game != null) {
-        // Only send this if the game is not the same.
-        if (game != state.game) {
-          add(_SingleGameNewGame(newGame: game));
-        }
+  SingleGameBloc({@required this.db, @required this.gameUid}) {
+    _gameSub = db.getGame(gameUid: gameUid).listen(_onGameUpdate);
+  }
+
+  void _onGameUpdate(Game g) {
+    if (g != this.state.game) {
+      if (g != null) {
+        add(_SingleGameNewGame(newGame: g));
       } else {
         add(_SingleGameDeleted());
       }
-    });
+    }
   }
 
   @override
   Future<void> close() async {
     _gameSub?.cancel();
+    _gameSub = null;
     await super.close();
   }
 
   @override
   SingleGameState get initialState {
-    if (gameBloc.state.games.any((g) => g.uid == gameUid)) {
-      return SingleGameLoaded(
-          game: gameBloc.state.games.firstWhere((g) => g.uid == gameUid));
-    }
-    return SingleGameDeleted();
+    return SingleGameUninitialized();
   }
 
   @override
@@ -188,7 +191,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       yield SingleGameSaving(singleGameState: state);
       try {
         Game game = event.game;
-        await gameBloc.db.updateGame(game: game);
+        await db.updateGame(game: game);
         yield SingleGameLoaded(game: event.game);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
@@ -198,7 +201,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameAddPlayer) {
       yield SingleGameSaving(singleGameState: state);
       try {
-        await gameBloc.db.addGamePlayer(gameUid: gameUid, player: event.player);
+        await db.addGamePlayer(gameUid: gameUid, player: event.player);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }
@@ -207,8 +210,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameRemovePlayer) {
       yield SingleGameSaving(singleGameState: state);
       try {
-        await gameBloc.db
-            .deleteGamePlayer(gameUid: gameUid, playerUid: event.playerUid);
+        await db.deleteGamePlayer(gameUid: gameUid, playerUid: event.playerUid);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }
@@ -216,7 +218,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
     if (event is SingleGameDelete) {
       try {
-        await gameBloc.db.deleteGame(gameUid: gameUid);
+        await db.deleteGame(gameUid: gameUid);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }

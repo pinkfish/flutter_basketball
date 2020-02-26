@@ -32,7 +32,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _name;
 
-  void _saveForm() {
+  void _saveForm(AddTeamBloc bloc) {
     if (!_formKey.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text(Messages.of(context).errorForm)));
@@ -40,7 +40,6 @@ class _AddTeamFormState extends State<_AddTeamForm> {
       return;
     }
     _formKey.currentState.save();
-    var bloc = BlocProvider.of<AddTeamBloc>(context);
     bloc.add(AddTeamEventCommit(newTeam: Team((b) => b..name = _name)));
   }
 
@@ -101,7 +100,8 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                           icon: Icon(Icons.save),
                           label: Text(Messages.of(context).saveButton,
                               style: Theme.of(context).textTheme.button),
-                          onPressed: _saveForm,
+                          onPressed: () =>
+                              _saveForm(BlocProvider.of<AddTeamBloc>(context)),
                         ),
                       ],
                     ),

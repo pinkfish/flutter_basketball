@@ -128,20 +128,14 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Player>> getGamePlayers({String gameUid}) {
+  Stream<Player> getPlayer({String playerUid}) {
     // TODO: implement getGamePlayers
     return null;
   }
 
   @override
-  Stream<BuiltList<Game>> getGames({String teamUid}) {
+  Stream<Game> getGame({String gameUid}) {
     // TODO: implement getGames
-    return null;
-  }
-
-  @override
-  Stream<BuiltList<Player>> getTeamPlayers({String teamUid}) {
-    // TODO: implement getTeamPlayers
     return null;
   }
 
@@ -187,6 +181,12 @@ class SqlfliteDatabase extends BasketballDatabase {
       "data": json.encode(team.toMap()),
     });
     _controller.add(teamsTable);
+    return null;
+  }
+
+  @override
+  Future<void> updatePlayer({Player player}) {
+    // TODO: implement updatePlayer
     return null;
   }
 }
