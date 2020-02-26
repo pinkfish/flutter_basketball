@@ -37,6 +37,7 @@ dependencies:
   intl: ^0.16.0
   fluro: ^1.5.2
   sqflite: ^1.2.1
+  material_design_icons_flutter: 3.4.4995
 
 dev_dependencies:
   flutter_test:

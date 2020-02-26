@@ -10,7 +10,7 @@ abstract class Player implements Built<Player, PlayerBuilder> {
   String get uid;
   @nullable
   String get photoUid;
-  num get jerseyNumber;
+  String get jerseyNumber;
   String get name;
 
   Player._();

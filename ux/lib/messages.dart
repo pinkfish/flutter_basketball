@@ -36,6 +36,12 @@ class Messages {
   String get noTeams => Intl.message("No Teams",
       desc: "Message to say there are no teams currently setup",
       locale: locale);
+  String get noGames => Intl.message("No Games",
+      desc: "Message to say there are no games currently setup",
+      locale: locale);
+  String get noPlayers => Intl.message("No Players",
+      desc: "Message to say there are no players currently setup",
+      locale: locale);
   String get about => Intl.message("About",
       desc: "Menu item to open information about the app", locale: locale);
   String get teamName =>
@@ -49,6 +55,12 @@ class Messages {
       desc: "Failed to save a photo", locale: locale);
   String get saveButton =>
       Intl.message("SAVE", desc: "Text on a save button", locale: locale);
+  String get unknown => Intl.message("unknown",
+      desc: "Used when the data is unknown", locale: locale);
+  String get stats => Intl.message("Stats",
+      desc: "Used when the data is unknown", locale: locale);
+  String get players => Intl.message("Players",
+      desc: "Used when the data is unknown", locale: locale);
   QuoteAndAuthor quoteforsaving(int quoteId) {
     switch (quoteId % 4) {
       case 0:

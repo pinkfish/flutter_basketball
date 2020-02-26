@@ -1,4 +1,5 @@
 import 'package:basketballstats/screens/addteam.dart';
+import 'package:basketballstats/screens/gamedetails.dart';
 import 'package:basketballstats/screens/teamdetails.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,10 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 TeamDetailsScreen(teamUid: vals["id"][0].toString())));
+    router.define("/Game/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                GameDetailsScreen(vals["id"][0].toString())));
 
     return router;
   }

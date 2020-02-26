@@ -13,19 +13,28 @@ import 'teamsbloc.dart';
 abstract class SingleTeamBlocState extends Equatable {
   final Team team;
   final BuiltList<Game> games;
+  final bool loadedGames;
 
-  SingleTeamBlocState({@required this.team, @required this.games});
+  SingleTeamBlocState(
+      {@required this.team, @required this.games, @required this.loadedGames});
 
   @override
-  List<Object> get props => [team, games];
+  List<Object> get props => [team, games, loadedGames];
 }
 
 ///
 /// We have a team, default state.
 ///
 class SingleTeamLoaded extends SingleTeamBlocState {
-  SingleTeamLoaded({@required SingleTeamBlocState state, @required Team team})
-      : super(team: team, games: state.games);
+  SingleTeamLoaded(
+      {@required SingleTeamBlocState state,
+      Team team,
+      BuiltList<Game> games,
+      bool loadedGames})
+      : super(
+            team: team ?? state.team,
+            games: games ?? state.games,
+            loadedGames: loadedGames ?? state.loadedGames);
 
   @override
   String toString() {
@@ -38,7 +47,10 @@ class SingleTeamLoaded extends SingleTeamBlocState {
 ///
 class SingleTeamSaving extends SingleTeamBlocState {
   SingleTeamSaving({@required SingleTeamBlocState singleTeamState})
-      : super(team: singleTeamState.team, games: singleTeamState.games);
+      : super(
+            team: singleTeamState.team,
+            games: singleTeamState.games,
+            loadedGames: singleTeamState.loadedGames);
 
   @override
   String toString() {
@@ -54,7 +66,10 @@ class SingleTeamSaveFailed extends SingleTeamBlocState {
 
   SingleTeamSaveFailed(
       {@required SingleTeamBlocState singleTeamState, this.error})
-      : super(team: singleTeamState.team, games: singleTeamState.games);
+      : super(
+            team: singleTeamState.team,
+            games: singleTeamState.games,
+            loadedGames: singleTeamState.loadedGames);
 
   @override
   String toString() {
@@ -66,7 +81,8 @@ class SingleTeamSaveFailed extends SingleTeamBlocState {
 /// Team got deleted.
 ///
 class SingleTeamDeleted extends SingleTeamBlocState {
-  SingleTeamDeleted() : super(team: null, games: BuiltList.of([]));
+  SingleTeamDeleted()
+      : super(team: null, games: BuiltList.of([]), loadedGames: false);
 
   @override
   String toString() {
@@ -139,6 +155,15 @@ class _SingleTeamNewTeam extends SingleTeamEvent {
   List<Object> get props => [newTeam];
 }
 
+class _SingleTeamUpdateGames extends SingleTeamEvent {
+  final BuiltList<Game> games;
+
+  _SingleTeamUpdateGames({@required this.games});
+
+  @override
+  List<Object> get props => [games];
+}
+
 class _SingleTeamDeleted extends SingleTeamEvent {
   _SingleTeamDeleted();
 
@@ -154,6 +179,7 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   final String teamUid;
 
   StreamSubscription<TeamsBlocState> _teamSub;
+  StreamSubscription<BuiltList<Game>> _gameSub;
 
   SingleTeamBloc({@required this.teamBloc, @required this.teamUid}) {
     _teamSub = teamBloc.listen((TeamsBlocState teamState) {
@@ -173,6 +199,7 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   @override
   Future<void> close() async {
     _teamSub?.cancel();
+    _gameSub?.cancel();
     await super.close();
   }
 
@@ -181,7 +208,9 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     if (teamBloc.state.teams.any((g) => g.uid == teamUid)) {
       return SingleTeamLoaded(
           state: null,
-          team: teamBloc.state.teams.firstWhere((g) => g.uid == teamUid));
+          team: teamBloc.state.teams.firstWhere((g) => g.uid == teamUid),
+          games: BuiltList.of([]),
+          loadedGames: false);
     }
     return SingleTeamDeleted();
   }
@@ -234,6 +263,19 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }
+    }
+
+    if (event is _SingleTeamUpdateGames) {
+      yield SingleTeamLoaded(
+          state: state, games: event.games, loadedGames: true);
+    }
+
+    if (event is SingleTeamLoadGames) {
+      _gameSub = teamBloc.db
+          .getTeamGames(teamUid: teamUid)
+          .listen((BuiltList<Game> games) {
+        add(_SingleTeamUpdateGames(games: games));
+      });
     }
   }
 }

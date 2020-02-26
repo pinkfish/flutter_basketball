@@ -4,6 +4,7 @@ export 'bloc/add/addgamebloc.dart';
 export 'bloc/add/additemstate.dart';
 export 'bloc/add/addteambloc.dart';
 export 'bloc/singlegamebloc.dart';
+export 'bloc/singleplayerbloc.dart';
 export 'bloc/singleteambloc.dart';
 export 'bloc/teamsbloc.dart';
 export 'data/game.dart';

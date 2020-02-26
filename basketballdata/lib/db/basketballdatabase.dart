@@ -13,6 +13,9 @@ abstract class BasketballDatabase {
   /// Gets all the currently known teams.
   Stream<BuiltList<Team>> getTeams();
 
+  /// Gets all the currently known games for this team.
+  Stream<BuiltList<Game>> getTeamGames({@required String teamUid});
+
   /// Gets all the updates for this speific game.
   Stream<Game> getGame({@required String gameUid});
 

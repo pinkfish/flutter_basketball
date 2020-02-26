@@ -109,4 +109,10 @@ class FirestoreDatabase extends BasketballDatabase {
     // TODO: implement updatePlayer
     return null;
   }
+
+  @override
+  Stream<BuiltList<Game>> getTeamGames({String teamUid}) {
+    // TODO: implement getTeamGames
+    return null;
+  }
 }

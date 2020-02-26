@@ -145,4 +145,12 @@ class MultiplexDatabase extends BasketballDatabase {
     else
       return _fs.updatePlayer(player: player);
   }
+
+  @override
+  Stream<BuiltList<Game>> getTeamGames({String teamUid}) {
+    if (useSql)
+      return _sql.getTeamGames(teamUid: teamUid);
+    else
+      return _fs.getTeamGames(teamUid: teamUid);
+  }
 }

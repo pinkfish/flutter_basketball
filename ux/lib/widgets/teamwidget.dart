@@ -22,6 +22,7 @@ class TeamWidget extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    Navigator.pushNamed(context, "/TeamDetails/" + team.uid);
+    print(team.uid);
+    Navigator.pushNamed(context, "/Team/" + team.uid);
   }
 }
