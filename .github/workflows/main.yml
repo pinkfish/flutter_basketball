@@ -21,6 +21,6 @@ jobs:
     - run: pub run build_runner build
       working-directory: basketballdata
     #- run: flutter test
-    3  working-directory: ux
+    #  working-directory: ux
     - run: flutter build apk
       working-directory: ux
