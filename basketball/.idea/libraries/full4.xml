@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="full4">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ux/build/cloud_firestore/intermediates/full_jar/debug/createFullJarDebug/full.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="libs">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ux/build/app/intermediates/flutter/release/libs.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

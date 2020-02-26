@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="out6">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../ux/build/cloud_firestore/intermediates/merged_java_res/debug/out.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
