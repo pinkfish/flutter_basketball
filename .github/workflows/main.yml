@@ -16,7 +16,11 @@ jobs:
         channel: 'stable' # or: 'dev' or 'beta'
     - run: flutter pub get
       working-directory: ux
-    - run: flutter test
-      working-directory: ux
+    - run: flutter pub get
+      working-directory: basketballdata
+    - run: pub run build_runner build
+      working-directory: basketballdata
+    #- run: flutter test
+    3  working-directory: ux
     - run: flutter build apk
       working-directory: ux
