@@ -113,7 +113,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           floatingActionButton: BlocBuilder(
               bloc: BlocProvider.of<SingleTeamBloc>(context),
               builder: (BuildContext context, SingleTeamBlocState state) {
-                FloatingActionButton(
+                return FloatingActionButton(
                   onPressed: _currentIndex == 0
                       ? () => _addGame(context, state.team.uid)
                       : _addPlayer,
@@ -133,8 +133,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   }
 
   void _addPlayer() {
-    SingleTeamBloc bloc = BlocProvider.of<SingleTeamBloc>(context);
-    showDialog<String>(context: context, child: AddPlayerScreen())
+    SingleTeamBloc bloc = BlocProvider.of<SingleTeamBloc>(context); // ignore: close_sinks
+    showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AddPlayerScreen())
         .then((FutureOr<String> playerUid) {
       if (playerUid == null || playerUid == "") {
         // Canceled.
