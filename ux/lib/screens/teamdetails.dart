@@ -133,7 +133,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   }
 
   void _addPlayer() {
-    SingleTeamBloc bloc = BlocProvider.of<SingleTeamBloc>(context); // ignore: close_sinks
+    SingleTeamBloc bloc =
+        BlocProvider.of<SingleTeamBloc>(context); // ignore: close_sinks
     showDialog<String>(
             context: context,
             builder: (BuildContext context) => AddPlayerScreen())
