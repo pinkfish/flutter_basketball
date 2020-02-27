@@ -54,8 +54,10 @@ abstract class BasketballDatabase {
       {@required String teamUid, @required String playerUid});
 
   Future<String> addGamePlayer(
-      {@required String gameUid, @required Player player});
+      {@required String gameUid, @required String playerUid});
 
   Future<String> addTeamPlayer(
-      {@required String teamUid, @required Player player});
+      {@required String teamUid, @required String playerUid});
+
+  Future<String> addPlayer({@required Player player});
 }

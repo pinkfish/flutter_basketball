@@ -33,6 +33,8 @@ class Messages {
       desc: "Message to on the tooltip to add a team", locale: locale);
   String get addGameTooltip => Intl.message("Add Game",
       desc: "Message to on the tooltip to add a game", locale: locale);
+  String get addPlayerTooltip => Intl.message("Add Player",
+      desc: "Message to on the tooltip to add a player", locale: locale);
   String get noTeams => Intl.message("No Teams",
       desc: "Message to say there are no teams currently setup",
       locale: locale);
@@ -44,8 +46,18 @@ class Messages {
       locale: locale);
   String get about => Intl.message("About",
       desc: "Menu item to open information about the app", locale: locale);
+  String get eventTime =>
+      Intl.message("Event Time", desc: "Time of the event", locale: locale);
   String get teamName =>
       Intl.message("Team Name", desc: "Name of the team", locale: locale);
+  String get playerName =>
+      Intl.message("Player Name", desc: "Name of the player", locale: locale);
+  String get gameName =>
+      Intl.message("Game Name", desc: "Name of the player", locale: locale);
+  String get location =>
+      Intl.message("Location", desc: "Location of the game", locale: locale);
+  String get jersyNumber => Intl.message("Jersey Number",
+      desc: "Jersey number for the playerr", locale: locale);
   String get emptyText => Intl.message("Must not be empty",
       desc: "Hint text to say the name must not be empty", locale: locale);
   String get errorForm => Intl.message("Error in the form",

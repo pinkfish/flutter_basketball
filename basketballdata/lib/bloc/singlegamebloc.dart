@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import '../data/game.dart';
-import '../data/player.dart';
 
 abstract class SingleGameState extends Equatable {
   final Game game;
@@ -94,12 +93,12 @@ class SingleGameUpdate extends SingleGameEvent {
 /// Adds an admin to the game.
 ///
 class SingleGameAddPlayer extends SingleGameEvent {
-  final Player player;
+  final String playerUid;
 
-  SingleGameAddPlayer({@required this.player});
+  SingleGameAddPlayer({@required this.playerUid});
 
   @override
-  List<Object> get props => [player];
+  List<Object> get props => [playerUid];
 }
 
 ///
@@ -201,7 +200,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameAddPlayer) {
       yield SingleGameSaving(singleGameState: state);
       try {
-        await db.addGamePlayer(gameUid: gameUid, player: event.player);
+        await db.addGamePlayer(gameUid: gameUid, playerUid: event.playerUid);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }

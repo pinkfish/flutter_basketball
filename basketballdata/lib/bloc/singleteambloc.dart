@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:synchronized/synchronized.dart';
 
 import '../data/game.dart';
-import '../data/player.dart';
 import '../data/team.dart';
 import 'teamsbloc.dart';
 
@@ -108,12 +108,12 @@ class SingleTeamUpdate extends SingleTeamEvent {
 /// Adds an player to the team.
 ///
 class SingleTeamAddPlayer extends SingleTeamEvent {
-  final Player player;
+  final String playerUid;
 
-  SingleTeamAddPlayer({@required this.player});
+  SingleTeamAddPlayer({@required this.playerUid});
 
   @override
-  List<Object> get props => [player];
+  List<Object> get props => [playerUid];
 }
 
 ///
@@ -177,6 +177,7 @@ class _SingleTeamDeleted extends SingleTeamEvent {
 class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   final TeamsBloc teamBloc;
   final String teamUid;
+  final Lock _lock = new Lock();
 
   StreamSubscription<TeamsBlocState> _teamSub;
   StreamSubscription<BuiltList<Game>> _gameSub;
@@ -241,7 +242,8 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     if (event is SingleTeamAddPlayer) {
       yield SingleTeamSaving(singleTeamState: state);
       try {
-        await teamBloc.db.addTeamPlayer(teamUid: teamUid, player: event.player);
+        await teamBloc.db
+            .addTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }
@@ -271,10 +273,13 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     }
 
     if (event is SingleTeamLoadGames) {
-      _gameSub = teamBloc.db
-          .getTeamGames(teamUid: teamUid)
-          .listen((BuiltList<Game> games) {
-        add(_SingleTeamUpdateGames(games: games));
+      _lock.synchronized(() {
+        print("Loading team games");
+        _gameSub = teamBloc.db
+            .getTeamGames(teamUid: this.teamUid)
+            .listen((BuiltList<Game> games) {
+          add(_SingleTeamUpdateGames(games: games));
+        });
       });
     }
   }

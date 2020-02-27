@@ -1,8 +1,9 @@
+import 'package:basketballdata/data/gamesummary.dart';
+import 'package:basketballdata/data/playersummary.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import 'gameevent.dart';
 import 'serializers.dart';
 
 part 'game.g.dart';
@@ -12,8 +13,10 @@ abstract class Game implements Built<Game, GameBuilder> {
   String get uid;
   DateTime get eventTime;
   String get location;
-  BuiltMap<String, GameEvent> get events;
-  BuiltMap<String, bool> get playerUids;
+  String get name;
+  String get teamUid;
+  BuiltMap<String, PlayerSummary> get playerUids;
+  GameSummary get summary;
 
   Game._();
   factory Game([updates(GameBuilder b)]) = _$Game;

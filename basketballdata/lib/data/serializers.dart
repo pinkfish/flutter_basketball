@@ -10,7 +10,9 @@ import 'package:built_value/standard_json_plugin.dart';
 
 import 'game.dart';
 import 'gameevent.dart';
+import 'gamesummary.dart';
 import 'player.dart';
+import 'playersummary.dart';
 import 'team.dart';
 
 part 'serializers.g.dart';
@@ -19,6 +21,8 @@ part 'serializers.g.dart';
 @SerializersFor([
   Team,
   Game,
+  GameSummary,
+  PlayerSummary,
   Player,
   GameEvent,
 ])

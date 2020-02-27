@@ -22,11 +22,14 @@ class SqlfliteDatabase extends BasketballDatabase {
   static const String gameEventsTable = "GameEvents";
 
   static const String indexColumn = "uid";
+  static const String secondaryIndexColumn = "otherUid";
   static const String dataColumn = "data";
 
   static const List<String> _tables = const <String>[
     teamsTable,
     playersTable,
+  ];
+  static const List<String> _tablesSecondaryIndex = const <String>[
     gamesTable,
     gameEventsTable,
   ];
@@ -51,15 +54,39 @@ class SqlfliteDatabase extends BasketballDatabase {
               dataColumn +
               " text NOT NULL);");
         });
+        await Future.forEach(_tablesSecondaryIndex, (String table) async {
+          print('Made db $table');
+          return await db.execute("CREATE TABLE IF NOT EXISTS " +
+              table +
+              " (" +
+              indexColumn +
+              " text PRIMARY KEY, " +
+              secondaryIndexColumn +
+              " text KEY, " +
+              dataColumn +
+              " text NOT NULL);");
+        });
       },
     );
     _complete.complete(database);
   }
 
   @override
-  Future<String> addGame({String teamUid, Game game}) {
-    // TODO: implement addGame
-    return null;
+  Future<String> addGame({String teamUid, Game game}) async {
+    Database db = await _complete.future;
+    String uid =
+        Firestore.instance.collection(gamesTable).document().documentID;
+    Game newG = game.rebuild((b) => b..uid = uid);
+    print('Inserting ${json.encode(newG.toMap())}');
+    await db.insert(teamsTable, {
+      indexColumn: uid,
+      secondaryIndexColumn: game.teamUid,
+      dataColumn: json.encode(newG.toMap()),
+    });
+    print("Adding table to stream");
+    _controller.add(teamsTable);
+    print("Done...");
+    return uid;
   }
 
   @override
@@ -69,7 +96,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGamePlayer({String gameUid, Player player}) {
+  Future<String> addGamePlayer({String gameUid, String playerUid}) {
     // TODO: implement addGamePlayer
     return null;
   }
@@ -92,7 +119,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addTeamPlayer({String teamUid, Player player}) {
+  Future<String> addTeamPlayer({String teamUid, String playerUid}) {
     // TODO: implement addTeamPlayer
     return null;
   }
@@ -175,8 +202,8 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<void> updateGame({Game game}) async {
     Database db = await _complete.future;
     db.insert(teamsTable, {
-      "uid": game.uid,
-      "data": json.encode(game.toMap()),
+      indexColumn: game.uid,
+      dataColumn: json.encode(game.toMap()),
     });
     _controller.add(gamesTable);
     return null;
@@ -186,8 +213,8 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<void> updateTeam({Team team}) async {
     Database db = await _complete.future;
     db.update(teamsTable, {
-      "uid": team.uid,
-      "data": json.encode(team.toMap()),
+      indexColumn: team.uid,
+      dataColumn: json.encode(team.toMap()),
     });
     _controller.add(teamsTable);
     return null;
@@ -203,9 +230,9 @@ class SqlfliteDatabase extends BasketballDatabase {
   Stream<BuiltList<Game>> getTeamGames({String teamUid}) async* {
     print("Waiting for database");
     Database db = await _complete.future;
-    print("Got  database");
-    final List<Map<String, dynamic>> maps = await db
-        .query(gamesTable, where: indexColumn + " = ?", whereArgs: [teamUid]);
+    print("Got  database " + teamUid);
+    final List<Map<String, dynamic>> maps = await db.query(gamesTable,
+        where: secondaryIndexColumn + " = ?", whereArgs: [teamUid]);
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
@@ -227,5 +254,11 @@ class SqlfliteDatabase extends BasketballDatabase {
             .toList());
       }
     }
+  }
+
+  @override
+  Future<String> addPlayer({Player player}) {
+    // TODO: implement addPlayer
+    return null;
   }
 }
