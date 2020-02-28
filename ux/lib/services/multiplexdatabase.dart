@@ -115,11 +115,11 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Team>> getTeams() {
+  Stream<BuiltList<Team>> getAllTeams() {
     if (useSql)
-      return _sql.getTeams();
+      return _sql.getAllTeams();
     else
-      return _fs.getTeams();
+      return _fs.getAllTeams();
   }
 
   @override
@@ -160,5 +160,21 @@ class MultiplexDatabase extends BasketballDatabase {
       return _sql.addPlayer(player: player);
     else
       return _fs.addPlayer(player: player);
+  }
+
+  @override
+  Stream<Team> getTeam({String teamUid}) {
+    if (useSql)
+      return _sql.getTeam(teamUid: teamUid);
+    else
+      return _fs.getTeam(teamUid: teamUid);
+  }
+
+  @override
+  Future<void> deletePlayer({String playerUid}) {
+    if (useSql)
+      return _sql.deletePlayer(playerUid: playerUid);
+    else
+      return _fs.deletePlayer(playerUid: playerUid);
   }
 }

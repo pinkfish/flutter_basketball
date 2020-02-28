@@ -39,6 +39,7 @@ dependencies:
   sqflite: ^1.2.1
   material_design_icons_flutter: 3.4.4995
   equatable: ^1.1.0
+  fab_circular_menu: ^0.1.4
 
 dev_dependencies:
   flutter_test:

@@ -60,7 +60,7 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   StreamSubscription<BuiltList<Team>> _sub;
 
   TeamsBloc({this.db}) {
-    _sub = db.getTeams().listen(
+    _sub = db.getAllTeams().listen(
         (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
   }
 

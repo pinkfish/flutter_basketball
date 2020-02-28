@@ -55,6 +55,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         children: state.team.playerUids.keys
             .map((String str) => PlayerTile(
                   playerUid: str,
+                  onTap: () => Navigator.pushNamed(context, "/Player/" + str),
                 ))
             .toList(),
       );
@@ -66,7 +67,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     return BlocProvider(
       create: (BuildContext context) {
         var bloc = SingleTeamBloc(
-            teamBloc: BlocProvider.of<TeamsBloc>(context),
+            db: BlocProvider.of<TeamsBloc>(context).db,
             teamUid: widget.teamUid);
         bloc.add(SingleTeamLoadGames());
         return bloc;
@@ -79,7 +80,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           body: BlocListener(
             bloc: BlocProvider.of<SingleTeamBloc>(context),
             listener: (BuildContext context, SingleTeamBlocState state) {
-              if (!state.loadedGames) {
+              if (!state.loadedGames && !(state is SingleTeamUninitialized)) {
                 BlocProvider.of<SingleTeamBloc>(context)
                     .add(SingleTeamLoadGames());
               }
@@ -91,9 +92,11 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 bloc: BlocProvider.of<SingleTeamBloc>(context),
                 builder: (BuildContext context, SingleTeamBlocState state) {
                   print(state);
-                  if (state is SingleTeamDeleted) {
+                  if (state is SingleTeamDeleted ||
+                      state is SingleTeamUninitialized) {
                     return Text(Messages.of(context).loading);
                   }
+                  print(state);
                   return SavingOverlay(
                       saving: state is SingleTeamSaving,
                       child: _innerData(state));

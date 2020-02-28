@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
@@ -8,7 +9,6 @@ import 'package:synchronized/synchronized.dart';
 
 import '../data/game.dart';
 import '../data/team.dart';
-import 'teamsbloc.dart';
 
 abstract class SingleTeamBlocState extends Equatable {
   final Team team;
@@ -87,6 +87,19 @@ class SingleTeamDeleted extends SingleTeamBlocState {
   @override
   String toString() {
     return 'SingleTeamDeleted{}';
+  }
+}
+
+///
+/// Team is still loading.
+///
+class SingleTeamUninitialized extends SingleTeamBlocState {
+  SingleTeamUninitialized()
+      : super(team: null, games: BuiltList.of([]), loadedGames: false);
+
+  @override
+  String toString() {
+    return 'SingleTeamUninitialized{}';
   }
 }
 
@@ -175,21 +188,20 @@ class _SingleTeamDeleted extends SingleTeamEvent {
 /// Bloc to handle updates and state of a specific team.
 ///
 class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
-  final TeamsBloc teamBloc;
+  final BasketballDatabase db;
   final String teamUid;
   final Lock _lock = new Lock();
 
-  StreamSubscription<TeamsBlocState> _teamSub;
+  StreamSubscription<Team> _teamSub;
   StreamSubscription<BuiltList<Game>> _gameSub;
 
-  SingleTeamBloc({@required this.teamBloc, @required this.teamUid}) {
-    _teamSub = teamBloc.listen((TeamsBlocState teamState) {
-      Team team = teamState.teams
-          .firstWhere((g) => g.uid == teamUid, orElse: () => null);
-      if (team != null) {
+  SingleTeamBloc({@required this.db, @required this.teamUid}) {
+    _teamSub = db.getTeam(teamUid: teamUid).listen((Team t) {
+      if (t != null) {
         // Only send this if the team is not the same.
-        if (team != state.team) {
-          add(_SingleTeamNewTeam(newTeam: team));
+        print("getTeam $t");
+        if (t != state.team || !(state is SingleTeamLoaded)) {
+          add(_SingleTeamNewTeam(newTeam: t));
         }
       } else {
         add(_SingleTeamDeleted());
@@ -206,19 +218,13 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
 
   @override
   SingleTeamBlocState get initialState {
-    if (teamBloc.state.teams.any((g) => g.uid == teamUid)) {
-      return SingleTeamLoaded(
-          state: null,
-          team: teamBloc.state.teams.firstWhere((g) => g.uid == teamUid),
-          games: BuiltList.of([]),
-          loadedGames: false);
-    }
-    return SingleTeamDeleted();
+    return SingleTeamUninitialized();
   }
 
   @override
   Stream<SingleTeamBlocState> mapEventToState(SingleTeamEvent event) async* {
     if (event is _SingleTeamNewTeam) {
+      print("loaded ${event.newTeam}");
       yield SingleTeamLoaded(state: state, team: event.newTeam);
     }
 
@@ -233,7 +239,7 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
       try {
         Team team = event.team;
         if (team != state.team) {
-          await teamBloc.db.updateTeam(team: team);
+          await db.updateTeam(team: team);
         } else {
           yield SingleTeamLoaded(state: state, team: event.team);
         }
@@ -246,8 +252,7 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
       yield SingleTeamSaving(singleTeamState: state);
       try {
         if (!state.team.playerUids.containsKey(event.playerUid)) {
-          await teamBloc.db
-              .addTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
+          await db.addTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
         } else {
           yield SingleTeamLoaded(state: state);
         }
@@ -260,8 +265,8 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
       yield SingleTeamSaving(singleTeamState: state);
       try {
         if (state.team.playerUids.containsKey(event.playerUid)) {
-          await teamBloc.db
-              .deleteTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
+          await db.deleteTeamPlayer(
+              teamUid: teamUid, playerUid: event.playerUid);
         } else {
           yield SingleTeamLoaded(state: state);
         }
@@ -272,7 +277,7 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
 
     if (event is SingleTeamDelete) {
       try {
-        await teamBloc.db.deleteTeam(teamUid: teamUid);
+        await db.deleteTeam(teamUid: teamUid);
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }
@@ -286,7 +291,7 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     if (event is SingleTeamLoadGames) {
       _lock.synchronized(() {
         print("Loading team games");
-        _gameSub = teamBloc.db
+        _gameSub = db
             .getTeamGames(teamUid: this.teamUid)
             .listen((BuiltList<Game> games) {
           add(_SingleTeamUpdateGames(games: games));

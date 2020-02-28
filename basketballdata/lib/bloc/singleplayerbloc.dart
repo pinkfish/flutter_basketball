@@ -42,6 +42,19 @@ class SinglePlayerSaving extends SinglePlayerState {
 }
 
 ///
+/// Save operation was successful.
+///
+class SinglePlayerSaveSuccessful extends SinglePlayerState {
+  SinglePlayerSaveSuccessful({@required SinglePlayerState singlePlayerState})
+      : super(player: singlePlayerState.player);
+
+  @override
+  String toString() {
+    return 'SinglePlayerSaveSuccessful{}';
+  }
+}
+
+///
 /// Saving operation failed (goes back to loaded for success).
 ///
 class SinglePlayerSaveFailed extends SinglePlayerState {
@@ -88,6 +101,16 @@ class SinglePlayerUpdate extends SinglePlayerEvent {
 
   @override
   List<Object> get props => [player];
+}
+
+///
+/// Deletes this player from the world.
+///
+class SinglePlayerDelete extends SinglePlayerEvent {
+  SinglePlayerDelete();
+
+  @override
+  List<Object> get props => [];
 }
 
 class _SinglePlayerNewPlayer extends SinglePlayerEvent {
@@ -152,13 +175,24 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
       yield SinglePlayerDeleted();
     }
 
+    if (event is SinglePlayerDelete) {
+      yield SinglePlayerSaving(singlePlayerState: state);
+      try {
+        Player player = state.player;
+        await db.deletePlayer(playerUid: player.uid);
+        yield SinglePlayerDeleted();
+      } catch (e) {
+        yield SinglePlayerSaveFailed(singlePlayerState: state, error: e);
+      }
+    }
+
     // Save the player.
     if (event is SinglePlayerUpdate) {
       yield SinglePlayerSaving(singlePlayerState: state);
       try {
         Player player = event.player;
         await db.updatePlayer(player: player);
-        yield SinglePlayerLoaded(player: event.player);
+        yield SinglePlayerSaveSuccessful(singlePlayerState: state);
       } catch (e) {
         yield SinglePlayerSaveFailed(singlePlayerState: state, error: e);
       }

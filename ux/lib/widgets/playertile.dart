@@ -52,12 +52,30 @@ class PlayerTile extends StatelessWidget {
               if (state is SinglePlayerLoaded) {
                 return ListTile(
                   onTap: this.onTap,
-                  title: Text(state.player.name),
-                  leading: Stack(
-                    children: <Widget>[
-                      Icon(MdiIcons.tshirtCrewOutline),
-                      Text(state.player.jerseyNumber.toString()),
-                    ],
+                  title: Text(
+                    state.player.name,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  leading: ConstrainedBox(
+                    constraints:
+                        BoxConstraints.tightFor(height: 40.0, width: 40.0),
+                    child: Container(
+                      child: Center(
+                        child: Text(
+                          state.player.jerseyNumber,
+                          style: Theme.of(context).textTheme.caption.copyWith(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                              ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
                   ),
                 );
               }

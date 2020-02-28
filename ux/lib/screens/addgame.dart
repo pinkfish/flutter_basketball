@@ -20,7 +20,7 @@ class AddGameScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (BuildContext context) => SingleTeamBloc(
-            teamBloc: BlocProvider.of<TeamsBloc>(context), teamUid: teamUid),
+            db: BlocProvider.of<TeamsBloc>(context).db, teamUid: teamUid),
         child: BlocProvider(
           create: (BuildContext context) => AddGameBloc(
               teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),

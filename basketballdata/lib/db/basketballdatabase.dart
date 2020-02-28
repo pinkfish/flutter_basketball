@@ -11,10 +11,13 @@ import '../data/team.dart';
 ///
 abstract class BasketballDatabase {
   /// Gets all the currently known teams.
-  Stream<BuiltList<Team>> getTeams();
+  Stream<BuiltList<Team>> getAllTeams();
 
   /// Gets all the currently known games for this team.
   Stream<BuiltList<Game>> getTeamGames({@required String teamUid});
+
+  /// Gets all the updates for this specific team.
+  Stream<Team> getTeam({@required String teamUid});
 
   /// Gets all the updates for this speific game.
   Stream<Game> getGame({@required String gameUid});
@@ -40,6 +43,8 @@ abstract class BasketballDatabase {
 
   /// Updates the player in the database.
   Future<void> updatePlayer({@required Player player});
+
+  Future<void> deletePlayer({@required String playerUid});
 
   Future<void> deleteGame({@required String gameUid});
 

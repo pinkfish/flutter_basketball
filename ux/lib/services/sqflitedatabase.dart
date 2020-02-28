@@ -177,6 +177,15 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
+  Future<void> deletePlayer({String playerUid}) async {
+    Database db = await _complete.future;
+    await db.delete(playersTable, where: "uid = ?", whereArgs: [playerUid]);
+    _controller.add(_TableChange(table: playersTable, uid: playerUid));
+    // TODO: Delete from the other places it is referenced too.
+    return null;
+  }
+
+  @override
   Future<void> deleteTeamPlayer({String teamUid, String playerUid}) async {
     Team t = await _getTeam(teamUid: teamUid);
     return updateTeam(team: t.rebuild((b) => b..playerUids.remove(playerUid)));
@@ -254,7 +263,23 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Team>> getTeams() async* {
+  Stream<Team> getTeam({String teamUid}) async* {
+    yield await _getTeam(teamUid: teamUid);
+    Database db = await _complete.future;
+    await for (_TableChange table in _tableChange) {
+      print("Table change getGame $table");
+      if (!db.isOpen) {
+        // Exit out of here.
+        return;
+      }
+      if (table.table == teamsTable && table.uid == teamUid) {
+        yield await _getTeam(teamUid: teamUid);
+      }
+    }
+  }
+
+  @override
+  Stream<BuiltList<Team>> getAllTeams() async* {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps = await db.query(teamsTable);
     print("Query $maps");

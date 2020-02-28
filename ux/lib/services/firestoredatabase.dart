@@ -80,7 +80,7 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Team>> getTeams() async* {
+  Stream<BuiltList<Team>> getAllTeams() async* {
     Query q =
         Firestore.instance.collection("Teams").where("userUid", isEqualTo: "1");
     QuerySnapshot snap = await q.getDocuments();
@@ -119,6 +119,18 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<String> addPlayer({Player player}) {
     // TODO: implement addPlayer
+    return null;
+  }
+
+  @override
+  Stream<Team> getTeam({String teamUid}) {
+    // TODO: implement getTeam
+    return null;
+  }
+
+  @override
+  Future<void> deletePlayer({String playerUid}) {
+    // TODO: implement deletePlayer
     return null;
   }
 }

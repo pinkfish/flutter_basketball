@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'screens/addgame.dart';
 import 'screens/addplayer.dart';
 import 'screens/addteam.dart';
+import 'screens/editplayer.dart';
 import 'screens/gamedetails.dart';
+import 'screens/playerdetails.dart';
 import 'screens/splashscreen.dart';
 import 'screens/teamdetails.dart';
 import 'screens/teams.dart';
@@ -52,6 +54,14 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GameDetailsScreen(vals["id"][0].toString())));
+    router.define("/Player/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                PlayerDetailsScreen(vals["id"][0].toString())));
+    router.define("/EditPlayer/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                EditPlayerScreen(vals["id"][0].toString())));
 
     return router;
   }

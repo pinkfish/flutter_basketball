@@ -73,6 +73,14 @@ class Messages {
       desc: "Used when the data is unknown", locale: locale);
   String get players => Intl.message("Players",
       desc: "Used when the data is unknown", locale: locale);
+  String get deletePlayer => Intl.message("Delete Player",
+      desc: "Dialog title for deleting a playern", locale: locale);
+  String deletePlayerAreYouSure(String name) {
+    return Intl.message("Are you sure you want to delete the player $name?",
+        desc: "Dialog text to ask if you aere sure about deleting the player",
+        locale: locale);
+  }
+
   QuoteAndAuthor quoteforsaving(int quoteId) {
     switch (quoteId % 4) {
       case 0:
