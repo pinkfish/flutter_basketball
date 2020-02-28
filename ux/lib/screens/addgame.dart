@@ -1,10 +1,11 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/datetimepicker.dart';
-import 'package:basketballstats/widgets/savingoverlay.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
+import '../widgets/datetimepicker.dart';
+import '../widgets/savingoverlay.dart';
 
 class AddGameScreen extends StatelessWidget {
   final String teamUid;
@@ -18,10 +19,23 @@ class AddGameScreen extends StatelessWidget {
         title: Text(Messages.of(context).title),
       ),
       body: BlocProvider(
-        create: (BuildContext context) => AddGameBloc(
-            teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
-        child: _AddGameForm(
-          teamUid: teamUid,
+        create: (BuildContext context) => SingleTeamBloc(
+            teamBloc: BlocProvider.of<TeamsBloc>(context), teamUid: teamUid),
+        child: BlocProvider(
+          create: (BuildContext context) => AddGameBloc(
+              teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
+          child: Builder(builder: (BuildContext context) {
+            return BlocBuilder(
+                bloc: BlocProvider.of<SingleTeamBloc>(context),
+                builder: (BuildContext context, SingleTeamBlocState state) {
+                  if (state is SingleTeamDeleted) {
+                    return Center(child: Text(Messages.of(context).unknown));
+                  }
+                  return _AddGameForm(
+                    team: state.team,
+                  );
+                });
+          }),
         ),
       ),
     );
@@ -29,9 +43,9 @@ class AddGameScreen extends StatelessWidget {
 }
 
 class _AddGameForm extends StatefulWidget {
-  final String teamUid;
+  final Team team;
 
-  _AddGameForm({@required this.teamUid});
+  _AddGameForm({@required this.team});
 
   @override
   State<StatefulWidget> createState() {
@@ -53,13 +67,32 @@ class _AddGameFormState extends State<_AddGameForm> {
       return;
     }
     _formKey.currentState.save();
+    var map = MapBuilder<String, PlayerSummary>();
+    map.addEntries(widget.team.playerUids.keys.map((var e) => MapEntry(
+        e,
+        PlayerSummary((b) => b
+          ..oneAttempts = 0
+          ..oneMade = 0
+          ..twoAttempts = 0
+          ..twoMade = 0
+          ..threeAttempts = 0
+          ..threeMade = 0
+          ..steals = 0
+          ..defensiveRebounds = 0
+          ..offensiveRebounds = 0
+          ..fouls = 0))));
     bloc.add(AddGameEventCommit(
         newGame: Game((b) => b
           ..name = _name
-          ..teamUid = widget.teamUid
+          ..teamUid = widget.team.uid
+          ..playerUids = map
           ..location = _location ?? ""
+          ..summary = (GameSummaryBuilder()
+            ..pointsAgainst = 0
+            ..pointsFor = 0)
           ..eventTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
-              _time.hour, _time.minute))));
+                  _time.hour, _time.minute)
+              .toUtc())));
   }
 
   @override
@@ -71,6 +104,7 @@ class _AddGameFormState extends State<_AddGameForm> {
           Navigator.pop(context);
         }
         if (state is AddItemSaveFailed) {
+          print(state.error);
           Scaffold.of(context).showSnackBar(
               SnackBar(content: Text(Messages.of(context).saveFailed)));
         }
@@ -104,7 +138,7 @@ class _AddGameFormState extends State<_AddGameForm> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      icon: Icon(Icons.people),
+                      icon: Icon(Icons.directions),
                       hintText: Messages.of(context).location,
                       labelText: Messages.of(context).location,
                     ),

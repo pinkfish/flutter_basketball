@@ -20,7 +20,7 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGamePlayer({String gameUid, String playerUid}) {
+  Future<void> addGamePlayer({String gameUid, String playerUid}) {
     // TODO: implement addGamePlayer
     return null;
   }
@@ -32,7 +32,7 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addTeamPlayer({String teamUid, String playerUid}) {
+  Future<void> addTeamPlayer({String teamUid, String playerUid}) {
     // TODO: implement addTeamPlayer
     return null;
   }

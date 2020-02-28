@@ -232,8 +232,11 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
       yield SingleTeamSaving(singleTeamState: state);
       try {
         Team team = event.team;
-        await teamBloc.db.updateTeam(team: team);
-        yield SingleTeamLoaded(state: state, team: event.team);
+        if (team != state.team) {
+          await teamBloc.db.updateTeam(team: team);
+        } else {
+          yield SingleTeamLoaded(state: state, team: event.team);
+        }
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }
@@ -242,8 +245,12 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     if (event is SingleTeamAddPlayer) {
       yield SingleTeamSaving(singleTeamState: state);
       try {
-        await teamBloc.db
-            .addTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
+        if (!state.team.playerUids.containsKey(event.playerUid)) {
+          await teamBloc.db
+              .addTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
+        } else {
+          yield SingleTeamLoaded(state: state);
+        }
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }
@@ -252,8 +259,12 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     if (event is SingleTeamRemovePlayer) {
       yield SingleTeamSaving(singleTeamState: state);
       try {
-        await teamBloc.db
-            .deleteTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
+        if (state.team.playerUids.containsKey(event.playerUid)) {
+          await teamBloc.db
+              .deleteTeamPlayer(teamUid: teamUid, playerUid: event.playerUid);
+        } else {
+          yield SingleTeamLoaded(state: state);
+        }
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }

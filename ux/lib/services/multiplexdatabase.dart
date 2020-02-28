@@ -35,7 +35,7 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGamePlayer({String gameUid, String playerUid}) {
+  Future<void> addGamePlayer({String gameUid, String playerUid}) {
     if (useSql)
       return _sql.addGamePlayer(gameUid: gameUid, playerUid: playerUid);
     else
@@ -51,7 +51,7 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addTeamPlayer({String teamUid, String playerUid}) {
+  Future<void> addTeamPlayer({String teamUid, String playerUid}) {
     if (useSql)
       return _sql.addTeamPlayer(teamUid: teamUid, playerUid: playerUid);
     else

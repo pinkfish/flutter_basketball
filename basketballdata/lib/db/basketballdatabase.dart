@@ -53,10 +53,10 @@ abstract class BasketballDatabase {
   Future<void> deleteTeamPlayer(
       {@required String teamUid, @required String playerUid});
 
-  Future<String> addGamePlayer(
+  Future<void> addGamePlayer(
       {@required String gameUid, @required String playerUid});
 
-  Future<String> addTeamPlayer(
+  Future<void> addTeamPlayer(
       {@required String teamUid, @required String playerUid});
 
   Future<String> addPlayer({@required Player player});

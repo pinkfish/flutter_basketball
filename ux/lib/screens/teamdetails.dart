@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/gametile.dart';
-import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
+import '../widgets/gametile.dart';
 import '../widgets/playertile.dart';
+import '../widgets/savingoverlay.dart';
 import 'addplayer.dart';
 
 class TeamDetailsScreen extends StatefulWidget {
@@ -40,7 +40,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       return ListView(
         children: state.games
             .map((Game g) => GameTile(
-                  gameUid: g.uid,
+                  game: g,
+                  onTap: () => Navigator.pushNamed(context, "/Game/" + g.uid),
                 ))
             .toList(),
       );
@@ -63,9 +64,13 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => SingleTeamBloc(
-          teamBloc: BlocProvider.of<TeamsBloc>(context),
-          teamUid: widget.teamUid),
+      create: (BuildContext context) {
+        var bloc = SingleTeamBloc(
+            teamBloc: BlocProvider.of<TeamsBloc>(context),
+            teamUid: widget.teamUid);
+        bloc.add(SingleTeamLoadGames());
+        return bloc;
+      },
       child: Builder(builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
@@ -116,7 +121,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 return FloatingActionButton(
                   onPressed: _currentIndex == 0
                       ? () => _addGame(context, state.team.uid)
-                      : _addPlayer,
+                      : () => _addPlayer(context),
                   tooltip: _currentIndex == 0
                       ? Messages.of(context).addGameTooltip
                       : Messages.of(context).addPlayerTooltip,
@@ -132,9 +137,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     Navigator.pushNamed(context, "/AddGame/" + teamUid);
   }
 
-  void _addPlayer() {
-    SingleTeamBloc bloc =
-        BlocProvider.of<SingleTeamBloc>(context); // ignore: close_sinks
+  void _addPlayer(BuildContext context) {
+    SingleTeamBloc bloc = // ignore: close_sinks
+        BlocProvider.of<SingleTeamBloc>(context);
     showDialog<String>(
             context: context,
             builder: (BuildContext context) => AddPlayerScreen())

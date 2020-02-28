@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/data/game.dart';
 import 'package:basketballdata/data/gameevent.dart';
 import 'package:basketballdata/data/player.dart';
@@ -8,13 +9,18 @@ import 'package:basketballdata/data/team.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+///
+/// Interface to get all the data from the local sql database.
+///
 class SqlfliteDatabase extends BasketballDatabase {
   Completer<Database> _complete = Completer();
-  StreamController<String> _controller = StreamController<String>();
-  Stream<String> _tableChange;
+  StreamController<_TableChange> _controller =
+      StreamController<_TableChange>(sync: false);
+  Stream<_TableChange> _tableChange;
 
   static const String teamsTable = "Teams";
   static const String playersTable = "Players";
@@ -34,8 +40,12 @@ class SqlfliteDatabase extends BasketballDatabase {
     gameEventsTable,
   ];
 
-  Future<void> open() async {
+  SqlfliteDatabase() {
     _tableChange = _controller.stream.asBroadcastStream();
+  }
+
+  Future<void> open() async {
+    //await deleteDatabase(join(await getDatabasesPath(), 'doggie_database.db'));
     // Open the database and store the reference.
     Database database = await openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
@@ -55,7 +65,7 @@ class SqlfliteDatabase extends BasketballDatabase {
               " text NOT NULL);");
         });
         await Future.forEach(_tablesSecondaryIndex, (String table) async {
-          print('Made db $table');
+          print('Made db with secondary $table');
           return await db.execute("CREATE TABLE IF NOT EXISTS " +
               table +
               " (" +
@@ -78,14 +88,13 @@ class SqlfliteDatabase extends BasketballDatabase {
         Firestore.instance.collection(gamesTable).document().documentID;
     Game newG = game.rebuild((b) => b..uid = uid);
     print('Inserting ${json.encode(newG.toMap())}');
-    await db.insert(teamsTable, {
+    await db.insert(gamesTable, {
       indexColumn: uid,
       secondaryIndexColumn: game.teamUid,
       dataColumn: json.encode(newG.toMap()),
     });
-    print("Adding table to stream");
-    _controller.add(teamsTable);
-    print("Done...");
+    _controller.add(
+        _TableChange(table: gamesTable, uid: uid, secondaryUid: game.teamUid));
     return uid;
   }
 
@@ -96,9 +105,23 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGamePlayer({String gameUid, String playerUid}) {
-    // TODO: implement addGamePlayer
-    return null;
+  Future<void> addGamePlayer({String gameUid, String playerUid}) async {
+    Game t = await _getGame(gameUid: gameUid);
+    await updateGame(
+        game: t.rebuild((b) => b
+          ..playerUids.putIfAbsent(
+              playerUid,
+              () => PlayerSummary((b) => b
+                ..defensiveRebounds = 0
+                ..steals = 0
+                ..threeMade = 0
+                ..threeAttempts = 0
+                ..twoMade = 0
+                ..twoAttempts = 0
+                ..oneMade = 0
+                ..oneAttempts = 0
+                ..fouls = 0))));
+    return playerUid;
   }
 
   @override
@@ -112,23 +135,24 @@ class SqlfliteDatabase extends BasketballDatabase {
       indexColumn: uid,
       dataColumn: json.encode(newT.toMap()),
     });
-    print("Adding table to stream");
-    _controller.add(teamsTable);
-    print("Done...");
+    _controller.add(_TableChange(table: teamsTable, uid: uid));
     return uid;
   }
 
   @override
-  Future<String> addTeamPlayer({String teamUid, String playerUid}) {
-    // TODO: implement addTeamPlayer
-    return null;
+  Future<void> addTeamPlayer({String teamUid, String playerUid}) async {
+    Team t = await _getTeam(teamUid: teamUid);
+    await updateTeam(
+        team:
+            t.rebuild((b) => b..playerUids.putIfAbsent(playerUid, () => true)));
+    return playerUid;
   }
 
   @override
   Future<void> deleteGame({String gameUid}) async {
     Database db = await _complete.future;
     await db.delete(gamesTable, where: "uid = ?", whereArgs: [gameUid]);
-    _controller.add(gamesTable);
+    _controller.add(_TableChange(table: gamesTable, uid: gameUid));
     return null;
   }
 
@@ -139,55 +163,113 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> deleteGamePlayer({String gameUid, String playerUid}) {
-    // TODO: implement deleteGamePlayer
-    return null;
+  Future<void> deleteGamePlayer({String gameUid, String playerUid}) async {
+    Game t = await _getGame(gameUid: gameUid);
+    return updateGame(game: t.rebuild((b) => b..playerUids.remove(playerUid)));
   }
 
   @override
   Future<void> deleteTeam({String teamUid}) async {
     Database db = await _complete.future;
     await db.delete(teamsTable, where: "uid = ?", whereArgs: [teamUid]);
-    _controller.add(teamsTable);
+    _controller.add(_TableChange(table: teamsTable, uid: teamUid));
     return null;
   }
 
   @override
-  Future<void> deleteTeamPlayer({String teamUid, String playerUid}) {
-    // TODO: implement deleteTeamPlayer
-    return null;
+  Future<void> deleteTeamPlayer({String teamUid, String playerUid}) async {
+    Team t = await _getTeam(teamUid: teamUid);
+    return updateTeam(team: t.rebuild((b) => b..playerUids.remove(playerUid)));
+  }
+
+  Future<Team> _getTeam({String teamUid}) async {
+    Database db = await _complete.future;
+    final List<Map<String, dynamic>> maps =
+        await db.query(teamsTable, where: "uid = ?", whereArgs: [teamUid]);
+    print("Query $maps");
+    if (maps.isEmpty) {
+      return null;
+    }
+    return maps
+        .map((Map<String, dynamic> e) =>
+            Team.fromMap(json.decode(e[dataColumn])))
+        .first;
   }
 
   @override
-  Stream<Player> getPlayer({String playerUid}) {
-    // TODO: implement getGamePlayers
-    return null;
+  Stream<Player> getPlayer({String playerUid}) async* {
+    Database db = await _complete.future;
+    final List<Map<String, dynamic>> maps =
+        await db.query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
+    print("Query $maps");
+    yield maps
+        .map((Map<String, dynamic> e) =>
+            Player.fromMap(json.decode(e[dataColumn])))
+        .first;
+    await for (_TableChange table in _tableChange) {
+      print("Table change getPlayer $table");
+      if (!db.isOpen) {
+        // Exit out of here.
+        return;
+      }
+      if (table.table == playersTable && table.uid == playerUid) {
+        final List<Map<String, dynamic>> maps = await db
+            .query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
+        yield maps
+            .map((Map<String, dynamic> e) =>
+                Player.fromMap(json.decode(e[dataColumn])))
+            .first;
+      }
+    }
+  }
+
+  Future<Game> _getGame({String gameUid}) async {
+    Database db = await _complete.future;
+    final List<Map<String, dynamic>> maps =
+        await db.query(gamesTable, where: "uid = ?", whereArgs: [gameUid]);
+    print("Query $maps");
+    if (maps.isEmpty) {
+      return null;
+    }
+    return maps
+        .map((Map<String, dynamic> e) =>
+            Game.fromMap(json.decode(e[dataColumn])))
+        .first;
   }
 
   @override
-  Stream<Game> getGame({String gameUid}) {
-    // TODO: implement getGames
-    return null;
+  Stream<Game> getGame({String gameUid}) async* {
+    yield await _getGame(gameUid: gameUid);
+    Database db = await _complete.future;
+    await for (_TableChange table in _tableChange) {
+      print("Table change getGame $table");
+      if (!db.isOpen) {
+        // Exit out of here.
+        return;
+      }
+      if (table.table == gamesTable && table.uid == gameUid) {
+        yield await _getGame(gameUid: gameUid);
+      }
+    }
   }
 
   @override
   Stream<BuiltList<Team>> getTeams() async* {
-    print("Waiting for database");
     Database db = await _complete.future;
-    print("Got  database");
     final List<Map<String, dynamic>> maps = await db.query(teamsTable);
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
             Team.fromMap(json.decode(e[dataColumn])))
         .toList());
-    await for (String table in _tableChange) {
-      print("Table change $table");
+    print("getTeams waiting for change");
+    await for (_TableChange table in _tableChange) {
+      print("Table change getTeams $table");
       if (!db.isOpen) {
         // Exit out of here.
         return;
       }
-      if (table == teamsTable) {
+      if (table.table == teamsTable) {
         final List<Map<String, dynamic>> maps = await db.query(teamsTable);
         yield BuiltList.from(maps
             .map((Map<String, dynamic> e) =>
@@ -196,16 +278,18 @@ class SqlfliteDatabase extends BasketballDatabase {
             .toList());
       }
     }
+    print("Exit getTeams");
   }
 
   @override
   Future<void> updateGame({Game game}) async {
     Database db = await _complete.future;
-    db.insert(teamsTable, {
+    db.insert(gamesTable, {
       indexColumn: game.uid,
       dataColumn: json.encode(game.toMap()),
     });
-    _controller.add(gamesTable);
+    _controller.add(_TableChange(
+        table: gamesTable, uid: game.uid, secondaryUid: game.teamUid));
     return null;
   }
 
@@ -216,13 +300,18 @@ class SqlfliteDatabase extends BasketballDatabase {
       indexColumn: team.uid,
       dataColumn: json.encode(team.toMap()),
     });
-    _controller.add(teamsTable);
+    _controller.add(_TableChange(table: teamsTable, uid: team.uid));
     return null;
   }
 
   @override
-  Future<void> updatePlayer({Player player}) {
-    // TODO: implement updatePlayer
+  Future<void> updatePlayer({Player player}) async {
+    Database db = await _complete.future;
+    db.update(playersTable, {
+      indexColumn: player.uid,
+      dataColumn: json.encode(player.toMap()),
+    });
+    _controller.add(_TableChange(table: playersTable, uid: player.uid));
     return null;
   }
 
@@ -238,13 +327,13 @@ class SqlfliteDatabase extends BasketballDatabase {
         .map((Map<String, dynamic> e) =>
             Game.fromMap(json.decode(e[dataColumn])))
         .toList());
-    await for (String table in _tableChange) {
+    await for (_TableChange table in _tableChange) {
       print("Table change $table");
       if (!db.isOpen) {
         // Exit out of here.
         return;
       }
-      if (table == gamesTable) {
+      if (table.table == gamesTable && table.secondaryUid == teamUid) {
         final List<Map<String, dynamic>> maps = await db.query(teamsTable,
             where: indexColumn + " = ?", whereArgs: [teamUid]);
         yield BuiltList.from(maps
@@ -257,8 +346,39 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addPlayer({Player player}) {
-    // TODO: implement addPlayer
-    return null;
+  Future<String> addPlayer({Player player}) async {
+    print("Calling addPlayer");
+    Database db = await _complete.future;
+    String uid =
+        Firestore.instance.collection(playersTable).document().documentID;
+    Player newP = player.rebuild((b) => b..uid = uid);
+    print('Inserting ${json.encode(newP.toMap())}');
+    await db.insert(playersTable, {
+      indexColumn: uid,
+      dataColumn: json.encode(newP.toMap()),
+    });
+    print("Adding table to stream");
+    _controller.add(_TableChange(table: playersTable, uid: uid));
+    print("Done...");
+    return uid;
+  }
+}
+
+///
+/// Used to track changes to the table
+///
+class _TableChange extends Equatable {
+  final String table;
+  final String uid;
+  final String secondaryUid;
+
+  _TableChange({this.table, this.uid, this.secondaryUid});
+
+  @override
+  List<Object> get props => [table, uid, secondaryUid];
+
+  @override
+  String toString() {
+    return '_TableChange{table: $table, uid: $uid, secondaryUid: $secondaryUid}';
   }
 }

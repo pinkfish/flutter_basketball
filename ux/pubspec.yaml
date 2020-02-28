@@ -38,11 +38,13 @@ dependencies:
   fluro: ^1.5.2
   sqflite: ^1.2.1
   material_design_icons_flutter: 3.4.4995
+  equatable: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   intl_translation: ^0.17.9
+
 
 
 # For information on the generic Dart part of this file, see the
@@ -55,6 +57,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/images/abstractsport.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
