@@ -55,7 +55,7 @@ class _AddGameForm extends StatefulWidget {
 
 class _AddGameFormState extends State<_AddGameForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _name;
+  String _opponent;
   String _location;
   DateTime _dateTime = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
@@ -68,22 +68,11 @@ class _AddGameFormState extends State<_AddGameForm> {
     }
     _formKey.currentState.save();
     var map = MapBuilder<String, PlayerSummary>();
-    map.addEntries(widget.team.playerUids.keys.map((var e) => MapEntry(
-        e,
-        PlayerSummary((b) => b
-          ..oneAttempts = 0
-          ..oneMade = 0
-          ..twoAttempts = 0
-          ..twoMade = 0
-          ..threeAttempts = 0
-          ..threeMade = 0
-          ..steals = 0
-          ..defensiveRebounds = 0
-          ..offensiveRebounds = 0
-          ..fouls = 0))));
+    map.addEntries(widget.team.playerUids.keys
+        .map((var e) => MapEntry(e, PlayerSummary())));
     bloc.add(AddGameEventCommit(
         newGame: Game((b) => b
-          ..name = _name
+          ..opponent = _opponent
           ..teamUid = widget.team.uid
           ..playerUids = map
           ..location = _location ?? ""
@@ -122,11 +111,11 @@ class _AddGameFormState extends State<_AddGameForm> {
                   TextFormField(
                     decoration: InputDecoration(
                       icon: Icon(Icons.people),
-                      hintText: Messages.of(context).gameName,
-                      labelText: Messages.of(context).gameName,
+                      hintText: Messages.of(context).opponent,
+                      labelText: Messages.of(context).opponent,
                     ),
                     onSaved: (String str) {
-                      _name = str;
+                      _opponent = str;
                     },
                     autovalidate: false,
                     validator: (String str) {

@@ -108,19 +108,8 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<void> addGamePlayer({String gameUid, String playerUid}) async {
     Game t = await _getGame(gameUid: gameUid);
     await updateGame(
-        game: t.rebuild((b) => b
-          ..playerUids.putIfAbsent(
-              playerUid,
-              () => PlayerSummary((b) => b
-                ..defensiveRebounds = 0
-                ..steals = 0
-                ..threeMade = 0
-                ..threeAttempts = 0
-                ..twoMade = 0
-                ..twoAttempts = 0
-                ..oneMade = 0
-                ..oneAttempts = 0
-                ..fouls = 0))));
+        game: t.rebuild((b) =>
+            b..playerUids.putIfAbsent(playerUid, () => PlayerSummary())));
     return playerUid;
   }
 

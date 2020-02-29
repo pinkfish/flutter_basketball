@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:basketballdata/basketballdata.dart';
 import 'package:flutter/material.dart';
 
@@ -12,33 +10,22 @@ class GamePlayerDialog extends StatelessWidget {
   final Game game;
 
   List<Widget> _populateList(BuildContext context, Orientation o) {
-    List<Widget> ret = List<Widget>();
-
-    int width = 2;
-    List<String> players = game.playerUids.keys;
-    for (int i = 0; i < players.length; i += width) {
-      ret.add(
-        Row(
-          children: players
-              .sublist(i, min(i + width, players.length))
-              .map((String playerUid) => PlayerTile(
-                  playerUid: playerUid,
-                  onTap: () => _selectPlayer(context, playerUid)))
-              .toList(),
-        ),
-      );
-    }
-    ret.add(
-      ButtonBar(
-        children: [
-          FlatButton(
-            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-            onPressed: () => Navigator.pop(context, null),
-          ),
-        ],
-      ),
-    );
-    return ret;
+    List<String> players = game.playerUids.keys.toList();
+    return players
+        .map((String playerUid) => Padding(
+            padding: EdgeInsets.all(2.0),
+            child: Container(
+                alignment: Alignment.centerLeft,
+                decoration: BoxDecoration(
+                  color: Colors.amber,
+                  borderRadius: new BorderRadius.all(
+                    const Radius.circular(20.0),
+                  ),
+                ),
+                child: PlayerTile(
+                    playerUid: playerUid,
+                    onTap: () => _selectPlayer(context, playerUid)))))
+        .toList();
   }
 
   void _selectPlayer(BuildContext context, String playerUid) {
@@ -48,12 +35,33 @@ class GamePlayerDialog extends StatelessWidget {
   GamePlayerDialog({@required this.game});
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(
-      builder: (BuildContext context, Orientation o) {
-        return ListView(
-          children: _populateList(context, o),
-        );
-      },
+    return Material(
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation o) {
+          return Column(
+            children: [
+              Text("Select Player"),
+              Expanded(
+                child: GridView.count(
+                  childAspectRatio: 3.0,
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  children: _populateList(context, o),
+                ),
+              ),
+              ButtonBar(
+                children: [
+                  FlatButton(
+                    child: Text(
+                        MaterialLocalizations.of(context).cancelButtonLabel),
+                    onPressed: () => Navigator.pop(context, null),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

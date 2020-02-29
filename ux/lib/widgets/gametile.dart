@@ -10,7 +10,7 @@ class GameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(game.name + " at " + game.location),
+      title: Text("vs " + game.opponent + " at " + game.location),
       subtitle: Text(game.eventTime.toLocal().toString()),
       onTap: this.onTap,
     );

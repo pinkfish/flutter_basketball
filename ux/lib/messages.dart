@@ -52,8 +52,8 @@ class Messages {
       Intl.message("Team Name", desc: "Name of the team", locale: locale);
   String get playerName =>
       Intl.message("Player Name", desc: "Name of the player", locale: locale);
-  String get gameName =>
-      Intl.message("Game Name", desc: "Name of the player", locale: locale);
+  String get opponent => Intl.message("Opponent",
+      desc: "The opponent in the game", locale: locale);
   String get location =>
       Intl.message("Location", desc: "Location of the game", locale: locale);
   String get jersyNumber => Intl.message("Jersey Number",
@@ -80,6 +80,9 @@ class Messages {
         desc: "Dialog text to ask if you aere sure about deleting the player",
         locale: locale);
   }
+
+  String get shots => Intl.message("Shots",
+      desc: "Heading for the shots sectionn", locale: locale);
 
   QuoteAndAuthor quoteforsaving(int quoteId) {
     switch (quoteId % 4) {

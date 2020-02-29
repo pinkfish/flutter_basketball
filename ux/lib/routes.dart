@@ -6,6 +6,7 @@ import 'screens/addplayer.dart';
 import 'screens/addteam.dart';
 import 'screens/editplayer.dart';
 import 'screens/gamedetails.dart';
+import 'screens/gamestats.dart';
 import 'screens/playerdetails.dart';
 import 'screens/splashscreen.dart';
 import 'screens/teamdetails.dart';
@@ -62,6 +63,11 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 EditPlayerScreen(vals["id"][0].toString())));
+    router.define("/GameStats/:id/:team",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                GameStatsScreen(
+                    vals["id"][0].toString(), vals["team"][0].toString())));
 
     return router;
   }

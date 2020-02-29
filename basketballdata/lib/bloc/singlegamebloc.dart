@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -102,6 +103,18 @@ class SingleGameAddPlayer extends SingleGameEvent {
 }
 
 ///
+/// Adds an admin to the game.
+///
+class SingleGameAddEvent extends SingleGameEvent {
+  final GameEvent event;
+
+  SingleGameAddEvent({@required this.event});
+
+  @override
+  List<Object> get props => [event];
+}
+
+///
 /// Deletes an player from the game.
 ///
 class SingleGameRemovePlayer extends SingleGameEvent {
@@ -192,6 +205,14 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         Game game = event.game;
         await db.updateGame(game: game);
         yield SingleGameLoaded(game: event.game);
+      } catch (e) {
+        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      }
+    }
+
+    if (event is SingleGameAddEvent) {
+      try {
+        await db.addGameEvent(gameUid: gameUid, event: event.event);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }

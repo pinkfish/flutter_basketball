@@ -6,12 +6,8 @@ import 'serializers.dart';
 part 'gameevent.g.dart';
 
 enum GameEventType {
-  TwoPointMade,
-  TwoPointMissed,
-  ThreePointMade,
-  ThreePointMissed,
-  FreeThrowMade,
-  FreeThrowMissed,
+  Made,
+  Missed,
   Foul,
   Sub,
   OffsensiveRebound,
@@ -27,6 +23,7 @@ abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   String get uid;
   DateTime get timestamp;
   GameEventType get type;
+  int get points;
   String get playerUid;
 
   GameEvent._();
