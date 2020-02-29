@@ -30,7 +30,9 @@ class GameStatsScreen extends StatelessWidget {
         event: GameEvent((b) => b
           ..playerUid = playerUid
           ..points = pts
-          ..timestamp = DateTime.now().toUtc()
+          ..timestamp = (DateTime.now().toUtc())
+          ..gameUid = gameUid
+          ..opponent = bloc.state.game.opponents.containsKey(playerUid)
           ..type = made ? GameEventType.Made : GameEventType.Missed)));
   }
 
@@ -273,7 +275,14 @@ class GameStatsScreen extends StatelessWidget {
 class _PointsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocListener(
+      bloc: BlocProvider.of<SingleGameBloc>(context),
+      listener: (BuildContext context, SingleGameState state) {
+        if (state is SingleGameLoaded && !state.loadedGameEvents) {
+          BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
+        }
+      },
+      child: BlocBuilder(
         bloc: BlocProvider.of<SingleGameBloc>(context),
         builder: (BuildContext context, SingleGameState state) {
           if (state is SingleGameUninitialized) {
@@ -299,11 +308,13 @@ class _PointsSection extends StatelessWidget {
                 Text(state.game.summary.pointsAgainst.toString(), style: style),
               ]),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(state.game.opponent, style: style),
+                Text(state.game.opponentName, style: style),
                 Text(state.game.summary.pointsAgainst.toString(), style: style),
               ]),
             ],
           );
-        });
+        },
+      ),
+    );
   }
 }

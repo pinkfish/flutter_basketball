@@ -67,7 +67,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       appBar: AppBar(
         title: widget.state.game == null
             ? Text(Messages.of(context).title)
-            : Text("vs " + widget.state.game.opponent,
+            : Text("vs " + widget.state.game.opponentName,
                 style: Theme.of(context).textTheme.display1),
       ),
       body: SavingOverlay(
@@ -154,19 +154,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_madeSummary(state.game.allPlayers.one), style: dataStyle),
-              Text(_madeSummary(state.game.allPlayers.two), style: dataStyle),
-              Text(_madeSummary(state.game.allPlayers.three), style: dataStyle),
+              Text(_madeSummary(state.game.playerSummaery.one),
+                  style: dataStyle),
+              Text(_madeSummary(state.game.playerSummaery.two),
+                  style: dataStyle),
+              Text(_madeSummary(state.game.playerSummaery.three),
+                  style: dataStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_madeSummary(state.game.opponentPlayers.one),
+              Text(_madeSummary(state.game.opponentSummary.one),
                   style: dataStyle),
-              Text(_madeSummary(state.game.opponentPlayers.two),
+              Text(_madeSummary(state.game.opponentSummary.two),
                   style: dataStyle),
-              Text(_madeSummary(state.game.opponentPlayers.three),
+              Text(_madeSummary(state.game.opponentSummary.three),
                   style: dataStyle),
             ],
           ),
@@ -185,20 +188,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.allPlayers.fouls.toString(), style: dataStyle),
-              Text(state.game.allPlayers.steals.toString(), style: dataStyle),
-              Text(state.game.allPlayers.turnovers.toString(),
+              Text(state.game.playerSummaery.fouls.toString(),
+                  style: dataStyle),
+              Text(state.game.playerSummaery.steals.toString(),
+                  style: dataStyle),
+              Text(state.game.playerSummaery.turnovers.toString(),
                   style: dataStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.opponentPlayers.fouls.toString(),
+              Text(state.game.opponentSummary.fouls.toString(),
                   style: dataStyle),
-              Text(state.game.opponentPlayers.steals.toString(),
+              Text(state.game.opponentSummary.steals.toString(),
                   style: dataStyle),
-              Text(state.game.opponentPlayers.turnovers.toString(),
+              Text(state.game.opponentSummary.turnovers.toString(),
                   style: dataStyle),
             ],
           ),
@@ -217,21 +222,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.allPlayers.offensiveRebounds.toString(),
+              Text(state.game.playerSummaery.offensiveRebounds.toString(),
                   style: dataStyle),
-              Text(state.game.allPlayers.defensiveRebounds.toString(),
+              Text(state.game.playerSummaery.defensiveRebounds.toString(),
                   style: dataStyle),
-              Text(state.game.allPlayers.blocks.toString(), style: dataStyle),
+              Text(state.game.playerSummaery.blocks.toString(),
+                  style: dataStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.opponentPlayers.offensiveRebounds.toString(),
+              Text(state.game.opponentSummary.offensiveRebounds.toString(),
                   style: dataStyle),
-              Text(state.game.opponentPlayers.defensiveRebounds.toString(),
+              Text(state.game.opponentSummary.defensiveRebounds.toString(),
                   style: dataStyle),
-              Text(state.game.opponentPlayers.blocks.toString(),
+              Text(state.game.opponentSummary.blocks.toString(),
                   style: dataStyle),
             ],
           ),
@@ -281,7 +287,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   return Column(
-                    children: state.game.playerUids
+                    children: state.game.players
                         .map((String s, PlayerSummary p) =>
                             _playerSummary(s, p, constraints))
                         .values
@@ -294,11 +300,11 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         ]),
       );
     } else {
-      if (state.game.playerUids.isEmpty) {
+      if (state.game.players.isEmpty) {
         return Text(Messages.of(context).noPlayers);
       }
       return ListView(
-        children: state.game.playerUids.keys
+        children: state.game.players.keys
             .map((p) => PlayerTile(
                   playerUid: p,
                 ))

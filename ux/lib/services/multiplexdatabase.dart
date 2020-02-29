@@ -177,4 +177,12 @@ class MultiplexDatabase extends BasketballDatabase {
     else
       return _fs.deletePlayer(playerUid: playerUid);
   }
+
+  @override
+  Stream<BuiltList<GameEvent>> getGameEvents({String gameUid}) {
+    if (useSql)
+      return _sql.getGameEvents(gameUid: gameUid);
+    else
+      return _fs.getGameEvents(gameUid: gameUid);
+  }
 }

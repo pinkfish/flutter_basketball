@@ -13,20 +13,20 @@ abstract class Game implements Built<Game, GameBuilder> {
   String get uid;
   DateTime get eventTime;
   String get location;
-  String get opponent;
+  String get opponentName;
   String get teamUid;
-  BuiltMap<String, PlayerSummary> get playerUids;
-  BuiltMap<String, PlayerSummary> get opponentUids;
+  BuiltMap<String, PlayerSummary> get players;
+  BuiltMap<String, PlayerSummary> get opponents;
   GameSummary get summary;
-  PlayerSummary get allPlayers;
-  PlayerSummary get opponentPlayers;
+  PlayerSummary get playerSummaery;
+  PlayerSummary get opponentSummary;
 
   static void _initializeBuilder(GameBuilder b) => b
     ..summary = GameSummaryBuilder()
-    ..allPlayers = PlayerSummaryBuilder()
-    ..opponentPlayers = PlayerSummaryBuilder()
-    ..opponent = "unknown"
-    ..opponentUids.putIfAbsent("default", () => PlayerSummary());
+    ..playerSummaery = PlayerSummaryBuilder()
+    ..opponentSummary = PlayerSummaryBuilder()
+    ..opponentName = "unknown"
+    ..opponents.putIfAbsent("default", () => PlayerSummary());
 
   Game._();
   factory Game([updates(GameBuilder b)]) = _$Game;

@@ -72,9 +72,9 @@ class _AddGameFormState extends State<_AddGameForm> {
         .map((var e) => MapEntry(e, PlayerSummary())));
     bloc.add(AddGameEventCommit(
         newGame: Game((b) => b
-          ..opponent = _opponent
+          ..opponentName = _opponent
           ..teamUid = widget.team.uid
-          ..playerUids = map
+          ..players = map
           ..location = _location ?? ""
           ..summary = (GameSummaryBuilder()
             ..pointsAgainst = 0

@@ -133,4 +133,10 @@ class FirestoreDatabase extends BasketballDatabase {
     // TODO: implement deletePlayer
     return null;
   }
+
+  @override
+  Stream<BuiltList<GameEvent>> getGameEvents({String gameUid}) {
+    // TODO: implement getGameEvents
+    return null;
+  }
 }

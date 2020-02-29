@@ -24,7 +24,9 @@ abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   DateTime get timestamp;
   GameEventType get type;
   int get points;
+  String get gameUid;
   String get playerUid;
+  bool get opponent;
 
   GameEvent._();
   factory GameEvent([updates(GameEventBuilder b)]) = _$GameEvent;

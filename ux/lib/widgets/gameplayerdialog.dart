@@ -10,7 +10,7 @@ class GamePlayerDialog extends StatelessWidget {
   final Game game;
 
   List<Widget> _populateList(BuildContext context, Orientation o) {
-    List<String> players = game.playerUids.keys.toList();
+    List<String> players = game.players.keys.toList();
     return players
         .map((String playerUid) => Padding(
             padding: EdgeInsets.all(2.0),

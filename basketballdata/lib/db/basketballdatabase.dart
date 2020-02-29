@@ -22,6 +22,9 @@ abstract class BasketballDatabase {
   /// Gets all the updates for this speific game.
   Stream<Game> getGame({@required String gameUid});
 
+  /// Loads all the game events for this game.
+  Stream<BuiltList<GameEvent>> getGameEvents({@required String gameUid});
+
   /// Gets the stream associated with this specific player.
   Stream<Player> getPlayer({@required String playerUid});
 
