@@ -4,12 +4,14 @@
 
 library serializers;
 
+import 'package:basketballdata/basketballdata.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import 'game.dart';
 import 'gameevent.dart';
+import 'gameperiod.dart';
 import 'gamesummary.dart';
 import 'player.dart';
 import 'playersummary.dart';
@@ -23,8 +25,10 @@ part 'serializers.g.dart';
   Game,
   GameSummary,
   PlayerSummary,
+  PlayerSummaryData,
   Player,
   GameEvent,
+  GamePeriod,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/deleted.dart';
+import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/playername.dart';
 import 'package:basketballstats/widgets/playertile.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
@@ -27,19 +29,16 @@ class GameDetailsScreen extends StatelessWidget {
           gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
       child: Builder(
         builder: (BuildContext context) {
-          return BlocListener(
+          return BlocConsumer(
             bloc: BlocProvider.of<SingleGameBloc>(context),
             listener: (BuildContext context, SingleGameState state) {
               if (state is SingleGameDeleted) {
                 Navigator.pop(context);
               }
             },
-            child: BlocBuilder(
-              bloc: BlocProvider.of<SingleGameBloc>(context),
-              builder: (BuildContext context, SingleGameState state) {
-                return _GameDetailsScaffold(state);
-              },
-            ),
+            builder: (BuildContext context, SingleGameState state) {
+              return _GameDetailsScaffold(state);
+            },
           );
         },
       ),
@@ -73,23 +72,47 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       body: SavingOverlay(
         saving: widget.state is SingleGameSaving,
         child: Center(
-          child: _getBody(context, widget.state),
+          child: AnimatedSwitcher(
+            child: _getBody(context, widget.state),
+            duration: const Duration(milliseconds: 500),
+          ),
         ),
       ),
-      floatingActionButton: _currentIndex == 1
-          ? FloatingActionButton(
-              onPressed: () => _addPlayer(context),
-              child: Icon(Icons.add),
-            )
-          : FloatingActionButton.extended(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
               icon: Icon(MdiIcons.graph),
-              label: Text("START"),
-              onPressed: () => Navigator.pushNamed(
-                  context,
-                  "/GameStats/" +
-                      widget.state.game.uid +
-                      "/" +
-                      widget.state.game.teamUid),
+              title: Text(Messages.of(context).stats)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              title: Text(Messages.of(context).players)),
+        ],
+        onTap: (int index) => setState(() => _currentIndex = index),
+      ),
+      floatingActionButton: widget.state is SingleGameUninitialized ||
+              widget.state is SingleGameDeleted
+          ? null
+          : AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
+              transitionBuilder: (Widget child, Animation<double> animation) {
+                return ScaleTransition(child: child, scale: animation);
+              },
+              child: _currentIndex == 1
+                  ? FloatingActionButton(
+                      onPressed: () => _addPlayer(context),
+                      child: Icon(Icons.add),
+                    )
+                  : FloatingActionButton.extended(
+                      icon: Icon(MdiIcons.graph),
+                      label: Text(Messages.of(context).statsButton),
+                      onPressed: () => Navigator.pushNamed(
+                          context,
+                          "/GameStats/" +
+                              widget.state.game.uid +
+                              "/" +
+                              widget.state.game.teamUid),
+                    ),
             ),
     );
   }
@@ -101,10 +124,11 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
   }
 
   Widget _getBody(BuildContext context, SingleGameState state) {
-    if (state is SingleGameDeleted || state is SingleGameUninitialized) {
-      return Center(
-        child: Text(Messages.of(context).unknown),
-      );
+    if (state is SingleGameDeleted) {
+      return DeletedWidget();
+    }
+    if (state is SingleGameUninitialized) {
+      return LoadingWidget();
     }
     if (_currentIndex == 0) {
       TextStyle dataStyle = Theme.of(context).textTheme.subhead.copyWith(
@@ -154,22 +178,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_madeSummary(state.game.playerSummaery.one),
+              Text(_madeSummary(state.game.playerSummaery.fullData.one),
                   style: dataStyle),
-              Text(_madeSummary(state.game.playerSummaery.two),
+              Text(_madeSummary(state.game.playerSummaery.fullData.two),
                   style: dataStyle),
-              Text(_madeSummary(state.game.playerSummaery.three),
+              Text(_madeSummary(state.game.playerSummaery.fullData.three),
                   style: dataStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_madeSummary(state.game.opponentSummary.one),
+              Text(_madeSummary(state.game.opponentSummary.fullData.one),
                   style: dataStyle),
-              Text(_madeSummary(state.game.opponentSummary.two),
+              Text(_madeSummary(state.game.opponentSummary.fullData.two),
                   style: dataStyle),
-              Text(_madeSummary(state.game.opponentSummary.three),
+              Text(_madeSummary(state.game.opponentSummary.fullData.three),
                   style: dataStyle),
             ],
           ),
@@ -188,22 +212,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.playerSummaery.fouls.toString(),
+              Text(state.game.playerSummaery.fullData.fouls.toString(),
                   style: dataStyle),
-              Text(state.game.playerSummaery.steals.toString(),
+              Text(state.game.playerSummaery.fullData.steals.toString(),
                   style: dataStyle),
-              Text(state.game.playerSummaery.turnovers.toString(),
+              Text(state.game.playerSummaery.fullData.turnovers.toString(),
                   style: dataStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.opponentSummary.fouls.toString(),
+              Text(state.game.opponentSummary.fullData.fouls.toString(),
                   style: dataStyle),
-              Text(state.game.opponentSummary.steals.toString(),
+              Text(state.game.opponentSummary.fullData.steals.toString(),
                   style: dataStyle),
-              Text(state.game.opponentSummary.turnovers.toString(),
+              Text(state.game.opponentSummary.fullData.turnovers.toString(),
                   style: dataStyle),
             ],
           ),
@@ -222,22 +246,30 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.playerSummaery.offensiveRebounds.toString(),
+              Text(
+                  state.game.playerSummaery.fullData.offensiveRebounds
+                      .toString(),
                   style: dataStyle),
-              Text(state.game.playerSummaery.defensiveRebounds.toString(),
+              Text(
+                  state.game.playerSummaery.fullData.defensiveRebounds
+                      .toString(),
                   style: dataStyle),
-              Text(state.game.playerSummaery.blocks.toString(),
+              Text(state.game.playerSummaery.fullData.blocks.toString(),
                   style: dataStyle),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(state.game.opponentSummary.offensiveRebounds.toString(),
+              Text(
+                  state.game.opponentSummary.fullData.offensiveRebounds
+                      .toString(),
                   style: dataStyle),
-              Text(state.game.opponentSummary.defensiveRebounds.toString(),
+              Text(
+                  state.game.opponentSummary.fullData.defensiveRebounds
+                      .toString(),
                   style: dataStyle),
-              Text(state.game.opponentSummary.blocks.toString(),
+              Text(state.game.opponentSummary.fullData.blocks.toString(),
                   style: dataStyle),
             ],
           ),
@@ -326,20 +358,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
             ),
             SizedBox(
               width: width,
-              child: Text(
-                  (s.one.made + s.two.made * 2 + s.three.made * 3).toString()),
+              child: Text((s.fullData.one.made +
+                      s.fullData.two.made * 2 +
+                      s.fullData.three.made * 3)
+                  .toString()),
             ),
             SizedBox(
               width: width,
-              child: Text((s.fouls).toString()),
+              child: Text((s.fullData.fouls).toString()),
             ),
             SizedBox(
               width: width,
-              child: Text((s.turnovers).toString()),
+              child: Text((s.fullData.turnovers).toString()),
             ),
             SizedBox(
               width: width,
-              child: Text((s.steals).toString()),
+              child: Text((s.fullData.steals).toString()),
             ),
           ],
         ));

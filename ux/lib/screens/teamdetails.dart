@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/deleted.dart';
+import 'package:basketballstats/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -77,7 +79,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           appBar: AppBar(
             title: Text(Messages.of(context).title),
           ),
-          body: BlocListener(
+          body: BlocConsumer(
             bloc: BlocProvider.of<SingleTeamBloc>(context),
             listener: (BuildContext context, SingleTeamBlocState state) {
               if (!state.loadedGames && !(state is SingleTeamUninitialized)) {
@@ -88,19 +90,18 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 Navigator.pop(context);
               }
             },
-            child: BlocBuilder(
-                bloc: BlocProvider.of<SingleTeamBloc>(context),
-                builder: (BuildContext context, SingleTeamBlocState state) {
-                  print(state);
-                  if (state is SingleTeamDeleted ||
-                      state is SingleTeamUninitialized) {
-                    return Text(Messages.of(context).loading);
-                  }
-                  print(state);
-                  return SavingOverlay(
-                      saving: state is SingleTeamSaving,
-                      child: _innerData(state));
-                }),
+            builder: (BuildContext context, SingleTeamBlocState state) {
+              print(state);
+              if (state is SingleTeamDeleted) {
+                return DeletedWidget();
+              }
+              if (state is SingleTeamUninitialized) {
+                return LoadingWidget();
+              }
+              print(state);
+              return SavingOverlay(
+                  saving: state is SingleTeamSaving, child: _innerData(state));
+            },
           ),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _currentIndex,

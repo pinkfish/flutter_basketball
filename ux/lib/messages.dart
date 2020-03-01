@@ -67,6 +67,8 @@ class Messages {
       desc: "Failed to save a photo", locale: locale);
   String get saveButton =>
       Intl.message("SAVE", desc: "Text on a save button", locale: locale);
+  String get statsButton =>
+      Intl.message("STATS", desc: "Text on a stats button", locale: locale);
   String get unknown => Intl.message("unknown",
       desc: "Used when the data is unknown", locale: locale);
   String get stats => Intl.message("Stats",

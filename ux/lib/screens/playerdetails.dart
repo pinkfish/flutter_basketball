@@ -1,5 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/deleted.dart';
 import 'package:basketballstats/widgets/fabmenu.dart';
+import 'package:basketballstats/widgets/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +16,10 @@ class PlayerDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (BuildContext context) => SinglePlayerBloc(
-            db: BlocProvider.of<TeamsBloc>(context).db, playerUid: playerUid),
-        child: _PlayerDetails());
+      create: (BuildContext context) => SinglePlayerBloc(
+          db: BlocProvider.of<TeamsBloc>(context).db, playerUid: playerUid),
+      child: _PlayerDetails(),
+    );
   }
 }
 
@@ -30,9 +33,11 @@ class _PlayerDetails extends StatelessWidget {
       body: BlocBuilder(
           bloc: BlocProvider.of<SinglePlayerBloc>(context),
           builder: (BuildContext context, SinglePlayerState state) {
-            if (state is SinglePlayerUninitialized ||
-                state is SinglePlayerDeleted) {
-              return Text(Messages.of(context).loading);
+            if (state is SinglePlayerUninitialized) {
+              return LoadingWidget();
+            }
+            if (state is SinglePlayerDeleted) {
+              return DeletedWidget();
             }
             return Stack(children: [
               Container(

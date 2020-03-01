@@ -1,5 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/deleted.dart';
 import 'package:basketballstats/widgets/gameplayerdialog.dart';
+import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/roundbutton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,7 @@ class GameStatsScreen extends StatelessWidget {
           ..points = pts
           ..timestamp = (DateTime.now().toUtc())
           ..gameUid = gameUid
+          ..period = bloc.state.game.currentPeriod
           ..opponent = bloc.state.game.opponents.containsKey(playerUid)
           ..type = made ? GameEventType.Made : GameEventType.Missed)));
   }
@@ -254,7 +257,7 @@ class GameStatsScreen extends StatelessWidget {
                 ),
                 Divider(),
                 Expanded(
-                  child: _PointsSection(),
+                  child: _GameStateSection(),
                 ),
                 Divider(),
                 LayoutBuilder(
@@ -272,49 +275,49 @@ class GameStatsScreen extends StatelessWidget {
   }
 }
 
-class _PointsSection extends StatelessWidget {
+class _GameStateSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocListener(
+    return BlocConsumer(
       bloc: BlocProvider.of<SingleGameBloc>(context),
       listener: (BuildContext context, SingleGameState state) {
         if (state is SingleGameLoaded && !state.loadedGameEvents) {
           BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
         }
       },
-      child: BlocBuilder(
-        bloc: BlocProvider.of<SingleGameBloc>(context),
-        builder: (BuildContext context, SingleGameState state) {
-          if (state is SingleGameUninitialized) {
-            return Text(Messages.of(context).loading);
-          }
-          var style = Theme.of(context)
-              .textTheme
-              .headline
-              .copyWith(fontWeight: FontWeight.bold);
-          return Column(
-            children: <Widget>[
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                BlocBuilder(
-                    bloc: BlocProvider.of<SingleTeamBloc>(context),
-                    builder:
-                        (BuildContext context, SingleTeamBlocState teamState) {
-                      if (teamState is SingleTeamUninitialized ||
-                          teamState is SingleTeamDeleted) {
-                        return Text(Messages.of(context).loading, style: style);
-                      }
-                      return Text(teamState.team.name, style: style);
-                    }),
-                Text(state.game.summary.pointsAgainst.toString(), style: style),
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(state.game.opponentName, style: style),
-                Text(state.game.summary.pointsAgainst.toString(), style: style),
-              ]),
-            ],
-          );
-        },
-      ),
+      builder: (BuildContext context, SingleGameState state) {
+        if (state is SingleGameUninitialized) {
+          return LoadingWidget();
+        }
+        if (state is SingleGameDeleted) {
+          return DeletedWidget();
+        }
+        var style = Theme.of(context)
+            .textTheme
+            .headline
+            .copyWith(fontWeight: FontWeight.bold);
+        return Column(
+          children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              BlocBuilder(
+                  bloc: BlocProvider.of<SingleTeamBloc>(context),
+                  builder:
+                      (BuildContext context, SingleTeamBlocState teamState) {
+                    if (teamState is SingleTeamUninitialized ||
+                        teamState is SingleTeamDeleted) {
+                      return Text(Messages.of(context).loading, style: style);
+                    }
+                    return Text(teamState.team.name, style: style);
+                  }),
+              Text(state.game.summary.pointsAgainst.toString(), style: style),
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(state.game.opponentName, style: style),
+              Text(state.game.summary.pointsAgainst.toString(), style: style),
+            ]),
+          ],
+        );
+      },
     );
   }
 }

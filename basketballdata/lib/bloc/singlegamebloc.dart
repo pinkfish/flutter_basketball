@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/data/gameperiod.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
@@ -214,7 +215,7 @@ class _SingleGameDeleted extends SingleGameEvent {
 class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
   final String gameUid;
   final BasketballDatabase db;
-  final Lock _lock = new Lock();
+  final Lock _lock = Lock();
 
   StreamSubscription<Game> _gameSub;
   StreamSubscription<BuiltList<GameEvent>> _gameEventSub;
@@ -250,11 +251,12 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
   @override
   Stream<SingleGameState> mapEventToState(SingleGameEvent event) async* {
     if (event is _SingleGameNewGame) {
-      yield SingleGameLoaded(game: event.newGame);
+      print("newGame ${event.newGame}");
+      yield SingleGameLoaded(game: event.newGame, state: state);
     }
 
     if (event is _SingleGameNewEvents) {
-      yield SingleGameLoaded(gameEvents: event.events);
+      yield SingleGameLoaded(gameEvents: event.events, state: state);
     }
 
     // The game is deleted.
@@ -268,7 +270,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       try {
         Game game = event.game;
         await db.updateGame(game: game);
-        yield SingleGameLoaded(game: event.game);
+        yield SingleGameLoaded(game: event.game, state: state);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }
@@ -293,6 +295,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     if (event is SingleGameLoadEvents) {
+      print("Loading events");
       _lock.synchronized(() {
         if (_gameEventSub == null) {
           _gameEventSub = db
@@ -347,16 +350,32 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     PlayerSummaryBuilder playerSummary = PlayerSummaryBuilder();
     PlayerSummaryBuilder opponentSummary = PlayerSummaryBuilder();
 
+    var sortedList = evList.toList();
+    sortedList
+        .sort((GameEvent a, GameEvent b) => a.timestamp.compareTo(b.timestamp));
+    GamePeriod currentPeriod = GamePeriod.NotStarted;
     // Check the summary and update if needed.
-    for (GameEvent ev in evList) {
-      PlayerSummaryBuilder sum;
-      PlayerSummaryBuilder playerSum;
+    for (GameEvent ev in sortedList) {
+      PlayerSummaryDataBuilder sum;
+      PlayerSummaryDataBuilder playerSum;
+      GamePeriod oldPeriod = currentPeriod;
       if (ev.opponent) {
-        sum = opponentSummary;
-        playerSum = opponents[ev.playerUid];
+        sum = opponentSummary.perPeriod
+            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+            .toBuilder();
+        // .putIfAbsent(currentPeriod, () => PlayerSummaryData());
+        playerSum = opponents[ev.playerUid]
+            .perPeriod
+            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+            .toBuilder();
       } else {
-        sum = playerSummary;
-        playerSum = players[ev.playerUid];
+        sum = playerSummary.perPeriod
+            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+            .toBuilder();
+        playerSum = players[ev.playerUid]
+            .perPeriod
+            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+            .toBuilder();
       }
       switch (ev.type) {
         case GameEventType.Made:
@@ -394,7 +413,13 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
           playerSum.fouls++;
           break;
         case GameEventType.Sub:
-          // TODO: Handle this case.
+          if (ev.opponent) {
+            opponents[ev.playerUid].currentlyPlaying = false;
+            opponents[ev.replacementPlayerUid].currentlyPlaying = true;
+          } else {
+            players[ev.playerUid].currentlyPlaying = false;
+            players[ev.replacementPlayerUid].currentlyPlaying = true;
+          }
           break;
         case GameEventType.OffsensiveRebound:
           sum.offensiveRebounds++;
@@ -420,6 +445,16 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
           sum.turnovers++;
           playerSum.turnovers++;
           break;
+        case GameEventType.PeriodStart:
+          currentPeriod = ev.period;
+          break;
+      }
+      if (ev.opponent) {
+        opponentSummary.perPeriod[oldPeriod] = sum.build();
+        opponents[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();
+      } else {
+        playerSummary.perPeriod[oldPeriod] = sum.build();
+        players[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();
       }
     }
 

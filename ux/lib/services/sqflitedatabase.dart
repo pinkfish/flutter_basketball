@@ -243,14 +243,15 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
         await db.query(gamesTable, where: "uid = ?", whereArgs: [gameUid]);
-    print("Query $maps");
+    print("Query Game $maps");
     if (maps.isEmpty) {
       return null;
     }
-    return maps
+    Game g = maps
         .map((Map<String, dynamic> e) =>
             Game.fromMap(json.decode(e[dataColumn])))
         .first;
+    return g;
   }
 
   @override

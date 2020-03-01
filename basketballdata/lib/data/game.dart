@@ -4,6 +4,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import 'gameperiod.dart';
 import 'serializers.dart';
 
 part 'game.g.dart';
@@ -20,13 +21,16 @@ abstract class Game implements Built<Game, GameBuilder> {
   GameSummary get summary;
   PlayerSummary get playerSummaery;
   PlayerSummary get opponentSummary;
+  GamePeriod get currentPeriod;
 
   static void _initializeBuilder(GameBuilder b) => b
     ..summary = GameSummaryBuilder()
     ..playerSummaery = PlayerSummaryBuilder()
     ..opponentSummary = PlayerSummaryBuilder()
     ..opponentName = "unknown"
-    ..opponents.putIfAbsent("default", () => PlayerSummary());
+    ..currentPeriod = GamePeriod.NotStarted
+    ..opponents.putIfAbsent(
+        "default", () => PlayerSummary((b) => b..currentlyPlaying = true));
 
   Game._();
   factory Game([updates(GameBuilder b)]) = _$Game;

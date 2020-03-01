@@ -4,20 +4,34 @@ import 'package:flutter/material.dart';
 import 'playertile.dart';
 
 ///
-/// Shows the point adding items as buttons on the screen.
+/// Shows the players as a nice grid to be able to select from.
 ///
 class GamePlayerDialog extends StatelessWidget {
   final Game game;
 
   List<Widget> _populateList(BuildContext context, Orientation o) {
     List<String> players = game.players.keys.toList();
+    players.addAll(game.opponents.keys);
+    players.sort((String a, String b) {
+      PlayerSummary asum = game.players[a] ?? game.opponents[a];
+      PlayerSummary bsum = game.players[b] ?? game.opponents[b];
+      if (asum.currentlyPlaying) {
+        return -1;
+      }
+      if (bsum.currentlyPlaying) {
+        return 1;
+      }
+      return 0;
+    });
     return players
         .map((String playerUid) => Padding(
             padding: EdgeInsets.all(2.0),
             child: Container(
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: game.players.containsKey(playerUid)
+                      ? Colors.amberAccent
+                      : Colors.greenAccent,
                   borderRadius: new BorderRadius.all(
                     const Radius.circular(20.0),
                   ),

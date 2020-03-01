@@ -1,6 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import 'gameperiod.dart';
 import 'serializers.dart';
 
 part 'gameevent.g.dart';
@@ -16,6 +17,7 @@ enum GameEventType {
   Assist,
   Steal,
   Turnover,
+  PeriodStart,
 }
 
 abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
@@ -27,6 +29,9 @@ abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   String get gameUid;
   String get playerUid;
   bool get opponent;
+  GamePeriod get period;
+  @nullable
+  String get replacementPlayerUid;
 
   GameEvent._();
   factory GameEvent([updates(GameEventBuilder b)]) = _$GameEvent;

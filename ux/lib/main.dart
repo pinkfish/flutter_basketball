@@ -14,6 +14,8 @@ import 'screens/splashscreen.dart';
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   analytics.logAppOpen();
@@ -77,5 +79,13 @@ class MyApp extends StatelessWidget {
 
   Route<dynamic> _buildRoute(RouteSettings routeSettings) {
     return AppRouter.instance.generator(routeSettings);
+  }
+}
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
   }
 }
