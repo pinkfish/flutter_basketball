@@ -101,7 +101,8 @@ class SqlfliteDatabase extends BasketballDatabase {
   @override
   Future<void> addGameEvent({String gameUid, GameEvent event}) async {
     Database db = await _complete.future;
-    String uid =
+
+    String uid = event.uid ??
         Firestore.instance.collection(gameEventsTable).document().documentID;
     GameEvent newEv = event.rebuild((b) => b
       ..uid = uid
@@ -396,6 +397,15 @@ class SqlfliteDatabase extends BasketballDatabase {
     return uid;
   }
 
+  BuiltList<GameEvent> _getGameEvents(List<Map<String, dynamic>> data) {
+    var evs = data
+        .map((Map<String, dynamic> e) =>
+            GameEvent.fromMap(json.decode(e[dataColumn])))
+        .toList();
+    evs.sort((GameEvent a, GameEvent b) => a.timestamp.compareTo(b.timestamp));
+    return BuiltList.from(evs);
+  }
+
   @override
   Stream<BuiltList<GameEvent>> getGameEvents({String gameUid}) async* {
     print("Waiting for database");
@@ -404,10 +414,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     final List<Map<String, dynamic>> maps = await db.query(gameEventsTable,
         where: secondaryIndexColumn + " = ?", whereArgs: [gameUid]);
     print("Query $maps");
-    yield BuiltList.from(maps
-        .map((Map<String, dynamic> e) =>
-            GameEvent.fromMap(json.decode(e[dataColumn])))
-        .toList());
+    yield _getGameEvents(maps);
     await for (_TableChange table in _tableChange) {
       print("Table change $table");
       if (!db.isOpen) {
@@ -417,10 +424,7 @@ class SqlfliteDatabase extends BasketballDatabase {
       if (table.table == gameEventsTable && table.secondaryUid == gameUid) {
         final List<Map<String, dynamic>> maps = await db.query(gameEventsTable,
             where: indexColumn + " = ?", whereArgs: [gameUid]);
-        yield BuiltList.from(maps
-            .map((Map<String, dynamic> e) =>
-                GameEvent.fromMap(json.decode(e[dataColumn])))
-            .toList());
+        yield _getGameEvents(maps);
       }
     }
   }

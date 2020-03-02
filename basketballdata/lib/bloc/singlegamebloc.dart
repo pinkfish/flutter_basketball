@@ -46,6 +46,35 @@ class SingleGameLoaded extends SingleGameState {
 }
 
 ///
+/// We have a game, default state.
+///
+class SingleGameChangeEvents extends SingleGameState {
+  final BuiltList<GameEvent> newEvents;
+  final BuiltList<GameEvent> removedEvents;
+
+  SingleGameChangeEvents({
+    Game game,
+    bool loadedGameEvents,
+    BuiltList<GameEvent> gameEvents,
+    SingleGameState state,
+    this.newEvents,
+    this.removedEvents,
+  }) : super(
+            game: game ?? state.game,
+            loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
+            gameEvents: gameEvents ?? state.gameEvents);
+
+  @override
+  String toString() {
+    return 'SingleGameChangeEvents{}';
+  }
+
+  @override
+  List<Object> get props =>
+      [game, loadedGameEvents, gameEvents, newEvents, removedEvents];
+}
+
+///
 /// Saving operation in progress.
 ///
 class SingleGameSaving extends SingleGameState {
@@ -195,11 +224,14 @@ class _SingleGameNewGame extends SingleGameEvent {
 
 class _SingleGameNewEvents extends SingleGameEvent {
   final BuiltList<GameEvent> events;
+  final BuiltList<GameEvent> newEvents;
+  final BuiltList<GameEvent> removedEvents;
 
-  _SingleGameNewEvents({@required this.events});
+  _SingleGameNewEvents(
+      {@required this.events, this.newEvents, this.removedEvents});
 
   @override
-  List<Object> get props => [events];
+  List<Object> get props => [events, newEvents, removedEvents];
 }
 
 class _SingleGameDeleted extends SingleGameEvent {
@@ -256,6 +288,11 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     if (event is _SingleGameNewEvents) {
+      yield SingleGameChangeEvents(
+          gameEvents: event.events,
+          state: state,
+          newEvents: event.newEvents,
+          removedEvents: event.removedEvents);
       yield SingleGameLoaded(gameEvents: event.events, state: state);
     }
 
@@ -476,6 +513,11 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
             ..opponents = MapBuilder(opponents)));
     }
 
-    add(_SingleGameNewEvents(events: evList));
+    var removed = state.gameEvents
+        .where((GameEvent e) => evList.every((GameEvent e2) => e != e2));
+    var added = evList.where(
+        (GameEvent e) => state.gameEvents.every((GameEvent e2) => e != e2));
+    add(_SingleGameNewEvents(
+        events: evList, removedEvents: removed, newEvents: added));
   }
 }

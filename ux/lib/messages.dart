@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basketballdata/basketballdata.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -69,6 +70,10 @@ class Messages {
       Intl.message("SAVE", desc: "Text on a save button", locale: locale);
   String get statsButton =>
       Intl.message("STATS", desc: "Text on a stats button", locale: locale);
+  String get subButton => Intl.message("SUB",
+      desc: "Text on a substitution button", locale: locale);
+  String get addPlayerButton => Intl.message("PLAYER",
+      desc: "Text on a add player button", locale: locale);
   String get unknown => Intl.message("unknown",
       desc: "Used when the data is unknown", locale: locale);
   String get stats => Intl.message("Stats",
@@ -77,6 +82,9 @@ class Messages {
       desc: "Used when the data is unknown", locale: locale);
   String get deletePlayer => Intl.message("Delete Player",
       desc: "Dialog title for deleting a playern", locale: locale);
+  String get period => Intl.message("Period",
+      desc: "Dialog title for sertting the current period", locale: locale);
+
   String deletePlayerAreYouSure(String name) {
     return Intl.message("Are you sure you want to delete the player $name?",
         desc: "Dialog text to ask if you aere sure about deleting the player",
@@ -85,6 +93,67 @@ class Messages {
 
   String get shots => Intl.message("Shots",
       desc: "Heading for the shots sectionn", locale: locale);
+
+  String getPeriodName(GamePeriod p) {
+    switch (p) {
+      case GamePeriod.NotStarted:
+        return Intl.message("Not started",
+            desc: "The game is not startedn", locale: locale);
+      case GamePeriod.OverTime:
+        return Intl.message("Overtime",
+            desc: "The game is in overtime", locale: locale);
+      case GamePeriod.Period1:
+        return Intl.message("Period 1",
+            desc: "The game is in period 1", locale: locale);
+      case GamePeriod.Period2:
+        return Intl.message("Period 2",
+            desc: "The game is in period 2", locale: locale);
+      case GamePeriod.Period3:
+        return Intl.message("Period 3",
+            desc: "The game is in period 3", locale: locale);
+      case GamePeriod.Period4:
+        return Intl.message("Period 4",
+            desc: "The game is in period 4", locale: locale);
+    }
+    return unknown;
+  }
+
+  String getGameEventType(GameEvent p) {
+    switch (p.type) {
+      case GameEventType.Made:
+        return Intl.message("+${p.points}",
+            desc: "+num points", locale: locale);
+        break;
+      case GameEventType.Missed:
+        return Intl.message("Missed ${p.points}",
+            desc: "+num points", locale: locale);
+        break;
+      case GameEventType.Foul:
+        return Intl.message("Foul", desc: "Foul on player", locale: locale);
+        break;
+      case GameEventType.Sub:
+        return Intl.message("Subsitution",
+            desc: "Subsitiution of player", locale: locale);
+        break;
+      case GameEventType.OffsensiveRebound:
+        return Intl.message("Offsensive Rebound", locale: locale);
+      case GameEventType.DefensiveRebound:
+        return Intl.message("Defsensive Rebound", locale: locale);
+      case GameEventType.Block:
+        return Intl.message("Block", desc: "Block of a shot", locale: locale);
+      case GameEventType.Assist:
+        return Intl.message("Assist", desc: "Assist a shot", locale: locale);
+      case GameEventType.Steal:
+        return Intl.message("Steal", desc: "Steal a ball", locale: locale);
+      case GameEventType.Turnover:
+        return Intl.message("Turnover",
+            desc: "Caused a turnover", locale: locale);
+      case GameEventType.PeriodStart:
+        return Intl.message("Start of ${getPeriodName(p.period)}",
+            desc: "Start of period", locale: locale);
+    }
+    return unknown;
+  }
 
   QuoteAndAuthor quoteforsaving(int quoteId) {
     switch (quoteId % 4) {

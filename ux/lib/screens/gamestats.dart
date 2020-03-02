@@ -7,12 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:undo/undo.dart';
 
 import '../messages.dart';
 
 class GameStatsScreen extends StatelessWidget {
   final String gameUid;
   final String teamUid;
+  final ChangeStack stack = new ChangeStack();
 
   GameStatsScreen(this.gameUid, this.teamUid);
 
@@ -28,15 +30,17 @@ class GameStatsScreen extends StatelessWidget {
     if (playerUid == null) {
       return;
     }
-    bloc.add(SingleGameAddEvent(
-        event: GameEvent((b) => b
-          ..playerUid = playerUid
-          ..points = pts
-          ..timestamp = (DateTime.now().toUtc())
-          ..gameUid = gameUid
-          ..period = bloc.state.game.currentPeriod
-          ..opponent = bloc.state.game.opponents.containsKey(playerUid)
-          ..type = made ? GameEventType.Made : GameEventType.Missed)));
+    bloc.add(
+      SingleGameAddEvent(
+          event: GameEvent((b) => b
+            ..playerUid = playerUid
+            ..points = pts
+            ..timestamp = (DateTime.now().toUtc())
+            ..gameUid = gameUid
+            ..period = bloc.state.game.currentPeriod
+            ..opponent = bloc.state.game.opponents.containsKey(playerUid)
+            ..type = made ? GameEventType.Made : GameEventType.Missed)),
+    );
   }
 
   Future<void> _doBasicEvent(BuildContext context, GameEventType type) async {
@@ -207,7 +211,7 @@ class GameStatsScreen extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Text(
-              "Sub",
+              Messages.of(context).subButton,
               style:
                   Theme.of(context).textTheme.button.copyWith(fontSize: 30.0),
             ),
@@ -257,7 +261,7 @@ class GameStatsScreen extends StatelessWidget {
                 ),
                 Divider(),
                 Expanded(
-                  child: _GameStateSection(),
+                  child: _GameStateSection(stack),
                 ),
                 Divider(),
                 LayoutBuilder(
@@ -276,6 +280,10 @@ class GameStatsScreen extends StatelessWidget {
 }
 
 class _GameStateSection extends StatelessWidget {
+  final ChangeStack stack;
+
+  _GameStateSection(this.stack);
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
@@ -283,6 +291,13 @@ class _GameStateSection extends StatelessWidget {
       listener: (BuildContext context, SingleGameState state) {
         if (state is SingleGameLoaded && !state.loadedGameEvents) {
           BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
+        }
+        if (state is SingleGameChangeEvents) {
+          // Only worry about added events.
+          for (GameEvent ev in state.newEvents) {
+            stack.add(
+                _GameEventChange(BlocProvider.of<SingleGameBloc>(context), ev));
+          }
         }
       },
       builder: (BuildContext context, SingleGameState state) {
@@ -297,6 +312,7 @@ class _GameStateSection extends StatelessWidget {
             .headline
             .copyWith(fontWeight: FontWeight.bold);
         return Column(
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               BlocBuilder(
@@ -315,9 +331,111 @@ class _GameStateSection extends StatelessWidget {
               Text(state.game.opponentName, style: style),
               Text(state.game.summary.pointsAgainst.toString(), style: style),
             ]),
+            Divider(),
+            ButtonBar(
+              children: [
+                FlatButton(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                        Messages.of(context)
+                            .getPeriodName(state.game.currentPeriod),
+                        style: style),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    side: BorderSide(color: Colors.blue),
+                  ),
+                  onPressed: () => _selectPeriod(context),
+                ),
+                FlatButton(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: const Icon(Icons.undo, size: 30.0),
+                  ),
+                  onPressed: stack.canUndo ? () => stack.undo() : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    side: BorderSide(color: Colors.blue),
+                  ),
+                ),
+                FlatButton(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: const Icon(Icons.redo, size: 30.0),
+                  ),
+                  onPressed: stack.canRedo ? () => stack.redo() : null,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    side: BorderSide(color: Colors.blue),
+                  ),
+                )
+              ],
+            ),
+            ..._getGameEvents(state)
           ],
         );
       },
     );
+  }
+
+  Iterable<Widget> _getGameEvents(SingleGameState state) {
+    if (state.gameEvents.isEmpty) {}
+  }
+
+  Future<void> _selectPeriod(BuildContext context) async {
+    GamePeriod newPeriod = await showDialog<GamePeriod>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(Messages.of(context).period),
+          children: GamePeriod.values
+              .map((GamePeriod p) => SimpleDialogOption(
+                  onPressed: () => Navigator.pop(context, p),
+                  child: Text(Messages.of(context).getPeriodName(p))))
+              .toList(),
+        );
+      },
+    );
+    if (newPeriod == null) {
+      return;
+    }
+
+    var bloc = BlocProvider.of<SingleGameBloc>(context);
+
+    // Write out the event to start the new period.
+    bloc.add(
+      SingleGameAddEvent(
+          event: GameEvent((b) => b
+            ..playerUid = ""
+            ..points = 0
+            ..timestamp = (DateTime.now().toUtc())
+            ..gameUid = bloc.gameUid
+            ..period = newPeriod
+            ..type = GameEventType.PeriodStart)),
+    );
+  }
+}
+
+class _GameEventChange extends Change {
+  final SingleGameBloc bloc;
+  final GameEvent ev;
+  bool ignored = false;
+
+  _GameEventChange(this.bloc, this.ev);
+
+  @override
+  void execute() {
+    if (!ignored) {
+      ignored = true;
+      return;
+    }
+
+    bloc.add(SingleGameAddEvent(event: ev));
+  }
+
+  @override
+  void undo() {
+    bloc.add(SingleGameRemoveEvent(eventUid: ev.uid));
   }
 }

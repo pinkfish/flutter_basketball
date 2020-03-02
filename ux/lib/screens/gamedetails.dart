@@ -99,9 +99,10 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                 return ScaleTransition(child: child, scale: animation);
               },
               child: _currentIndex == 1
-                  ? FloatingActionButton(
+                  ? FloatingActionButton.extended(
                       onPressed: () => _addPlayer(context),
-                      child: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
+                label: Text(Messages.of(context).addPlayerButton),
                     )
                   : FloatingActionButton.extended(
                       icon: Icon(MdiIcons.graph),
