@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
+import 'package:basketballstats/widgets/gameeventwidget.dart';
 import 'package:basketballstats/widgets/gameplayerdialog.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/roundbutton.dart';
@@ -19,6 +22,7 @@ class GameStatsScreen extends StatelessWidget {
   GameStatsScreen(this.gameUid, this.teamUid);
 
   Future<void> _doAddPoints(BuildContext context, int pts, bool made) async {
+    // ignore: close_sinks
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Select the player.
@@ -44,6 +48,7 @@ class GameStatsScreen extends StatelessWidget {
   }
 
   Future<void> _doBasicEvent(BuildContext context, GameEventType type) async {
+    // ignore: close_sinks
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Select the player.
@@ -372,15 +377,27 @@ class _GameStateSection extends StatelessWidget {
                 )
               ],
             ),
-            ..._getGameEvents(state)
+            ..._getGameEvents(context, state)
           ],
         );
       },
     );
   }
 
-  Iterable<Widget> _getGameEvents(SingleGameState state) {
-    if (state.gameEvents.isEmpty) {}
+  Iterable<Widget> _getGameEvents(BuildContext context, SingleGameState state) {
+    if (state.gameEvents.isEmpty) {
+      return [
+        SizedBox(
+          height: 0.0,
+          width: 0,
+        )
+      ];
+    }
+    return state.gameEvents.sublist(max(state.gameEvents.length - 4, 0)).map(
+          (GameEvent ev) => GameEventWidget(
+            gameEvent: ev,
+          ),
+        );
   }
 
   Future<void> _selectPeriod(BuildContext context) async {
@@ -401,6 +418,7 @@ class _GameStateSection extends StatelessWidget {
       return;
     }
 
+    // ignore: close_sinks
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Write out the event to start the new period.
