@@ -133,25 +133,48 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             ],
           ),
           floatingActionButton: BlocBuilder(
-              bloc: BlocProvider.of<SingleTeamBloc>(context),
-              builder: (BuildContext context, SingleTeamBlocState state) {
-                return FloatingActionButton(
-                  onPressed: _currentIndex == 0
-                      ? () => _addGame(context, state.team.uid)
-                      : () => _addPlayer(context),
-                  tooltip: _currentIndex == 0
-                      ? Messages.of(context).addGameTooltip
-                      : Messages.of(context).addPlayerTooltip,
-                  child: Icon(Icons.add),
-                );
-              }),
+            bloc: BlocProvider.of<SingleTeamBloc>(context),
+            builder: (BuildContext context, SingleTeamBlocState state) {
+              return FloatingActionButton(
+                onPressed: _currentIndex == 0
+                    ? () => _addGame(context, state.team.uid, state)
+                    : () => _addPlayer(context),
+                tooltip: _currentIndex == 0
+                    ? Messages.of(context).addGameTooltip
+                    : Messages.of(context).addPlayerTooltip,
+                child: Icon(Icons.add),
+              );
+            },
+          ),
         );
       }),
     );
   }
 
-  void _addGame(BuildContext context, String teamUid) {
-    Navigator.pushNamed(context, "/AddGame/" + teamUid);
+  void _addGame(
+      BuildContext context, String teamUid, SingleTeamBlocState state) {
+    if (state.team.playerUids.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(Messages.of(context).noPlayers),
+          content: Text(
+            Messages.of(context).noPlayersForTeamDialog,
+            softWrap: true,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(MaterialLocalizations.of(context).okButtonLabel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      Navigator.pushNamed(context, "/AddGame/" + teamUid);
+    }
   }
 
   void _addPlayer(BuildContext context) {

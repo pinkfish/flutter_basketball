@@ -9,11 +9,19 @@
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
+import '../../fastlane/fastlane.common'
 
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
 default_platform(:android)
+
+before_all do
+  #ensure_git_branch
+  #ensure_git_status_clean
+  #git_pull
+end
+
 
 platform :android do
   desc "Runs all the tests"
@@ -21,13 +29,34 @@ platform :android do
     gradle(task: "test")
   end
 
+   desc "Build and push to play store track"
+    private_lane :build_and_push_to_play_store_track do |options|
+      release_notes(OS: 'android')
+      sh ("cd ../.. && flutter build apk --build-name=#{@build_name} --build-number=#{@build_number}")
+      upload_to_play_store(
+        track: options[:track],
+        aab: '../build/app/outputs/bundle/release/app-release.aab',
+        json_key_data: ENV['GOOGLE_DEVELOPER_SERVICE_ACCOUNT_ACTOR_FASTLANE'],
+        #skip_upload_screenshots: false,
+        #skip_upload_images: false
+      )
+    end
+
   desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
+  lane :crashalytics do
     gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
+
+    firebase_app_distribution(
+                app: "1:27184933338:android:31052f5bf767ef8daff8e3",
+                testers: "pinkfishfrog@gmail.com",
+                apk_path: "#{apk_path}",
+                release_notes: "The best bits!",
+            )
+  end
+
+  desc "Submit a new Beta Build to App store"
+  lane :beta do
+      build_and_push_to_play_store_track(track: "beta")
   end
 
   desc "Deploy a new version to the Google Play"

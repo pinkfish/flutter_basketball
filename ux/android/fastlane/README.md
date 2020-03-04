@@ -15,17 +15,30 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
+### release_notes
+```
+fastlane release_notes
+```
+Generate release notes
+
+----
+
 ## Android
 ### android test
 ```
 fastlane android test
 ```
 Runs all the tests
+### android crashalytics
+```
+fastlane android crashalytics
+```
+Submit a new Beta Build to Crashlytics Beta
 ### android beta
 ```
 fastlane android beta
 ```
-Submit a new Beta Build to Crashlytics Beta
+Submit a new Beta Build to App store
 ### android deploy
 ```
 fastlane android deploy

@@ -112,7 +112,8 @@ class SqlfliteDatabase extends BasketballDatabase {
       secondaryIndexColumn: gameUid,
       dataColumn: json.encode(newEv.toMap())
     });
-    _controller.add(_TableChange(table: gamesTable, uid: gameUid));
+    _controller.add(
+        _TableChange(table: gameEventsTable, uid: uid, secondaryUid: gameUid));
     return uid;
   }
 
@@ -164,17 +165,17 @@ class SqlfliteDatabase extends BasketballDatabase {
   @override
   Future<void> deleteGameEvent({String gameEventUid}) async {
     Database db = await _complete.future;
+    GameEvent ev = await _getGameEvent(gameEventUid: gameEventUid);
     await db
         .delete(gameEventsTable, where: "uid = ?", whereArgs: [gameEventUid]);
-    _controller.add(_TableChange(table: gameEventsTable, uid: gameEventUid));
+    _controller.add(_TableChange(
+        table: gameEventsTable, uid: gameEventUid, secondaryUid: ev.gameUid));
     return null;
   }
 
   @override
   Future<void> deleteGamePlayer({String gameUid, String playerUid}) async {
     Game t = await _getGame(gameUid: gameUid);
-    _controller.add(
-        _TableChange(table: gamesTable, uid: gameUid, secondaryUid: t.teamUid));
     return updateGame(game: t.rebuild((b) => b..players.remove(playerUid)));
   }
 
@@ -198,7 +199,6 @@ class SqlfliteDatabase extends BasketballDatabase {
   @override
   Future<void> deleteTeamPlayer({String teamUid, String playerUid}) async {
     Team t = await _getTeam(teamUid: teamUid);
-    _controller.add(_TableChange(table: teamsTable, uid: teamUid));
     return updateTeam(team: t.rebuild((b) => b..playerUids.remove(playerUid)));
   }
 
@@ -232,7 +232,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         // Exit out of here.
         return;
       }
-      if (table.table == playersTable && table.uid == playerUid) {
+      if (table.uid == playerUid) {
         final List<Map<String, dynamic>> maps = await db
             .query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
         yield maps
@@ -247,13 +247,26 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
         await db.query(gamesTable, where: "uid = ?", whereArgs: [gameUid]);
-    print("Query Game $maps");
     if (maps.isEmpty) {
       return null;
     }
     Game g = maps
         .map((Map<String, dynamic> e) =>
             Game.fromMap(json.decode(e[dataColumn])))
+        .first;
+    return g;
+  }
+
+  Future<GameEvent> _getGameEvent({String gameEventUid}) async {
+    Database db = await _complete.future;
+    final List<Map<String, dynamic>> maps = await db
+        .query(gameEventsTable, where: "uid = ?", whereArgs: [gameEventUid]);
+    if (maps.isEmpty) {
+      return null;
+    }
+    GameEvent g = maps
+        .map((Map<String, dynamic> e) =>
+            GameEvent.fromMap(json.decode(e[dataColumn])))
         .first;
     return g;
   }
@@ -268,7 +281,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         // Exit out of here.
         return;
       }
-      if (table.table == gamesTable && table.uid == gameUid) {
+      if (table.secondaryUid == gameUid || table.uid == gameUid) {
         yield await _getGame(gameUid: gameUid);
       }
     }
@@ -285,8 +298,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         // Exit out of here.
         return;
       }
-      if (table.table == teamsTable && table.uid == teamUid ||
-          table.secondaryUid == teamUid) {
+      if (table.uid == teamUid || table.secondaryUid == teamUid) {
         print("yay us");
         yield await _getTeam(teamUid: teamUid);
       } else {
@@ -389,7 +401,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         // Exit out of here.
         return;
       }
-      if (table.table == gamesTable && table.secondaryUid == teamUid) {
+      if (table.secondaryUid == teamUid) {
         final List<Map<String, dynamic>> maps = await db.query(gamesTable,
             where: indexColumn + " = ?", whereArgs: [teamUid]);
         yield BuiltList.from(maps
@@ -443,7 +455,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         // Exit out of here.
         return;
       }
-      if (table.table == gameEventsTable && table.secondaryUid == gameUid) {
+      if (table.secondaryUid == gameUid) {
         final List<Map<String, dynamic>> maps = await db.query(gameEventsTable,
             where: indexColumn + " = ?", whereArgs: [gameUid]);
         yield _getGameEvents(maps);

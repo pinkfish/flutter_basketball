@@ -5,17 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.08184">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.004298">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: clean assembleRelease" time="197.518522">
+      <testcase classname="fastlane.lanes" name="1: Switch to android build_and_push_to_play_store_track lane" time="0.007259">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: crashlytics" time="359.634418">
+      <testcase classname="fastlane.lanes" name="2: Switch to android release_notes lane" time="0.004462">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3: changelog_from_git_commits" time="0.033652">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: Switch to android get_build_name_and_build_number lane" time="0.010699">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: number_of_commits" time="0.332964">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: last_git_tag" time="0.02262">
         
       </testcase>
     

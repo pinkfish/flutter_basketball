@@ -12,17 +12,25 @@ class GameEventWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(Messages.of(context).getGameEventType(gameEvent),
-          style: Theme.of(context).textTheme.body1),
-      subtitle: gameEvent.playerUid != null && gameEvent.playerUid.isNotEmpty
-          ? PlayerName(
-              playerUid: gameEvent.playerUid,
-            )
-          : Text(
-              Messages.of(context).getPeriodName(gameEvent.period),
-              style: Theme.of(context).textTheme.body1,
-            ),
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(5.0),
+        child: Row(
+          children: [
+            Text(Messages.of(context).getGameEventType(gameEvent),
+                style: Theme.of(context).textTheme.body1),
+            SizedBox(width: 20.0),
+            gameEvent.playerUid != null && gameEvent.playerUid.isNotEmpty
+                ? PlayerName(
+                    playerUid: gameEvent.playerUid,
+                  )
+                : Text(
+                    Messages.of(context).getPeriodName(gameEvent.period),
+                    style: Theme.of(context).textTheme.body1,
+                  ),
+          ],
+        ),
+      ),
     );
   }
 }

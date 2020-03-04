@@ -84,6 +84,13 @@ class Messages {
       desc: "Dialog title for deleting a playern", locale: locale);
   String get period => Intl.message("Period",
       desc: "Dialog title for sertting the current period", locale: locale);
+  String get periodButton => Intl.message("PERIOD",
+      desc: "Button to set the current period", locale: locale);
+  String get noPlayersForTeamDialog => Intl.message(
+      "You must have some players in a team "
+      "to be able to create a game.",
+      desc: "Text in a dialog to warn you need players",
+      locale: locale);
 
   String deletePlayerAreYouSure(String name) {
     return Intl.message("Are you sure you want to delete the player $name?",

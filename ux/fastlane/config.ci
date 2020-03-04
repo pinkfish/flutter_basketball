@@ -1,0 +1,2 @@
+ENV["CI_SERVER"] = "LOCAL"
+ENV["CI_PROJECT_ID"] = ""

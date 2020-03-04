@@ -81,16 +81,16 @@ class GameStatsScreen extends StatelessWidget {
               borderColor: Colors.green,
               onPressed: () => _doAddPoints(context, 1, true),
             ),
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              onPressed: () => _doAddPoints(context, 1, false),
-              child: Text(
-                "1",
-                style: Theme.of(context)
-                    .textTheme
-                    .button
-                    .copyWith(decoration: TextDecoration.lineThrough),
+            CustomPaint(
+              painter: _LineThrough(),
+              child: RoundButton(
+                borderColor: Colors.red,
+                size: buttonSize,
+                onPressed: () => _doAddPoints(context, 1, false),
+                child: Text(
+                  "1",
+                  style: Theme.of(context).textTheme.button,
+                ),
               ),
             ),
           ],
@@ -103,17 +103,17 @@ class GameStatsScreen extends StatelessWidget {
               child: Text("2"),
               onPressed: () => _doAddPoints(context, 2, true),
             ),
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text(
-                "2",
-                style: Theme.of(context)
-                    .textTheme
-                    .button
-                    .copyWith(decoration: TextDecoration.lineThrough),
+            CustomPaint(
+              painter: _LineThrough(),
+              child: RoundButton(
+                borderColor: Colors.red,
+                size: buttonSize,
+                child: Text(
+                  "2",
+                  style: Theme.of(context).textTheme.button,
+                ),
+                onPressed: () => _doAddPoints(context, 2, false),
               ),
-              onPressed: () => _doAddPoints(context, 2, false),
             ),
           ],
         ),
@@ -125,16 +125,34 @@ class GameStatsScreen extends StatelessWidget {
               child: Text("3"),
               onPressed: () => _doAddPoints(context, 3, true),
             ),
+            CustomPaint(
+              painter: _LineThrough(),
+              child: RoundButton(
+                borderColor: Colors.red,
+                size: buttonSize,
+                onPressed: () => _doAddPoints(context, 3, false),
+                child: Text(
+                  "3",
+                  style: Theme.of(context).textTheme.button,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
             RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              onPressed: () => _doAddPoints(context, 3, false),
-              child: Text(
-                "3",
-                style: Theme.of(context)
-                    .textTheme
-                    .button
-                    .copyWith(decoration: TextDecoration.lineThrough),
+              borderColor: Colors.blue,
+              size: buttonSize * 3 / 4,
+              child: Icon(Icons.undo),
+              onPressed: stack.canUndo ? () => stack.undo() : null,
+            ),
+            RoundButton(
+              borderColor: Colors.blue,
+              size: buttonSize * 3 / 4,
+              onPressed: stack.canRedo ? () => stack.redo() : null,
+              child: Icon(
+                Icons.redo,
               ),
             ),
           ],
@@ -154,7 +172,7 @@ class GameStatsScreen extends StatelessWidget {
             RoundButton(
               borderColor: Colors.red,
               size: buttonSize,
-              child: Text("Off Rb"),
+              child: Text("OFF RB"),
               onPressed: () =>
                   _doBasicEvent(context, GameEventType.OffsensiveRebound),
             ),
@@ -162,7 +180,7 @@ class GameStatsScreen extends StatelessWidget {
               borderColor: Colors.red,
               size: buttonSize,
               child: Text(
-                "Def Rb",
+                "DEF RB",
               ),
               onPressed: () =>
                   _doBasicEvent(context, GameEventType.DefensiveRebound),
@@ -181,7 +199,7 @@ class GameStatsScreen extends StatelessWidget {
               borderColor: Colors.red,
               size: buttonSize,
               child: Text(
-                "Stl",
+                "STL",
               ),
               onPressed: () => _doBasicEvent(context, GameEventType.Steal),
             ),
@@ -192,14 +210,14 @@ class GameStatsScreen extends StatelessWidget {
             RoundButton(
               borderColor: Colors.red,
               size: buttonSize,
-              child: Text("Blk"),
+              child: Text("BLK"),
               onPressed: () => _doBasicEvent(context, GameEventType.Block),
             ),
             RoundButton(
               borderColor: Colors.red,
               size: buttonSize,
               child: Text(
-                "Asst",
+                "ASST",
               ),
               onPressed: () => _doBasicEvent(context, GameEventType.Assist),
             ),
@@ -224,9 +242,7 @@ class GameStatsScreen extends StatelessWidget {
               FlatButton(
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: Text(
-                      Messages.of(context)
-                          .getPeriodName(state.game.currentPeriod),
+                  child: Text(Messages.of(context).periodButton,
                       style: Theme.of(context)
                           .textTheme
                           .button
@@ -384,67 +400,62 @@ class _GameStateSection extends StatelessWidget {
             .textTheme
             .headline
             .copyWith(fontWeight: FontWeight.bold);
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Wrap(
-                children: <Widget>[
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        BlocBuilder(
-                            bloc: BlocProvider.of<SingleTeamBloc>(context),
-                            builder: (BuildContext context,
-                                SingleTeamBlocState teamState) {
-                              if (teamState is SingleTeamUninitialized ||
-                                  teamState is SingleTeamDeleted) {
-                                return Text(Messages.of(context).loading,
-                                    style: style);
-                              }
-                              return Text(teamState.team.name, style: style);
-                            }),
-                        Text(state.game.summary.pointsAgainst.toString(),
-                            style: style),
-                      ]),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(state.game.opponentName, style: style),
-                        Text(state.game.summary.pointsAgainst.toString(),
-                            style: style),
-                      ]),
-                  ..._getGameEvents(context, state)
-                ],
-              ),
+        return Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/basketball.png'),
+              fit: BoxFit.fitHeight,
+              alignment: Alignment.topCenter,
+              colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.2), BlendMode.dstATop),
             ),
-            Column(
-              children: <Widget>[
-                FlatButton(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: const Icon(Icons.undo, size: 30.0),
-                  ),
-                  onPressed: stack.canUndo ? () => stack.undo() : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: Colors.blue),
-                  ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  verticalDirection: VerticalDirection.down,
+                  children: <Widget>[
+                    Text(
+                        Messages.of(context)
+                            .getPeriodName(state.game.currentPeriod),
+                        style: Theme.of(context).textTheme.body1),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          BlocBuilder(
+                              bloc: BlocProvider.of<SingleTeamBloc>(context),
+                              builder: (BuildContext context,
+                                  SingleTeamBlocState teamState) {
+                                if (teamState is SingleTeamUninitialized ||
+                                    teamState is SingleTeamDeleted) {
+                                  return Text(Messages.of(context).loading,
+                                      overflow: TextOverflow.fade,
+                                      style: style);
+                                }
+                                return Text(teamState.team.name,
+                                    overflow: TextOverflow.fade, style: style);
+                              }),
+                          Text(state.game.summary.pointsAgainst.toString(),
+                              style: style),
+                        ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(state.game.opponentName,
+                              overflow: TextOverflow.fade, style: style),
+                          Text(state.game.summary.pointsAgainst.toString(),
+                              style: style),
+                        ]),
+                    ..._getGameEvents(context, state)
+                  ],
                 ),
-                FlatButton(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: const Icon(Icons.redo, size: 30.0),
-                  ),
-                  onPressed: stack.canRedo ? () => stack.redo() : null,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: Colors.blue),
-                  ),
-                )
-              ],
-            )
-          ],
+              ),
+            ],
+          ),
         );
       },
     );
@@ -459,7 +470,10 @@ class _GameStateSection extends StatelessWidget {
         )
       ];
     }
-    return state.gameEvents.sublist(max(state.gameEvents.length - 4, 0)).map(
+    return state.gameEvents
+        .sublist(max(state.gameEvents.length - 4, 0))
+        .reversed
+        .map(
           (GameEvent ev) => GameEventWidget(
             gameEvent: ev,
           ),
@@ -487,5 +501,25 @@ class _GameEventChange extends Change {
   @override
   void undo() {
     bloc.add(SingleGameRemoveEvent(eventUid: ev.uid));
+  }
+}
+
+class _LineThrough extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = Colors.white
+      ..strokeWidth = 2.0
+      ..isAntiAlias = true;
+    var start = const Alignment(-0.5, -0.0).alongSize(size);
+    var end = const Alignment(0.5, 0.0).alongSize(size);
+
+    canvas.drawLine(start, end, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
