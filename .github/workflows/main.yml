@@ -26,5 +26,5 @@ jobs:
       working-directory: basketballdata
     #- run: flutter test
     #  working-directory: ux
-    - run: flutter build apk
+    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
       working-directory: ux
