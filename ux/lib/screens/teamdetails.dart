@@ -41,10 +41,14 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       }
       return ListView(
         children: state.games
-            .map((Game g) => GameTile(
-                  game: g,
-                  onTap: () => Navigator.pushNamed(context, "/Game/" + g.uid),
-                ))
+            .map(
+              (Game g) => Padding(
+                  padding: EdgeInsets.all(5.0),
+                  child: GameTile(
+                    game: g,
+                    onTap: () => Navigator.pushNamed(context, "/Game/" + g.uid),
+                  )),
+            )
             .toList(),
       );
     } else {
@@ -77,7 +81,16 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       child: Builder(builder: (BuildContext context) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(Messages.of(context).title),
+            title: BlocBuilder(
+              bloc: BlocProvider.of<SingleTeamBloc>(context),
+              builder: (BuildContext context, SingleTeamBlocState state) {
+                if (state is SingleTeamUninitialized ||
+                    state is SingleTeamDeleted) {
+                  return Text(Messages.of(context).title);
+                }
+                return Text(state.team.name);
+              },
+            ),
           ),
           body: BlocConsumer(
             bloc: BlocProvider.of<SingleTeamBloc>(context),

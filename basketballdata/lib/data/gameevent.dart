@@ -1,24 +1,11 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import 'gameeventtype.dart';
 import 'gameperiod.dart';
 import 'serializers.dart';
 
 part 'gameevent.g.dart';
-
-enum GameEventType {
-  Made,
-  Missed,
-  Foul,
-  Sub,
-  OffsensiveRebound,
-  DefensiveRebound,
-  Block,
-  Assist,
-  Steal,
-  Turnover,
-  PeriodStart,
-}
 
 abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   @nullable

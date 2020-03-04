@@ -13,13 +13,15 @@ class GameEventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(Messages.of(context).getGameEventType(gameEvent)),
+      title: Text(Messages.of(context).getGameEventType(gameEvent),
+          style: Theme.of(context).textTheme.body1),
       subtitle: gameEvent.playerUid != null && gameEvent.playerUid.isNotEmpty
           ? PlayerName(
               playerUid: gameEvent.playerUid,
             )
           : Text(
               Messages.of(context).getPeriodName(gameEvent.period),
+              style: Theme.of(context).textTheme.body1,
             ),
     );
   }

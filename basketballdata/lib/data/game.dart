@@ -9,6 +9,8 @@ import 'serializers.dart';
 
 part 'game.g.dart';
 
+enum GameResult { Win, Tie, Loss }
+
 abstract class Game implements Built<Game, GameBuilder> {
   @nullable
   String get uid;
@@ -22,6 +24,13 @@ abstract class Game implements Built<Game, GameBuilder> {
   PlayerSummary get playerSummaery;
   PlayerSummary get opponentSummary;
   GamePeriod get currentPeriod;
+
+  @memoized
+  GameResult get result => summary.pointsFor > summary.pointsAgainst
+      ? GameResult.Win
+      : summary.pointsFor == summary.pointsAgainst
+          ? GameResult.Tie
+          : GameResult.Loss;
 
   static void _initializeBuilder(GameBuilder b) => b
     ..summary = GameSummaryBuilder()

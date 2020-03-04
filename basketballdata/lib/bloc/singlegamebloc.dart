@@ -318,6 +318,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       try {
         await db.addGameEvent(gameUid: gameUid, event: event.event);
       } catch (e) {
+        print(e);
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }
     }
@@ -383,7 +384,9 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     Map<String, PlayerSummaryBuilder> opponents = state.game.opponents
         .toMap()
         .map((var e, var v) => MapEntry(e, PlayerSummaryBuilder()));
-    GameSummaryBuilder gameSummary = GameSummaryBuilder();
+    GameSummaryBuilder gameSummary = GameSummaryBuilder()
+      ..pointsFor = 0
+      ..pointsAgainst = 0;
     PlayerSummaryBuilder playerSummary = PlayerSummaryBuilder();
     PlayerSummaryBuilder opponentSummary = PlayerSummaryBuilder();
 
@@ -396,23 +399,25 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       PlayerSummaryDataBuilder sum;
       PlayerSummaryDataBuilder playerSum;
       GamePeriod oldPeriod = currentPeriod;
-      if (ev.opponent) {
-        sum = opponentSummary.perPeriod
-            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
-            .toBuilder();
-        // .putIfAbsent(currentPeriod, () => PlayerSummaryData());
-        playerSum = opponents[ev.playerUid]
-            .perPeriod
-            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
-            .toBuilder();
-      } else {
-        sum = playerSummary.perPeriod
-            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
-            .toBuilder();
-        playerSum = players[ev.playerUid]
-            .perPeriod
-            .putIfAbsent(currentPeriod, () => PlayerSummaryData())
-            .toBuilder();
+      if (ev.type != GameEventType.PeriodStart) {
+        if (ev.opponent) {
+          sum = opponentSummary.perPeriod
+              .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+              .toBuilder();
+          // .putIfAbsent(currentPeriod, () => PlayerSummaryData());
+          playerSum = opponents[ev.playerUid]
+              .perPeriod
+              .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+              .toBuilder();
+        } else {
+          sum = playerSummary.perPeriod
+              .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+              .toBuilder();
+          playerSum = players[ev.playerUid]
+              .perPeriod
+              .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+              .toBuilder();
+        }
       }
       switch (ev.type) {
         case GameEventType.Made:
@@ -486,12 +491,14 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
           currentPeriod = ev.period;
           break;
       }
-      if (ev.opponent) {
-        opponentSummary.perPeriod[oldPeriod] = sum.build();
-        opponents[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();
-      } else {
-        playerSummary.perPeriod[oldPeriod] = sum.build();
-        players[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();
+      if (ev.type != GameEventType.PeriodStart) {
+        if (ev.opponent) {
+          opponentSummary.perPeriod[oldPeriod] = sum.build();
+          opponents[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();
+        } else {
+          playerSummary.perPeriod[oldPeriod] = sum.build();
+          players[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();
+        }
       }
     }
 
@@ -501,6 +508,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         state.game.summary != gameSummary.build() ||
         state.game.players.entries.every((MapEntry<String, PlayerSummary> e) =>
             players[e.key].build() == e.value) ||
+        state.game.currentPeriod != currentPeriod ||
         state.game.opponents.entries.every(
             (MapEntry<String, PlayerSummary> e) =>
                 opponents[e.key].build() == e.value)) {
@@ -509,8 +517,11 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
             ..summary = gameSummary
             ..opponentSummary = opponentSummary
             ..playerSummaery = playerSummary
-            ..players = MapBuilder(players)
-            ..opponents = MapBuilder(opponents)));
+            ..currentPeriod = currentPeriod
+            ..players = MapBuilder(
+                players.map((var e, var v) => MapEntry(e, v.build())))
+            ..opponents = MapBuilder(
+                opponents.map((var e, var v) => MapEntry(e, v.build())))));
     }
 
     var removed = state.gameEvents
@@ -518,6 +529,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     var added = evList.where(
         (GameEvent e) => state.gameEvents.every((GameEvent e2) => e != e2));
     add(_SingleGameNewEvents(
-        events: evList, removedEvents: removed, newEvents: added));
+        events: evList,
+        removedEvents: BuiltList.of(removed),
+        newEvents: BuiltList.of(added)));
   }
 }

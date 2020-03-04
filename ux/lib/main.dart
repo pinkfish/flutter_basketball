@@ -14,7 +14,7 @@ import 'screens/splashscreen.dart';
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  BlocSupervisor.delegate = _SimpleBlocDelegate();
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -56,16 +56,12 @@ class MyApp extends StatelessWidget {
         ],
         onGenerateTitle: (BuildContext context) => Messages.of(context).title,
         theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
+          brightness: Brightness.dark,
+          primarySwatch: Colors.green,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.green,
         ),
         home: SplashScreen(),
         navigatorObservers: [
@@ -82,7 +78,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SimpleBlocDelegate extends BlocDelegate {
+class _SimpleBlocDelegate extends BlocDelegate {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);

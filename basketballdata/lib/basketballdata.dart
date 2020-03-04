@@ -10,6 +10,7 @@ export 'bloc/singleteambloc.dart';
 export 'bloc/teamsbloc.dart';
 export 'data/game.dart';
 export 'data/gameevent.dart';
+export 'data/gameeventtype.dart';
 export 'data/gameperiod.dart';
 export 'data/gamesummary.dart';
 export 'data/player.dart';

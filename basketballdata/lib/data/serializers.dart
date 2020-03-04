@@ -11,6 +11,7 @@ import 'package:built_value/standard_json_plugin.dart';
 
 import 'game.dart';
 import 'gameevent.dart';
+import 'gameeventtype.dart';
 import 'gameperiod.dart';
 import 'gamesummary.dart';
 import 'player.dart';
@@ -29,6 +30,7 @@ part 'serializers.g.dart';
   Player,
   GameEvent,
   GamePeriod,
+  GameEventType,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

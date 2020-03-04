@@ -210,40 +210,71 @@ class GameStatsScreen extends StatelessWidget {
   }
 
   Widget _buildSubButtons(BuildContext context) {
-    return ButtonBar(
-      children: <Widget>[
-        FlatButton(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              Messages.of(context).subButton,
-              style:
-                  Theme.of(context).textTheme.button.copyWith(fontSize: 30.0),
-            ),
-          ),
-          onPressed: () => _doBasicEvent(context, GameEventType.Sub),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-            side: BorderSide(color: Colors.blue),
-          ),
-        ),
-        FlatButton(
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-              "Foul",
-              style:
-                  Theme.of(context).textTheme.button.copyWith(fontSize: 30.0),
-            ),
-          ),
-          onPressed: () => _doBasicEvent(context, GameEventType.Foul),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-            side: BorderSide(color: Colors.blue),
-          ),
-        ),
-      ],
-    );
+    return BlocBuilder(
+        bloc: BlocProvider.of<SingleGameBloc>(context),
+        builder: (BuildContext context, SingleGameState state) {
+          if (state is SingleGameUninitialized) {
+            return LoadingWidget();
+          }
+          if (state is SingleGameDeleted) {
+            return DeletedWidget();
+          }
+          return ButtonBar(
+            children: <Widget>[
+              FlatButton(
+                child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                      Messages.of(context)
+                          .getPeriodName(state.game.currentPeriod),
+                      style: Theme.of(context)
+                          .textTheme
+                          .button
+                          .copyWith(fontSize: 30.0)),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  side: BorderSide(color: Colors.blue),
+                ),
+                onPressed: () => _selectPeriod(context),
+              ),
+              FlatButton(
+                child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    Messages.of(context).subButton,
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(fontSize: 30.0),
+                  ),
+                ),
+                onPressed: () => _doBasicEvent(context, GameEventType.Sub),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  side: BorderSide(color: Colors.blue),
+                ),
+              ),
+              FlatButton(
+                child: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    "FOUL",
+                    style: Theme.of(context)
+                        .textTheme
+                        .button
+                        .copyWith(fontSize: 30.0),
+                  ),
+                ),
+                onPressed: () => _doBasicEvent(context, GameEventType.Foul),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  side: BorderSide(color: Colors.blue),
+                ),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -274,12 +305,49 @@ class GameStatsScreen extends StatelessWidget {
                       (BuildContext context, BoxConstraints boxConstraint) =>
                           _buildDefenceSection(context, boxConstraint),
                 ),
-                _buildSubButtons(context),
+                Builder(
+                  builder: (BuildContext context) => _buildSubButtons(context),
+                ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _selectPeriod(BuildContext context) async {
+    GamePeriod newPeriod = await showDialog<GamePeriod>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(Messages.of(context).period),
+          children: GamePeriod.values
+              .map((GamePeriod p) => SimpleDialogOption(
+                  onPressed: () => Navigator.pop(context, p),
+                  child: Text(Messages.of(context).getPeriodName(p))))
+              .toList(),
+        );
+      },
+    );
+    if (newPeriod == null) {
+      return;
+    }
+
+    // ignore: close_sinks
+    var bloc = BlocProvider.of<SingleGameBloc>(context);
+
+    // Write out the event to start the new period.
+    bloc.add(
+      SingleGameAddEvent(
+          event: GameEvent((b) => b
+            ..playerUid = ""
+            ..points = 0
+            ..timestamp = (DateTime.now().toUtc())
+            ..gameUid = bloc.gameUid
+            ..period = newPeriod
+            ..opponent = false
+            ..type = GameEventType.PeriodStart)),
     );
   }
 }
@@ -316,43 +384,42 @@ class _GameStateSection extends StatelessWidget {
             .textTheme
             .headline
             .copyWith(fontWeight: FontWeight.bold);
-        return Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              BlocBuilder(
-                  bloc: BlocProvider.of<SingleTeamBloc>(context),
-                  builder:
-                      (BuildContext context, SingleTeamBlocState teamState) {
-                    if (teamState is SingleTeamUninitialized ||
-                        teamState is SingleTeamDeleted) {
-                      return Text(Messages.of(context).loading, style: style);
-                    }
-                    return Text(teamState.team.name, style: style);
-                  }),
-              Text(state.game.summary.pointsAgainst.toString(), style: style),
-            ]),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(state.game.opponentName, style: style),
-              Text(state.game.summary.pointsAgainst.toString(), style: style),
-            ]),
-            Divider(),
-            ButtonBar(
-              children: [
-                FlatButton(
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                        Messages.of(context)
-                            .getPeriodName(state.game.currentPeriod),
-                        style: style),
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                    side: BorderSide(color: Colors.blue),
-                  ),
-                  onPressed: () => _selectPeriod(context),
-                ),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Wrap(
+                children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BlocBuilder(
+                            bloc: BlocProvider.of<SingleTeamBloc>(context),
+                            builder: (BuildContext context,
+                                SingleTeamBlocState teamState) {
+                              if (teamState is SingleTeamUninitialized ||
+                                  teamState is SingleTeamDeleted) {
+                                return Text(Messages.of(context).loading,
+                                    style: style);
+                              }
+                              return Text(teamState.team.name, style: style);
+                            }),
+                        Text(state.game.summary.pointsAgainst.toString(),
+                            style: style),
+                      ]),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(state.game.opponentName, style: style),
+                        Text(state.game.summary.pointsAgainst.toString(),
+                            style: style),
+                      ]),
+                  ..._getGameEvents(context, state)
+                ],
+              ),
+            ),
+            Column(
+              children: <Widget>[
                 FlatButton(
                   child: Padding(
                     padding: EdgeInsets.all(10.0),
@@ -376,8 +443,7 @@ class _GameStateSection extends StatelessWidget {
                   ),
                 )
               ],
-            ),
-            ..._getGameEvents(context, state)
+            )
           ],
         );
       },
@@ -398,40 +464,6 @@ class _GameStateSection extends StatelessWidget {
             gameEvent: ev,
           ),
         );
-  }
-
-  Future<void> _selectPeriod(BuildContext context) async {
-    GamePeriod newPeriod = await showDialog<GamePeriod>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text(Messages.of(context).period),
-          children: GamePeriod.values
-              .map((GamePeriod p) => SimpleDialogOption(
-                  onPressed: () => Navigator.pop(context, p),
-                  child: Text(Messages.of(context).getPeriodName(p))))
-              .toList(),
-        );
-      },
-    );
-    if (newPeriod == null) {
-      return;
-    }
-
-    // ignore: close_sinks
-    var bloc = BlocProvider.of<SingleGameBloc>(context);
-
-    // Write out the event to start the new period.
-    bloc.add(
-      SingleGameAddEvent(
-          event: GameEvent((b) => b
-            ..playerUid = ""
-            ..points = 0
-            ..timestamp = (DateTime.now().toUtc())
-            ..gameUid = bloc.gameUid
-            ..period = newPeriod
-            ..type = GameEventType.PeriodStart)),
-    );
   }
 }
 

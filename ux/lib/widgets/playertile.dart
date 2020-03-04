@@ -24,10 +24,71 @@ class PlayerTile extends StatelessWidget {
           db: BlocProvider.of<TeamsBloc>(context).db),
       child: Builder(
         builder: (BuildContext context) {
-          return BlocBuilder(
-            bloc: BlocProvider.of<SinglePlayerBloc>(context),
-            builder: (BuildContext context, SinglePlayerState state) {
-              if (state is SinglePlayerDeleted) {
+          return AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: BlocBuilder(
+              bloc: BlocProvider.of<SinglePlayerBloc>(context),
+              builder: (BuildContext context, SinglePlayerState state) {
+                if (state is SinglePlayerDeleted) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(Messages.of(context).unknown),
+                      leading: Stack(
+                        children: <Widget>[
+                          Icon(MdiIcons.tshirtCrewOutline),
+                          Text(""),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                if (state is SinglePlayerUninitialized) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(Messages.of(context).loading,
+                          style: Theme.of(context).textTheme.caption),
+                      leading: Stack(
+                        children: <Widget>[
+                          Icon(MdiIcons.tshirtCrewOutline),
+                          Text(""),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                if (state is SinglePlayerLoaded) {
+                  return Card(
+                    child: ListTile(
+                      onTap: this.onTap,
+                      title: Text(
+                        state.player.name,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      leading: ConstrainedBox(
+                        constraints:
+                            BoxConstraints.tightFor(height: 40.0, width: 40.0),
+                        child: Container(
+                          child: Center(
+                            child: Text(
+                              state.player.jerseyNumber,
+                              style:
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        color: Theme.of(context).accentColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }
                 return ListTile(
                   title: Text(Messages.of(context).unknown),
                   leading: Stack(
@@ -37,58 +98,8 @@ class PlayerTile extends StatelessWidget {
                     ],
                   ),
                 );
-              }
-              if (state is SinglePlayerUninitialized) {
-                return ListTile(
-                  title: Text(Messages.of(context).loading),
-                  leading: Stack(
-                    children: <Widget>[
-                      Icon(MdiIcons.tshirtCrewOutline),
-                      Text(""),
-                    ],
-                  ),
-                );
-              }
-              if (state is SinglePlayerLoaded) {
-                return ListTile(
-                  onTap: this.onTap,
-                  title: Text(
-                    state.player.name,
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  leading: ConstrainedBox(
-                    constraints:
-                        BoxConstraints.tightFor(height: 40.0, width: 40.0),
-                    child: Container(
-                      child: Center(
-                        child: Text(
-                          state.player.jerseyNumber,
-                          style: Theme.of(context).textTheme.caption.copyWith(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                              ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: Theme.of(context).primaryColor),
-                      ),
-                    ),
-                  ),
-                );
-              }
-              return ListTile(
-                title: Text(Messages.of(context).unknown),
-                leading: Stack(
-                  children: <Widget>[
-                    Icon(MdiIcons.tshirtCrewOutline),
-                    Text(""),
-                  ],
-                ),
-              );
-            },
+              },
+            ),
           );
         },
       ),
