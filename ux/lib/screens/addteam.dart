@@ -10,7 +10,7 @@ class AddTeamScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Messages.of(context).title),
+        title: Text(Messages.of(context).addTeamTooltip),
       ),
       body: BlocProvider(
         create: (BuildContext context) =>
@@ -95,6 +95,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                           onPressed: () => Navigator.pop(context),
                         ),
                         RaisedButton.icon(
+                          key: Key("saveButton"),
                           textTheme: ButtonTextTheme.primary,
                           elevation: 2,
                           icon: Icon(Icons.save),

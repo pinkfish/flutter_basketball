@@ -8,10 +8,11 @@ import 'package:basketballdata/data/player.dart';
 import 'package:basketballdata/data/team.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
 
 ///
 /// Interface to get all the data from the local sql database.
@@ -21,6 +22,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   StreamController<_TableChange> _controller =
       StreamController<_TableChange>(sync: false);
   Stream<_TableChange> _tableChange;
+  final Uuid uuid = new Uuid(options: {'grng': UuidUtil.cryptoRNG});
 
   static const String teamsTable = "Teams";
   static const String playersTable = "Players";
@@ -82,10 +84,9 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGame({String teamUid, Game game}) async {
+  Future<String> addGame({Game game}) async {
     Database db = await _complete.future;
-    String uid =
-        Firestore.instance.collection(gamesTable).document().documentID;
+    String uid = uuid.v5(Uuid.NAMESPACE_OID, gamesTable);
     Game newG = game.rebuild((b) => b..uid = uid);
     print('Inserting ${json.encode(newG.toMap())}');
     await db.insert(gamesTable, {
@@ -99,21 +100,18 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGameEvent({String gameUid, GameEvent event}) async {
+  Future<void> addGameEvent({GameEvent event}) async {
     Database db = await _complete.future;
 
-    String uid = event.uid ??
-        Firestore.instance.collection(gameEventsTable).document().documentID;
-    GameEvent newEv = event.rebuild((b) => b
-      ..uid = uid
-      ..gameUid = gameUid);
+    String uid = event.uid ?? uuid.v5(Uuid.NAMESPACE_OID, gameEventsTable);
+    GameEvent newEv = event.rebuild((b) => b..uid = uid);
     db.insert(gameEventsTable, {
       indexColumn: uid,
-      secondaryIndexColumn: gameUid,
+      secondaryIndexColumn: event.gameUid,
       dataColumn: json.encode(newEv.toMap())
     });
-    _controller.add(
-        _TableChange(table: gameEventsTable, uid: uid, secondaryUid: gameUid));
+    _controller.add(_TableChange(
+        table: gameEventsTable, uid: uid, secondaryUid: event.gameUid));
     return uid;
   }
 
@@ -131,8 +129,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   @override
   Future<String> addTeam({Team team}) async {
     Database db = await _complete.future;
-    String uid =
-        Firestore.instance.collection(teamsTable).document().documentID;
+    String uid = uuid.v5(Uuid.NAMESPACE_OID, teamsTable);
     Team newT = team.rebuild((b) => b..uid = uid);
     await db.insert(teamsTable, {
       indexColumn: uid,
@@ -417,8 +414,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<String> addPlayer({Player player}) async {
     print("Calling addPlayer");
     Database db = await _complete.future;
-    String uid =
-        Firestore.instance.collection(playersTable).document().documentID;
+    String uid = uuid.v5(Uuid.NAMESPACE_OID, playersTable);
     Player newP = player.rebuild((b) => b..uid = uid);
     print('Inserting ${json.encode(newP.toMap())}');
     await db.insert(playersTable, {

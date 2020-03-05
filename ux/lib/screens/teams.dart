@@ -16,25 +16,29 @@ class TeamsScreen extends StatelessWidget {
       ),
       drawer: StatsDrawer(),
       body: Center(
-        child: BlocBuilder(
-          bloc: BlocProvider.of<TeamsBloc>(context),
-          builder: (BuildContext context, TeamsBlocState state) {
-            if (state is TeamsBlocUninitialized) {
-              return Text(Messages.of(context).loading);
-            }
-            if (state is TeamsBlocLoaded) {
-              if (state.teams.isEmpty) {
-                return Center(
-                  child: Text(Messages.of(context).noTeams),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: BlocBuilder(
+            key: Key('teamsContent'),
+            bloc: BlocProvider.of<TeamsBloc>(context),
+            builder: (BuildContext context, TeamsBlocState state) {
+              if (state is TeamsBlocUninitialized) {
+                return Text(Messages.of(context).loading);
+              }
+              if (state is TeamsBlocLoaded) {
+                if (state.teams.isEmpty) {
+                  return Center(
+                    child: Text(Messages.of(context).noTeams),
+                  );
+                }
+                return ListView(
+                  children: state.teams.map((t) => TeamWidget(t)).toList(),
                 );
               }
-              return Column(
-                children: state.teams.map((t) => TeamWidget(t)).toList(),
-              );
-            }
 
-            return Text("Unknown");
-          },
+              return Text(Messages.of(context).unknown);
+            },
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -316,7 +316,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     // Adds the game event into the system.
     if (event is SingleGameAddEvent) {
       try {
-        await db.addGameEvent(gameUid: gameUid, event: event.event);
+        await db.addGameEvent(
+            event: event.event.rebuild((b) => b..gameUid = this.gameUid));
       } catch (e) {
         print(e);
         yield SingleGameSaveFailed(singleGameState: state, error: e);

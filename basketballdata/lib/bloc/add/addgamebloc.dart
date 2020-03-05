@@ -42,7 +42,8 @@ class AddGameBloc extends Bloc<AddGameEvent, AddItemState> {
       yield AddItemSaving();
 
       try {
-        String uid = await db.addGame(teamUid: teamUid, game: event.newGame);
+        String uid = await db.addGame(
+            game: event.newGame.rebuild((b) => b.teamUid = this.teamUid));
         yield AddItemDone(uid: uid);
       } catch (e) {
         yield AddItemSaveFailed(error: e);

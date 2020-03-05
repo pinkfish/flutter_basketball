@@ -6,11 +6,31 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/firestoredatabase.dart';
 import 'package:basketballstats/services/sqflitedatabase.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MultiplexDatabase extends BasketballDatabase {
   FirestoreDatabase _fs;
   SqlfliteDatabase _sql;
   bool useSql = true;
+
+  MultiplexDatabase() {
+    FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
+      if (user != null) {
+        _fs.userUid = user.uid;
+        useSql = true;
+      } else {
+        useSql = true;
+      }
+    });
+    FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
+      if (user != null) {
+        _fs.userUid = user.uid;
+        useSql = true;
+      } else {
+        useSql = true;
+      }
+    });
+  }
 
   Future<void> open() async {
     _fs = new FirestoreDatabase();
@@ -19,19 +39,19 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGame({String teamUid, Game game}) {
+  Future<String> addGame({Game game}) {
     if (useSql)
-      return _sql.addGame(teamUid: teamUid, game: game);
+      return _sql.addGame(game: game);
     else
-      return _fs.addGame(teamUid: teamUid, game: game);
+      return _fs.addGame(game: game);
   }
 
   @override
-  Future<void> addGameEvent({String gameUid, GameEvent event}) {
+  Future<void> addGameEvent({GameEvent event}) {
     if (useSql)
-      return _sql.addGameEvent(gameUid: gameUid, event: event);
+      return _sql.addGameEvent(event: event);
     else
-      return _fs.addGameEvent(gameUid: gameUid, event: event);
+      return _fs.addGameEvent(event: event);
   }
 
   @override

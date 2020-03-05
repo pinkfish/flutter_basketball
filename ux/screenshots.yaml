@@ -3,6 +3,7 @@ tests:
   # Note: flutter driver expects a pair of files eg, main1.dart and main1_test.dart
   #- test_driver/main1.dart
   #- test_driver/main2.dart
+  - test_driver/mainpage_test.dart
 
 # Interim location of screenshots from tests
 staging: /tmp/screenshots
@@ -13,11 +14,11 @@ locales:
 
 # A map of devices to emulate
 devices:
-  ios:
-    iPhone XS Max:
-      frame: false
-    iPad Pro (12.9-inch) (3rd generation):
-      orientation: LandscapeRight
+  #ios:
+  #  iPhone XS Max:
+  #    frame: false
+  #  iPad Pro (12.9-inch) (3rd generation):
+  #    orientation: LandscapeRight
   android:
     Nexus 6P:
 

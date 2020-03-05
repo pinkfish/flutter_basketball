@@ -30,13 +30,13 @@ abstract class BasketballDatabase {
 
   /// Adds the game event into the database
   Future<void> addGameEvent(
-      {@required String gameUid, @required GameEvent event});
+      {@required GameEvent event});
 
   /// Adds a new team into the database
   Future<String> addTeam({@required Team team});
 
   /// Adds a new game into the database
-  Future<String> addGame({@required String teamUid, @required Game game});
+  Future<String> addGame({ @required Game game});
 
   /// Updates the team in the database.
   Future<void> updateTeam({@required Team team});

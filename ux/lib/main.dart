@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:basketballstats/services/multiplexdatabase.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -42,6 +43,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<TeamsBloc>(
           create: (BuildContext context) => TeamsBloc(db: _db),
         ),
+        BlocProvider<AuthenticationBloc>(
+          create: (BuildContext context) =>
+              AuthenticationBloc(analyticsSubsystem: analytics),
+        )
       ],
       child: MaterialApp(
         localizationsDelegates: const <LocalizationsDelegate<dynamic>>[

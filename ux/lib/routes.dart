@@ -7,6 +7,10 @@ import 'screens/addteam.dart';
 import 'screens/editplayer.dart';
 import 'screens/gamedetails.dart';
 import 'screens/gamestats.dart';
+import 'screens/login/forgotpassword.dart';
+import 'screens/login/loginform.dart';
+import 'screens/login/signup.dart';
+import 'screens/login/verifyemail.dart';
 import 'screens/playerdetails.dart';
 import 'screens/splashscreen.dart';
 import 'screens/teamdetails.dart';
@@ -68,6 +72,22 @@ class AppRouter {
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GameStatsScreen(
                     vals["id"][0].toString(), vals["team"][0].toString())));
+    router.define("/Login/Home",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                LoginScreen()));
+    router.define("/Login/ForgotPassword",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                ForgotPasswordScreen()));
+    router.define("/Login/SignUp",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                SignupScreen()));
+    router.define("/Login/Verify",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                VerifyEmailScreen()));
 
     return router;
   }

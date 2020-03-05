@@ -32,7 +32,7 @@ platform :android do
    desc "Build and push to play store track"
     private_lane :build_and_push_to_play_store_track do |options|
       release_notes(OS: 'android')
-      sh ("cd ../.. && flutter build apk --build-name=#{@build_name} --build-number=#{@build_number}")
+      sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
       upload_to_play_store(
         track: options[:track],
         aab: '../build/app/outputs/bundle/release/app-release.aab',
