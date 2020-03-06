@@ -378,7 +378,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           signedIn = result.user;
         }
       } catch (error) {
-        print('Error: ${error}');
+        print('Error: $error');
         // Failed to login, probably bad password.
         yield LoginFailed(
             userData: signedIn, reason: LoginFailedReason.BadPassword);
@@ -409,7 +409,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginSucceeded(userData: user);
         }
       } catch (error) {
-        print('Error: ${error}');
+        print('Error: $error');
         // Failed to login, probably bad password.
         yield LoginFailed(
             userData: null, reason: LoginFailedReason.BadPassword);

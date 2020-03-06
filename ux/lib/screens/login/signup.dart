@@ -28,7 +28,6 @@ class SignupScreenState extends State<SignupScreen> {
   String _email;
   String _password;
   FocusNode _focusNodeDisplayName = new FocusNode();
-  FocusNode _focusNodePhoneNumber = new FocusNode();
   FocusNode _focusNodeEmail = new FocusNode();
   FocusNode _focusNodePassword = new FocusNode();
   FocusNode _focusNodePasswordVerify = new FocusNode();

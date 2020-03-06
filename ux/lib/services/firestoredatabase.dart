@@ -81,7 +81,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<Game> getGame({String gameUid}) async* {
-    var ref = await Firestore.instance.collection(gamesTable).document(gameUid);
+    var ref = Firestore.instance.collection(gamesTable).document(gameUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Game.fromMap(doc.data);
@@ -99,8 +99,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<Player> getPlayer({String playerUid}) async* {
-    var ref =
-        await Firestore.instance.collection(playersTable).document(playerUid);
+    var ref = Firestore.instance.collection(playersTable).document(playerUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Player.fromMap(doc.data);
@@ -132,7 +131,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<void> updateGame({Game game}) {
-    Firestore.instance
+    return Firestore.instance
         .collection(gamesTable)
         .document(game.uid)
         .updateData(game.toMap());
@@ -140,7 +139,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<void> updateTeam({Team team}) {
-    Firestore.instance
+    return Firestore.instance
         .collection(teamsTable)
         .document(team.uid)
         .updateData(team.toMap());
@@ -148,7 +147,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<void> updatePlayer({Player player}) {
-    Firestore.instance
+    return Firestore.instance
         .collection(playersTable)
         .document(player.uid)
         .updateData(player.toMap());
@@ -177,7 +176,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<Team> getTeam({String teamUid}) async* {
-    var ref = await Firestore.instance.collection(teamsTable).document(teamUid);
+    var ref = Firestore.instance.collection(teamsTable).document(teamUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Team.fromMap(doc.data);
