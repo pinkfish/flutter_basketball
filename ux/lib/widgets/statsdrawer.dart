@@ -1,4 +1,5 @@
 import 'package:basketballstats/services/authenticationbloc.dart';
+import 'package:basketballstats/services/loginbloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -63,8 +64,7 @@ class StatsDrawer extends StatelessWidget {
                   leading: Icon(MdiIcons.logout),
                   title: Text(Messages.of(context).logout),
                   onTap: () {
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(AuthenticationLogOut());
+                    BlocProvider.of<LoginBloc>(context).add(LoginEventLogout());
                   },
                 );
               }

@@ -32,7 +32,8 @@ class AuthenticationLoggedIn extends AuthenticationState {
   AuthenticationLoggedIn({@required FirebaseUser user}) : super(user: user);
 
   @override
-  String toString() => "AuthenticationState::AuthenticatonLoggedIn";
+  String toString() =>
+      "AuthenticationState::AuthenticatonLoggedIn{${user.email}}";
 }
 
 ///
@@ -43,7 +44,7 @@ class AuthenticationLoggedInUnverified extends AuthenticationState {
       : super(user: user);
 
   @override
-  String toString() => "AuthenticationState::AuthenticationLoggedInUnverified";
+  String toString() => "AuthenticationLoggedInUnverified{${user.email})";
 }
 
 ///
@@ -78,9 +79,9 @@ class _AuthenticationLogIn extends AuthenticationEvent {
 ///
 /// Logs the current user out.
 ///
-class AuthenticationLogOut extends AuthenticationEvent {
+class _AuthenticationLogOut extends AuthenticationEvent {
   @override
-  String toString() => "LoggedOut";
+  String toString() => "_AuthenticationLogOut";
 
   @override
   List<Object> get props => [];
@@ -147,8 +148,12 @@ class AuthenticationBloc
       }
     }
 
-    if (event is AuthenticationLogOut) {
-      await FirebaseAuth.instance.signOut();
+    if (event is _AuthenticationLogOut) {
+      try {
+        await FirebaseAuth.instance.signOut();
+      } catch (e) {
+        print("Error $e");
+      }
       // Finished logging out.
       yield AuthenticationLoggedOut();
     }
@@ -158,7 +163,7 @@ class AuthenticationBloc
     if (user != null) {
       add(_AuthenticationLogIn(user: user));
     } else {
-      add(AuthenticationLogOut());
+      add(_AuthenticationLogOut());
     }
   }
 }

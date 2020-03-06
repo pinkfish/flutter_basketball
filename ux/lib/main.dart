@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'messages.dart';
 import 'routes.dart';
 import 'screens/splashscreen.dart';
+import 'services/loginbloc.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -28,15 +29,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final MultiplexDatabase _db = new MultiplexDatabase();
+  static MultiplexDatabase _db = MultiplexDatabase();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // Log an error if the db fails to open.
-    _db.open().catchError((Object e, StackTrace stack) {
-      Crashlytics.instance.recordError(e, stack);
-    }, test: (_) => true);
+    _db.waitTillOpen();
 
     return MultiBlocProvider(
       providers: <BlocProvider>[
@@ -46,6 +45,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
           create: (BuildContext context) =>
               AuthenticationBloc(analyticsSubsystem: analytics),
+        ),
+        BlocProvider<LoginBloc>(
+          create: (BuildContext context) =>
+              LoginBloc(analyticsSubsystem: analytics),
         )
       ],
       child: MaterialApp(

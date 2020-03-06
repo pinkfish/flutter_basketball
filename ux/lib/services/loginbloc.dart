@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
 ///
@@ -329,13 +330,21 @@ class LoginEventSignupUser extends LoginEvent {
 }
 
 ///
+/// Login as a google user with the google login process.
+///
+class LoginAsGoogleUser extends LoginEvent {
+  @override
+  List<Object> get props => [];
+}
+
+///
 /// Login bloc handles the login flow.  Password, reset, etc,
 ///
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final FirebaseUser userAuth;
   final FirebaseAnalytics analyticsSubsystem;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  LoginBloc({@required this.userAuth, @required this.analyticsSubsystem});
+  LoginBloc({@required this.analyticsSubsystem});
 
   @override
   LoginState get initialState {
@@ -348,13 +357,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginInitial();
     }
     if (event is LoginEventReload) {
-      userAuth.reload();
+      //userAuth.reload();
     }
     if (event is LoginEventLogout) {
       FirebaseAuth.instance.signOut();
     }
     if (event is LoginEventResendEmail) {
-      userAuth.sendEmailVerification();
+      var user = await FirebaseAuth.instance.currentUser();
+      user.sendEmailVerification();
     }
     if (event is LoginEventAttempt) {
       yield LoginValidating();
@@ -376,11 +386,36 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (signedIn != null) {
         analyticsSubsystem.logLogin();
+        var user = await FirebaseAuth.instance.currentUser();
         // Reload the user.
-        userAuth.reload();
+        user.reload();
         yield LoginSucceeded(userData: signedIn);
       }
     }
+
+    if (event is LoginAsGoogleUser) {
+      try {
+        final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.getCredential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        var user = await FirebaseAuth.instance.currentUser();
+        if (user != null) {
+          analyticsSubsystem.logLogin();
+          yield LoginSucceeded(userData: user);
+        }
+      } catch (error) {
+        print('Error: ${error}');
+        // Failed to login, probably bad password.
+        yield LoginFailed(
+            userData: null, reason: LoginFailedReason.BadPassword);
+      }
+    }
+
     if (event is LoginEventForgotPasswordSend) {
       yield LoginValidatingForgotPassword();
 
@@ -411,7 +446,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         var update = UserUpdateInfo();
         update.displayName = signup.displayName;
-        result.user.updateProfile(update);
+        await result.user.updateProfile(update);
+        await result.user.sendEmailVerification();
+        FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: signup.email, password: signup.password);
         yield LoginSignupSucceeded(userData: result.user);
       }
     }

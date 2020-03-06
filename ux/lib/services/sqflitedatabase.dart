@@ -83,6 +83,11 @@ class SqlfliteDatabase extends BasketballDatabase {
     _complete.complete(database);
   }
 
+  Future<void> waitTillOpen() async {
+    await _complete.future;
+    return;
+  }
+
   @override
   Future<String> addGame({Game game}) async {
     Database db = await _complete.future;

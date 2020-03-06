@@ -108,9 +108,11 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(
                     child: RaisedButton(
-                      child: Text(Messages.of(context).login),
+                      child: Text(Messages.of(context).login,
+                          style: Theme.of(context).primaryTextTheme.button),
                       color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
+                      // textColor:
+                      //   Theme.of(context).primaryTextTheme.button.color,
                       onPressed: () => _handleSubmitted(),
                     ),
                     margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -129,13 +131,47 @@ class LoginScreenState extends State<LoginScreen> {
                         onPressed: () => onPressed("/Login/ForgotPassword"),
                       ),
                     ],
-                  )
+                  ),
+                  SizedBox(height: 10.0),
+                  _signInButton(),
                 ],
               ),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Widget _signInButton() {
+    return RaisedButton(
+      splashColor: Theme.of(context).splashColor,
+      onPressed: () =>
+          BlocProvider.of<LoginBloc>(context).add(LoginAsGoogleUser()),
+      //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      //  borderSide: BorderSide(color: Theme.of(context).buttonColor),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(
+                image: AssetImage("assets/images/google_logo.png"),
+                height: 20.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: Theme.of(context).primaryTextTheme.button,
+              ),
+            )
+          ],
+        ),
+      ),
+      color: Theme.of(context).primaryColor,
+      // textColor: Theme.of(context).primaryTextTheme.button.color,
     );
   }
 

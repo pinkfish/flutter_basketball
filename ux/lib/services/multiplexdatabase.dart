@@ -7,10 +7,11 @@ import 'package:basketballstats/services/firestoredatabase.dart';
 import 'package:basketballstats/services/sqflitedatabase.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class MultiplexDatabase extends BasketballDatabase {
-  FirestoreDatabase _fs;
-  SqlfliteDatabase _sql;
+  final FirestoreDatabase _fs = FirestoreDatabase();
+  final SqlfliteDatabase _sql = SqlfliteDatabase();
   bool useSql = true;
 
   MultiplexDatabase() {
@@ -25,17 +26,18 @@ class MultiplexDatabase extends BasketballDatabase {
     FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
       if (user != null) {
         _fs.userUid = user.uid;
-        useSql = true;
+        useSql = false;
       } else {
         useSql = true;
       }
     });
+    _sql.open().catchError((e, trace) {
+      Crashlytics.instance.recordError(e, trace);
+    });
   }
 
-  Future<void> open() async {
-    _fs = new FirestoreDatabase();
-    _sql = SqlfliteDatabase();
-    await _sql.open();
+  Future<void> waitTillOpen() async {
+    return _sql.waitTillOpen();
   }
 
   @override
