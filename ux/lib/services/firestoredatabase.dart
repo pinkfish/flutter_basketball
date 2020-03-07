@@ -1,3 +1,4 @@
+import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/data/game.dart';
 import 'package:basketballdata/data/gameevent.dart';
 import 'package:basketballdata/data/player.dart';
@@ -18,6 +19,12 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addGame({Game game}) async {
+    var player = Player((b) => b..name = "default");
+    var playerRef =
+        await Firestore.instance.collection(playersTable).add(player.toMap());
+    game.rebuild((b) => b
+      ..opponents[playerRef.documentID] =
+          PlayerSummary((b2) => b2..currentlyPlaying = true));
     var ref = await Firestore.instance.collection(gamesTable).add(game.toMap());
     return ref.documentID;
   }
@@ -25,7 +32,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> addGameEvent({GameEvent event}) async {
     var ref =
-        await Firestore.instance.collection(gameEventsTable).add(event.toMap());
+    await Firestore.instance.collection(gameEventsTable).add(event.toMap());
     return ref.documentID;
   }
 
@@ -171,7 +178,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<String> addPlayer({Player player}) async {
     var ref =
-        await Firestore.instance.collection(playersTable).add(player.toMap());
+    await Firestore.instance.collection(playersTable).add(player.toMap());
     return ref.documentID;
   }
 
@@ -205,7 +212,8 @@ class FirestoreDatabase extends BasketballDatabase {
   Stream<BuiltList<GameEvent>> getGameEvents({String gameUid}) async* {
     Query q = Firestore.instance
         .collection(gameEventsTable)
-        .where("gameUid", isEqualTo: gameUid);
+        .where("gameUid", isEqualTo: gameUid)
+        .orderBy("timestamp");
     QuerySnapshot snap = await q.getDocuments();
     yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
         GameEvent.fromMap(_addUid(snap.documentID, snap.data))));
@@ -221,6 +229,5 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  // TODO: implement onDatabaseChange
   Stream<bool> get onDatabaseChange => null;
 }

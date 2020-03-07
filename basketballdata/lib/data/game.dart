@@ -37,9 +37,7 @@ abstract class Game implements Built<Game, GameBuilder> {
     ..playerSummaery = PlayerSummaryBuilder()
     ..opponentSummary = PlayerSummaryBuilder()
     ..opponentName = "unknown"
-    ..currentPeriod = GamePeriod.NotStarted
-    ..opponents.putIfAbsent(
-        "default", () => PlayerSummary((b) => b..currentlyPlaying = true));
+    ..currentPeriod = GamePeriod.NotStarted;
 
   Game._();
   factory Game([updates(GameBuilder b)]) = _$Game;

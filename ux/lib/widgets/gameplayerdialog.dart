@@ -24,9 +24,11 @@ class GamePlayerDialog extends StatelessWidget {
       return 0;
     });
     return players
-        .map((String playerUid) => Padding(
+        .map(
+          (String playerUid) => Padding(
             padding: EdgeInsets.all(2.0),
-            child: Container(
+            child:
+                /*Container(
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
                   color: game.players.containsKey(playerUid)
@@ -36,9 +38,20 @@ class GamePlayerDialog extends StatelessWidget {
                     const Radius.circular(20.0),
                   ),
                 ),
-                child: PlayerTile(
-                    playerUid: playerUid,
-                    onTap: () => _selectPlayer(context, playerUid)))))
+                child: */
+                PlayerTile(
+              playerUid: playerUid,
+              editButton: false,
+              color: game.players.containsKey(playerUid)
+                  ? Theme.of(context).primaryColor.withRed(50)
+                  : Theme.of(context).primaryColor.withGreen(50),
+              shape: ContinuousRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              onTap: () => _selectPlayer(context, playerUid),
+            ),
+          ),
+        )
         .toList();
   }
 
@@ -49,16 +62,26 @@ class GamePlayerDialog extends StatelessWidget {
   GamePlayerDialog({@required this.game});
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: OrientationBuilder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Select Player"),
+        automaticallyImplyLeading: false,
+      ),
+      body: OrientationBuilder(
         builder: (BuildContext context, Orientation o) {
           return Column(
             children: [
-              Text("Select Player"),
               Expanded(
-                child: GridView.count(
+                child: o == Orientation.portrait
+                    ? GridView.count(
                   childAspectRatio: 3.0,
                   crossAxisCount: 2,
+                  shrinkWrap: true,
+                  children: _populateList(context, o),
+                )
+                    : GridView.count(
+                  childAspectRatio: 2.5,
+                  crossAxisCount: 4,
                   shrinkWrap: true,
                   children: _populateList(context, o),
                 ),
@@ -67,7 +90,11 @@ class GamePlayerDialog extends StatelessWidget {
                 children: [
                   FlatButton(
                     child: Text(
-                        MaterialLocalizations.of(context).cancelButtonLabel),
+                      MaterialLocalizations
+                          .of(context)
+                          .cancelButtonLabel,
+                      textScaleFactor: 1.5,
+                    ),
                     onPressed: () => Navigator.pop(context, null),
                   ),
                 ],

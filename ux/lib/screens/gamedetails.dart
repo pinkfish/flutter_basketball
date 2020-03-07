@@ -27,8 +27,8 @@ class GameDetailsScreen extends StatelessWidget {
     return BlocProvider<SingleGameBloc>(
       create: (BuildContext context) => SingleGameBloc(
           gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
-      child: Builder(
-        builder: (BuildContext context) {
+      child: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
           return BlocConsumer(
             bloc: BlocProvider.of<SingleGameBloc>(context),
             listener: (BuildContext context, SingleGameState state) {
@@ -37,7 +37,7 @@ class GameDetailsScreen extends StatelessWidget {
               }
             },
             builder: (BuildContext context, SingleGameState state) {
-              return _GameDetailsScaffold(state);
+              return _GameDetailsScaffold(state, orientation);
             },
           );
         },
@@ -48,8 +48,9 @@ class GameDetailsScreen extends StatelessWidget {
 
 class _GameDetailsScaffold extends StatefulWidget {
   final SingleGameState state;
+  final Orientation orientation;
 
-  _GameDetailsScaffold(this.state);
+  _GameDetailsScaffold(this.state, this.orientation);
 
   @override
   State<StatefulWidget> createState() {
@@ -100,9 +101,11 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
               },
               child: _currentIndex == 1
                   ? FloatingActionButton.extended(
-                      onPressed: () => _addPlayer(context),
-                      icon: const Icon(Icons.add),
-                label: Text(Messages.of(context).addPlayerButton),
+                onPressed: () => _addPlayer(context),
+                icon: const Icon(Icons.add),
+                label: Text(Messages
+                    .of(context)
+                    .addPlayerButton),
                     )
                   : FloatingActionButton.extended(
                       icon: Icon(MdiIcons.graph),
@@ -138,7 +141,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
       TextStyle pointsStyle = Theme.of(context).textTheme.subhead.copyWith(
           fontSize: Theme.of(context).textTheme.subhead.fontSize * 4.0);
-      return Container(
+      Widget retWidget = Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/basketball.png'),
@@ -277,18 +280,22 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Divider(),
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-            double width = constraints.maxWidth / 6;
-
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  width: width * 2,
-                  child: Text("",
-                      style:
+                double width = constraints.maxWidth / 6;
+                if (widget.orientation == Orientation.landscape) {
+                  return SizedBox(
+                    height: 0.0,
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    SizedBox(
+                      width: width * 2,
+                      child: Text("",
+                          style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
+                    ),
+                    SizedBox(
                   width: width,
                   child: Text("Pts",
                       style:
@@ -306,23 +313,28 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                       style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
                 ),
-                SizedBox(
-                  width: width,
-                  child: Text("Steals",
-                      style:
+                    SizedBox(
+                      width: width,
+                      child: Text("Steals",
+                          style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ],
-            );
-          }),
-          Expanded(
+                    ),
+                  ],
+                );
+              }),
+          widget.orientation == Orientation.landscape
+              ? SizedBox(
+            height: 0.0,
+          )
+              : Expanded(
             child: SingleChildScrollView(
               child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
+                builder:
+                    (BuildContext context, BoxConstraints constraints) {
                   return Column(
                     children: state.game.players
                         .map((String s, PlayerSummary p) =>
-                            _playerSummary(s, p, constraints))
+                        _playerSummary(s, p, constraints))
                         .values
                         .toList(),
                   );
@@ -332,6 +344,10 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           ),
         ]),
       );
+      if (widget.orientation == Orientation.portrait) {
+        return retWidget;
+      }
+      return SingleChildScrollView(child: retWidget);
     } else {
       if (state.game.players.isEmpty) {
         return Text(Messages.of(context).noPlayers);

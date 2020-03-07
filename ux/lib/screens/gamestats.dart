@@ -14,6 +14,8 @@ import 'package:undo/undo.dart';
 
 import '../messages.dart';
 
+typedef SelectCallback = void Function(BuildContext context);
+
 class GameStatsScreen extends StatelessWidget {
   final String gameUid;
   final String teamUid;
@@ -68,166 +70,223 @@ class GameStatsScreen extends StatelessWidget {
           ..type = type)));
   }
 
-  Widget _buildPointSection(BuildContext context, BoxConstraints constraints) {
-    double buttonSize = constraints.maxWidth / 4;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            RoundButton(
-              child: Text("1"),
-              size: buttonSize,
-              borderColor: Colors.green,
-              onPressed: () => _doAddPoints(context, 1, true),
-            ),
-            CustomPaint(
-              painter: _LineThrough(),
-              child: RoundButton(
-                borderColor: Colors.red,
-                size: buttonSize,
-                onPressed: () => _doAddPoints(context, 1, false),
-                child: Text(
-                  "1",
-                  style: Theme.of(context).textTheme.button,
-                ),
-              ),
-            ),
-          ],
+  Widget _buildPointSection(BuildContext context, BoxConstraints constraints,
+      Orientation orientation) {
+    double buttonSize;
+    if (orientation == Orientation.portrait) {
+      buttonSize = constraints.maxWidth / 4;
+    } else {
+      buttonSize = constraints.maxHeight / 4;
+    }
+    List<Widget> firstWidgets = <Widget>[
+      RoundButton(
+        child: Text("1"),
+        size: buttonSize,
+        borderColor: Colors.green,
+        onPressed: () => _doAddPoints(context, 1, true),
+      ),
+      CustomPaint(
+        painter: _LineThrough(),
+        child: RoundButton(
+          borderColor: Colors.red,
+          size: buttonSize,
+          onPressed: () => _doAddPoints(context, 1, false),
+          child: Text(
+            "1",
+            style: Theme.of(context).textTheme.button,
+          ),
         ),
-        Column(
-          children: <Widget>[
-            RoundButton(
-              borderColor: Colors.green,
-              size: buttonSize,
-              child: Text("2"),
-              onPressed: () => _doAddPoints(context, 2, true),
-            ),
-            CustomPaint(
-              painter: _LineThrough(),
-              child: RoundButton(
-                borderColor: Colors.red,
-                size: buttonSize,
-                child: Text(
-                  "2",
-                  style: Theme.of(context).textTheme.button,
-                ),
-                onPressed: () => _doAddPoints(context, 2, false),
-              ),
-            ),
-          ],
+      ),
+    ];
+    List<Widget> secondidgets = <Widget>[
+      RoundButton(
+        borderColor: Colors.green,
+        size: buttonSize,
+        child: Text("2"),
+        onPressed: () => _doAddPoints(context, 2, true),
+      ),
+      CustomPaint(
+        painter: _LineThrough(),
+        child: RoundButton(
+          borderColor: Colors.red,
+          size: buttonSize,
+          child: Text(
+            "2",
+            style: Theme.of(context).textTheme.button,
+          ),
+          onPressed: () => _doAddPoints(context, 2, false),
         ),
-        Column(
-          children: <Widget>[
-            RoundButton(
-              borderColor: Colors.green,
-              size: buttonSize,
-              child: Text("3"),
-              onPressed: () => _doAddPoints(context, 3, true),
-            ),
-            CustomPaint(
-              painter: _LineThrough(),
-              child: RoundButton(
-                borderColor: Colors.red,
-                size: buttonSize,
-                onPressed: () => _doAddPoints(context, 3, false),
-                child: Text(
-                  "3",
-                  style: Theme.of(context).textTheme.button,
-                ),
-              ),
-            ),
-          ],
+      ),
+    ];
+    List<Widget> thirdWidgets = <Widget>[
+      RoundButton(
+        borderColor: Colors.green,
+        size: buttonSize,
+        child: Text("3"),
+        onPressed: () => _doAddPoints(context, 3, true),
+      ),
+      CustomPaint(
+        painter: _LineThrough(),
+        child: RoundButton(
+          borderColor: Colors.red,
+          size: buttonSize,
+          onPressed: () => _doAddPoints(context, 3, false),
+          child: Text(
+            "3",
+            style: Theme.of(context).textTheme.button,
+          ),
         ),
-        Column(
-          children: <Widget>[
-            RoundButton(
-              borderColor: Colors.blue,
-              size: buttonSize * 3 / 4,
-              child: Icon(Icons.undo),
-              onPressed: stack.canUndo ? () => stack.undo() : null,
-            ),
-            RoundButton(
-              borderColor: Colors.blue,
-              size: buttonSize * 3 / 4,
-              onPressed: stack.canRedo ? () => stack.redo() : null,
-              child: Icon(
-                Icons.redo,
-              ),
-            ),
-          ],
+      ),
+    ];
+    List<Widget> fourWidgets = <Widget>[
+      RoundButton(
+        borderColor: Colors.blue,
+        size: buttonSize * 3 / 4,
+        child: Icon(Icons.undo),
+        onPressed: stack.canUndo ? () => stack.undo() : null,
+      ),
+      RoundButton(
+        borderColor: Colors.blue,
+        size: buttonSize * 3 / 4,
+        onPressed: stack.canRedo ? () => stack.redo() : null,
+        child: Icon(
+          Icons.redo,
         ),
-      ],
-    );
+      ),
+    ];
+    if (orientation == Orientation.portrait) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            children: firstWidgets,
+          ),
+          Column(
+            children: secondidgets,
+          ),
+          Column(
+            children: thirdWidgets,
+          ),
+          Column(
+            children: fourWidgets,
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Row(
+            children: firstWidgets,
+          ),
+          Row(
+            children: secondidgets,
+          ),
+          Row(
+            children: thirdWidgets,
+          ),
+          Row(
+            children: fourWidgets,
+          ),
+        ],
+      );
+    }
   }
 
-  Widget _buildDefenceSection(
-      BuildContext context, BoxConstraints boxConstraints) {
-    double buttonSize = boxConstraints.maxWidth / 4;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text("OFF RB"),
-              onPressed: () =>
-                  _doBasicEvent(context, GameEventType.OffsensiveRebound),
-            ),
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text(
-                "DEF RB",
-              ),
-              onPressed: () =>
-                  _doBasicEvent(context, GameEventType.DefensiveRebound),
-            ),
-          ],
+  Widget _buildDefenceSection(BuildContext context,
+      BoxConstraints boxConstraints, Orientation orientation) {
+    double buttonSize;
+    if (orientation == Orientation.portrait) {
+      buttonSize = boxConstraints.maxWidth / 4;
+    } else {
+      buttonSize = boxConstraints.maxHeight / 4;
+    }
+    List<Widget> firstWidgets = <Widget>[
+      RoundButton(
+        borderColor: Colors.red,
+        size: buttonSize,
+        child: Text("OFF RB"),
+        onPressed: () =>
+            _doBasicEvent(context, GameEventType.OffsensiveRebound),
+      ),
+      RoundButton(
+        borderColor: Colors.red,
+        size: buttonSize,
+        child: Text(
+          "DEF RB",
         ),
-        Column(
-          children: <Widget>[
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text("T/O"),
-              onPressed: () => _doBasicEvent(context, GameEventType.Turnover),
-            ),
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text(
-                "STL",
-              ),
-              onPressed: () => _doBasicEvent(context, GameEventType.Steal),
-            ),
-          ],
+        onPressed: () => _doBasicEvent(context, GameEventType.DefensiveRebound),
+      ),
+    ];
+    List<Widget> secondWidgets = <Widget>[
+      RoundButton(
+        borderColor: Colors.red,
+        size: buttonSize,
+        child: Text("T/O"),
+        onPressed: () => _doBasicEvent(context, GameEventType.Turnover),
+      ),
+      RoundButton(
+        borderColor: Colors.red,
+        size: buttonSize,
+        child: Text(
+          "STL",
         ),
-        Column(
-          children: <Widget>[
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text("BLK"),
-              onPressed: () => _doBasicEvent(context, GameEventType.Block),
-            ),
-            RoundButton(
-              borderColor: Colors.red,
-              size: buttonSize,
-              child: Text(
-                "ASST",
-              ),
-              onPressed: () => _doBasicEvent(context, GameEventType.Assist),
-            ),
-          ],
+        onPressed: () => _doBasicEvent(context, GameEventType.Steal),
+      ),
+    ];
+    List<Widget> thirdWidgets = <Widget>[
+      RoundButton(
+        borderColor: Colors.red,
+        size: buttonSize,
+        child: Text("BLK"),
+        onPressed: () => _doBasicEvent(context, GameEventType.Block),
+      ),
+      RoundButton(
+        borderColor: Colors.red,
+        size: buttonSize,
+        child: Text(
+          "ASST",
         ),
-      ],
-    );
+        onPressed: () => _doBasicEvent(context, GameEventType.Assist),
+      ),
+    ];
+
+    if (orientation == Orientation.portrait) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            children: firstWidgets,
+          ),
+          Column(
+            children: secondWidgets,
+          ),
+          Column(
+            children: thirdWidgets,
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Row(
+            children: firstWidgets,
+          ),
+          Row(
+            children: secondWidgets,
+          ),
+          Row(
+            children: thirdWidgets,
+          ),
+          _buildSubButtons(context, orientation),
+        ],
+      );
+    }
   }
 
-  Widget _buildSubButtons(BuildContext context) {
+  Widget _buildSubButtons(BuildContext context, Orientation orientation) {
     return BlocBuilder(
         bloc: BlocProvider.of<SingleGameBloc>(context),
         builder: (BuildContext context, SingleGameState state) {
@@ -237,16 +296,49 @@ class GameStatsScreen extends StatelessWidget {
           if (state is SingleGameDeleted) {
             return DeletedWidget();
           }
-          return ButtonBar(
-            children: <Widget>[
+          var buttons = <Widget>[
+            FlatButton(
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  Messages.of(context).subButton,
+                  style: Theme.of(context).textTheme.button,
+                  textScaleFactor: 1.5,
+                ),
+              ),
+              onPressed: () => _doBasicEvent(context, GameEventType.Sub),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+                side: BorderSide(color: Colors.blue),
+              ),
+            ),
+            FlatButton(
+              child: Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text(
+                  "FOUL",
+                  textScaleFactor: 1.5,
+                  style: Theme.of(context).textTheme.button,
+                ),
+              ),
+              onPressed: () => _doBasicEvent(context, GameEventType.Foul),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+                side: BorderSide(color: Colors.blue),
+              ),
+            ),
+          ];
+          if (orientation == Orientation.portrait) {
+            buttons.insert(
+              0,
               FlatButton(
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: Text(Messages.of(context).periodButton,
-                      style: Theme.of(context)
-                          .textTheme
-                          .button
-                          .copyWith(fontSize: 30.0)),
+                  child: Text(
+                    Messages.of(context).periodButton,
+                    style: Theme.of(context).textTheme.button,
+                    textScaleFactor: 1.5,
+                  ),
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
@@ -254,41 +346,10 @@ class GameStatsScreen extends StatelessWidget {
                 ),
                 onPressed: () => _selectPeriod(context),
               ),
-              FlatButton(
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    Messages.of(context).subButton,
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(fontSize: 30.0),
-                  ),
-                ),
-                onPressed: () => _doBasicEvent(context, GameEventType.Sub),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  side: BorderSide(color: Colors.blue),
-                ),
-              ),
-              FlatButton(
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    "FOUL",
-                    style: Theme.of(context)
-                        .textTheme
-                        .button
-                        .copyWith(fontSize: 30.0),
-                  ),
-                ),
-                onPressed: () => _doBasicEvent(context, GameEventType.Foul),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  side: BorderSide(color: Colors.blue),
-                ),
-              ),
-            ],
+            );
+          }
+          return ButtonBar(
+            children: buttons,
           );
         });
   }
@@ -302,29 +363,63 @@ class GameStatsScreen extends StatelessWidget {
           create: (BuildContext context) => SingleTeamBloc(
               teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
           child: BlocProvider(
-            create: (BuildContext context) => SingleGameBloc(
-                gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
-            child: Column(
-              children: <Widget>[
-                LayoutBuilder(
-                  builder:
-                      (BuildContext context, BoxConstraints boxConstraint) =>
-                          _buildPointSection(context, boxConstraint),
-                ),
-                Divider(),
-                Expanded(
-                  child: _GameStateSection(stack),
-                ),
-                Divider(),
-                LayoutBuilder(
-                  builder:
-                      (BuildContext context, BoxConstraints boxConstraint) =>
-                          _buildDefenceSection(context, boxConstraint),
-                ),
-                Builder(
-                  builder: (BuildContext context) => _buildSubButtons(context),
-                ),
-              ],
+            create: (BuildContext context) =>
+                SingleGameBloc(
+                    gameUid: gameUid, db: BlocProvider
+                    .of<TeamsBloc>(context)
+                    .db),
+            child: OrientationBuilder(
+              builder: (BuildContext context, Orientation orientation) {
+                if (orientation == Orientation.landscape) {
+                  return Row(
+                    children: <Widget>[
+                      LayoutBuilder(
+                        builder: (BuildContext context,
+                            BoxConstraints boxConstraint) =>
+                            _buildPointSection(
+                                context, boxConstraint, orientation),
+                      ),
+                      Expanded(
+                        child: _GameStateSection(
+                            stack, orientation, _selectPeriod),
+                      ),
+                      LayoutBuilder(
+                        builder: (BuildContext context,
+                            BoxConstraints boxConstraint) =>
+                            _buildDefenceSection(
+                                context, boxConstraint, orientation),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: <Widget>[
+                      LayoutBuilder(
+                        builder: (BuildContext context,
+                            BoxConstraints boxConstraint) =>
+                            _buildPointSection(
+                                context, boxConstraint, orientation),
+                      ),
+                      Divider(),
+                      Expanded(
+                        child: _GameStateSection(
+                            stack, orientation, _selectPeriod),
+                      ),
+                      Divider(),
+                      LayoutBuilder(
+                        builder: (BuildContext context,
+                            BoxConstraints boxConstraint) =>
+                            _buildDefenceSection(
+                                context, boxConstraint, orientation),
+                      ),
+                      Builder(
+                        builder: (BuildContext context) =>
+                            _buildSubButtons(context, orientation),
+                      ),
+                    ],
+                  );
+                }
+              },
             ),
           ),
         ),
@@ -370,8 +465,10 @@ class GameStatsScreen extends StatelessWidget {
 
 class _GameStateSection extends StatelessWidget {
   final ChangeStack stack;
+  final Orientation orientation;
+  final SelectCallback selectCallback;
 
-  _GameStateSection(this.stack);
+  _GameStateSection(this.stack, this.orientation, this.selectCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -404,12 +501,15 @@ class _GameStateSection extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage('assets/images/basketball.png'),
-              fit: BoxFit.fitHeight,
+              fit: orientation == Orientation.portrait
+                  ? BoxFit.fitHeight
+                  : BoxFit.fitWidth,
               alignment: Alignment.topCenter,
               colorFilter: ColorFilter.mode(
                   Colors.white.withOpacity(0.2), BlendMode.dstATop),
             ),
           ),
+          alignment: Alignment.topLeft,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -418,38 +518,84 @@ class _GameStateSection extends StatelessWidget {
                 child: Wrap(
                   alignment: WrapAlignment.start,
                   verticalDirection: VerticalDirection.down,
+                  runAlignment: WrapAlignment.start,
                   children: <Widget>[
-                    Text(
-                        Messages.of(context)
-                            .getPeriodName(state.game.currentPeriod),
-                        style: Theme.of(context).textTheme.body1),
+                    orientation == Orientation.portrait
+                        ? Text(
+                      Messages.of(context)
+                          .getPeriodName(state.game.currentPeriod),
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .body1,
+                    )
+                        : ButtonBar(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            size: 40.0,
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        FlatButton(
+                          color: Theme
+                              .of(context)
+                              .buttonTheme
+                              .colorScheme
+                              .background,
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text(
+                              Messages
+                                  .of(context)
+                                  .periodButton,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .button,
+                              textScaleFactor: 1.5,
+                            ),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            side: BorderSide(color: Colors.blue),
+                          ),
+                          onPressed: () => selectCallback(context),
+                        ),
+                      ],
+                    ),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          BlocBuilder(
-                              bloc: BlocProvider.of<SingleTeamBloc>(context),
-                              builder: (BuildContext context,
-                                  SingleTeamBlocState teamState) {
-                                if (teamState is SingleTeamUninitialized ||
-                                    teamState is SingleTeamDeleted) {
-                                  return Text(Messages.of(context).loading,
-                                      overflow: TextOverflow.fade,
-                                      style: style);
-                                }
-                                return Text(teamState.team.name,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        BlocBuilder(
+                            bloc: BlocProvider.of<SingleTeamBloc>(context),
+                            builder: (BuildContext context,
+                                SingleTeamBlocState teamState) {
+                              if (teamState is SingleTeamUninitialized ||
+                                  teamState is SingleTeamDeleted) {
+                                return Text(Messages
+                                    .of(context)
+                                    .loading,
                                     overflow: TextOverflow.fade, style: style);
-                              }),
-                          Text(state.game.summary.pointsAgainst.toString(),
-                              style: style),
-                        ]),
+                              }
+                              return Text(teamState.team.name,
+                                  overflow: TextOverflow.fade, style: style);
+                            }),
+                        Text(state.game.summary.pointsAgainst.toString(),
+                            style: style),
+                      ],
+                    ),
                     Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(state.game.opponentName,
-                              overflow: TextOverflow.fade, style: style),
-                          Text(state.game.summary.pointsAgainst.toString(),
-                              style: style),
-                        ]),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(state.game.opponentName,
+                            overflow: TextOverflow.fade, style: style),
+                        Text(state.game.summary.pointsAgainst.toString(),
+                            style: style),
+                      ],
+                    ),
+                    Divider(),
                     ..._getGameEvents(context, state)
                   ],
                 ),
@@ -464,20 +610,20 @@ class _GameStateSection extends StatelessWidget {
   Iterable<Widget> _getGameEvents(BuildContext context, SingleGameState state) {
     if (state.gameEvents.isEmpty) {
       return [
-        SizedBox(
-          height: 0.0,
-          width: 0,
-        )
+        SizedBox(height: 20.0),
+        Text("No events",
+            textScaleFactor: 1.5, style: Theme
+                .of(context)
+                .textTheme
+                .subtitle),
       ];
     }
-    return state.gameEvents
-        .sublist(max(state.gameEvents.length - 4, 0))
-        .reversed
-        .map(
-          (GameEvent ev) => GameEventWidget(
+    return state.gameEvents.sublist(max(state.gameEvents.length - 4, 0)).map(
+          (GameEvent ev) =>
+          GameEventWidget(
             gameEvent: ev,
           ),
-        );
+    );
   }
 }
 

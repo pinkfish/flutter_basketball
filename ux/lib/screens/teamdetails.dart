@@ -29,27 +29,59 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
 
   Widget _innerData(SingleTeamBlocState state) {
     if (_currentIndex == 0) {
+      Widget inner;
       if (!state.loadedGames) {
-        return Center(
-          child: Text(Messages.of(context).loading),
+        inner = Center(
+          child: Text(
+            Messages.of(context).loading,
+            textScaleFactor: 2.0,
+          ),
+        );
+      } else if (state.games.isEmpty) {
+        inner = Center(
+          child: Text(
+            Messages.of(context).noGames,
+            textScaleFactor: 2.0,
+          ),
+        );
+      } else {
+        inner = ListView(
+          children: state.games
+              .map(
+                (Game g) => Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: GameTile(
+                      game: g,
+                      onTap: () =>
+                          Navigator.pushNamed(context, "/Game/" + g.uid),
+                    )),
+              )
+              .toList(),
         );
       }
-      if (state.games.isEmpty) {
-        return Center(
-          child: Text(Messages.of(context).noGames),
-        );
-      }
-      return ListView(
-        children: state.games
-            .map(
-              (Game g) => Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: GameTile(
-                    game: g,
-                    onTap: () => Navigator.pushNamed(context, "/Game/" + g.uid),
-                  )),
-            )
-            .toList(),
+      return Column(
+        children: <Widget>[
+          Card(
+            child: ListTile(
+              title: Text(
+                state.team.name,
+                textScaleFactor: 1.5,
+              ),
+              subtitle: Text(
+                "${state.team.playerUids.length} players",
+                textScaleFactor: 1.5,
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () =>
+                    Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
+              ),
+            ),
+          ),
+          Expanded(
+            child: inner,
+          ),
+        ],
       );
     } else {
       if (state.team.playerUids.isEmpty) {
@@ -112,7 +144,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 return LoadingWidget();
               }
               return SavingOverlay(
-                  saving: state is SingleTeamSaving, child: _innerData(state));
+                  saving: state is SingleTeamSaving,
+                  child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      child: _innerData(state)));
             },
           ),
           bottomNavigationBar: BottomNavigationBar(

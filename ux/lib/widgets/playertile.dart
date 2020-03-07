@@ -13,8 +13,16 @@ import '../messages.dart';
 class PlayerTile extends StatelessWidget {
   final String playerUid;
   final Function onTap;
+  final bool editButton;
+  final Color color;
+  final ShapeBorder shape;
 
-  PlayerTile({@required this.playerUid, this.onTap});
+  PlayerTile(
+      {@required this.playerUid,
+      this.onTap,
+      this.editButton = true,
+      this.color,
+      this.shape});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +39,12 @@ class PlayerTile extends StatelessWidget {
               builder: (BuildContext context, SinglePlayerState state) {
                 if (state is SinglePlayerDeleted) {
                   return Card(
+                    color: color,
+                    shape: shape,
                     child: ListTile(
-                      title: Text(Messages.of(context).unknown),
+                      title: Text(Messages
+                          .of(context)
+                          .unknown),
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -44,9 +56,16 @@ class PlayerTile extends StatelessWidget {
                 }
                 if (state is SinglePlayerUninitialized) {
                   return Card(
+                    color: color,
+                    shape: shape,
                     child: ListTile(
-                      title: Text(Messages.of(context).loading,
-                          style: Theme.of(context).textTheme.caption),
+                      title: Text(Messages
+                          .of(context)
+                          .loading,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .caption),
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -58,49 +77,65 @@ class PlayerTile extends StatelessWidget {
                 }
                 if (state is SinglePlayerLoaded) {
                   return Card(
+                    color: color,
+                    shape: shape,
                     child: ListTile(
                       onTap: this.onTap,
                       title: Text(
                         state.player.name,
-                        style: Theme.of(context).textTheme.title,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .title,
                       ),
                       leading: ConstrainedBox(
                         constraints:
-                            BoxConstraints.tightFor(height: 40.0, width: 40.0),
+                        BoxConstraints.tightFor(height: 40.0, width: 40.0),
                         child: Container(
                           child: Center(
                             child: Text(
                               state.player.jerseyNumber,
                               style:
-                                  Theme.of(context).textTheme.caption.copyWith(
-                                        color: Theme.of(context).accentColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
+                              Theme.of(context).textTheme.caption.copyWith(
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                              ),
                             ),
                           ),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Theme.of(context).primaryColor),
+                                color: Theme
+                                    .of(context)
+                                    .primaryColor),
                           ),
                         ),
                       ),
-                      trailing: IconButton(
+                      trailing: editButton
+                          ? IconButton(
                         icon: Icon(Icons.edit),
-                        onPressed: () => Navigator.pushNamed(
-                            context, "/EditPlayer/" + state.player.uid),
-                      ),
+                        onPressed: () =>
+                            Navigator.pushNamed(
+                                context, "/EditPlayer/" + state.player.uid),
+                      )
+                          : null,
                     ),
                   );
                 }
-                return ListTile(
-                  title: Text(Messages.of(context).unknown),
-                  leading: Stack(
-                    children: <Widget>[
-                      Icon(MdiIcons.tshirtCrewOutline),
-                      Text(""),
-                    ],
+                return Card(
+                  color: color,
+                  shape: shape,
+                  child: ListTile(
+                    title: Text(Messages
+                        .of(context)
+                        .unknown),
+                    leading: Stack(
+                      children: <Widget>[
+                        Icon(MdiIcons.tshirtCrewOutline),
+                        Text(""),
+                      ],
+                    ),
                   ),
                 );
               },

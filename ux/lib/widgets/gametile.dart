@@ -30,19 +30,35 @@ class GameTile extends StatelessWidget {
         break;
     }
     return Card(
+      color: Theme.of(context).primaryColor,
       child: ListTile(
         leading: Icon(MdiIcons.basketball),
-        title: Text("vs " + game.opponentName + " at " + game.location,
-            style: Theme.of(context).textTheme.title),
+        title: Text(
+          "vs " + game.opponentName + " at " + game.location,
+          style: Theme.of(context).textTheme.title,
+          textScaleFactor: 1.2,
+        ),
         subtitle: Text(
-            DateFormat("dd MMM hh:mm").format(game.eventTime.toLocal()),
-            style: Theme.of(context).textTheme.subtitle),
+          DateFormat("dd MMM hh:mm").format(game.eventTime.toLocal()),
+          style: Theme.of(context).textTheme.subtitle.copyWith(
+                color: Theme.of(context).accentColor,
+              ),
+          textScaleFactor: 1.2,
+        ),
         onTap: this.onTap,
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(game.summary.pointsFor.toString(), style: style),
-            Text(game.summary.pointsAgainst.toString(), style: style)
+            Text(
+              game.summary.pointsFor.toString(),
+              style: style.copyWith(fontWeight: FontWeight.w600),
+              textScaleFactor: 1.3,
+            ),
+            Text(
+              game.summary.pointsAgainst.toString(),
+              style: style.copyWith(fontWeight: FontWeight.w600),
+              textScaleFactor: 1.3,
+            )
           ],
         ),
       ),
