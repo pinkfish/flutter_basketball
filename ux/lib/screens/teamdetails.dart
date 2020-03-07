@@ -8,8 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
-import '../widgets/gametile.dart';
-import '../widgets/playertile.dart';
+import '../widgets/game/gametile.dart';
+import '../widgets/player/playertile.dart';
 import '../widgets/savingoverlay.dart';
 import 'addplayer.dart';
 
@@ -169,14 +169,23 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           floatingActionButton: BlocBuilder(
             bloc: BlocProvider.of<SingleTeamBloc>(context),
             builder: (BuildContext context, SingleTeamBlocState state) {
-              return FloatingActionButton(
-                onPressed: _currentIndex == 0
-                    ? () => _addGame(context, state.team.uid, state)
-                    : () => _addPlayer(context),
-                tooltip: _currentIndex == 0
-                    ? Messages.of(context).addGameTooltip
-                    : Messages.of(context).addPlayerTooltip,
-                child: Icon(Icons.add),
+              return AnimatedSwitcher(
+                duration: Duration(milliseconds: 500),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(child: child, scale: animation);
+                },
+                child: FloatingActionButton.extended(
+                  onPressed: _currentIndex == 0
+                      ? () => _addGame(context, state.team.uid, state)
+                      : () => _addPlayer(context),
+                  tooltip: _currentIndex == 0
+                      ? Messages.of(context).addGameTooltip
+                      : Messages.of(context).addPlayerTooltip,
+                  icon: Icon(Icons.add),
+                  label: _currentIndex == 0
+                      ? Text(Messages.of(context).addGameButton)
+                      : Text(Messages.of(context).addPlayerButton),
+                ),
               );
             },
           ),

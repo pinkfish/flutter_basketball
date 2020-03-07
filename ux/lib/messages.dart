@@ -81,11 +81,20 @@ class Messages {
   String get gamesButton =>
       Intl.message("GAMES", desc: "Text on a games button", locale: locale);
 
+  String get editButton =>
+      Intl.message("EDIT", desc: "Text on a edit button", locale: locale);
+
   String get subButton => Intl.message("SUB",
       desc: "Text on a substitution button", locale: locale);
 
   String get addPlayerButton => Intl.message("PLAYER",
       desc: "Text on a add player button", locale: locale);
+
+  String get addGameButton =>
+      Intl.message("GAME", desc: "Text on a add game button", locale: locale);
+
+  String get addTeamButton =>
+      Intl.message("TEAM", desc: "Text on a add team button", locale: locale);
 
   String get unknown => Intl.message("unknown",
       desc: "Used when the data is unknown", locale: locale);
@@ -95,8 +104,10 @@ class Messages {
 
   String get players => Intl.message("Players",
       desc: "Used when the data is unknown", locale: locale);
+
   String get deletePlayer => Intl.message("Delete Player",
       desc: "Dialog title for deleting a playern", locale: locale);
+
   String get period => Intl.message("Period",
       desc: "Dialog title for sertting the current period", locale: locale);
   String get periodButton => Intl.message("PERIOD",
@@ -227,9 +238,9 @@ class Messages {
             desc: "Subsitiution of player", locale: locale);
         break;
       case GameEventType.OffsensiveRebound:
-        return Intl.message("Offsensive Rebound", locale: locale);
+        return Intl.message("Off Rebound", locale: locale);
       case GameEventType.DefensiveRebound:
-        return Intl.message("Defsensive Rebound", locale: locale);
+        return Intl.message("Def Rebound", locale: locale);
       case GameEventType.Block:
         return Intl.message("Block", desc: "Block of a shot", locale: locale);
       case GameEventType.Assist:

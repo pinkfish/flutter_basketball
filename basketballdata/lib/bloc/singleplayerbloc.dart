@@ -2,15 +2,25 @@ import 'dart:async';
 
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:synchronized/synchronized.dart';
 
-import '../data/player.dart';
+import '../basketballdata.dart';
 
+///
+/// The data associated with the player.
+///
 abstract class SinglePlayerState extends Equatable {
   final Player player;
+  final bool loadedGames;
+  final BuiltList<Game> games;
 
-  SinglePlayerState({@required this.player});
+  SinglePlayerState(
+      {@required this.player,
+      @required this.games,
+      @required this.loadedGames});
 
   @override
   List<Object> get props => [player];
@@ -20,7 +30,14 @@ abstract class SinglePlayerState extends Equatable {
 /// We have a player, default state.
 ///
 class SinglePlayerLoaded extends SinglePlayerState {
-  SinglePlayerLoaded({@required Player player}) : super(player: player);
+  SinglePlayerLoaded({@required Player player,
+    SinglePlayerState state,
+    bool loadedGamed,
+    BuiltList<Game> games})
+      : super(
+      player: player ?? state.player,
+      loadedGames: loadedGamed ?? state.loadedGames,
+      games: games ?? state.games);
 
   @override
   String toString() {
@@ -33,7 +50,10 @@ class SinglePlayerLoaded extends SinglePlayerState {
 ///
 class SinglePlayerSaving extends SinglePlayerState {
   SinglePlayerSaving({@required SinglePlayerState singlePlayerState})
-      : super(player: singlePlayerState.player);
+      : super(
+      player: singlePlayerState.player,
+      loadedGames: singlePlayerState.loadedGames,
+      games: singlePlayerState.games);
 
   @override
   String toString() {
@@ -46,7 +66,10 @@ class SinglePlayerSaving extends SinglePlayerState {
 ///
 class SinglePlayerSaveSuccessful extends SinglePlayerState {
   SinglePlayerSaveSuccessful({@required SinglePlayerState singlePlayerState})
-      : super(player: singlePlayerState.player);
+      : super(
+      player: singlePlayerState.player,
+      loadedGames: singlePlayerState.loadedGames,
+      games: singlePlayerState.games);
 
   @override
   String toString() {
@@ -62,7 +85,10 @@ class SinglePlayerSaveFailed extends SinglePlayerState {
 
   SinglePlayerSaveFailed(
       {@required SinglePlayerState singlePlayerState, this.error})
-      : super(player: singlePlayerState.player);
+      : super(
+      player: singlePlayerState.player,
+      loadedGames: singlePlayerState.loadedGames,
+      games: singlePlayerState.games);
 
   @override
   String toString() {
@@ -74,7 +100,8 @@ class SinglePlayerSaveFailed extends SinglePlayerState {
 /// Player got deleted.
 ///
 class SinglePlayerDeleted extends SinglePlayerState {
-  SinglePlayerDeleted() : super(player: null);
+  SinglePlayerDeleted()
+      : super(player: null, loadedGames: false, games: BuiltList.of([]));
 
   @override
   String toString() {
@@ -86,7 +113,8 @@ class SinglePlayerDeleted extends SinglePlayerState {
 /// What the system has not yet read the player state.
 ///
 class SinglePlayerUninitialized extends SinglePlayerState {
-  SinglePlayerUninitialized() : super(player: null);
+  SinglePlayerUninitialized()
+      : super(player: null, loadedGames: false, games: BuiltList.of([]));
 }
 
 abstract class SinglePlayerEvent extends Equatable {}
@@ -113,6 +141,16 @@ class SinglePlayerDelete extends SinglePlayerEvent {
   List<Object> get props => [];
 }
 
+///
+/// Loads the player and loads a game.
+///
+class SinglePlayerLoadGames extends SinglePlayerEvent {
+  SinglePlayerLoadGames();
+
+  @override
+  List<Object> get props => [];
+}
+
 class _SinglePlayerNewPlayer extends SinglePlayerEvent {
   final Player newPlayer;
 
@@ -120,6 +158,15 @@ class _SinglePlayerNewPlayer extends SinglePlayerEvent {
 
   @override
   List<Object> get props => [newPlayer];
+}
+
+class _SinglePlayerLoadedGames extends SinglePlayerEvent {
+  final BuiltList<Game> games;
+
+  _SinglePlayerLoadedGames({@required this.games});
+
+  @override
+  List<Object> get props => [games];
 }
 
 class _SinglePlayerDeleted extends SinglePlayerEvent {
@@ -135,8 +182,10 @@ class _SinglePlayerDeleted extends SinglePlayerEvent {
 class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
   final String playerUid;
   final BasketballDatabase db;
+  final Lock _lock = Lock();
 
   StreamSubscription<Player> _playerSub;
+  StreamSubscription<BuiltList<Game>> _gameEventSub;
 
   SinglePlayerBloc({@required this.db, @required this.playerUid}) {
     _playerSub = db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdate);
@@ -156,6 +205,8 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
   Future<void> close() async {
     _playerSub?.cancel();
     _playerSub = null;
+    _gameEventSub?.cancel();
+    _gameEventSub = null;
     await super.close();
   }
 
@@ -167,7 +218,7 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
   @override
   Stream<SinglePlayerState> mapEventToState(SinglePlayerEvent event) async* {
     if (event is _SinglePlayerNewPlayer) {
-      yield SinglePlayerLoaded(player: event.newPlayer);
+      yield SinglePlayerLoaded(player: event.newPlayer, state: state);
     }
 
     // The player is deleted.
@@ -196,6 +247,24 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
       } catch (e) {
         yield SinglePlayerSaveFailed(singlePlayerState: state, error: e);
       }
+    }
+
+    if (event is _SinglePlayerLoadedGames) {
+      yield SinglePlayerLoaded(
+          state: state,
+          loadedGamed: true,
+          games: event.games,
+          player: state.player);
+    }
+
+    if (event is SinglePlayerLoadGames) {
+      _lock.synchronized(() {
+        if (_gameEventSub == null) {
+          _gameEventSub = db.getGamesForPlayer(playerUid: playerUid).listen(
+                  (BuiltList<Game> ev) =>
+                  add(_SinglePlayerLoadedGames(games: ev)));
+        }
+      });
     }
   }
 }

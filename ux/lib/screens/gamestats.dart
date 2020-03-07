@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
-import 'package:basketballstats/widgets/gameeventwidget.dart';
-import 'package:basketballstats/widgets/gameplayerdialog.dart';
+import 'package:basketballstats/widgets/game/gameeventwidget.dart';
+import 'package:basketballstats/widgets/game/gameplayerdialog.dart';
 import 'package:basketballstats/widgets/loading.dart';
-import 'package:basketballstats/widgets/roundbutton.dart';
+import 'package:basketballstats/widgets/util/roundbutton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -63,9 +63,13 @@ class GameStatsScreen extends StatelessWidget {
       return;
     }
     bloc.add(SingleGameAddEvent(
-        event: GameEvent((b) => b
+        event: GameEvent((b) =>
+        b
           ..playerUid = playerUid
           ..points = 0
+          ..gameUid = gameUid
+          ..period = bloc.state.game.currentPeriod
+          ..opponent = bloc.state.game.opponents.containsKey(playerUid)
           ..timestamp = DateTime.now().toUtc()
           ..type = type)));
   }
@@ -363,11 +367,8 @@ class GameStatsScreen extends StatelessWidget {
           create: (BuildContext context) => SingleTeamBloc(
               teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
           child: BlocProvider(
-            create: (BuildContext context) =>
-                SingleGameBloc(
-                    gameUid: gameUid, db: BlocProvider
-                    .of<TeamsBloc>(context)
-                    .db),
+            create: (BuildContext context) => SingleGameBloc(
+                gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
             child: OrientationBuilder(
               builder: (BuildContext context, Orientation orientation) {
                 if (orientation == Orientation.landscape) {
@@ -375,7 +376,7 @@ class GameStatsScreen extends StatelessWidget {
                     children: <Widget>[
                       LayoutBuilder(
                         builder: (BuildContext context,
-                            BoxConstraints boxConstraint) =>
+                                BoxConstraints boxConstraint) =>
                             _buildPointSection(
                                 context, boxConstraint, orientation),
                       ),
@@ -618,7 +619,10 @@ class _GameStateSection extends StatelessWidget {
                 .subtitle),
       ];
     }
-    return state.gameEvents.sublist(max(state.gameEvents.length - 4, 0)).map(
+    return state.gameEvents
+        .sublist(max(state.gameEvents.length - 4, 0))
+        .reversed
+        .map(
           (GameEvent ev) =>
           GameEventWidget(
             gameEvent: ev,

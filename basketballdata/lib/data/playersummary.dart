@@ -10,12 +10,17 @@ part 'playersummary.g.dart';
 abstract class PlayerSummary
     implements Built<PlayerSummary, PlayerSummaryBuilder> {
   BuiltMap<GamePeriod, PlayerSummaryData> get perPeriod;
+
   bool get currentlyPlaying;
 
-  static void _initializeBuilder(PlayerSummaryBuilder b) =>
-      b..currentlyPlaying = false;
+  bool get playing;
+
+  static void _initializeBuilder(PlayerSummaryBuilder b) => b
+    ..currentlyPlaying = false
+    ..playing = true;
 
   PlayerSummary._();
+
   factory PlayerSummary([updates(PlayerSummaryBuilder b)]) = _$PlayerSummary;
 
   Map<String, dynamic> toMap() {

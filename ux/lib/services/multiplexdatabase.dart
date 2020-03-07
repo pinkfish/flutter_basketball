@@ -217,4 +217,12 @@ class MultiplexDatabase extends BasketballDatabase {
 
   @override
   Stream<bool> get onDatabaseChange => _stream;
+
+  @override
+  Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) {
+    if (useSql)
+      return _sql.getGamesForPlayer(playerUid: playerUid);
+    else
+      return _fs.getGamesForPlayer(playerUid: playerUid);
+  }
 }

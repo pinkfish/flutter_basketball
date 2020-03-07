@@ -1,5 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/playeredit.dart';
+import 'package:basketballstats/widgets/player/playeredit.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

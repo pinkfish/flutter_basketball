@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
-import '../widgets/datetimepicker.dart';
+import '../widgets/util/datetimepicker.dart';
 import '../widgets/savingoverlay.dart';
 
 class AddGameScreen extends StatelessWidget {

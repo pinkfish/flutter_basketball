@@ -1,6 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
-import 'package:basketballstats/widgets/fabmenu.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
 
+///
+/// Shows the details for the playr in a nice happy screen
+///
 class PlayerDetailsScreen extends StatelessWidget {
   final String playerUid;
 
@@ -26,85 +28,150 @@ class PlayerDetailsScreen extends StatelessWidget {
 class _PlayerDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(Messages.of(context).title),
-      ),
-      body: BlocBuilder(
-          bloc: BlocProvider.of<SinglePlayerBloc>(context),
-          builder: (BuildContext context, SinglePlayerState state) {
-            if (state is SinglePlayerUninitialized) {
-              return LoadingWidget();
-            }
-            if (state is SinglePlayerDeleted) {
-              return DeletedWidget();
-            }
-            return Stack(children: [
-              Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+    return BlocConsumer(
+      bloc: BlocProvider.of<SinglePlayerBloc>(context),
+      listener: (BuildContext context, SinglePlayerState state) {
+        if (state is SinglePlayerLoaded) {
+          BlocProvider.of<SinglePlayerBloc>(context)
+              .add(SinglePlayerLoadGames());
+        }
+        if (state is SinglePlayerDeleted) {
+          Navigator.pop(context);
+        }
+      },
+      builder: (BuildContext context, SinglePlayerState state) {
+        if (state is SinglePlayerUninitialized) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(Messages
+                  .of(context)
+                  .title),
+            ),
+            body: LoadingWidget(),
+          );
+        }
+        if (state is SinglePlayerDeleted) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(Messages
+                  .of(context)
+                  .title),
+            ),
+            body: DeletedWidget(),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(Messages
+                .of(context)
+                .title),
+          ),
+          body: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Wrap(
                   children: [
-                    Text(state.player.name,
-                        style: Theme.of(context).textTheme.headline),
-                    Text(state.player.jerseyNumber,
-                        style: Theme.of(context).textTheme.subtitle),
+                    Container(
+                      width: 40.0,
+                      height: 40.0,
+                      child: Center(
+                        child: Text(
+                          state.player.jerseyNumber,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .caption
+                              .copyWith(
+                            color: Theme
+                                .of(context)
+                                .accentColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                        Border.all(color: Theme
+                            .of(context)
+                            .accentColor),
+                      ),
+                    ),
+                    SizedBox(width: 20.0),
+                    Text(
+                      state.player.name,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline,
+                      textScaleFactor: 1.5,
+                    ),
                   ],
                 ),
-              ),
-              FabMenu(
-                children: <FloatingActionButton>[
-                  FloatingActionButton(
-                    heroTag: "editPlayer",
-                    child: Icon(Icons.edit),
-                    onPressed: () => Navigator.pushNamed(
-                        context, "/EditPlayer/" + state.player.uid),
-                  ),
-                  FloatingActionButton(
-                    heroTag: "deletePlayer",
-                    child: Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog<void>(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext dialogContext) {
-                          return AlertDialog(
-                            title: Text(Messages.of(context).deletePlayer),
-                            content: Text(Messages.of(context)
-                                .deletePlayerAreYouSure(state.player.name)),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                    MaterialLocalizations.of(context)
-                                        .cancelButtonLabel,
-                                    style: Theme.of(context).textTheme.button),
-                                onPressed: () {
-                                  Navigator.of(dialogContext)
-                                      .pop(); // Dismiss alert dialog
-                                },
-                              ),
-                              FlatButton(
-                                child: Text(MaterialLocalizations.of(context)
-                                    .okButtonLabel),
-                                onPressed: () {
-                                  BlocProvider.of<SinglePlayerBloc>(context)
-                                      .add(SinglePlayerDelete());
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  FloatingActionButton(
-                    heroTag: "backbutton",
-                    child: Icon(Icons.arrow_back),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-            ]);
-          }),
+                ButtonBar(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _doDelete(context, state),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            heroTag: "editPlayer",
+            icon: Icon(Icons.edit),
+            label: Text(Messages
+                .of(context)
+                .editButton),
+            onPressed: () =>
+                Navigator.pushNamed(context, "/EditPlayer/" + state.player.uid),
+          ),
+        );
+      },
+    );
+  }
+
+  void _doDelete(BuildContext context, SinglePlayerState state) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(Messages
+              .of(context)
+              .deletePlayer),
+          content: Text(
+              Messages.of(context).deletePlayerAreYouSure(state.player.name)),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(MaterialLocalizations
+                  .of(context)
+                  .cancelButtonLabel,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .button),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+              },
+            ),
+            FlatButton(
+              child: Text(MaterialLocalizations
+                  .of(context)
+                  .okButtonLabel),
+              onPressed: () {
+                BlocProvider.of<SinglePlayerBloc>(context)
+                    .add(SinglePlayerDelete());
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

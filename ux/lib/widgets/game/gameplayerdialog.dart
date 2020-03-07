@@ -1,7 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:flutter/material.dart';
 
-import 'playertile.dart';
+import '../player/playertile.dart';
 
 ///
 /// Shows the players as a nice grid to be able to select from.

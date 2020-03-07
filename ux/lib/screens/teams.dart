@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
 import '../widgets/statsdrawer.dart';
-import '../widgets/teamwidget.dart';
+import '../widgets/team/teamwidget.dart';
 
 class TeamsScreen extends StatelessWidget {
   @override
@@ -41,10 +41,11 @@ class TeamsScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addTeam(context),
         tooltip: Messages.of(context).addTeamTooltip,
-        child: Icon(Icons.add),
+        icon: Icon(Icons.add),
+        label: Text(Messages.of(context).addTeamButton),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

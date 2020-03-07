@@ -18,9 +18,13 @@ class GameEventType extends EnumClass {
   static const GameEventType Steal = _$steal;
   static const GameEventType Turnover = _$turnover;
   static const GameEventType PeriodStart = _$periodStart;
+  static const GameEventType PeriodEnd = _$periodEnd;
+  static const GameEventType TimeoutStart = _$timeoutStart;
+  static const GameEventType TimeoutEnd = _$timeoutEnd;
 
   const GameEventType._(String name) : super(name);
 
   static BuiltSet<GameEventType> get values => _$values;
+
   static GameEventType valueOf(String name) => _$valueOf(name);
 }

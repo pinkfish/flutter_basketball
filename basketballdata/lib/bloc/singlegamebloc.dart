@@ -11,6 +11,9 @@ import 'package:synchronized/synchronized.dart';
 
 import '../data/game.dart';
 
+///
+/// The basic data for the game and all the data associated with it.
+///
 abstract class SingleGameState extends Equatable {
   final Game game;
   final bool loadedGameEvents;
@@ -283,7 +286,6 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
   @override
   Stream<SingleGameState> mapEventToState(SingleGameEvent event) async* {
     if (event is _SingleGameNewGame) {
-      print("newGame ${event.newGame}");
       yield SingleGameLoaded(game: event.newGame, state: state);
     }
 
@@ -316,6 +318,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     // Adds the game event into the system.
     if (event is SingleGameAddEvent) {
       try {
+        print("Adding ${event.event}");
+
         await db.addGameEvent(
             event: event.event.rebuild((b) => b..gameUid = this.gameUid));
       } catch (e) {
@@ -334,7 +338,6 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     if (event is SingleGameLoadEvents) {
-      print("Loading events");
       _lock.synchronized(() {
         if (_gameEventSub == null) {
           _gameEventSub = db

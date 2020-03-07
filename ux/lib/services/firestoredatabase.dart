@@ -32,7 +32,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> addGameEvent({GameEvent event}) async {
     var ref =
-    await Firestore.instance.collection(gameEventsTable).add(event.toMap());
+        await Firestore.instance.collection(gameEventsTable).add(event.toMap());
     return ref.documentID;
   }
 
@@ -230,4 +230,19 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<bool> get onDatabaseChange => null;
+
+  @override
+  Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) async* {
+    Query q = Firestore.instance
+        .collection(gamesTable)
+        .where("players." + playerUid + ".playing", isEqualTo: true)
+        .orderBy("eventTime");
+    QuerySnapshot snap = await q.getDocuments();
+    yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+        Game.fromMap(_addUid(snap.documentID, snap.data))));
+    await for (QuerySnapshot snap in q.snapshots()) {
+      yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+          Game.fromMap(_addUid(snap.documentID, snap.data))));
+    }
+  }
 }

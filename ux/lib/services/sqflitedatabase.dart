@@ -466,6 +466,12 @@ class SqlfliteDatabase extends BasketballDatabase {
 
   @override
   Stream<bool> get onDatabaseChange => null;
+
+  @override
+  Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) {
+    // TODO: implement getGamesForPlayer
+    return null;
+  }
 }
 
 ///
