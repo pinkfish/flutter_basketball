@@ -39,8 +39,12 @@ class TeamWidget extends StatelessWidget {
               ButtonBar(
                 children: <Widget>[
                   FlatButton.icon(
-                    icon: Icon(MdiIcons.graph),
-                    label: Text(Messages.of(context).statsButton),
+                    icon: Icon(MdiIcons.basketball),
+                    label: Text(
+                      Messages.of(context).gamesButton,
+                      textScaleFactor: 1.2,
+                      style: Theme.of(context).textTheme.button,
+                    ),
                     onPressed: () => _onTap(context),
                   ),
                 ],
@@ -53,7 +57,6 @@ class TeamWidget extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    print(team.uid);
     Navigator.pushNamed(context, "/Team/" + team.uid);
   }
 }

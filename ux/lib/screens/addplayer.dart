@@ -41,6 +41,7 @@ class _AddPlayerInside extends StatelessWidget {
         if (state is AddItemDone) {
           // Pass back the player uid.
           Navigator.pop(context, state.uid);
+          print("pop and done");
         }
         if (state is AddItemSaveFailed) {
           Scaffold.of(context).showSnackBar(

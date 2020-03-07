@@ -86,6 +86,11 @@ class PlayerTile extends StatelessWidget {
                           ),
                         ),
                       ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () => Navigator.pushNamed(
+                            context, "/EditPlayer/" + state.player.uid),
+                      ),
                     ),
                   );
                 }

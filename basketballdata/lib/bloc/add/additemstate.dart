@@ -20,7 +20,7 @@ class AddItemUninitialized extends AddItemState {
   }
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 ///
@@ -35,7 +35,7 @@ class AddItemSaving extends AddItemState {
   }
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 ///

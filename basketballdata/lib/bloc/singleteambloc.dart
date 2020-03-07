@@ -199,7 +199,6 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     _teamSub = db.getTeam(teamUid: teamUid).listen((Team t) {
       if (t != null) {
         // Only send this if the team is not the same.
-        print("getTeam $t");
         if (t != state.team || !(state is SingleTeamLoaded)) {
           add(_SingleTeamNewTeam(newTeam: t));
         }
@@ -224,7 +223,6 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   @override
   Stream<SingleTeamBlocState> mapEventToState(SingleTeamEvent event) async* {
     if (event is _SingleTeamNewTeam) {
-      print("loaded ${event.newTeam}");
       yield SingleTeamLoaded(state: state, team: event.newTeam);
     }
 
@@ -290,7 +288,6 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
 
     if (event is SingleTeamLoadGames) {
       _lock.synchronized(() {
-        print("Loading team games");
         _gameSub = db
             .getTeamGames(teamUid: this.teamUid)
             .listen((BuiltList<Game> games) {

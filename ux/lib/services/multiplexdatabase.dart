@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:basketballdata/data/game.dart';
 import 'package:basketballdata/data/gameevent.dart';
 import 'package:basketballdata/data/player.dart';
@@ -12,16 +14,20 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 class MultiplexDatabase extends BasketballDatabase {
   final FirestoreDatabase _fs = FirestoreDatabase();
   final SqlfliteDatabase _sql = SqlfliteDatabase();
+  final StreamController<bool> _controller = StreamController<bool>();
+  Stream<bool> _stream;
   bool useSql = true;
 
   MultiplexDatabase() {
+    _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
       if (user != null) {
         _fs.userUid = user.uid;
-        useSql = true;
+        useSql = false;
       } else {
         useSql = true;
       }
+      _controller.add(useSql);
     });
     FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
       if (user != null) {
@@ -30,13 +36,14 @@ class MultiplexDatabase extends BasketballDatabase {
       } else {
         useSql = true;
       }
+      _controller.add(useSql);
     });
     _sql.open().catchError((e, trace) {
       Crashlytics.instance.recordError(e, trace);
     });
   }
 
-  Future<void> waitTillOpen() async {
+  Future<void> waitTillOpen() {
     return _sql.waitTillOpen();
   }
 
@@ -207,4 +214,7 @@ class MultiplexDatabase extends BasketballDatabase {
     else
       return _fs.getGameEvents(gameUid: gameUid);
   }
+
+  @override
+  Stream<bool> get onDatabaseChange => _stream;
 }

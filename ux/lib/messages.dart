@@ -64,23 +64,35 @@ class Messages {
       desc: "Jersey number for the playerr", locale: locale);
   String get emptyText => Intl.message("Must not be empty",
       desc: "Hint text to say the name must not be empty", locale: locale);
+
   String get errorForm => Intl.message("Error in the form",
       desc: "Snackbar that pops up to show that there is an error",
       locale: locale);
+
   String get saveFailed => Intl.message("Save Failed",
       desc: "Failed to save a photo", locale: locale);
+
   String get saveButton =>
       Intl.message("SAVE", desc: "Text on a save button", locale: locale);
+
   String get statsButton =>
       Intl.message("STATS", desc: "Text on a stats button", locale: locale);
+
+  String get gamesButton =>
+      Intl.message("GAMES", desc: "Text on a games button", locale: locale);
+
   String get subButton => Intl.message("SUB",
       desc: "Text on a substitution button", locale: locale);
+
   String get addPlayerButton => Intl.message("PLAYER",
       desc: "Text on a add player button", locale: locale);
+
   String get unknown => Intl.message("unknown",
       desc: "Used when the data is unknown", locale: locale);
+
   String get stats => Intl.message("Stats",
       desc: "Used when the data is unknown", locale: locale);
+
   String get players => Intl.message("Players",
       desc: "Used when the data is unknown", locale: locale);
   String get deletePlayer => Intl.message("Delete Player",

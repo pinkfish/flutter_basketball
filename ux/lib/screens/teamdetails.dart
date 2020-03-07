@@ -100,18 +100,17 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                     .add(SingleTeamLoadGames());
               }
               if (state is SingleTeamDeleted) {
+                print("Pop deleted");
                 Navigator.pop(context);
               }
             },
             builder: (BuildContext context, SingleTeamBlocState state) {
-              print(state);
               if (state is SingleTeamDeleted) {
                 return DeletedWidget();
               }
               if (state is SingleTeamUninitialized) {
                 return LoadingWidget();
               }
-              print(state);
               return SavingOverlay(
                   saving: state is SingleTeamSaving, child: _innerData(state));
             },
@@ -166,6 +165,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             FlatButton(
               child: Text(MaterialLocalizations.of(context).okButtonLabel),
               onPressed: () {
+                print("Ok button");
                 Navigator.of(context).pop();
               },
             ),

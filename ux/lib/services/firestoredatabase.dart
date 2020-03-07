@@ -37,9 +37,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addTeam({Team team}) async {
-    var ref = await Firestore.instance
-        .collection(teamsTable)
-        .add(team.toMap().putIfAbsent(userUidField, () => userUid));
+    var map = team.toMap();
+    map.putIfAbsent(userUidField, () => userUid);
+    var ref = await Firestore.instance.collection(teamsTable).add(map);
     return ref.documentID;
   }
 
@@ -84,13 +84,13 @@ class FirestoreDatabase extends BasketballDatabase {
     var ref = Firestore.instance.collection(gamesTable).document(gameUid);
     var doc = await ref.get();
     if (doc.exists) {
-      yield Game.fromMap(doc.data);
+      yield Game.fromMap(_addUid(doc.documentID, doc.data));
     } else {
       yield null;
     }
     await for (var snap in ref.snapshots()) {
       if (snap.exists) {
-        yield Game.fromMap(snap.data);
+        yield Game.fromMap(_addUid(snap.documentID, snap.data));
       } else {
         yield null;
       }
@@ -102,13 +102,13 @@ class FirestoreDatabase extends BasketballDatabase {
     var ref = Firestore.instance.collection(playersTable).document(playerUid);
     var doc = await ref.get();
     if (doc.exists) {
-      yield Player.fromMap(doc.data);
+      yield Player.fromMap(_addUid(doc.documentID, doc.data));
     } else {
       yield null;
     }
     await for (var snap in ref.snapshots()) {
       if (snap.exists) {
-        yield Player.fromMap(snap.data);
+        yield Player.fromMap(_addUid(snap.documentID, snap.data));
       } else {
         yield null;
       }
@@ -121,11 +121,12 @@ class FirestoreDatabase extends BasketballDatabase {
         .collection(teamsTable)
         .where(userUidField, isEqualTo: userUid);
     QuerySnapshot snap = await q.getDocuments();
-    yield snap.documents
-        .map((DocumentSnapshot snap) => Team.fromMap(snap.data));
+    yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>
+        Team.fromMap(_addUid(snap.documentID, snap.data))));
+
     await for (QuerySnapshot snap in q.snapshots()) {
-      yield snap.documents
-          .map((DocumentSnapshot snap) => Team.fromMap(snap.data));
+      yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+          Team.fromMap(_addUid(snap.documentID, snap.data))));
     }
   }
 
@@ -159,11 +160,11 @@ class FirestoreDatabase extends BasketballDatabase {
         .collection(gamesTable)
         .where("teamUid", isEqualTo: teamUid);
     QuerySnapshot snap = await q.getDocuments();
-    yield snap.documents
-        .map((DocumentSnapshot snap) => Game.fromMap(snap.data));
+    yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+        Game.fromMap(_addUid(snap.documentID, snap.data))));
     await for (QuerySnapshot snap in q.snapshots()) {
-      yield snap.documents
-          .map((DocumentSnapshot snap) => Game.fromMap(snap.data));
+      yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+          Game.fromMap(_addUid(snap.documentID, snap.data))));
     }
   }
 
@@ -179,13 +180,13 @@ class FirestoreDatabase extends BasketballDatabase {
     var ref = Firestore.instance.collection(teamsTable).document(teamUid);
     var doc = await ref.get();
     if (doc.exists) {
-      yield Team.fromMap(doc.data);
+      yield Team.fromMap(_addUid(doc.documentID, doc.data));
     } else {
       yield null;
     }
     await for (var snap in ref.snapshots()) {
       if (snap.exists) {
-        yield Team.fromMap(snap.data);
+        yield Team.fromMap(_addUid(doc.documentID, snap.data));
       } else {
         yield null;
       }
@@ -206,11 +207,20 @@ class FirestoreDatabase extends BasketballDatabase {
         .collection(gameEventsTable)
         .where("gameUid", isEqualTo: gameUid);
     QuerySnapshot snap = await q.getDocuments();
-    yield snap.documents
-        .map((DocumentSnapshot snap) => GameEvent.fromMap(snap.data));
+    yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+        GameEvent.fromMap(_addUid(snap.documentID, snap.data))));
     await for (QuerySnapshot snap in q.snapshots()) {
-      yield snap.documents
-          .map((DocumentSnapshot snap) => GameEvent.fromMap(snap.data));
+      yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+          GameEvent.fromMap(_addUid(snap.documentID, snap.data))));
     }
   }
+
+  Map<String, dynamic> _addUid(String uid, Map<String, dynamic> data) {
+    data.putIfAbsent("uid", () => uid);
+    return data;
+  }
+
+  @override
+  // TODO: implement onDatabaseChange
+  Stream<bool> get onDatabaseChange => null;
 }

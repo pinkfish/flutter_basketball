@@ -179,6 +179,9 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text(Messages.of(context).login),
+      ),
       body: BlocListener(
         bloc: _loginBloc,
         listener: (BuildContext context, LoginState state) {
@@ -186,8 +189,7 @@ class LoginScreenState extends State<LoginScreen> {
             errorText = Messages.of(context).passwordnotcorrect;
             showInSnackBar(errorText);
           } else if (state is LoginSucceeded) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, "/Login/Home", (Route<dynamic> d) => false);
+            Navigator.pop(context);
           } else if (state is LoginEmailNotValidated) {
             Navigator.popAndPushNamed(context, "/Login/Verify");
           }

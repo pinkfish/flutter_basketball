@@ -16,8 +16,9 @@ typedef void PlayerEditCallback(String name, String jerseyNumber);
 class PlayerEdit extends StatefulWidget {
   final Player player;
   final PlayerEditCallback onSave;
+  final Function onDelete;
 
-  PlayerEdit({this.player, this.onSave});
+  PlayerEdit({this.player, this.onSave, this.onDelete});
 
   @override
   State<StatefulWidget> createState() {
@@ -88,13 +89,21 @@ class _PlayerEditState extends State<PlayerEdit> {
                       style: Theme.of(context).textTheme.button),
                   onPressed: () => Navigator.pop(context),
                 ),
+                FlatButton.icon(
+                  icon: Icon(Icons.delete),
+                  label: Text(
+                      MaterialLocalizations.of(context).deleteButtonTooltip,
+                      style: Theme.of(context).textTheme.button),
+                  onPressed: () => _saveForm(),
+                ),
                 RaisedButton.icon(
-                    textTheme: ButtonTextTheme.primary,
-                    elevation: 2,
-                    icon: Icon(Icons.save),
-                    label: Text(Messages.of(context).saveButton,
-                        style: Theme.of(context).textTheme.button),
-                    onPressed: () => _saveForm()),
+                  textTheme: ButtonTextTheme.primary,
+                  elevation: 2,
+                  icon: Icon(Icons.save),
+                  label: Text(Messages.of(context).saveButton,
+                      style: Theme.of(context).textTheme.button),
+                  onPressed: () => _saveForm(),
+                ),
               ],
             ),
           )

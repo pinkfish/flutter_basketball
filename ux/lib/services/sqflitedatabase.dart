@@ -463,6 +463,10 @@ class SqlfliteDatabase extends BasketballDatabase {
       }
     }
   }
+
+  @override
+  // TODO: implement onDatabaseChange
+  Stream<bool> get onDatabaseChange => null;
 }
 
 ///

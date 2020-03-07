@@ -58,10 +58,16 @@ abstract class TeamsBlocEvent extends Equatable {}
 class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   final BasketballDatabase db;
   StreamSubscription<BuiltList<Team>> _sub;
+  StreamSubscription<bool> _dbChange;
 
   TeamsBloc({this.db}) {
     _sub = db.getAllTeams().listen(
         (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
+    _dbChange = db.onDatabaseChange.listen((bool b) {
+      _sub?.cancel();
+      _sub = db.getAllTeams().listen(
+          (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
+    });
   }
 
   @override
@@ -78,6 +84,8 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   Future<Function> close() {
     _sub?.cancel();
     _sub = null;
+    _dbChange?.cancel();
+    _dbChange = null;
     return super.close();
   }
 }

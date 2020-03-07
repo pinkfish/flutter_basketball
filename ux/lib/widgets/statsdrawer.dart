@@ -45,6 +45,8 @@ class StatsDrawer extends StatelessWidget {
                 return UserAccountsDrawerHeader(
                   accountEmail: Text(state.user.email),
                   accountName: Text(state.user.displayName),
+                  currentAccountPicture:
+                      Image.asset("assets/images/basketball.png"),
                 );
               }
               return DrawerHeader(

@@ -402,11 +402,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
-        await FirebaseAuth.instance.signInWithCredential(credential);
-        var user = await FirebaseAuth.instance.currentUser();
+        AuthResult result =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        var user = result.user;
         if (user != null) {
+          print("Error loggd in as $user");
           analyticsSubsystem.logLogin();
           yield LoginSucceeded(userData: user);
+        } else {
+          print('Error: null usders...');
+
+          yield LoginFailed(
+              userData: null, reason: LoginFailedReason.BadPassword);
         }
       } catch (error) {
         print('Error: $error');

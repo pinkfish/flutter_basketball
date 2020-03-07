@@ -1,14 +1,14 @@
 // Imports the Flutter Driver API.
 import 'package:flutter_driver/flutter_driver.dart';
-import 'package:screenshots/screenshots.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Basketball Stats Main Page', () {
     final contentSection = find.byValueKey('teamsContent');
     final buttonFinder = find.byTooltip('Add Team');
-    final config = Config();
+    //final config = Config();
     final saveButtonFinder = find.byValueKey('saveButton');
+    final cancelButtonFinder = find.byValueKey('cancelButton');
     FlutterDriver driver;
 
     // Connect to the Flutter driver before running any tests.
@@ -26,7 +26,7 @@ void main() {
     test('No teams', () async {
       await driver.waitFor(find.text("No Teams"));
 
-      await screenshot(driver, config, "noteams");
+      // await screenshot(driver, config, "noteams");
     });
 
     test('add team', () async {
@@ -36,20 +36,37 @@ void main() {
       // First, tap the button.
       await driver.tap(buttonFinder);
 
-      // Wait for the editbox for the name to show up.
-      await driver.waitFor(find.text("Team Name"));
+      print("Clicking button");
 
-      await screenshot(driver, config, "addteamdialog");
+      // Wait for the editbox for the name to show up.
+      await driver.waitFor(find.text("Add Team"));
+      //await driver.waitFor(saveButtonFinder);
+
+      print("Team Name");
+
+      var tree = await driver.getRenderTree();
+      print(tree.toJson());
+
+      //await screenshot(driver, config, "addteamdialog");
+
+      print("After screenshot");
 
       await driver.enterText("Frog");
 
+      print("Stuff");
+      print(driver.getRenderTree());
+
       await driver.tap(saveButtonFinder);
+
+      print("Save button");
 
       await driver.waitFor(contentSection);
 
+      print("content");
+
       await driver.waitFor(find.text("Frog"));
 
-      await screenshot(driver, config, "singleteam");
+      //await screenshot(driver, config, "singleteam");
     });
   });
 }

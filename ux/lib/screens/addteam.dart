@@ -49,6 +49,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
       bloc: BlocProvider.of<AddTeamBloc>(context),
       listener: (BuildContext context, AddItemState state) {
         if (state is AddItemDone) {
+          print("Pop add done");
           Navigator.pop(context);
         }
         if (state is AddItemSaveFailed) {
@@ -88,6 +89,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                     child: ButtonBar(
                       children: [
                         FlatButton(
+                          key: Key("cancelButton"),
                           child: Text(
                               MaterialLocalizations.of(context)
                                   .cancelButtonLabel,
