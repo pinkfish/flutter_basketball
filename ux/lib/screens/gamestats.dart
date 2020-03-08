@@ -2,8 +2,11 @@ import 'dart:math';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
+import 'package:basketballstats/widgets/game/gameduration.dart';
 import 'package:basketballstats/widgets/game/gameeventwidget.dart';
 import 'package:basketballstats/widgets/game/gameplayerdialog.dart';
+import 'package:basketballstats/widgets/game/startperiod.dart';
+import 'package:basketballstats/widgets/game/timeoutstop.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/util/roundbutton.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,6 +47,7 @@ class GameStatsScreen extends StatelessWidget {
             ..timestamp = (DateTime.now().toUtc())
             ..gameUid = gameUid
             ..period = bloc.state.game.currentPeriod
+            ..eventTimeline = bloc.state.game.currentGameTime
             ..opponent = bloc.state.game.opponents.containsKey(playerUid)
             ..type = made ? GameEventType.Made : GameEventType.Missed)),
     );
@@ -63,13 +67,13 @@ class GameStatsScreen extends StatelessWidget {
       return;
     }
     bloc.add(SingleGameAddEvent(
-        event: GameEvent((b) =>
-        b
+        event: GameEvent((b) => b
           ..playerUid = playerUid
           ..points = 0
           ..gameUid = gameUid
           ..period = bloc.state.game.currentPeriod
           ..opponent = bloc.state.game.opponents.containsKey(playerUid)
+          ..eventTimeline = bloc.state.game.currentGameTime
           ..timestamp = DateTime.now().toUtc()
           ..type = type)));
   }
@@ -83,11 +87,14 @@ class GameStatsScreen extends StatelessWidget {
       buttonSize = constraints.maxHeight / 4;
     }
     List<Widget> firstWidgets = <Widget>[
-      RoundButton(
-        child: Text("1"),
-        size: buttonSize,
-        borderColor: Colors.green,
-        onPressed: () => _doAddPoints(context, 1, true),
+      Hero(
+        tag: "1plus",
+        child: RoundButton(
+          child: Text("1"),
+          size: buttonSize,
+          borderColor: Colors.green,
+          onPressed: () => _doAddPoints(context, 1, true),
+        ),
       ),
       CustomPaint(
         painter: _LineThrough(),
@@ -97,7 +104,10 @@ class GameStatsScreen extends StatelessWidget {
           onPressed: () => _doAddPoints(context, 1, false),
           child: Text(
             "1",
-            style: Theme.of(context).textTheme.button,
+            style: Theme
+                .of(context)
+                .textTheme
+                .button,
           ),
         ),
       ),
@@ -209,7 +219,9 @@ class GameStatsScreen extends StatelessWidget {
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
-        child: Text("OFF RB"),
+        child: Text(Messages
+            .of(context)
+            .offensiveReboundButton),
         onPressed: () =>
             _doBasicEvent(context, GameEventType.OffsensiveRebound),
       ),
@@ -217,7 +229,9 @@ class GameStatsScreen extends StatelessWidget {
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
-          "DEF RB",
+          Messages
+              .of(context)
+              .defensiveReboundButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.DefensiveRebound),
       ),
@@ -226,14 +240,18 @@ class GameStatsScreen extends StatelessWidget {
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
-        child: Text("T/O"),
+        child: Text(Messages
+            .of(context)
+            .turnoverButton),
         onPressed: () => _doBasicEvent(context, GameEventType.Turnover),
       ),
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
-          "STL",
+          Messages
+              .of(context)
+              .stealButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.Steal),
       ),
@@ -242,14 +260,18 @@ class GameStatsScreen extends StatelessWidget {
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
-        child: Text("BLK"),
+        child: Text(Messages
+            .of(context)
+            .blockButton),
         onPressed: () => _doBasicEvent(context, GameEventType.Block),
       ),
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
-          "ASST",
+          Messages
+              .of(context)
+              .assistButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.Assist),
       ),
@@ -320,9 +342,14 @@ class GameStatsScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  "FOUL",
+                  Messages
+                      .of(context)
+                      .foulButton,
                   textScaleFactor: 1.5,
-                  style: Theme.of(context).textTheme.button,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .button,
                 ),
               ),
               onPressed: () => _doBasicEvent(context, GameEventType.Foul),
@@ -370,57 +397,90 @@ class GameStatsScreen extends StatelessWidget {
             create: (BuildContext context) => SingleGameBloc(
                 gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
             child: OrientationBuilder(
-              builder: (BuildContext context, Orientation orientation) {
-                if (orientation == Orientation.landscape) {
-                  return Row(
-                    children: <Widget>[
-                      LayoutBuilder(
-                        builder: (BuildContext context,
-                                BoxConstraints boxConstraint) =>
-                            _buildPointSection(
-                                context, boxConstraint, orientation),
-                      ),
-                      Expanded(
-                        child: _GameStateSection(
-                            stack, orientation, _selectPeriod),
-                      ),
-                      LayoutBuilder(
-                        builder: (BuildContext context,
-                            BoxConstraints boxConstraint) =>
-                            _buildDefenceSection(
-                                context, boxConstraint, orientation),
-                      ),
-                    ],
-                  );
-                } else {
-                  return Column(
-                    children: <Widget>[
-                      LayoutBuilder(
-                        builder: (BuildContext context,
-                            BoxConstraints boxConstraint) =>
-                            _buildPointSection(
-                                context, boxConstraint, orientation),
-                      ),
-                      Divider(),
-                      Expanded(
-                        child: _GameStateSection(
-                            stack, orientation, _selectPeriod),
-                      ),
-                      Divider(),
-                      LayoutBuilder(
-                        builder: (BuildContext context,
-                            BoxConstraints boxConstraint) =>
-                            _buildDefenceSection(
-                                context, boxConstraint, orientation),
-                      ),
-                      Builder(
-                        builder: (BuildContext context) =>
-                            _buildSubButtons(context, orientation),
-                      ),
-                    ],
-                  );
-                }
-              },
+              builder: (BuildContext context, Orientation orientation) =>
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 500),
+                    child: BlocConsumer(
+                      bloc: BlocProvider.of<SingleGameBloc>(context),
+                      listener: (BuildContext context, SingleGameState state) {
+                        if (state is SingleGameLoaded &&
+                            !state.loadedGameEvents) {
+                          BlocProvider.of<SingleGameBloc>(context)
+                              .add(SingleGameLoadEvents());
+                        }
+                      },
+                      builder: (BuildContext context, SingleGameState state) {
+                        if (state is SingleGameUninitialized ||
+                            (state is SingleGameLoaded &&
+                                !state.loadedGameEvents)) {
+                          return LoadingWidget();
+                        }
+                        if ((state.loadedGameEvents &&
+                            (state.gameEvents.length == 0 ||
+                                state.gameEvents.last.type ==
+                                    GameEventType.PeriodEnd)) ||
+                            state.game?.currentPeriod ==
+                                GamePeriod.NotStarted) {
+                          return StartPeriod(game: state.game);
+                        }
+                        if (state.loadedGameEvents &&
+                            (state.gameEvents.length == 0 ||
+                                state.gameEvents.last.type ==
+                                    GameEventType.TimeoutStart)) {
+                          return TimeoutEnd(game: state.game);
+                        }
+                        if (orientation == Orientation.landscape) {
+                          return Row(
+                            children: <Widget>[
+                              LayoutBuilder(
+                                builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                    _buildPointSection(
+                                        context, boxConstraint, orientation),
+                              ),
+                              Expanded(
+                                child: _GameStateSection(
+                                    stack, orientation, _selectPeriod),
+                              ),
+                              LayoutBuilder(
+                                builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                    _buildDefenceSection(
+                                        context, boxConstraint, orientation),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Column(
+                            children: <Widget>[
+                              LayoutBuilder(
+                                builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                    _buildPointSection(
+                                        context, boxConstraint, orientation),
+                              ),
+                              Divider(),
+                              Expanded(
+                                child: _GameStateSection(
+                                    stack, orientation, _selectPeriod),
+                              ),
+                              Divider(),
+                              LayoutBuilder(
+                                builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                    _buildDefenceSection(
+                                        context, boxConstraint, orientation),
+                              ),
+                              Builder(
+                                builder: (BuildContext context) =>
+                                    _buildSubButtons(context, orientation),
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ),
             ),
           ),
         ),
@@ -429,22 +489,6 @@ class GameStatsScreen extends StatelessWidget {
   }
 
   Future<void> _selectPeriod(BuildContext context) async {
-    GamePeriod newPeriod = await showDialog<GamePeriod>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text(Messages.of(context).period),
-          children: GamePeriod.values
-              .map((GamePeriod p) => SimpleDialogOption(
-                  onPressed: () => Navigator.pop(context, p),
-                  child: Text(Messages.of(context).getPeriodName(p))))
-              .toList(),
-        );
-      },
-    );
-    if (newPeriod == null) {
-      return;
-    }
 
     // ignore: close_sinks
     var bloc = BlocProvider.of<SingleGameBloc>(context);
@@ -452,14 +496,15 @@ class GameStatsScreen extends StatelessWidget {
     // Write out the event to start the new period.
     bloc.add(
       SingleGameAddEvent(
-          event: GameEvent((b) => b
+          event: GameEvent((b) =>
+          b
             ..playerUid = ""
             ..points = 0
             ..timestamp = (DateTime.now().toUtc())
             ..gameUid = bloc.gameUid
-            ..period = newPeriod
+            ..period = bloc.state.game.currentPeriod
             ..opponent = false
-            ..type = GameEventType.PeriodStart)),
+            ..type = GameEventType.PeriodEnd)),
     );
   }
 }
@@ -522,23 +567,44 @@ class _GameStateSection extends StatelessWidget {
                   runAlignment: WrapAlignment.start,
                   children: <Widget>[
                     orientation == Orientation.portrait
-                        ? Text(
-                      Messages.of(context)
-                          .getPeriodName(state.game.currentPeriod),
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .body1,
-                    )
-                        : ButtonBar(
+                        ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Text(
+                          Messages.of(context)
+                              .getPeriodName(state.game.currentPeriod),
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body1,
+                          textScaleFactor: 1.5,
+                        ),
                         IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
+                          icon: state.game.runningFrom != null
+                              ? Icon(
+                            Icons.pause,
+                            size: 40.0,
+                          )
+                              : Icon(
+                            Icons.play_arrow,
                             size: 40.0,
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () =>
+                              _updateRunning(context, state.game),
                         ),
+                        GameDuration(
+                          state: state,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body1,
+                          textScaleFactor: 1.5,
+                        ),
+                      ],
+                    )
+                        : ButtonBar(
+                      alignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         FlatButton(
                           color: Theme
                               .of(context)
@@ -564,37 +630,100 @@ class _GameStateSection extends StatelessWidget {
                           ),
                           onPressed: () => selectCallback(context),
                         ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            size: 40.0,
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
                       ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        BlocBuilder(
-                            bloc: BlocProvider.of<SingleTeamBloc>(context),
-                            builder: (BuildContext context,
-                                SingleTeamBlocState teamState) {
-                              if (teamState is SingleTeamUninitialized ||
-                                  teamState is SingleTeamDeleted) {
-                                return Text(Messages
-                                    .of(context)
-                                    .loading,
-                                    overflow: TextOverflow.fade, style: style);
-                              }
-                              return Text(teamState.team.name,
-                                  overflow: TextOverflow.fade, style: style);
-                            }),
-                        Text(state.game.summary.pointsAgainst.toString(),
-                            style: style),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              BlocBuilder(
+                                  bloc:
+                                  BlocProvider.of<SingleTeamBloc>(context),
+                                  builder: (BuildContext context,
+                                      SingleTeamBlocState teamState) {
+                                    if (teamState is SingleTeamUninitialized ||
+                                        teamState is SingleTeamDeleted) {
+                                      return Text(Messages
+                                          .of(context)
+                                          .loading,
+                                          overflow: TextOverflow.fade,
+                                          style: style);
+                                    }
+                                    return Text(teamState.team.name,
+                                        overflow: TextOverflow.fade,
+                                        style: style);
+                                  }),
+                              Text(state.game.opponentName,
+                                  overflow: TextOverflow.fade, style: style),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Text(state.game.summary.pointsAgainst.toString(),
+                                style: style),
+                            Text(state.game.summary.pointsAgainst.toString(),
+                                style: style),
+                          ],
+                        ),
+                        orientation == Orientation.portrait
+                            ? IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            size: 40.0,
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        )
+                            : SizedBox(width: 0.0),
                       ],
                     ),
-                    Row(
+                    orientation == Orientation.landscape
+                        ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(state.game.opponentName,
-                            overflow: TextOverflow.fade, style: style),
-                        Text(state.game.summary.pointsAgainst.toString(),
-                            style: style),
+                        Text(
+                          Messages.of(context)
+                              .getPeriodName(state.game.currentPeriod),
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body1,
+                          textScaleFactor: 1.5,
+                        ),
+                        IconButton(
+                          icon: state.game.runningFrom != null
+                              ? Icon(
+                            Icons.pause,
+                            size: 40.0,
+                          )
+                              : Icon(
+                            Icons.play_arrow,
+                            size: 40.0,
+                          ),
+                          onPressed: () =>
+                              _updateRunning(context, state.game),
+                        ),
+                        GameDuration(
+                          state: state,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .body1,
+                          textScaleFactor: 1.5,
+                        ),
                       ],
+                    )
+                        : SizedBox(
+                      height: 0.0,
                     ),
                     Divider(),
                     ..._getGameEvents(context, state)
@@ -628,6 +757,26 @@ class _GameStateSection extends StatelessWidget {
             gameEvent: ev,
           ),
     );
+  }
+
+  void _updateRunning(BuildContext context, Game g) {
+    if (g.runningFrom != null) {
+      int newSeconds = g.gameTime.inSeconds +
+          DateTime
+              .now()
+              .difference(g.runningFrom)
+              .inSeconds;
+      Game newGame = g.rebuild((b) =>
+      b
+        ..gameTime = Duration(seconds: newSeconds)
+        ..runningFrom = null);
+      BlocProvider.of<SingleGameBloc>(context)
+          .add(SingleGameUpdate(game: newGame));
+    } else {
+      Game newGame = g.rebuild((b) => b..runningFrom = DateTime.now().toUtc());
+      BlocProvider.of<SingleGameBloc>(context)
+          .add(SingleGameUpdate(game: newGame));
+    }
   }
 }
 

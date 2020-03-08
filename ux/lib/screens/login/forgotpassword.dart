@@ -87,7 +87,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               FlatButton(
-                child: Text(Messages.of(context).createaccount),
+                child: Text(Messages.of(context).createaccountButton),
                 textColor: Theme.of(context).accentColor,
                 onPressed: () {
                   _loginBloc.add(LoginEventReset());
@@ -95,8 +95,12 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 },
               ),
               FlatButton(
-                child: Text(Messages.of(context).login),
-                textColor: Theme.of(context).accentColor,
+                child: Text(Messages
+                    .of(context)
+                    .loginButton),
+                textColor: Theme
+                    .of(context)
+                    .accentColor,
                 onPressed: () {
                   _loginBloc.add(LoginEventReset());
                   onPressed("/Login/Home");
@@ -120,16 +124,24 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               FlatButton(
-                child: Text(Messages.of(context).createaccount),
-                textColor: Theme.of(context).accentColor,
+                child: Text(Messages
+                    .of(context)
+                    .createaccountButton),
+                textColor: Theme
+                    .of(context)
+                    .accentColor,
                 onPressed: () {
                   _loginBloc.add(LoginEventReset());
                   onPressed("/Login/SignUp");
                 },
               ),
               FlatButton(
-                  child: Text(Messages.of(context).login),
-                  textColor: Theme.of(context).accentColor,
+                  child: Text(Messages
+                      .of(context)
+                      .loginButton),
+                  textColor: Theme
+                      .of(context)
+                      .accentColor,
                   onPressed: () {
                     _loginBloc.add(LoginEventReset());
                     // Go back to the initial state.

@@ -295,7 +295,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
           state: state,
           newEvents: event.newEvents,
           removedEvents: event.removedEvents);
-      yield SingleGameLoaded(gameEvents: event.events, state: state);
+      yield SingleGameLoaded(
+          gameEvents: event.events, state: state, loadedGameEvents: true);
     }
 
     // The game is deleted.
@@ -398,12 +399,16 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     sortedList
         .sort((GameEvent a, GameEvent b) => a.timestamp.compareTo(b.timestamp));
     GamePeriod currentPeriod = GamePeriod.NotStarted;
+
     // Check the summary and update if needed.
     for (GameEvent ev in sortedList) {
       PlayerSummaryDataBuilder sum;
       PlayerSummaryDataBuilder playerSum;
       GamePeriod oldPeriod = currentPeriod;
-      if (ev.type != GameEventType.PeriodStart) {
+      if (ev.type != GameEventType.PeriodStart &&
+          ev.type != GameEventType.PeriodEnd &&
+          ev.type != GameEventType.TimeoutEnd &&
+          ev.type != GameEventType.TimeoutStart) {
         if (ev.opponent) {
           sum = opponentSummary.perPeriod
               .putIfAbsent(currentPeriod, () => PlayerSummaryData())
@@ -495,7 +500,10 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
           currentPeriod = ev.period;
           break;
       }
-      if (ev.type != GameEventType.PeriodStart) {
+      if (ev.type != GameEventType.PeriodStart &&
+          ev.type != GameEventType.PeriodEnd &&
+          ev.type != GameEventType.TimeoutEnd &&
+          ev.type != GameEventType.TimeoutStart) {
         if (ev.opponent) {
           opponentSummary.perPeriod[oldPeriod] = sum.build();
           opponents[ev.playerUid].perPeriod[oldPeriod] = playerSum.build();

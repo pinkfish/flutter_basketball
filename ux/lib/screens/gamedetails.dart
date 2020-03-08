@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
+import 'package:basketballstats/widgets/game/playerlist.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/player/playername.dart';
-import 'package:basketballstats/widgets/player/playertile.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -101,11 +101,9 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
               },
               child: _currentIndex == 1
                   ? FloatingActionButton.extended(
-                onPressed: () => _addPlayer(context),
-                icon: const Icon(Icons.add),
-                label: Text(Messages
-                    .of(context)
-                    .addPlayerButton),
+                      onPressed: () => _addPlayer(context),
+                      icon: const Icon(Icons.add),
+                      label: Text(Messages.of(context).addPlayerButton),
                     )
                   : FloatingActionButton.extended(
                       icon: Icon(MdiIcons.graph),
@@ -135,12 +133,36 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return LoadingWidget();
     }
     if (_currentIndex == 0) {
-      TextStyle dataStyle = Theme.of(context).textTheme.subhead.copyWith(
-          fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
-      TextStyle minDataStyle = Theme.of(context).textTheme.subhead.copyWith(
-          fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
-      TextStyle pointsStyle = Theme.of(context).textTheme.subhead.copyWith(
-          fontSize: Theme.of(context).textTheme.subhead.fontSize * 4.0);
+      TextStyle minDataStyle = Theme
+          .of(context)
+          .textTheme
+          .subhead
+          .copyWith(
+          fontSize: Theme
+              .of(context)
+              .textTheme
+              .subhead
+              .fontSize * 1.25);
+      TextStyle dataStyle = Theme
+          .of(context)
+          .textTheme
+          .subhead
+          .copyWith(
+          fontSize: Theme
+              .of(context)
+              .textTheme
+              .subhead
+              .fontSize * 1.25);
+      TextStyle pointsStyle = Theme
+          .of(context)
+          .textTheme
+          .subhead
+          .copyWith(
+          fontSize: Theme
+              .of(context)
+              .textTheme
+              .subhead
+              .fontSize * 4.0);
       Widget retWidget = Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -296,23 +318,23 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
                     ),
                     SizedBox(
-                  width: width,
-                  child: Text("Pts",
-                      style:
+                      width: width,
+                      child: Text("Pts",
+                          style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
-                  width: width,
-                  child: Text("Fouls",
-                      style:
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Text("Fouls",
+                          style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
-                  width: width,
-                  child: Text("T/O",
-                      style:
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Text("T/O",
+                          style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
+                    ),
                     SizedBox(
                       width: width,
                       child: Text("Steals",
@@ -332,10 +354,13 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                 builder:
                     (BuildContext context, BoxConstraints constraints) {
                   return Column(
-                    children: state.game.players
-                        .map((String s, PlayerSummary p) =>
-                        _playerSummary(s, p, constraints))
-                        .values
+                    children: state.game.players.keys
+                        .map((String s) =>
+                        _playerSummary(
+                            s,
+                            state.game.players[s],
+                            constraints,
+                            widget.orientation))
                         .toList(),
                   );
                 },
@@ -350,50 +375,60 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return SingleChildScrollView(child: retWidget);
     } else {
       if (state.game.players.isEmpty) {
-        return Text(Messages.of(context).noPlayers);
+        return Text(Messages
+            .of(context)
+            .noPlayers);
       }
-      return ListView(
-        children: state.game.players.keys
-            .map((p) => PlayerTile(
-                  playerUid: p,
-                ))
-            .toList(),
-      );
+      return PlayerList(game: state.game, orientation: widget.orientation);
     }
   }
 
-  MapEntry<String, Widget> _playerSummary(
-      String uid, PlayerSummary s, BoxConstraints constraints) {
+  Widget _playerSummary(String uid, PlayerSummary s, BoxConstraints constraints,
+      Orientation orientation) {
     double width = constraints.maxWidth / 6;
-    return MapEntry(
-        uid,
-        Row(
-          children: <Widget>[
-            SizedBox(
-              width: width * 2,
-              child: PlayerName(playerUid: uid),
-            ),
-            SizedBox(
-              width: width,
-              child: Text((s.fullData.one.made +
-                      s.fullData.two.made * 2 +
-                      s.fullData.three.made * 3)
-                  .toString()),
-            ),
-            SizedBox(
-              width: width,
-              child: Text((s.fullData.fouls).toString()),
-            ),
-            SizedBox(
-              width: width,
-              child: Text((s.fullData.turnovers).toString()),
-            ),
-            SizedBox(
-              width: width,
-              child: Text((s.fullData.steals).toString()),
-            ),
-          ],
-        ));
+    double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
+    return Row(
+      children: <Widget>[
+        SizedBox(
+          width: width * 2,
+          child: PlayerName(
+            playerUid: uid,
+            textScaleFactor: scale,
+          ),
+        ),
+        SizedBox(
+          width: width,
+          child: Text(
+            (s.fullData.one.made +
+                s.fullData.two.made * 2 +
+                s.fullData.three.made * 3)
+                .toString(),
+            textScaleFactor: scale,
+          ),
+        ),
+        SizedBox(
+          width: width,
+          child: Text(
+            (s.fullData.fouls).toString(),
+            textScaleFactor: scale,
+          ),
+        ),
+        SizedBox(
+          width: width,
+          child: Text(
+            (s.fullData.turnovers).toString(),
+            textScaleFactor: scale,
+          ),
+        ),
+        SizedBox(
+          width: width,
+          child: Text(
+            (s.fullData.steals).toString(),
+            textScaleFactor: scale,
+          ),
+        ),
+      ],
+    );
   }
 
   void _addPlayer(BuildContext context) {

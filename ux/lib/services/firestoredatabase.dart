@@ -139,6 +139,13 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<void> updateGame({Game game}) {
+    if (game.runningFrom == null) {
+      // Delete this field.
+      Firestore.instance
+          .collection(gamesTable)
+          .document(game.uid)
+          .updateData({"runningFrom": FieldValue.delete()});
+    }
     return Firestore.instance
         .collection(gamesTable)
         .document(game.uid)
@@ -178,7 +185,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<String> addPlayer({Player player}) async {
     var ref =
-    await Firestore.instance.collection(playersTable).add(player.toMap());
+        await Firestore.instance.collection(playersTable).add(player.toMap());
     return ref.documentID;
   }
 

@@ -11,43 +11,74 @@ import '../../messages.dart';
 ///
 class PlayerName extends StatelessWidget {
   final String playerUid;
+  final double textScaleFactor;
 
-  PlayerName({@required this.playerUid});
+  static Map<String, String> _nameCache = {};
+
+  PlayerName({@required this.playerUid, this.textScaleFactor = 1.0});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocProvider(
-        key: Key("player$playerUid"),
-        create: (BuildContext context) => SinglePlayerBloc(
-            playerUid: this.playerUid,
-            db: BlocProvider.of<TeamsBloc>(context).db),
-        child: Builder(
-          builder: (BuildContext context) {
-            return BlocBuilder(
-              bloc: BlocProvider.of<SinglePlayerBloc>(context),
-              builder: (BuildContext context, SinglePlayerState state) {
-                if (state is SinglePlayerDeleted) {
-                  return Text(Messages.of(context).unknown);
-                }
-                if (state is SinglePlayerUninitialized) {
-                  return Text(Messages.of(context).loading);
-                }
-                if (state is SinglePlayerLoaded) {
-                  print(
-                      "PlayerName ${BlocProvider.of<SinglePlayerBloc>(context).playerUid} ${state.player.uid} $playerUid");
-                  return Text(
-                    state.player.name,
-                    style: Theme.of(context).textTheme.title,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                  );
-                }
-                return Text(Messages.of(context).unknown);
-              },
-            );
-          },
-        ),
+    return BlocProvider(
+      key: Key("player$playerUid"),
+      create: (BuildContext context) => SinglePlayerBloc(
+          playerUid: this.playerUid,
+          db: BlocProvider.of<TeamsBloc>(context).db),
+      child: Builder(
+        builder: (BuildContext context) {
+          return BlocBuilder(
+            bloc: BlocProvider.of<SinglePlayerBloc>(context),
+            builder: (BuildContext context, SinglePlayerState state) {
+              if (_nameCache.containsKey(playerUid) &&
+                  !(state is SinglePlayerLoaded)) {
+                return Text(
+                  _nameCache[playerUid],
+                  style: Theme.of(context).textTheme.title,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                  textScaleFactor: textScaleFactor,
+                  textAlign: TextAlign.start,
+                );
+              }
+              if (state is SinglePlayerDeleted) {
+                return Text(
+                  Messages.of(context).unknown,
+                  textScaleFactor: textScaleFactor,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                  textAlign: TextAlign.start,
+                );
+              }
+              if (state is SinglePlayerUninitialized) {
+                return Text(
+                  Messages.of(context).loading,
+                  textScaleFactor: textScaleFactor,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                  textAlign: TextAlign.start,
+                );
+              }
+              if (state is SinglePlayerLoaded) {
+                _nameCache[playerUid] = state.player.name;
+                return Text(
+                  state.player.name,
+                  style: Theme.of(context).textTheme.title,
+                  overflow: TextOverflow.fade,
+                  softWrap: false,
+                  textScaleFactor: textScaleFactor,
+                  textAlign: TextAlign.start,
+                );
+              }
+              return Text(
+                Messages.of(context).unknown,
+                overflow: TextOverflow.fade,
+                softWrap: false,
+                textAlign: TextAlign.start,
+                textScaleFactor: textScaleFactor,
+              );
+            },
+          );
+        },
       ),
     );
   }

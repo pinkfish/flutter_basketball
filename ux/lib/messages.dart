@@ -84,11 +84,38 @@ class Messages {
   String get editButton =>
       Intl.message("EDIT", desc: "Text on a edit button", locale: locale);
 
+  String get endButton =>
+      Intl.message("END", desc: "Text on a end button", locale: locale);
+
+  String get foulButton =>
+      Intl.message("FOUL", desc: "Text on the foul button", locale: locale);
+
+  String get turnoverButton =>
+      Intl.message("T/O", desc: "Turnover button", locale: locale);
+
+  String get blockButton =>
+      Intl.message("BLK", desc: "Block button", locale: locale);
+
+  String get assistButton =>
+      Intl.message("ASST", desc: "Assist button", locale: locale);
+
+  String get stealButton =>
+      Intl.message("STL", desc: "Steal button", locale: locale);
+
+  String get defensiveReboundButton =>
+      Intl.message("DEF RB", desc: "Defensive Rebound button", locale: locale);
+
+  String get offensiveReboundButton =>
+      Intl.message("OFF RB", desc: "Offensive Rebound button", locale: locale);
+
   String get subButton => Intl.message("SUB",
       desc: "Text on a substitution button", locale: locale);
 
   String get addPlayerButton => Intl.message("PLAYER",
       desc: "Text on a add player button", locale: locale);
+
+  String get startButton => Intl.message("START",
+      desc: "Text on a button to start the period", locale: locale);
 
   String get addGameButton =>
       Intl.message("GAME", desc: "Text on a add game button", locale: locale);
@@ -108,15 +135,21 @@ class Messages {
   String get deletePlayer => Intl.message("Delete Player",
       desc: "Dialog title for deleting a playern", locale: locale);
 
+  String get endTimeout => Intl.message("End timeout",
+      desc: "Text to end the timeout", locale: locale);
+
   String get period => Intl.message("Period",
       desc: "Dialog title for sertting the current period", locale: locale);
+
   String get periodButton => Intl.message("PERIOD",
       desc: "Button to set the current period", locale: locale);
+
   String get noPlayersForTeamDialog => Intl.message(
       "You must have some players in a team "
       "to be able to create a game.",
       desc: "Text in a dialog to warn you need players",
       locale: locale);
+
   String get namerequired => Intl.message("Name is required.",
       desc: "Text in a snackbar to say the name is required", locale: locale);
   String get emailrequired => Intl.message("Email is required.",
@@ -127,29 +160,44 @@ class Messages {
       desc: "Snackbar to show the password is empty", locale: locale);
   String get email =>
       Intl.message("Email", desc: "Email hint text", locale: locale);
+
   String get forgotPasswordButton =>
       Intl.message('FORGOT PASSWORD', name: 'Forgot password button text');
+
   String get forgotPasswordSent =>
       Intl.message('Sent email to your email address to reset your password',
           name: 'Forgot password happy button');
+
   String get forgotPasswordHint =>
       Intl.message('The email to resend the password to',
           name: 'Forgot password happy button');
-  String get resendverify => Intl.message('RESEND EMAIL',
-      name: 'Button to resend the email to verify their email address');
-  String get login => Intl.message('LOGIN', name: 'Login button text');
-  String get logout => Intl.message('LOGOUT', name: 'Logout button text');
-  String get createaccount =>
+
+  String get resendverifyButton =>
+      Intl.message('RESEND EMAIL',
+          name: 'Button to resend the email to verify their email address');
+
+  String get loginButton => Intl.message('LOGIN', name: 'Login button text');
+
+  String get logoutButton => Intl.message('LOGOUT', name: 'Logout button text');
+
+  String get createaccountButton =>
       Intl.message('CREATE', desc: 'Create account button text');
-  String get phonenumberhint => Intl.message('Contact phone number',
-      desc: 'Phone number for the edit box to edit the phone number');
-  String get phonenumberhintoptional => Intl.message('Phone number (optional)',
-      desc:
+
+  String get phonenumberhint =>
+      Intl.message('Contact phone number',
+          desc: 'Phone number for the edit box to edit the phone number');
+
+  String get phonenumberhintoptional =>
+      Intl.message('Phone number (optional)',
+          desc:
           'Phone number for the edit box to edit the phone number marked as optional');
+
   String get password =>
       Intl.message('Password', desc: 'Input box for a password');
-  String get verifypassword => Intl.message('Verify password',
-      desc: 'Input box for a verification to the main password password');
+
+  String get verifypassword =>
+      Intl.message('Verify password',
+          desc: 'Input box for a verification to the main password password');
   String get formerror => Intl.message('Please fix the items outlined in red',
       name: 'Error in a form', desc: 'Error when submitting a form');
   String get passwordnotcorrect =>
@@ -252,6 +300,9 @@ class Messages {
             desc: "Caused a turnover", locale: locale);
       case GameEventType.PeriodStart:
         return Intl.message("Start of ${getPeriodName(p.period)}",
+            desc: "Start of period", locale: locale);
+      case GameEventType.PeriodEnd:
+        return Intl.message("End of ${getPeriodName(p.period)}",
             desc: "Start of period", locale: locale);
     }
     return unknown;

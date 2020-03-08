@@ -58,16 +58,29 @@ abstract class PlayerSummary
 abstract class PlayerSummaryData
     implements Built<PlayerSummaryData, PlayerSummaryDataBuilder> {
   MadeAttempt get one;
+
   MadeAttempt get two;
+
   MadeAttempt get three;
+
   int get fouls;
+
   int get steals;
+
   int get offensiveRebounds;
+
   int get defensiveRebounds;
+
   int get turnovers;
+
   int get blocks;
+
   int get assists;
+
   bool get onCourt;
+
+  @memoized
+  int get points => one.made + two.made * 2 + three.made * 3;
 
   static void _initializeBuilder(PlayerSummaryDataBuilder b) => b
     ..one = MadeAttemptBuilder()

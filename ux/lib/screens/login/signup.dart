@@ -212,8 +212,8 @@ class SignupScreenState extends State<SignupScreen> {
                                 ),
                                 new Container(
                                   child: new RaisedButton(
-                                      child: new Text(
-                                          Messages.of(context).createaccount),
+                                      child: new Text(Messages.of(context)
+                                          .createaccountButton),
                                       color: Theme.of(context).primaryColor,
                                       textColor: Colors.white,
                                       onPressed: _handleSubmitted),
@@ -227,8 +227,13 @@ class SignupScreenState extends State<SignupScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               new FlatButton(
-                                child: new Text(Messages.of(context).login),
-                                textColor: Theme.of(context).accentColor,
+                                child:
+                                new Text(Messages
+                                    .of(context)
+                                    .loginButton),
+                                textColor: Theme
+                                    .of(context)
+                                    .accentColor,
                                 onPressed: () => _onPressed("/Login/Home"),
                               ),
                               new FlatButton(

@@ -130,7 +130,7 @@ class VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                 .verifyexplanation(state.userData.email)),
                             new Container(
                               child: new RaisedButton(
-                                  child: new Text(messages.resendverify),
+                                  child: new Text(messages.resendverifyButton),
                                   color: Theme.of(context).primaryColor,
                                   textColor: Colors.white,
                                   onPressed: _handleSubmitted),
@@ -144,13 +144,17 @@ class VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           new FlatButton(
-                            child: new Text(messages.createaccount),
-                            textColor: Theme.of(context).accentColor,
+                            child: new Text(messages.createaccountButton),
+                            textColor: Theme
+                                .of(context)
+                                .accentColor,
                             onPressed: () => _onSignup(context),
                           ),
                           new FlatButton(
-                            child: new Text(messages.logout),
-                            textColor: Theme.of(context).accentColor,
+                            child: new Text(messages.logoutButton),
+                            textColor: Theme
+                                .of(context)
+                                .accentColor,
                             onPressed: () => _onLogout(context),
                           ),
                         ],

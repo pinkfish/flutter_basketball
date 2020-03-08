@@ -108,7 +108,7 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(
                     child: RaisedButton(
-                      child: Text(Messages.of(context).login,
+                      child: Text(Messages.of(context).loginButton,
                           style: Theme.of(context).primaryTextTheme.button),
                       color: Theme.of(context).primaryColor,
                       // textColor:
@@ -121,8 +121,12 @@ class LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       FlatButton(
-                        child: Text(Messages.of(context).createaccount),
-                        textColor: Theme.of(context).accentColor,
+                        child: Text(Messages
+                            .of(context)
+                            .createaccountButton),
+                        textColor: Theme
+                            .of(context)
+                            .accentColor,
                         onPressed: () => onPressed("/Login/SignUp"),
                       ),
                       FlatButton(
@@ -180,7 +184,9 @@ class LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(Messages.of(context).login),
+        title: Text(Messages
+            .of(context)
+            .loginButton),
       ),
       body: BlocListener(
         bloc: _loginBloc,

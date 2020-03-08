@@ -30,14 +30,15 @@ abstract class SinglePlayerState extends Equatable {
 /// We have a player, default state.
 ///
 class SinglePlayerLoaded extends SinglePlayerState {
-  SinglePlayerLoaded({@required Player player,
-    SinglePlayerState state,
-    bool loadedGamed,
-    BuiltList<Game> games})
+  SinglePlayerLoaded(
+      {@required Player player,
+      SinglePlayerState state,
+      bool loadedGamed,
+      BuiltList<Game> games})
       : super(
-      player: player ?? state.player,
-      loadedGames: loadedGamed ?? state.loadedGames,
-      games: games ?? state.games);
+            player: player ?? state.player,
+            loadedGames: loadedGamed ?? state.loadedGames,
+            games: games ?? state.games);
 
   @override
   String toString() {

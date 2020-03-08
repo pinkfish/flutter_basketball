@@ -1,23 +1,13 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/game/perioddropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../messages.dart';
 
-class StartPeriod extends StatefulWidget {
+class TimeoutEnd extends StatelessWidget {
   final Game game;
 
-  StartPeriod({@required this.game});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _StartPeriodState();
-  }
-}
-
-class _StartPeriodState extends State<StartPeriod> {
-  GamePeriod period;
+  TimeoutEnd({@required this.game});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +21,7 @@ class _StartPeriodState extends State<StartPeriod> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "vs ${widget.game.opponentName}",
+            "vs ${game.opponentName}",
             textScaleFactor: 1.5,
             style: Theme.of(context).textTheme.title,
           ),
@@ -53,18 +43,14 @@ class _StartPeriodState extends State<StartPeriod> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PeriodDropdown(
-                value: period,
-                onPeriodChange: (GamePeriod p) => setState(() => period = p),
-              ),
-              SizedBox(width: 30.0),
+              Text(Messages.of(context).endTimeout),
               FlatButton(
                 color: Theme.of(context).primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Text(
-                  Messages.of(context).startButton,
+                  Messages.of(context).endButton,
                   textScaleFactor: 2.0,
                 ),
                 onPressed: () {
@@ -73,14 +59,14 @@ class _StartPeriodState extends State<StartPeriod> {
                   bloc.add(
                     SingleGameAddEvent(
                       event: GameEvent((b) => b
-                        ..gameUid = widget.game.uid
+                        ..gameUid = game.uid
                         ..playerUid = ""
-                        ..period = period
+                        ..period = game.currentPeriod
                         ..timestamp = DateTime.now().toUtc()
                         ..opponent = false
                         ..eventTimeline = bloc.state.game.currentGameTime
                         ..points = 0
-                        ..type = GameEventType.PeriodStart),
+                        ..type = GameEventType.TimeoutEnd),
                     ),
                   );
                 },
@@ -90,30 +76,5 @@ class _StartPeriodState extends State<StartPeriod> {
         ],
       ),
     );
-  }
-
-  @override
-  void initState() {
-    switch (widget.game.currentPeriod) {
-      case GamePeriod.NotStarted:
-        period = GamePeriod.Period1;
-        break;
-      case GamePeriod.Period1:
-        period = GamePeriod.Period2;
-        break;
-      case GamePeriod.Period2:
-        period = GamePeriod.Period3;
-        break;
-      case GamePeriod.Period3:
-        period = GamePeriod.Period4;
-        break;
-      case GamePeriod.Period4:
-        period = GamePeriod.OverTime;
-        break;
-      default:
-        period = widget.game.currentPeriod;
-        break;
-    }
-    super.initState();
   }
 }

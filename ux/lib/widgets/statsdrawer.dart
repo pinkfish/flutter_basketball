@@ -64,7 +64,7 @@ class StatsDrawer extends StatelessWidget {
                   state is AuthenticationLoggedInUnverified) {
                 return ListTile(
                   leading: Icon(MdiIcons.logout),
-                  title: Text(Messages.of(context).logout),
+                  title: Text(Messages.of(context).logoutButton),
                   onTap: () {
                     BlocProvider.of<LoginBloc>(context).add(LoginEventLogout());
                   },
@@ -72,7 +72,9 @@ class StatsDrawer extends StatelessWidget {
               }
               return ListTile(
                 leading: Icon(MdiIcons.login),
-                title: Text(Messages.of(context).login),
+                title: Text(Messages
+                    .of(context)
+                    .loginButton),
                 onTap: () {
                   Navigator.popAndPushNamed(context, "/Login/Home");
                 },

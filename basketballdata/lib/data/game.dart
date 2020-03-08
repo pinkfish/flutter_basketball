@@ -14,16 +14,31 @@ enum GameResult { Win, Tie, Loss }
 abstract class Game implements Built<Game, GameBuilder> {
   @nullable
   String get uid;
+
   DateTime get eventTime;
+
   String get location;
+
   String get opponentName;
+
   String get teamUid;
+
   BuiltMap<String, PlayerSummary> get players;
+
   BuiltMap<String, PlayerSummary> get opponents;
+
   GameSummary get summary;
+
   PlayerSummary get playerSummaery;
+
   PlayerSummary get opponentSummary;
+
   GamePeriod get currentPeriod;
+
+  @nullable
+  DateTime get runningFrom;
+
+  Duration get gameTime;
 
   @memoized
   GameResult get result => summary.pointsFor > summary.pointsAgainst
@@ -32,12 +47,23 @@ abstract class Game implements Built<Game, GameBuilder> {
           ? GameResult.Tie
           : GameResult.Loss;
 
+  /// The current time of the game, used when making events.
+  Duration get currentGameTime {
+    int diff = 0;
+    if (runningFrom != null) {
+      diff += DateTime.now().difference(runningFrom).inSeconds;
+    }
+    diff += gameTime.inSeconds;
+    return Duration(seconds: diff);
+  }
+
   static void _initializeBuilder(GameBuilder b) => b
     ..summary = GameSummaryBuilder()
     ..playerSummaery = PlayerSummaryBuilder()
     ..opponentSummary = PlayerSummaryBuilder()
     ..opponentName = "unknown"
-    ..currentPeriod = GamePeriod.NotStarted;
+    ..currentPeriod = GamePeriod.NotStarted
+    ..gameTime = Duration(milliseconds: 0);
 
   Game._();
   factory Game([updates(GameBuilder b)]) = _$Game;
