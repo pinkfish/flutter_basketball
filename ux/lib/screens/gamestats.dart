@@ -216,9 +216,7 @@ class GameStatsScreen extends StatelessWidget {
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
-        child: Text(Messages
-            .of(context)
-            .offensiveReboundButton),
+        child: Text(Messages.of(context).offensiveReboundButton),
         onPressed: () =>
             _doBasicEvent(context, GameEventType.OffsensiveRebound),
       ),
@@ -400,8 +398,8 @@ class GameStatsScreen extends StatelessWidget {
                     child: BlocConsumer(
                       bloc: BlocProvider.of<SingleGameBloc>(context),
                       listener: (BuildContext context, SingleGameState state) {
-                        if (state is SingleGameLoaded &&
-                            !state.loadedGameEvents) {
+                        if (!state.loadedGameEvents) {
+                          print("Loading events");
                           BlocProvider.of<SingleGameBloc>(context)
                               .add(SingleGameLoadEvents());
                         }
@@ -410,7 +408,10 @@ class GameStatsScreen extends StatelessWidget {
                         if (state is SingleGameUninitialized ||
                             (state is SingleGameLoaded &&
                                 !state.loadedGameEvents)) {
-                          return LoadingWidget();
+                          return LoadingWidget(
+                            showAppBar: true,
+                            game: state.game,
+                          );
                         }
                         if ((state.loadedGameEvents &&
                             (state.gameEvents.length == 0 ||
@@ -418,7 +419,10 @@ class GameStatsScreen extends StatelessWidget {
                                     GameEventType.PeriodEnd)) ||
                             state.game?.currentPeriod ==
                                 GamePeriod.NotStarted) {
-                          return StartPeriod(game: state.game);
+                          return StartPeriod(
+                            game: state.game,
+                            orientation: orientation,
+                          );
                         }
                         if (state.loadedGameEvents &&
                             (state.gameEvents.length == 0 ||

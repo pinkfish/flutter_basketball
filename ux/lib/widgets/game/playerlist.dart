@@ -21,6 +21,7 @@ enum SortPlayerBy {
   Turnovers,
   Steals,
   Blocks,
+  MadePerentage,
 }
 
 class _PlayerListState extends State<PlayerList> {
@@ -31,10 +32,10 @@ class _PlayerListState extends State<PlayerList> {
     return SingleChildScrollView(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        TextStyle minDataStyle = Theme.of(context).textTheme.subhead.copyWith(
+            TextStyle minDataStyle = Theme.of(context).textTheme.subhead.copyWith(
             fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
 
-        double width = constraints.maxWidth / 7;
+        double width = constraints.maxWidth / 8;
         double scale = widget.orientation == Orientation.portrait ? 1.0 : 1.2;
         List<String> sortedList = widget.game.players.keys.toList();
         sortedList.sort((String u1, String u2) =>
@@ -56,17 +57,20 @@ class _PlayerListState extends State<PlayerList> {
                   ),
                   SizedBox(
                     width: width,
-                    child: FlatButton.icon(
-                      icon: Icon(Icons.sort),
-                      label: Expanded(
-                        child: Text(
-                          "Pts",
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold),
-                          textScaleFactor: scale,
+                    child: FlatButton(
+                      child: Text(
+                        "Pts",
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: minDataStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _sortBy == SortPlayerBy.Points
+                              ? Theme
+                              .of(context)
+                              .accentColor
+                              : null,
                         ),
+                        textScaleFactor: scale,
                       ),
                       onPressed: () =>
                           setState(() => _sortBy = SortPlayerBy.Points),
@@ -74,17 +78,41 @@ class _PlayerListState extends State<PlayerList> {
                   ),
                   SizedBox(
                     width: width,
-                    child: FlatButton.icon(
-                      icon: Icon(Icons.sort),
-                      label: Expanded(
-                        child: Text(
-                          "Fouls",
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold),
-                          textScaleFactor: scale,
+                    child: FlatButton(
+                      child: Text(
+                        "Pct",
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: minDataStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _sortBy == SortPlayerBy.MadePerentage
+                              ? Theme
+                              .of(context)
+                              .accentColor
+                              : null,
                         ),
+                        textScaleFactor: scale,
+                      ),
+                      onPressed: () =>
+                          setState(() => _sortBy = SortPlayerBy.MadePerentage),
+                    ),
+                  ),
+                  SizedBox(
+                    width: width,
+                    child: FlatButton(
+                      child: Text(
+                        "Fouls",
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: minDataStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _sortBy == SortPlayerBy.Fouls
+                              ? Theme
+                              .of(context)
+                              .accentColor
+                              : null,
+                        ),
+                        textScaleFactor: scale,
                       ),
                       onPressed: () =>
                           setState(() => _sortBy = SortPlayerBy.Fouls),
@@ -92,17 +120,20 @@ class _PlayerListState extends State<PlayerList> {
                   ),
                   SizedBox(
                     width: width,
-                    child: FlatButton.icon(
-                      icon: Icon(Icons.sort),
-                      label: Expanded(
-                        child: Text(
-                          "T/O",
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold),
-                          textScaleFactor: scale,
+                    child: FlatButton(
+                      child: Text(
+                        "T/O",
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: minDataStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _sortBy == SortPlayerBy.Turnovers
+                              ? Theme
+                              .of(context)
+                              .accentColor
+                              : null,
                         ),
+                        textScaleFactor: scale,
                       ),
                       onPressed: () =>
                           setState(() => _sortBy = SortPlayerBy.Turnovers),
@@ -110,17 +141,20 @@ class _PlayerListState extends State<PlayerList> {
                   ),
                   SizedBox(
                     width: width,
-                    child: FlatButton.icon(
-                      icon: Icon(Icons.sort),
-                      label: Expanded(
-                        child: Text(
-                          "Steals",
-                          softWrap: false,
-                          overflow: TextOverflow.clip,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold),
-                          textScaleFactor: scale,
+                    child: FlatButton(
+                      child: Text(
+                        "Steals",
+                        softWrap: false,
+                        overflow: TextOverflow.clip,
+                        style: minDataStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _sortBy == SortPlayerBy.Steals
+                              ? Theme
+                              .of(context)
+                              .accentColor
+                              : null,
                         ),
+                        textScaleFactor: scale,
                       ),
                       onPressed: () =>
                           setState(() => _sortBy = SortPlayerBy.Steals),
@@ -128,17 +162,20 @@ class _PlayerListState extends State<PlayerList> {
                   ),
                   SizedBox(
                     width: width,
-                    child: FlatButton.icon(
-                      icon: Icon(Icons.sort),
-                      label: Expanded(
-                        child: Text(
-                          "Blk",
-                          softWrap: false,
-                          overflow: TextOverflow.clip,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold),
-                          textScaleFactor: scale,
+                    child: FlatButton(
+                      child: Text(
+                        "Blk",
+                        softWrap: false,
+                        overflow: TextOverflow.clip,
+                        style: minDataStyle.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: _sortBy == SortPlayerBy.Blocks
+                              ? Theme
+                              .of(context)
+                              .accentColor
+                              : null,
                         ),
+                        textScaleFactor: scale,
                       ),
                       onPressed: () =>
                           setState(() => _sortBy = SortPlayerBy.Blocks),
@@ -169,17 +206,47 @@ class _PlayerListState extends State<PlayerList> {
         return s2.fullData.steals - s1.fullData.steals;
       case SortPlayerBy.Blocks:
         return s2.fullData.blocks - s1.fullData.blocks;
+      case SortPlayerBy.MadePerentage:
+        if ((s2.fullData.one.attempts +
+            s2.fullData.two.attempts +
+            s2.fullData.three.attempts) >
+            0) {
+          if ((s1.fullData.one.attempts +
+              s1.fullData.two.attempts +
+              s1.fullData.three.attempts) >
+              0) {
+            return ((s2.fullData.one.made +
+                s2.fullData.two.made +
+                s2.fullData.three.made) ~/
+                (s2.fullData.one.attempts +
+                    s2.fullData.two.attempts +
+                    s2.fullData.three.attempts)) -
+                ((s1.fullData.one.made +
+                    s1.fullData.two.made +
+                    s1.fullData.three.made) ~/
+                    (s1.fullData.one.attempts +
+                        s1.fullData.two.attempts +
+                        s1.fullData.three.attempts));
+          }
+          return 1;
+        } else if ((s1.fullData.one.attempts +
+            s1.fullData.two.attempts +
+            s1.fullData.three.attempts) >
+            0) {
+          return -1;
+        }
     }
     return 0;
   }
 
   Widget _playerSummary(String uid, PlayerSummary s, BoxConstraints constraints,
       Orientation orientation) {
-    double width = constraints.maxWidth / 7;
+    double width = constraints.maxWidth / 8;
     double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(
-          context, "/GamePlayer/" + widget.game.uid + "/" + uid),
+      onTap: () =>
+          Navigator.pushNamed(
+              context, "/GamePlayer/" + widget.game.uid + "/" + uid),
       child: Row(
         children: <Widget>[
           SizedBox(
@@ -193,9 +260,29 @@ class _PlayerListState extends State<PlayerList> {
             width: width,
             child: Text(
               (s.fullData.one.made +
-                      s.fullData.two.made * 2 +
-                      s.fullData.three.made * 3)
+                  s.fullData.two.made * 2 +
+                  s.fullData.three.made * 3)
                   .toString(),
+              textScaleFactor: scale,
+            ),
+          ),
+          SizedBox(
+            width: width,
+            child: Text(
+              ((s.fullData.one.attempts +
+                  s.fullData.two.attempts * 2 +
+                  s.fullData.three.attempts * 3) ==
+                  0
+                  ? "0%"
+                  : ((s.fullData.one.made +
+                  s.fullData.two.made * 2 +
+                  s.fullData.three.made * 3) /
+                  (s.fullData.one.attempts +
+                      s.fullData.two.attempts * 2 +
+                      s.fullData.three.attempts * 3) *
+                  100)
+                  .toStringAsFixed(0) +
+                  "%"),
               textScaleFactor: scale,
             ),
           ),

@@ -339,6 +339,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     if (event is SingleGameLoadEvents) {
+      print(" events $event");
+
       _lock.synchronized(() {
         if (_gameEventSub == null) {
           _gameEventSub = db
@@ -380,7 +382,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
   void _newGameEvents(BuiltList<GameEvent> evList) {
     // Same length, don't recalculate.
-    if (evList.length == state.gameEvents.length) {
+    if (evList.length == state.gameEvents.length && state.loadedGameEvents) {
       return;
     }
     Map<String, PlayerSummaryBuilder> players = state.game.players

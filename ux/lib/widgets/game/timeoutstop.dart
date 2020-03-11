@@ -20,10 +20,8 @@ class TimeoutEnd extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "vs ${game.opponentName}",
-            textScaleFactor: 1.5,
-            style: Theme.of(context).textTheme.title,
+          AppBar(
+            title: Text("vs ${game.opponentName}"),
           ),
           SizedBox(
             height: 20.0,

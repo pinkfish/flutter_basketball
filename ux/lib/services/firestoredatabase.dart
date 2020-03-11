@@ -19,7 +19,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addGame({Game game}) async {
-    var player = Player((b) => b..name = "default");
+    var player = Player((b) => b
+      ..name = "default"
+      ..jerseyNumber = "xx");
     var playerRef =
         await Firestore.instance.collection(playersTable).add(player.toMap());
     game.rebuild((b) => b

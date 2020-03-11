@@ -226,7 +226,9 @@ class _PlayerDetailsBodyState extends State<_PlayerDetailBody> {
 
   String _madeSummary(MadeAttempt attempt) {
     return attempt.made > 0
-        ? ((attempt.attempts / attempt.made) * 100.0).toString() + "%"
+        ? "${attempt.made}/${attempt.attempts}  " +
+            ((attempt.attempts / attempt.made) * 100.0).toString() +
+            "%"
         : "0/0 (0%)";
   }
 }

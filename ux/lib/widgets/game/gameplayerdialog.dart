@@ -42,11 +42,14 @@ class GamePlayerDialog extends StatelessWidget {
                 PlayerTile(
               playerUid: playerUid,
               editButton: false,
-              color: game.players.containsKey(playerUid)
-                  ? Theme.of(context).primaryColor.withRed(50)
-                  : Theme.of(context).primaryColor.withGreen(50),
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
+                side: BorderSide(
+                  color: game.players.containsKey(playerUid)
+                      ? Theme.of(context).indicatorColor
+                      : Theme.of(context).primaryColor,
+                  width: 3.0,
+                ),
               ),
               onTap: () => _selectPlayer(context, playerUid),
             ),

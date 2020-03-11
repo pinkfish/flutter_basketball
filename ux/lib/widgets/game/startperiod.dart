@@ -1,5 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/game/perioddropdown.dart';
+import 'package:basketballstats/widgets/game/playermultiselect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,8 +8,9 @@ import '../../messages.dart';
 
 class StartPeriod extends StatefulWidget {
   final Game game;
+  final Orientation orientation;
 
-  StartPeriod({@required this.game});
+  StartPeriod({@required this.game, @required this.orientation});
 
   @override
   State<StatefulWidget> createState() {
@@ -18,6 +20,7 @@ class StartPeriod extends StatefulWidget {
 
 class _StartPeriodState extends State<StartPeriod> {
   GamePeriod period;
+  List<String> selectedPlayers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,24 +32,27 @@ class _StartPeriodState extends State<StartPeriod> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(
-            "vs ${widget.game.opponentName}",
-            textScaleFactor: 1.5,
-            style: Theme.of(context).textTheme.title,
+          AppBar(
+            title: Text("vs ${widget.game.opponentName}"),
           ),
           SizedBox(
             height: 20.0,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/basketball.png",
-                height: 90.0,
-              ),
-            ],
-          ),
+          widget.orientation == Orientation.portrait
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/basketball.png",
+                      height: 90.0,
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  height: 0.0,
+                ),
           SizedBox(
             height: 20.0,
           ),
@@ -87,12 +93,23 @@ class _StartPeriodState extends State<StartPeriod> {
                   bloc.add(
                     SingleGameUpdate(
                       game: bloc.state.game.rebuild(
-                          (b) => b..runningFrom = DateTime.now().toUtc()),
+                              (b) => b..runningFrom = DateTime.now().toUtc()),
                     ),
                   );
                 },
               ),
             ],
+          ),
+          Flexible(
+            fit: FlexFit.loose,
+            child: SingleChildScrollView(
+              child: PlayerMultiselect(
+                game: widget.game,
+                selectedUids: selectedPlayers,
+                selectPlayer: _selectPlayer,
+                orientation: widget.orientation,
+              ),
+            ),
           ),
         ],
       ),
@@ -121,6 +138,22 @@ class _StartPeriodState extends State<StartPeriod> {
         period = widget.game.currentPeriod;
         break;
     }
+
+    // Find the currently in play people and mark them.
+    widget.game.players.forEach((uid, s) {
+      if (s.currentlyPlaying) {
+        selectedPlayers.add(uid);
+      }
+    });
     super.initState();
+  }
+
+  /// Updates the current set of selected players.
+  void _selectPlayer(String uid, bool remove) {
+    if (remove) {
+      selectedPlayers.remove(uid);
+    } else {
+      selectedPlayers.add(uid);
+    }
   }
 }

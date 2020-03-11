@@ -130,7 +130,9 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
 
   String _madeSummary(MadeAttempt attempt) {
     return attempt.made > 0
-        ? ((attempt.attempts / attempt.made) * 100.0).toString() + "%"
+        ? "${attempt.made}/${attempt.attempts}  " +
+            ((attempt.made / attempt.attempts) * 100.0).toStringAsFixed(0) +
+            "%"
         : "0/0 (0%)";
   }
 

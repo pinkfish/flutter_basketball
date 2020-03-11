@@ -42,9 +42,7 @@ class PlayerTile extends StatelessWidget {
                     color: color,
                     shape: shape,
                     child: ListTile(
-                      title: Text(Messages
-                          .of(context)
-                          .unknown),
+                      title: Text(Messages.of(context).unknown),
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -96,8 +94,14 @@ class PlayerTile extends StatelessWidget {
                             child: Text(
                               state.player.jerseyNumber,
                               style:
-                              Theme.of(context).textTheme.caption.copyWith(
-                                color: Theme.of(context).accentColor,
+                              Theme
+                                  .of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(
+                                color: Theme
+                                    .of(context)
+                                    .accentColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20.0,
                               ),
