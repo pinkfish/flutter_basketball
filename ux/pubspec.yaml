@@ -32,6 +32,16 @@ dependencies:
   equatable: ^1.1.0
   undo: ^1.0.1+3
   uuid: ^2.0.4
+  # charts_common:
+  #   git:
+  #     url: git@github.com:pinkfish/charts.git
+  #     path: charts_common
+  charts_flutter:
+    path: /Users/david/development/charts/charts_flutter
+    # git:
+    #   url: git@github.com:pinkfish/charts.git
+    #   path: charts_flutter
+  fl_chart: ^0.8.3
 
 dev_dependencies:
   flutter_test:

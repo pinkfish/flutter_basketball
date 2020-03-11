@@ -83,6 +83,13 @@ class _StartPeriodState extends State<StartPeriod> {
                         ..type = GameEventType.PeriodStart),
                     ),
                   );
+                  // Update the game to start the clock.
+                  bloc.add(
+                    SingleGameUpdate(
+                      game: bloc.state.game.rebuild(
+                          (b) => b..runningFrom = DateTime.now().toUtc()),
+                    ),
+                  );
                 },
               ),
             ],

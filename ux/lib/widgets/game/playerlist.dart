@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlayerList extends StatefulWidget {
-  Orientation orientation;
-  Game game;
+  final Orientation orientation;
+  final Game game;
 
   PlayerList({this.orientation, this.game});
 
@@ -170,60 +170,65 @@ class _PlayerListState extends State<PlayerList> {
       case SortPlayerBy.Blocks:
         return s2.fullData.blocks - s1.fullData.blocks;
     }
+    return 0;
   }
 
   Widget _playerSummary(String uid, PlayerSummary s, BoxConstraints constraints,
       Orientation orientation) {
     double width = constraints.maxWidth / 7;
     double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
-    return Row(
-      children: <Widget>[
-        SizedBox(
-          width: width * 2,
-          child: PlayerName(
-            playerUid: uid,
-            textScaleFactor: scale,
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+          context, "/GamePlayer/" + widget.game.uid + "/" + uid),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: width * 2,
+            child: PlayerName(
+              playerUid: uid,
+              textScaleFactor: scale,
+            ),
           ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.one.made +
-                    s.fullData.two.made * 2 +
-                    s.fullData.three.made * 3)
-                .toString(),
-            textScaleFactor: scale,
+          SizedBox(
+            width: width,
+            child: Text(
+              (s.fullData.one.made +
+                      s.fullData.two.made * 2 +
+                      s.fullData.three.made * 3)
+                  .toString(),
+              textScaleFactor: scale,
+            ),
           ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.fouls).toString(),
-            textScaleFactor: scale,
+          SizedBox(
+            width: width,
+            child: Text(
+              (s.fullData.fouls).toString(),
+              textScaleFactor: scale,
+            ),
           ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.turnovers).toString(),
-            textScaleFactor: scale,
+          SizedBox(
+            width: width,
+            child: Text(
+              (s.fullData.turnovers).toString(),
+              textScaleFactor: scale,
+            ),
           ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.steals).toString(),
-            textScaleFactor: scale,
+          SizedBox(
+            width: width,
+            child: Text(
+              (s.fullData.steals).toString(),
+              textScaleFactor: scale,
+            ),
           ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.blocks).toString(),
-            textScaleFactor: scale,
+          SizedBox(
+            width: width,
+            child: Text(
+              (s.fullData.blocks).toString(),
+              textScaleFactor: scale,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

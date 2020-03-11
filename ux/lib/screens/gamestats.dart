@@ -104,10 +104,7 @@ class GameStatsScreen extends StatelessWidget {
           onPressed: () => _doAddPoints(context, 1, false),
           child: Text(
             "1",
-            style: Theme
-                .of(context)
-                .textTheme
-                .button,
+            style: Theme.of(context).textTheme.button,
           ),
         ),
       ),
@@ -489,7 +486,6 @@ class GameStatsScreen extends StatelessWidget {
   }
 
   Future<void> _selectPeriod(BuildContext context) async {
-
     // ignore: close_sinks
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
@@ -506,6 +502,23 @@ class GameStatsScreen extends StatelessWidget {
             ..opponent = false
             ..type = GameEventType.PeriodEnd)),
     );
+
+    // Update the game to stop the clock.
+    if (bloc.state.game.runningFrom != null) {
+      int newSeconds = bloc.state.game.gameTime.inSeconds +
+          DateTime
+              .now()
+              .difference(bloc.state.game.runningFrom)
+              .inSeconds;
+      bloc.add(
+        SingleGameUpdate(
+          game: bloc.state.game.rebuild((b) =>
+          b
+            ..gameTime = Duration(seconds: newSeconds)
+            ..runningFrom = null),
+        ),
+      );
+    }
   }
 }
 

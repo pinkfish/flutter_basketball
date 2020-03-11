@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
+import 'package:basketballstats/widgets/game/GameTimeseries.dart';
 import 'package:basketballstats/widgets/game/playerlist.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/player/playername.dart';
@@ -34,6 +35,10 @@ class GameDetailsScreen extends StatelessWidget {
             listener: (BuildContext context, SingleGameState state) {
               if (state is SingleGameDeleted) {
                 Navigator.pop(context);
+              }
+              if (state is SingleGameLoaded && !state.loadedGameEvents) {
+                BlocProvider.of<SingleGameBloc>(context)
+                    .add(SingleGameLoadEvents());
               }
             },
             builder: (BuildContext context, SingleGameState state) {
@@ -88,11 +93,15 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           BottomNavigationBarItem(
               icon: Icon(Icons.people),
               title: Text(Messages.of(context).players)),
+          BottomNavigationBarItem(
+              icon: Icon(MdiIcons.chartLine),
+              title: Text(Messages.of(context).timeline)),
         ],
         onTap: (int index) => setState(() => _currentIndex = index),
       ),
-      floatingActionButton: widget.state is SingleGameUninitialized ||
-              widget.state is SingleGameDeleted
+      floatingActionButton: (widget.state is SingleGameUninitialized ||
+                  widget.state is SingleGameDeleted) ||
+              _currentIndex == 2
           ? null
           : AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -373,13 +382,21 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         return retWidget;
       }
       return SingleChildScrollView(child: retWidget);
-    } else {
+    } else if (_currentIndex == 1) {
       if (state.game.players.isEmpty) {
         return Text(Messages
             .of(context)
             .noPlayers);
       }
       return PlayerList(game: state.game, orientation: widget.orientation);
+    } else {
+      return Column(
+        children: [
+          Expanded(
+            child: GameTimeseries(state: state),
+          ),
+        ],
+      );
     }
   }
 

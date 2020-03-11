@@ -6,6 +6,7 @@ import 'screens/addplayer.dart';
 import 'screens/addteam.dart';
 import 'screens/editplayer.dart';
 import 'screens/gamedetails.dart';
+import 'screens/gameplayerdetails.dart';
 import 'screens/gamestats.dart';
 import 'screens/login/forgotpassword.dart';
 import 'screens/login/loginform.dart';
@@ -72,6 +73,11 @@ class AppRouter {
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GameStatsScreen(
                     vals["id"][0].toString(), vals["team"][0].toString())));
+    router.define("/GamePlayer/:game/:player",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                GamePlayerDetailsScreen(
+                    vals["game"][0].toString(), vals["player"][0].toString())));
     router.define("/Login/Home",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

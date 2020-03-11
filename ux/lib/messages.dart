@@ -126,6 +126,15 @@ class Messages {
   String get unknown => Intl.message("unknown",
       desc: "Used when the data is unknown", locale: locale);
 
+  String get allPeriods => Intl.message("All Periods",
+      desc: "Drop down menu item for all periods", locale: locale);
+
+  String get timeline => Intl.message("Timeline",
+      desc: "Bottom navigation to open the timeline", locale: locale);
+
+  String get eventList => Intl.message("Events",
+      desc: "Bottom navigation to open the events", locale: locale);
+
   String get stats => Intl.message("Stats",
       desc: "Used when the data is unknown", locale: locale);
 
@@ -198,16 +207,23 @@ class Messages {
   String get verifypassword =>
       Intl.message('Verify password',
           desc: 'Input box for a verification to the main password password');
-  String get formerror => Intl.message('Please fix the items outlined in red',
-      name: 'Error in a form', desc: 'Error when submitting a form');
+
+  String get formerror =>
+      Intl.message('Please fix the items outlined in red',
+          name: 'Error in a form', desc: 'Error when submitting a form');
+
   String get passwordnotcorrect =>
       Intl.message('Email and/or password incorrect',
           desc: 'Passwords or email is not correct, login failed');
-  String get passwordsnotmatching => Intl.message('Passwords must match',
-      desc: 'Passwords must match signup form error');
-  String get createdaccount => Intl.message(
-      "Created an account, please look in your email for the verification code..",
-      desc:
+
+  String get passwordsnotmatching =>
+      Intl.message('Passwords must match',
+          desc: 'Passwords must match signup form error');
+
+  String get createdaccount =>
+      Intl.message(
+          "Created an account, please look in your email for the verification code..",
+          desc:
           "Confirmation message after requesting the email verification code");
   String get youremailHint =>
       Intl.message('Your email address', name: 'Your email input field hint');
