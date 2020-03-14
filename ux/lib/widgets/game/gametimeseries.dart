@@ -1,17 +1,62 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/chart/durationtimeaxisspec.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../messages.dart';
+import '../chart/durationtimeaxisspec.dart';
 import '../chart/stuff/durationserieschart.dart';
 import '../loading.dart';
 
-class GameTimeseries extends StatelessWidget {
+///
+/// Shows a nice graph of information about the game as a timeseries.
+///
+class GameTimeseries extends StatefulWidget {
   final SingleGameState state;
 
   GameTimeseries({@required this.state});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _GameTimeseriesData();
+  }
+}
+
+enum _GameTimeseriesType {
+  All,
+  Points,
+  Fouls,
+  Turnovers,
+  Steals,
+  Blocks,
+}
+
+class _GameTimeseriesData extends State<GameTimeseries> {
+  _GameTimeseriesType type;
+
+  charts.Series<_CumulativeScore, Duration> _getEventSeries(
+      GameEventType eventType, Color color, bool opponent) {
+    int total = 0;
+    bool first = false;
+    return charts.Series<_CumulativeScore, Duration>(
+      id: eventType.toString() + opponent.toString(),
+      colorFn: (_, __) =>
+          charts.Color(r: color.red, g: color.green, b: color.blue),
+      domainFn: (_CumulativeScore e, _) =>
+          Duration(milliseconds: e.timestamp.inMilliseconds),
+      measureFn: (_CumulativeScore e, _) => e.score,
+      data: widget.state.gameEvents
+          .where((e) => e.type == eventType && !e.opponent || first)
+          .map((e) {
+        if (first && e.type != type) {
+          first = false;
+          return _CumulativeScore(total, Duration(milliseconds: 0));
+        }
+        total++;
+        return _CumulativeScore(total, e.eventTimeline);
+      }).toList(),
+    );
+  }
 
   charts.Series<_CumulativeScore, Duration> _getPointSeries() {
     int total = 0;
@@ -22,7 +67,7 @@ class GameTimeseries extends StatelessWidget {
       domainFn: (_CumulativeScore e, _) =>
           Duration(milliseconds: e.timestamp.inMilliseconds),
       measureFn: (_CumulativeScore e, _) => e.score,
-      data: state.gameEvents
+      data: widget.state.gameEvents
           .where((e) => e.type == GameEventType.Made && !e.opponent || first)
           .map((e) {
         if (first && e.type != GameEventType.Made) {
@@ -44,7 +89,7 @@ class GameTimeseries extends StatelessWidget {
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       domainFn: (_CumulativeScore e, _) => e.timestamp,
       measureFn: (_CumulativeScore e, _) => e.score,
-      data: state.gameEvents
+      data: widget.state.gameEvents
           .where((e) => e.type == GameEventType.Made && e.opponent)
           .map((e) {
         if (first && e.type != GameEventType.Made) {
@@ -59,19 +104,55 @@ class GameTimeseries extends StatelessWidget {
   }
 
   List<charts.Series<_CumulativeScore, Duration>> _getSeries() {
-    return [
-      _getPointSeries(),
-      _getOpponentPointSeries(),
-    ];
+    switch (type) {
+      case _GameTimeseriesType.All:
+        return [
+          _getPointSeries(),
+          _getOpponentPointSeries(),
+          _getEventSeries(GameEventType.Block, Colors.blue, false),
+          _getEventSeries(GameEventType.Block, Colors.lightBlue, true),
+          _getEventSeries(GameEventType.Steal, Colors.deepOrange, false),
+          _getEventSeries(GameEventType.Steal, Colors.orange, true),
+          _getEventSeries(GameEventType.Turnover, Colors.deepPurple, false),
+          _getEventSeries(GameEventType.Turnover, Colors.purple, true),
+          _getEventSeries(GameEventType.Foul, Colors.lime, false),
+          _getEventSeries(GameEventType.Foul, Colors.limeAccent, true),
+        ];
+      case _GameTimeseriesType.Points:
+        return [
+          _getPointSeries(),
+          _getOpponentPointSeries(),
+        ];
+      case _GameTimeseriesType.Fouls:
+        return [
+          _getEventSeries(GameEventType.Foul, Colors.lime, false),
+          _getEventSeries(GameEventType.Foul, Colors.limeAccent, true),
+        ];
+      case _GameTimeseriesType.Turnovers:
+        return [
+          _getEventSeries(GameEventType.Turnover, Colors.deepPurple, false),
+          _getEventSeries(GameEventType.Turnover, Colors.purple, true),
+        ];
+      case _GameTimeseriesType.Steals:
+        return [
+          _getEventSeries(GameEventType.Steal, Colors.deepOrange, false),
+          _getEventSeries(GameEventType.Steal, Colors.orange, true),
+        ];
+      case _GameTimeseriesType.Blocks:
+        return [
+          _getEventSeries(GameEventType.Block, Colors.blue, false),
+          _getEventSeries(GameEventType.Block, Colors.lightBlue, true),
+        ];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!state.loadedGameEvents) {
+    if (!widget.state.loadedGameEvents) {
       return LoadingWidget();
     }
     var periods =
-        state.gameEvents.where((e) => e.type == GameEventType.PeriodEnd);
+        widget.state.gameEvents.where((e) => e.type == GameEventType.PeriodEnd);
 
     var behaviours = <charts.ChartBehavior<dynamic>>[
       charts.SlidingViewport(),
@@ -91,31 +172,107 @@ class GameTimeseries extends StatelessWidget {
           .toList()));
     }
 
-    return DurationSeriesChart(
-      _getSeries(),
-      animate: true,
-      animationDuration: Duration(milliseconds: 500),
-      primaryMeasureAxis: charts.NumericAxisSpec(
-        tickProviderSpec: charts.BasicNumericTickProviderSpec(),
-        renderSpec: charts.SmallTickRendererSpec(
-          labelStyle: charts.TextStyleSpec(
-            fontSize: 18,
-            color: charts.Color.white,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            DropdownButton<_GameTimeseriesType>(
+              icon: Icon(Icons.arrow_downward),
+              iconSize: 24,
+              elevation: 16,
+              value: type,
+              onChanged: (_GameTimeseriesType t) => setState(() => type = t),
+              items: [
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).allEvents,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.All,
+                ),
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).points,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.Points,
+                ),
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).blocks,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.Blocks,
+                ),
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).fouls,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.Fouls,
+                ),
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).turnovers,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.Turnovers,
+                ),
+              ],
+            ),
+          ],
+        ),
+        Expanded(
+          child: DurationSeriesChart(
+            _getSeries(),
+            animate: true,
+            animationDuration: Duration(milliseconds: 500),
+            primaryMeasureAxis: charts.NumericAxisSpec(
+              tickProviderSpec: charts.BasicNumericTickProviderSpec(),
+              renderSpec: charts.SmallTickRendererSpec(
+                labelStyle: charts.TextStyleSpec(
+                  fontSize: 18,
+                  color: charts.Color.white,
+                ),
+              ),
+            ),
+            domainAxis: DurationAxisSpec(
+              tickFormatterSpec: AutoDurationTickFormatterSpec(),
+              renderSpec: charts.SmallTickRendererSpec<Duration>(
+                labelStyle: charts.TextStyleSpec(
+                  fontSize: 18,
+                  color: charts.Color.white,
+                ),
+              ),
+            ),
+            behaviors: behaviours,
+            // behaviors: _getAnnotations(),
           ),
         ),
-      ),
-      domainAxis: DurationAxisSpec(
-        tickFormatterSpec: AutoDurationTickFormatterSpec(),
-        renderSpec: charts.SmallTickRendererSpec<Duration>(
-          labelStyle: charts.TextStyleSpec(
-            fontSize: 18,
-            color: charts.Color.white,
-          ),
-        ),
-      ),
-      behaviors: behaviours,
-      // behaviors: _getAnnotations(),
+      ],
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    type = _GameTimeseriesType.All;
   }
 }
 

@@ -257,6 +257,21 @@ class Messages {
   String get shots => Intl.message("Shots",
       desc: "Heading for the shots sectionn", locale: locale);
 
+  String get allEvents => Intl.message("All Events",
+      desc: "Drop down menu item for all events", locale: locale);
+
+  String get fouls => Intl.message("Fouls",
+      desc: "Drop down menu item for fouls", locale: locale);
+
+  String get turnovers => Intl.message("Turnovers",
+      desc: "Drop down menu item for turnovers", locale: locale);
+
+  String get blocks => Intl.message("Blocks",
+      desc: "Drop down menu item for fouls", locale: locale);
+
+  String get points => Intl.message("Points",
+      desc: "Drop down menu item for points", locale: locale);
+
   String getPeriodName(GamePeriod p) {
     switch (p) {
       case GamePeriod.NotStarted:
