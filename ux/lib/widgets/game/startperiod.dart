@@ -90,10 +90,22 @@ class _StartPeriodState extends State<StartPeriod> {
                     ),
                   );
                   // Update the game to start the clock.
+                  var players = bloc.state.game.players.map((u, d) => MapEntry(
+                      u,
+                      d.rebuild((b) =>
+                          b..currentlyPlaying = selectedPlayers.contains(u))));
+                  var opponents = bloc.state.game.opponents.map((u, d) =>
+                      MapEntry(
+                          u,
+                          d.rebuild((b) => b
+                            ..currentlyPlaying = selectedPlayers.contains(u))));
                   bloc.add(
                     SingleGameUpdate(
-                      game: bloc.state.game.rebuild(
-                              (b) => b..runningFrom = DateTime.now().toUtc()),
+                      game: bloc.state.game.rebuild((b) => b
+                        ..runningFrom = DateTime.now().toUtc()
+                        ..currentPeriod = period
+                        ..players = players.toBuilder()
+                        ..opponents = opponents.toBuilder()),
                     ),
                   );
                 },
@@ -150,10 +162,11 @@ class _StartPeriodState extends State<StartPeriod> {
 
   /// Updates the current set of selected players.
   void _selectPlayer(String uid, bool remove) {
+    print("$uid $remove");
     if (remove) {
-      selectedPlayers.remove(uid);
+      setState(() => selectedPlayers.remove(uid));
     } else {
-      selectedPlayers.add(uid);
+      setState(() => selectedPlayers.add(uid));
     }
   }
 }

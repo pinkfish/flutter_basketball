@@ -47,15 +47,11 @@ class DialogPlayerList extends StatelessWidget {
                   width: 3.0,
                 ),
               ),
-              onTap: () => onSelectPlayer(context, playerUid),
+              onTap: (String playerUid) => onSelectPlayer(context, playerUid),
             ),
           ),
         )
         .toList();
-  }
-
-  void _selectPlayer(BuildContext context, String playerUid) {
-    Navigator.pop(context, playerUid);
   }
 
   DialogPlayerList(

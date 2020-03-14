@@ -29,7 +29,7 @@ class GameEventWidget extends StatelessWidget {
         child: Row(
           children: [
             SizedBox(
-              width: 80.0,
+              width: showTimestamp ? 80.0 : 0.0,
               child: showTimestamp
                   ? Text(
                       format.format(gameEvent.timestamp),
@@ -39,16 +39,26 @@ class GameEventWidget extends StatelessWidget {
             ),
             Text(
               Messages.of(context).getGameEventType(gameEvent),
-              style: Theme.of(context).textTheme.title,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .title,
               textScaleFactor: 1.2,
+              softWrap: true,
+              overflow: TextOverflow.fade,
             ),
             SizedBox(width: 20.0),
             Text(
               showPeriod
                   ? Messages.of(context).getPeriodName(gameEvent.period)
                   : "",
+              softWrap: true,
+              overflow: TextOverflow.fade,
               textScaleFactor: 1.2,
-              style: Theme.of(context).textTheme.body1,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
             ),
             SizedBox(width: 20.0),
             gameEvent.playerUid != null && gameEvent.playerUid.isNotEmpty
@@ -62,8 +72,13 @@ class GameEventWidget extends StatelessWidget {
                         width: 0,
                       )
                     : Text(
-                        Messages.of(context).getPeriodName(gameEvent.period),
-                        style: Theme.of(context).textTheme.body1,
+              Messages.of(context).getPeriodName(gameEvent.period),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .body1,
+              softWrap: true,
+              overflow: TextOverflow.fade,
                       ),
           ],
         ),

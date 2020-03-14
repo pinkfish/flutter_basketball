@@ -7,22 +7,29 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../../messages.dart';
 
+typedef void PlayerCallbackFunc(String playerUid);
+typedef Widget PlayerExtraFunc(String playerUid);
+
 ///
 /// Shows the details on the player by giving the name and jersey number.
 ///
 class PlayerTile extends StatelessWidget {
   final String playerUid;
-  final Function onTap;
+  final PlayerCallbackFunc onTap;
   final bool editButton;
   final Color color;
   final ShapeBorder shape;
+  final bool compactDisplay;
+  final PlayerExtraFunc extra;
 
   PlayerTile(
       {@required this.playerUid,
       this.onTap,
       this.editButton = true,
       this.color,
-      this.shape});
+      this.shape,
+      this.extra,
+      this.compactDisplay = false});
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +45,18 @@ class PlayerTile extends StatelessWidget {
               bloc: BlocProvider.of<SinglePlayerBloc>(context),
               builder: (BuildContext context, SinglePlayerState state) {
                 if (state is SinglePlayerDeleted) {
+                  if (compactDisplay) {
+                    return Text(Messages
+                        .of(context)
+                        .unknown);
+                  }
                   return Card(
                     color: color,
                     shape: shape,
                     child: ListTile(
-                      title: Text(Messages.of(context).unknown),
+                      title: Text(Messages
+                          .of(context)
+                          .unknown),
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -53,6 +67,11 @@ class PlayerTile extends StatelessWidget {
                   );
                 }
                 if (state is SinglePlayerUninitialized) {
+                  if (compactDisplay) {
+                    return Text(Messages
+                        .of(context)
+                        .loading);
+                  }
                   return Card(
                     color: color,
                     shape: shape,
@@ -74,11 +93,65 @@ class PlayerTile extends StatelessWidget {
                   );
                 }
                 if (state is SinglePlayerLoaded) {
+                  if (compactDisplay) {
+                    return GestureDetector(
+                      onTap: () => onTap != null ? onTap(playerUid) : null,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: color,
+                          border: shape,
+                        ),
+                        child: Row(
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  height: 40.0, width: 40.0),
+                              child: Container(
+                                child: Center(
+                                  child: Text(
+                                    state.player.jerseyNumber,
+                                    style: Theme
+                                        .of(context)
+                                        .textTheme
+                                        .caption
+                                        .copyWith(
+                                      color: Theme
+                                          .of(context)
+                                          .accentColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Theme
+                                          .of(context)
+                                          .primaryColor),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              state.player.name,
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .title,
+                            ),
+                            (this.extra != null ? extra(playerUid) : SizedBox(
+                                width: 0)),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
                   return Card(
                     color: color,
                     shape: shape,
                     child: ListTile(
-                      onTap: this.onTap,
+                      onTap: onTap != null ? () => onTap(playerUid) : null,
                       title: Text(
                         state.player.name,
                         style: Theme

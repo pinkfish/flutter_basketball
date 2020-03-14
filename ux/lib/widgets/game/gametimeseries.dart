@@ -4,17 +4,17 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../messages.dart';
 import '../chart/stuff/durationserieschart.dart';
 import '../loading.dart';
 
 class GameTimeseries extends StatelessWidget {
-  SingleGameState state;
+  final SingleGameState state;
 
   GameTimeseries({@required this.state});
 
   charts.Series<_CumulativeScore, Duration> _getPointSeries() {
     int total = 0;
-    int offset = 0;
     bool first = false;
     return charts.Series<_CumulativeScore, Duration>(
       id: 'Score',
@@ -29,17 +29,14 @@ class GameTimeseries extends StatelessWidget {
           first = false;
           return _CumulativeScore(total, Duration(milliseconds: 0));
         }
-        offset += 1000;
         total += e.points;
-        return _CumulativeScore(total,
-            Duration(milliseconds: e.eventTimeline.inMilliseconds + offset));
+        return _CumulativeScore(total, e.eventTimeline);
       }).toList(),
     );
   }
 
   charts.Series<_CumulativeScore, Duration> _getOpponentPointSeries() {
     int total = 0;
-    int offset = 0;
     bool first = false;
 
     return charts.Series<_CumulativeScore, Duration>(
@@ -68,33 +65,32 @@ class GameTimeseries extends StatelessWidget {
     ];
   }
 
-  List<charts.RangeAnnotation> _getAnnotations() {
-    var data = state.gameEvents.where((e) =>
-        e.type == GameEventType.PeriodStart ||
-        e.type == GameEventType.PeriodEnd);
-    return data
-        .map(
-          (e) => charts.RangeAnnotation(
-            [
-              charts.RangeAnnotationSegment(
-                e.timestamp,
-                e.timestamp,
-                charts.RangeAnnotationAxisType.domain,
-              )
-            ],
-          ),
-        )
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     if (!state.loadedGameEvents) {
       return LoadingWidget();
     }
-    //return fl.LineChart(fl.LineChartData(
-    //  lineBarsData: [fl.LineChartBarData()],
-    //));
+    var periods =
+        state.gameEvents.where((e) => e.type == GameEventType.PeriodEnd);
+
+    var behaviours = <charts.ChartBehavior<dynamic>>[
+      charts.SlidingViewport(),
+      charts.PanAndZoomBehavior(),
+      charts.LinePointHighlighter()
+    ];
+
+    if (periods.length > 0) {
+      behaviours.add(charts.RangeAnnotation(periods
+          .map(
+            (p) => charts.LineAnnotationSegment(
+              p.eventTimeline,
+              charts.RangeAnnotationAxisType.domain,
+              startLabel: Messages.of(context).getPeriodName(p.period),
+            ),
+          )
+          .toList()));
+    }
+
     return DurationSeriesChart(
       _getSeries(),
       animate: true,
@@ -117,11 +113,7 @@ class GameTimeseries extends StatelessWidget {
           ),
         ),
       ),
-      behaviors: [
-        charts.SlidingViewport(),
-        charts.PanAndZoomBehavior(),
-        charts.LinePointHighlighter(),
-      ],
+      behaviors: behaviours,
       // behaviors: _getAnnotations(),
     );
   }

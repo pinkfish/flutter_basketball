@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
 import 'package:basketballstats/widgets/game/GameTimeseries.dart';
+import 'package:basketballstats/widgets/game/gameshotlocations.dart';
 import 'package:basketballstats/widgets/game/playerlist.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/player/playername.dart';
@@ -96,12 +97,15 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           BottomNavigationBarItem(
               icon: Icon(MdiIcons.chartLine),
               title: Text(Messages.of(context).timeline)),
+          BottomNavigationBarItem(
+              icon: Icon(MdiIcons.scatterPlot),
+              title: Text(Messages.of(context).shots)),
         ],
         onTap: (int index) => setState(() => _currentIndex = index),
       ),
       floatingActionButton: (widget.state is SingleGameUninitialized ||
-                  widget.state is SingleGameDeleted) ||
-              _currentIndex == 2
+          widget.state is SingleGameDeleted) ||
+          _currentIndex == 2 || _currentIndex == 3
           ? null
           : AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -391,13 +395,17 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
             .noPlayers);
       }
       return PlayerList(game: state.game, orientation: widget.orientation);
-    } else {
+    } else if (_currentIndex == 2) {
       return Column(
         children: [
           Expanded(
             child: GameTimeseries(state: state),
           ),
         ],
+      );
+    } else {
+      return GameShotLocations(
+        state: state,
       );
     }
   }

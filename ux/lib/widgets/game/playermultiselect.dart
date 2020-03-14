@@ -48,7 +48,7 @@ class PlayerMultiselect extends StatelessWidget {
                   width: 3.0,
                 ),
               ),
-              onTap: () =>
+              onTap: (String playerUid) =>
                   selectPlayer(playerUid, selectedUids.contains(playerUid)),
             ),
           ),

@@ -31,6 +31,7 @@ part 'serializers.g.dart';
   GameEvent,
   GamePeriod,
   GameEventType,
+  GameEventLocation,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

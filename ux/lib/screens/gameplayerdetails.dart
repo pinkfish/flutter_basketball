@@ -66,7 +66,7 @@ class _GameDetailsStateScreen extends State<GamePlayerDetailsScreen> {
                   playerUid: widget.playerUid,
                 );
               }
-              return Text("frog ${_currentIndex}");
+              return Text("frog $_currentIndex");
             },
           ),
         ),
@@ -118,8 +118,6 @@ class _PlayerDetailsBodyState extends State<_PlayerDetailBody> {
         PlayerSummaryData summary;
         TextStyle dataStyle = Theme.of(context).textTheme.subhead.copyWith(
             fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
-        TextStyle pointsStyle = Theme.of(context).textTheme.subhead.copyWith(
-            fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.5);
         if (period == GamePeriod.NotStarted) {
           summary = state.game.players[widget.playerUid].fullData;
         } else {

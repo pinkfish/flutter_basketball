@@ -137,9 +137,6 @@ class DurationEndPointsTickProviderSpec implements DurationTickProviderSpec {
   EndPointsTickProvider<Duration> createTickProvider(ChartContext context) {
     return EndPointsTickProvider<Duration>();
   }
-
-  @override
-  bool operator ==(Object other) => other is DurationEndPointsTickProviderSpec;
 }
 
 /// [TickProviderSpec] that allows you to specific the ticks to be used.

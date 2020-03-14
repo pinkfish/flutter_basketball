@@ -338,6 +338,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_svg">
+          <value>
+            <list>
+              <option value="$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.17.3+1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_test">
           <value>
             <list>
@@ -569,6 +576,20 @@
           <value>
             <list>
               <option value="$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.6.4/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="path_drawing">
+          <value>
+            <list>
+              <option value="$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/path_drawing-0.4.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="path_parsing">
+          <value>
+            <list>
+              <option value="$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/path_parsing-0.1.4/lib" />
             </list>
           </value>
         </entry>
@@ -972,6 +993,7 @@
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/fluro-1.5.2/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_bloc-3.2.0/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_cupertino_localizations-1.0.1/lib" />
+      <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.17.3+1/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/glob-1.2.0/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.1.4/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-1.0.4/lib" />
@@ -1005,6 +1027,8 @@
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/package_config-1.9.1/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/package_resolver-1.0.10/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.6.4/lib" />
+      <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/path_drawing-0.4.1/lib" />
+      <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/path_parsing-0.1.4/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.8.0+1/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.9.0/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-2.4.0/lib" />

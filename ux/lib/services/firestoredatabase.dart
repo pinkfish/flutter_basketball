@@ -22,20 +22,29 @@ class FirestoreDatabase extends BasketballDatabase {
     var player = Player((b) => b
       ..name = "default"
       ..jerseyNumber = "xx");
-    var playerRef =
-        await Firestore.instance.collection(playersTable).add(player.toMap());
+    var playerRef = Firestore.instance.collection(playersTable).document();
+    player.rebuild((b) => b..uid = playerRef.documentID);
+    await playerRef.updateData(player.toMap());
+    var ref = Firestore.instance.collection(gamesTable).document();
     game.rebuild((b) => b
+      ..uid = ref.documentID
       ..opponents[playerRef.documentID] =
           PlayerSummary((b2) => b2..currentlyPlaying = true));
-    var ref = await Firestore.instance.collection(gamesTable).add(game.toMap());
+    await ref.updateData(game.toMap());
     return ref.documentID;
   }
 
   @override
   Future<void> addGameEvent({GameEvent event}) async {
-    var ref =
-        await Firestore.instance.collection(gameEventsTable).add(event.toMap());
-    return ref.documentID;
+    if (event.uid == null || event.uid.isEmpty) {
+      var ref = Firestore.instance.collection(gameEventsTable).document();
+      event.rebuild((b) => b..uid = ref.documentID);
+      return ref.updateData(event.toMap());
+    }
+    await Firestore.instance
+        .collection(gameEventsTable)
+        .document(event.uid)
+        .setData(event.toMap());
   }
 
   @override
@@ -46,9 +55,10 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addTeam({Team team}) async {
-    var map = team.toMap();
+    var ref = Firestore.instance.collection(teamsTable).document();
+    var map = team.rebuild((b) => b..uid = ref.documentID).toMap();
     map.putIfAbsent(userUidField, () => userUid);
-    var ref = await Firestore.instance.collection(teamsTable).add(map);
+    ref.updateData(map);
     return ref.documentID;
   }
 
@@ -65,6 +75,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<void> deleteGameEvent({String gameEventUid}) {
+    print("Deleting event $gameEventUid");
     return Firestore.instance
         .collection(gameEventsTable)
         .document(gameEventUid)
@@ -225,10 +236,12 @@ class FirestoreDatabase extends BasketballDatabase {
         .orderBy("timestamp");
     QuerySnapshot snap = await q.getDocuments();
     yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
-        GameEvent.fromMap(_addUid(snap.documentID, snap.data))));
+        GameEvent.fromMap(_addUid(snap.documentID, snap.data))
+            .rebuild((b) => b..uid = snap.documentID)));
     await for (QuerySnapshot snap in q.snapshots()) {
       yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
-          GameEvent.fromMap(_addUid(snap.documentID, snap.data))));
+          GameEvent.fromMap(_addUid(snap.documentID, snap.data))
+              .rebuild((b) => b..uid = snap.documentID)));
     }
   }
 

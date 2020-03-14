@@ -93,7 +93,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         children: state.team.playerUids.keys
             .map((String str) => PlayerTile(
                   playerUid: str,
-                  onTap: () => Navigator.pushNamed(context, "/Player/" + str),
+                  onTap: (String playerUid) =>
+                      Navigator.pushNamed(context, "/Player/" + str),
                 ))
             .toList(),
       );

@@ -181,9 +181,8 @@ class Messages {
       Intl.message('The email to resend the password to',
           name: 'Forgot password happy button');
 
-  String get resendverifyButton =>
-      Intl.message('RESEND EMAIL',
-          name: 'Button to resend the email to verify their email address');
+  String get resendverifyButton => Intl.message('RESEND EMAIL',
+      name: 'Button to resend the email to verify their email address');
 
   String get loginButton => Intl.message('LOGIN', name: 'Login button text');
 
@@ -192,45 +191,43 @@ class Messages {
   String get createaccountButton =>
       Intl.message('CREATE', desc: 'Create account button text');
 
-  String get phonenumberhint =>
-      Intl.message('Contact phone number',
-          desc: 'Phone number for the edit box to edit the phone number');
+  String get phonenumberhint => Intl.message('Contact phone number',
+      desc: 'Phone number for the edit box to edit the phone number');
 
-  String get phonenumberhintoptional =>
-      Intl.message('Phone number (optional)',
-          desc:
+  String get phonenumberhintoptional => Intl.message('Phone number (optional)',
+      desc:
           'Phone number for the edit box to edit the phone number marked as optional');
 
   String get password =>
       Intl.message('Password', desc: 'Input box for a password');
 
-  String get verifypassword =>
-      Intl.message('Verify password',
-          desc: 'Input box for a verification to the main password password');
+  String get verifypassword => Intl.message('Verify password',
+      desc: 'Input box for a verification to the main password password');
 
-  String get formerror =>
-      Intl.message('Please fix the items outlined in red',
-          name: 'Error in a form', desc: 'Error when submitting a form');
+  String get formerror => Intl.message('Please fix the items outlined in red',
+      name: 'Error in a form', desc: 'Error when submitting a form');
 
   String get passwordnotcorrect =>
       Intl.message('Email and/or password incorrect',
           desc: 'Passwords or email is not correct, login failed');
 
-  String get passwordsnotmatching =>
-      Intl.message('Passwords must match',
-          desc: 'Passwords must match signup form error');
+  String get passwordsnotmatching => Intl.message('Passwords must match',
+      desc: 'Passwords must match signup form error');
 
-  String get createdaccount =>
-      Intl.message(
-          "Created an account, please look in your email for the verification code..",
-          desc:
+  String get createdaccount => Intl.message(
+      "Created an account, please look in your email for the verification code..",
+      desc:
           "Confirmation message after requesting the email verification code");
+
   String get youremailHint =>
       Intl.message('Your email address', name: 'Your email input field hint');
+
   String get displayname =>
       Intl.message('Name', desc: 'Name for the edit box to edit the user name');
+
   String get displaynamehint => Intl.message('Your name',
       desc: 'Name for the edit box to edit the user name');
+
   String get verifyemailsent => Intl.message(
       "Sent verification email, please check your email inbox.",
       desc:
@@ -291,7 +288,7 @@ class Messages {
             desc: "+num points", locale: locale);
         break;
       case GameEventType.Missed:
-        return Intl.message("Missed ${p.points}",
+        return Intl.message("-${p.points}",
             desc: "+num points", locale: locale);
         break;
       case GameEventType.Foul:

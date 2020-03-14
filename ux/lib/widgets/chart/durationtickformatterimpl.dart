@@ -20,7 +20,7 @@ class DurationFormatterImpl implements DurationFormatter {
       {@required this.msPerTick,
       @required this.tickFormat,
       @required this.msPerTransition,
-      @required this.transitionFormat}) {}
+      @required this.transitionFormat});
 
   String twoDigits(int num) {
     if (num < 10) {

@@ -8,7 +8,6 @@ void main() {
     final buttonFinder = find.byTooltip('Add Team');
     //final config = Config();
     final saveButtonFinder = find.byValueKey('saveButton');
-    final cancelButtonFinder = find.byValueKey('cancelButton');
     FlutterDriver driver;
 
     // Connect to the Flutter driver before running any tests.

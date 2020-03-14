@@ -5,6 +5,8 @@ import 'package:basketballstats/widgets/deleted.dart';
 import 'package:basketballstats/widgets/game/gameduration.dart';
 import 'package:basketballstats/widgets/game/gameeventwidget.dart';
 import 'package:basketballstats/widgets/game/gameplayerdialog.dart';
+import 'package:basketballstats/widgets/game/gameshotdialog.dart';
+import 'package:basketballstats/widgets/game/gamesubsitutedialog.dart';
 import 'package:basketballstats/widgets/game/startperiod.dart';
 import 'package:basketballstats/widgets/game/timeoutstop.dart';
 import 'package:basketballstats/widgets/loading.dart';
@@ -13,12 +15,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 import 'package:undo/undo.dart';
 
 import '../messages.dart';
 
 typedef SelectCallback = void Function(BuildContext context);
 
+///
+/// Shows nifty stuff about stats and the game.  This lets the game update
+/// the current status, points ewtc.
+///
 class GameStatsScreen extends StatelessWidget {
   final String gameUid;
   final String teamUid;
@@ -31,26 +38,77 @@ class GameStatsScreen extends StatelessWidget {
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Select the player.
-    String playerUid = await showDialog<String>(
+    var playerData = await showDialog<Tuple2<String, GameEventLocation>>(
         context: context,
         builder: (BuildContext context) {
-          return GamePlayerDialog(game: bloc.state.game);
+          return GameShotDialog(game: bloc.state.game, points: pts);
         });
-    if (playerUid == null) {
+    if (playerData == null) {
       return;
     }
     bloc.add(
       SingleGameAddEvent(
-          event: GameEvent((b) => b
-            ..playerUid = playerUid
+          event: GameEvent((b) =>
+          b
+            ..playerUid = playerData.item1
             ..points = pts
             ..timestamp = (DateTime.now().toUtc())
             ..gameUid = gameUid
             ..period = bloc.state.game.currentPeriod
             ..eventTimeline = bloc.state.game.currentGameTime
-            ..opponent = bloc.state.game.opponents.containsKey(playerUid)
+            ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
+            ..courtLocation =
+                (playerData.item2 != null ? playerData.item2.toBuilder() : null)
             ..type = made ? GameEventType.Made : GameEventType.Missed)),
     );
+  }
+
+  Future<void> _doSubEvent(BuildContext context, GameEventType type) async {
+    // ignore: close_sinks
+    var bloc = BlocProvider.of<SingleGameBloc>(context);
+
+    // Select the player.
+    var playerData = await showDialog<Tuple2<String, String>>(
+        context: context,
+        builder: (BuildContext context) {
+          return GamePlayerSubsitutionDialog(game: bloc.state.game);
+        });
+    if (playerData == null) {
+      return;
+    }
+    bloc.add(SingleGameAddEvent(
+        event: GameEvent((b) => b
+          ..playerUid = playerData.item1
+          ..replacementPlayerUid = playerData.item2
+          ..points = 0
+          ..gameUid = gameUid
+          ..period = bloc.state.game.currentPeriod
+          ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
+          ..eventTimeline = bloc.state.game.currentGameTime
+          ..timestamp = DateTime.now().toUtc()
+          ..type = type)));
+    // Update the game to add in the subs.
+    var newGame = bloc.state.game.toBuilder();
+    if (bloc.state.game.players.containsKey(playerData.item1)) {
+      newGame.players[playerData.item1] = newGame.players[playerData.item1]
+          .rebuild((b) => b..currentlyPlaying = true);
+      if (playerData.item2 != null) {
+        newGame.players[playerData.item2] = newGame.players[playerData.item2]
+            .rebuild((b) => b..currentlyPlaying = false);
+      }
+    }
+    if (bloc.state.game.opponents.containsKey(playerData.item1)) {
+      newGame.opponents[playerData.item1] = newGame.opponents[playerData.item1]
+          .rebuild((b) => b..currentlyPlaying = true);
+      if (playerData.item2 != null) {
+        newGame.opponents[playerData.item2] = newGame
+            .opponents[playerData.item2]
+            .rebuild((b) => b..currentlyPlaying = false);
+      }
+    }
+    bloc.add(SingleGameUpdate(
+      game: newGame.build(),
+    ));
   }
 
   Future<void> _doBasicEvent(BuildContext context, GameEventType type) async {
@@ -322,12 +380,17 @@ class GameStatsScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  Messages.of(context).subButton,
-                  style: Theme.of(context).textTheme.button,
+                  Messages
+                      .of(context)
+                      .subButton,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .button,
                   textScaleFactor: 1.5,
                 ),
               ),
-              onPressed: () => _doBasicEvent(context, GameEventType.Sub),
+              onPressed: () => _doSubEvent(context, GameEventType.Sub),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
                 side: BorderSide(color: Colors.blue),
@@ -399,9 +462,15 @@ class GameStatsScreen extends StatelessWidget {
                       bloc: BlocProvider.of<SingleGameBloc>(context),
                       listener: (BuildContext context, SingleGameState state) {
                         if (!state.loadedGameEvents) {
-                          print("Loading events");
                           BlocProvider.of<SingleGameBloc>(context)
                               .add(SingleGameLoadEvents());
+                        }
+                        if (state is SingleGameChangeEvents) {
+                          // Only worry about added events.
+                          for (GameEvent ev in state.newEvents) {
+                            stack.add(_GameEventChange(
+                                BlocProvider.of<SingleGameBloc>(context), ev));
+                          }
                         }
                       },
                       builder: (BuildContext context, SingleGameState state) {
@@ -535,20 +604,8 @@ class _GameStateSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer(
+    return BlocBuilder(
       bloc: BlocProvider.of<SingleGameBloc>(context),
-      listener: (BuildContext context, SingleGameState state) {
-        if (state is SingleGameLoaded && !state.loadedGameEvents) {
-          BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
-        }
-        if (state is SingleGameChangeEvents) {
-          // Only worry about added events.
-          for (GameEvent ev in state.newEvents) {
-            stack.add(
-                _GameEventChange(BlocProvider.of<SingleGameBloc>(context), ev));
-          }
-        }
-      },
       builder: (BuildContext context, SingleGameState state) {
         if (state is SingleGameUninitialized) {
           return LoadingWidget();
@@ -556,7 +613,8 @@ class _GameStateSection extends StatelessWidget {
         if (state is SingleGameDeleted) {
           return DeletedWidget();
         }
-        var style = Theme.of(context)
+        var style = Theme
+            .of(context)
             .textTheme
             .headline
             .copyWith(fontWeight: FontWeight.bold);
@@ -578,10 +636,8 @@ class _GameStateSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Wrap(
-                  alignment: WrapAlignment.start,
+                child: Column(
                   verticalDirection: VerticalDirection.down,
-                  runAlignment: WrapAlignment.start,
                   children: <Widget>[
                     orientation == Orientation.portrait
                         ? Row(
@@ -743,7 +799,18 @@ class _GameStateSection extends StatelessWidget {
                       height: 0.0,
                     ),
                     Divider(),
-                    ..._getGameEvents(context, state)
+                    Expanded(
+                      child: AnimatedList(
+                        initialItemCount: min(state.gameEvents.length, 4),
+                        itemBuilder: (BuildContext context, int itexmIndex,
+                            Animation<double> a) {
+                          var item = state.gameEvents[
+                          state.gameEvents.length - 1 - itexmIndex];
+                          return GameEventWidget(gameEvent: item);
+                        },
+                      ),
+                    ),
+                    //..._getGameEvents(context, state)
                   ],
                 ),
               ),
@@ -751,28 +818,6 @@ class _GameStateSection extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Iterable<Widget> _getGameEvents(BuildContext context, SingleGameState state) {
-    if (state.gameEvents.isEmpty) {
-      return [
-        SizedBox(height: 20.0),
-        Text("No events",
-            textScaleFactor: 1.5, style: Theme
-                .of(context)
-                .textTheme
-                .subtitle),
-      ];
-    }
-    return state.gameEvents
-        .sublist(max(state.gameEvents.length - 4, 0))
-        .reversed
-        .map(
-          (GameEvent ev) =>
-          GameEventWidget(
-            gameEvent: ev,
-          ),
     );
   }
 
@@ -816,6 +861,8 @@ class _GameEventChange extends Change {
 
   @override
   void undo() {
+    print("Deleting  $ev");
+
     bloc.add(SingleGameRemoveEvent(eventUid: ev.uid));
   }
 }
