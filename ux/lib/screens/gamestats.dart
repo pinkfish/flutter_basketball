@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:built_collection/built_collection.dart';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
@@ -48,8 +49,7 @@ class GameStatsScreen extends StatelessWidget {
     }
     bloc.add(
       SingleGameAddEvent(
-          event: GameEvent((b) =>
-          b
+          event: GameEvent((b) => b
             ..playerUid = playerData.item1
             ..points = pts
             ..timestamp = (DateTime.now().toUtc())
@@ -88,27 +88,30 @@ class GameStatsScreen extends StatelessWidget {
           ..timestamp = DateTime.now().toUtc()
           ..type = type)));
     // Update the game to add in the subs.
-    var newGame = bloc.state.game.toBuilder();
+    MapBuilder<String, PlayerSummaryWithOpponent> data = MapBuilder();
     if (bloc.state.game.players.containsKey(playerData.item1)) {
-      newGame.players[playerData.item1] = newGame.players[playerData.item1]
+      var summary = bloc.state.game.players[playerData.item1]
           .rebuild((b) => b..currentlyPlaying = true);
+      data[playerData.item1] = PlayerSummaryWithOpponent(false, summary);
+
       if (playerData.item2 != null) {
-        newGame.players[playerData.item2] = newGame.players[playerData.item2]
+        var summary = bloc.state.game.players[playerData.item2]
             .rebuild((b) => b..currentlyPlaying = false);
+        data[playerData.item2] = PlayerSummaryWithOpponent(false, summary);
       }
     }
     if (bloc.state.game.opponents.containsKey(playerData.item1)) {
-      newGame.opponents[playerData.item1] = newGame.opponents[playerData.item1]
+      var summary = bloc.state.game.opponents[playerData.item1]
           .rebuild((b) => b..currentlyPlaying = true);
+      data[playerData.item1] = PlayerSummaryWithOpponent(true, summary);
+
       if (playerData.item2 != null) {
-        newGame.opponents[playerData.item2] = newGame
-            .opponents[playerData.item2]
+        var summary = bloc.state.game.opponents[playerData.item2]
             .rebuild((b) => b..currentlyPlaying = false);
+        data[playerData.item2] = PlayerSummaryWithOpponent(true, summary);
       }
     }
-    bloc.add(SingleGameUpdate(
-      game: newGame.build(),
-    ));
+    bloc.add(SingleGameUpdatePlayer(summary: data.build()));
   }
 
   Future<void> _doBasicEvent(BuildContext context, GameEventType type) async {

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import '../data/game.dart';
 import '../data/gameevent.dart';
 import '../data/player.dart';
+import '../data/playersummary.dart';
 import '../data/team.dart';
 
 ///
@@ -46,6 +47,13 @@ abstract class BasketballDatabase {
   /// Updates the game in the database.
   Future<void> updateGame({@required Game game});
 
+  /// Updates the game in the database.
+  Future<void> updateGamePlayerData(
+      {@required String gameUid,
+      @required String playerUid,
+      @required bool opponent,
+      @required PlayerSummary summary});
+
   /// Updates the player in the database.
   Future<void> updatePlayer({@required Player player});
 
@@ -57,14 +65,16 @@ abstract class BasketballDatabase {
 
   Future<void> deleteGameEvent({@required String gameEventUid});
 
-  Future<void> deleteGamePlayer(
-      {@required String gameUid, @required String playerUid});
+  Future<void> deleteGamePlayer({@required String gameUid,
+    @required String playerUid,
+    @required bool opponent});
 
   Future<void> deleteTeamPlayer(
       {@required String teamUid, @required String playerUid});
 
-  Future<void> addGamePlayer(
-      {@required String gameUid, @required String playerUid});
+  Future<void> addGamePlayer({@required String gameUid,
+    @required String playerUid,
+    @required bool opponent});
 
   Future<void> addTeamPlayer(
       {@required String teamUid, @required String playerUid});

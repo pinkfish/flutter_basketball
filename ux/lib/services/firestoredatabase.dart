@@ -48,9 +48,21 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGamePlayer({String gameUid, String playerUid}) {
+  Future<void> addGamePlayer(
+      {String gameUid, String playerUid, bool opponent}) {
     var ref = Firestore.instance.collection(gamesTable).document(gameUid);
-    return ref.updateData({"playerUids." + playerUid: true});
+    return ref.updateData(
+        {(opponent ? "opponents." : "players.") + playerUid + ".player": true});
+  }
+
+  @override
+  Future<void> updateGamePlayerData(
+      {String gameUid,
+      String playerUid,
+      PlayerSummary summary,
+      bool opponent}) {
+    var ref = Firestore.instance.collection(gamesTable).document(gameUid);
+    return ref.updateData({"players." + playerUid: summary.toMap()});
   }
 
   @override
@@ -83,9 +95,12 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> deleteGamePlayer({String gameUid, String playerUid}) {
+  Future<void> deleteGamePlayer(
+      {String gameUid, String playerUid, bool opponent}) {
     var ref = Firestore.instance.collection(gamesTable).document(gameUid);
-    return ref.updateData({"playerUids." + playerUid: FieldValue.delete()});
+    return ref.updateData({
+      (opponent ? "opponents." : "players.") + playerUid: FieldValue.delete()
+    });
   }
 
   @override

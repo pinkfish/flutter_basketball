@@ -153,11 +153,36 @@ class SingleGameUpdate extends SingleGameEvent {
 ///
 class SingleGameAddPlayer extends SingleGameEvent {
   final String playerUid;
+  final bool opponent;
 
-  SingleGameAddPlayer({@required this.playerUid});
+  SingleGameAddPlayer({@required this.playerUid, @required this.opponent});
 
   @override
-  List<Object> get props => [playerUid];
+  List<Object> get props => [playerUid, opponent];
+}
+
+///
+/// Adds an admin to the game.
+///
+class SingleGameUpdatePlayer extends SingleGameEvent {
+  final BuiltMap<String, PlayerSummaryWithOpponent> summary;
+
+  SingleGameUpdatePlayer({
+    @required this.summary,
+  });
+
+  @override
+  List<Object> get props => [summary];
+}
+
+///
+/// The summary with the opponent flag.
+///
+class PlayerSummaryWithOpponent {
+  final PlayerSummary summary;
+  final bool opponent;
+
+  PlayerSummaryWithOpponent(this.opponent, this.summary);
 }
 
 ///
@@ -189,11 +214,12 @@ class SingleGameRemoveEvent extends SingleGameEvent {
 ///
 class SingleGameRemovePlayer extends SingleGameEvent {
   final String playerUid;
+  final bool opponent;
 
-  SingleGameRemovePlayer({@required this.playerUid});
+  SingleGameRemovePlayer({@required this.playerUid, @required this.opponent});
 
   @override
-  List<Object> get props => [playerUid];
+  List<Object> get props => [playerUid, opponent];
 }
 
 ///
@@ -308,6 +334,20 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameUpdate) {
       yield SingleGameSaving(singleGameState: state);
       try {
+        // Add an opponent if they don't exist.
+        if (event.game.opponents.length == 0) {
+          String name = event.game.opponentName;
+          if (name == null || name.isEmpty) {
+            name = "Default";
+          }
+          String uid = await db.addPlayer(
+              player: Player((b) => b
+                ..jerseyNumber = "**"
+                ..name = name));
+          await db.addGamePlayer(
+              gameUid: gameUid, playerUid: uid, opponent: true);
+        }
+
         Game game = event.game;
         await db.updateGame(game: game);
         yield SingleGameLoaded(game: event.game, state: state);
@@ -354,17 +394,39 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameAddPlayer) {
       yield SingleGameSaving(singleGameState: state);
       try {
-        await db.addGamePlayer(gameUid: gameUid, playerUid: event.playerUid);
+        await db.addGamePlayer(
+            gameUid: gameUid,
+            playerUid: event.playerUid,
+            opponent: event.opponent);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }
     }
 
+    // Updates a player in the game
+    if (event is SingleGameUpdatePlayer) {
+      yield SingleGameSaving(singleGameState: state);
+      try {
+        for (MapEntry<String, PlayerSummaryWithOpponent> entry
+        in event.summary.entries) {
+          await db.updateGamePlayerData(
+              gameUid: gameUid,
+              opponent: entry.value.opponent,
+              summary: entry.value.summary,
+              playerUid: entry.key);
+        }
+      } catch (e) {
+        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      }
+    }
     // Removes a player from the game.
     if (event is SingleGameRemovePlayer) {
       yield SingleGameSaving(singleGameState: state);
       try {
-        await db.deleteGamePlayer(gameUid: gameUid, playerUid: event.playerUid);
+        await db.deleteGamePlayer(
+            gameUid: gameUid,
+            playerUid: event.playerUid,
+            opponent: event.opponent);
       } catch (e) {
         yield SingleGameSaveFailed(singleGameState: state, error: e);
       }

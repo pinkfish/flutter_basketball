@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:basketballdata/data/game.dart';
 import 'package:basketballdata/data/gameevent.dart';
 import 'package:basketballdata/data/player.dart';
+import 'package:basketballdata/data/playersummary.dart';
 import 'package:basketballdata/data/team.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/firestoredatabase.dart';
@@ -64,11 +65,14 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGamePlayer({String gameUid, String playerUid}) {
+  Future<void> addGamePlayer(
+      {String gameUid, String playerUid, bool opponent}) {
     if (useSql)
-      return _sql.addGamePlayer(gameUid: gameUid, playerUid: playerUid);
+      return _sql.addGamePlayer(
+          gameUid: gameUid, playerUid: playerUid, opponent: opponent);
     else
-      return _fs.addGamePlayer(gameUid: gameUid, playerUid: playerUid);
+      return _fs.addGamePlayer(
+          gameUid: gameUid, playerUid: playerUid, opponent: opponent);
   }
 
   @override
@@ -104,11 +108,14 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> deleteGamePlayer({String gameUid, String playerUid}) {
+  Future<void> deleteGamePlayer(
+      {String gameUid, String playerUid, bool opponent}) {
     if (useSql)
-      return _sql.deleteGamePlayer(gameUid: gameUid, playerUid: playerUid);
+      return _sql.deleteGamePlayer(
+          gameUid: gameUid, playerUid: playerUid, opponent: opponent);
     else
-      return _fs.deleteGamePlayer(gameUid: gameUid, playerUid: playerUid);
+      return _fs.deleteGamePlayer(
+          gameUid: gameUid, playerUid: playerUid, opponent: opponent);
   }
 
   @override
@@ -224,5 +231,25 @@ class MultiplexDatabase extends BasketballDatabase {
       return _sql.getGamesForPlayer(playerUid: playerUid);
     else
       return _fs.getGamesForPlayer(playerUid: playerUid);
+  }
+
+  @override
+  Future<void> updateGamePlayerData(
+      {String gameUid,
+      String playerUid,
+      bool opponent,
+      PlayerSummary summary}) {
+    if (useSql)
+      return _sql.updateGamePlayerData(
+          playerUid: playerUid,
+          gameUid: gameUid,
+          opponent: opponent,
+          summary: summary);
+    else
+      return _fs.updateGamePlayerData(
+          playerUid: playerUid,
+          gameUid: gameUid,
+          opponent: opponent,
+          summary: summary);
   }
 }

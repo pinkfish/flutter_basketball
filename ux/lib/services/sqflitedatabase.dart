@@ -121,11 +121,17 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGamePlayer({String gameUid, String playerUid}) async {
+  Future<void> addGamePlayer(
+      {String gameUid, String playerUid, bool opponent}) async {
     Game t = await _getGame(gameUid: gameUid);
-    await updateGame(
-        game: t.rebuild(
-            (b) => b..players.putIfAbsent(playerUid, () => PlayerSummary())));
+    if (opponent) {
+      t = t.rebuild(
+          (b) => b..opponents.putIfAbsent(playerUid, () => PlayerSummary()));
+    } else {
+      t = t.rebuild(
+          (b) => b..players.putIfAbsent(playerUid, () => PlayerSummary()));
+    }
+    await updateGame(game: t);
     _controller.add(
         _TableChange(table: gamesTable, uid: gameUid, secondaryUid: t.teamUid));
     return playerUid;
@@ -176,9 +182,29 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> deleteGamePlayer({String gameUid, String playerUid}) async {
+  Future<void> deleteGamePlayer(
+      {String gameUid, String playerUid, bool opponent}) async {
     Game t = await _getGame(gameUid: gameUid);
-    return updateGame(game: t.rebuild((b) => b..players.remove(playerUid)));
+    if (opponent) {
+      t = t.rebuild((b) => b..opponents.remove(playerUid));
+    } else {
+      t = t.rebuild((b) => b..players.remove(playerUid));
+    }
+    return updateGame(game: t);
+  }
+
+  @override
+  Future<void> updateGamePlayerData({String gameUid,
+    String playerUid,
+    bool opponent,
+    PlayerSummary summary}) async {
+    Game t = await _getGame(gameUid: gameUid);
+    if (opponent) {
+      t = t.rebuild((b) => b..opponents.putIfAbsent(playerUid, () => summary));
+    } else {
+      t = t.rebuild((b) => b..players.putIfAbsent(playerUid, () => summary));
+    }
+    return updateGame(game: t);
   }
 
   @override

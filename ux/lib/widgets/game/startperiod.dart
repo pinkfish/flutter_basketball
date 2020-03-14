@@ -94,6 +94,7 @@ class _StartPeriodState extends State<StartPeriod> {
                       u,
                       d.rebuild((b) =>
                           b..currentlyPlaying = selectedPlayers.contains(u))));
+                  // If there is no opponent, we add one.
                   var opponents = bloc.state.game.opponents.map((u, d) =>
                       MapEntry(
                           u,
