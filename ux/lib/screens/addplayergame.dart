@@ -3,13 +3,14 @@ import 'package:basketballstats/widgets/player/playeredit.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
 
 ///
-/// Adds a player to the world.
+/// Adds a player to the game worl.
 ///
-class AddPlayerScreen extends StatelessWidget {
+class AddPlayerGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,14 +20,25 @@ class AddPlayerScreen extends StatelessWidget {
       body: BlocProvider(
         create: (BuildContext context) =>
             AddPlayerBloc(db: BlocProvider.of<TeamsBloc>(context).db),
-        child: _AddPlayerInside(),
+        child: _AddPlayerGameInside(),
       ),
     );
   }
 }
 
-class _AddPlayerInside extends StatelessWidget {
-  void _saveForm(AddPlayerBloc bloc, String name, String jersey) {
+class _AddPlayerGameInside extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _AddPlayerGameInsideState();
+  }
+}
+
+class _AddPlayerGameInsideState extends State<_AddPlayerGameInside> {
+  bool _opponent;
+
+  void _saveForm(
+      AddPlayerBloc bloc, String name, String jersey, bool opponent) {
+    this._opponent = opponent;
     bloc.add(AddPlayerEventCommit(
         newPlayer: Player((b) => b
           ..name = name
@@ -40,8 +52,10 @@ class _AddPlayerInside extends StatelessWidget {
       listener: (BuildContext context, AddItemState state) {
         if (state is AddItemDone) {
           // Pass back the player uid.
-          Navigator.pop(context, state.uid);
-          print("pop and done");
+          Navigator.pop(
+            context,
+            Tuple2(state.uid, _opponent),
+          );
         }
         if (state is AddItemSaveFailed) {
           Scaffold.of(context).showSnackBar(
@@ -52,11 +66,16 @@ class _AddPlayerInside extends StatelessWidget {
         bloc: BlocProvider.of<AddPlayerBloc>(context),
         builder: (BuildContext context, AddItemState state) {
           return SavingOverlay(
-              saving: state is AddItemSaving,
-              child: PlayerEdit(
-                onSave: (String name, String jersey) => _saveForm(
-                    BlocProvider.of<AddPlayerBloc>(context), name, jersey),
-              ));
+            saving: state is AddItemSaving,
+            child: PlayerEdit(
+              hasOpponentField: false,
+              onSave: (String name, String jersey, bool opponent) => _saveForm(
+                  BlocProvider.of<AddPlayerBloc>(context),
+                  name,
+                  jersey,
+                  opponent),
+            ),
+          );
         },
       ),
     );

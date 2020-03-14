@@ -65,8 +65,9 @@ class _EditPlayerInside extends StatelessWidget {
           return SavingOverlay(
             saving: state is SinglePlayerSaving,
             child: PlayerEdit(
+              hasOpponentField: false,
               player: state.player,
-              onSave: (String name, String jersey) => _saveForm(
+              onSave: (String name, String jersey, bool opponent) => _saveForm(
                   BlocProvider.of<SinglePlayerBloc>(context), name, jersey),
             ),
           );

@@ -1,20 +1,21 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/deleted.dart';
-import 'package:basketballstats/widgets/game/GameTimeseries.dart';
-import 'package:basketballstats/widgets/game/gameshotlocations.dart';
-import 'package:basketballstats/widgets/game/playerlist.dart';
-import 'package:basketballstats/widgets/loading.dart';
-import 'package:basketballstats/widgets/player/playername.dart';
-import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
-import 'addplayer.dart';
+import '../widgets/deleted.dart';
+import '../widgets/game/GameTimeseries.dart';
+import '../widgets/game/gameshotlocations.dart';
+import '../widgets/game/playerlist.dart';
+import '../widgets/loading.dart';
+import '../widgets/player/playername.dart';
+import '../widgets/savingoverlay.dart';
+import 'addplayergame.dart';
 
 ///
 /// Shows details of the game.
@@ -104,8 +105,9 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         onTap: (int index) => setState(() => _currentIndex = index),
       ),
       floatingActionButton: (widget.state is SingleGameUninitialized ||
-          widget.state is SingleGameDeleted) ||
-          _currentIndex == 2 || _currentIndex == 3
+                  widget.state is SingleGameDeleted) ||
+              _currentIndex == 2 ||
+              _currentIndex == 3
           ? null
           : AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -461,15 +463,17 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
   void _addPlayer(BuildContext context) {
     SingleGameBloc bloc = // ignore: close_sinks
         BlocProvider.of<SingleGameBloc>(context);
-    showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AddPlayerScreen())
-        .then((FutureOr<String> playerUid) {
-      if (playerUid == null || playerUid == "") {
+    showDialog<Tuple2<String, bool>>(
+        context: context,
+        builder: (BuildContext context) => AddPlayerGameScreen())
+        .then((FutureOr<Tuple2<String, bool>> result) async {
+      var r = await result;
+
+      if (result == null || r.item1.isEmpty) {
         // Canceled.
         return;
       }
-      bloc.add(SingleGameAddPlayer(playerUid: playerUid));
+      bloc.add(SingleGameAddPlayer(playerUid: r.item1));
     });
   }
 }

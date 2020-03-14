@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/deleted.dart';
-import 'package:basketballstats/widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
+import '../widgets/deleted.dart';
 import '../widgets/game/gametile.dart';
+import '../widgets/loading.dart';
 import '../widgets/player/playertile.dart';
 import '../widgets/savingoverlay.dart';
-import 'addplayer.dart';
+import 'addplayerteam.dart';
 
 class TeamDetailsScreen extends StatefulWidget {
   final String teamUid;
@@ -227,7 +227,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         BlocProvider.of<SingleTeamBloc>(context);
     showDialog<String>(
             context: context,
-            builder: (BuildContext context) => AddPlayerScreen())
+            builder: (BuildContext context) => AddPlayerTeamScreen())
         .then((FutureOr<String> playerUid) {
       if (playerUid == null || playerUid == "") {
         // Canceled.

@@ -7,7 +7,8 @@ import '../../messages.dart';
 ///
 /// Callback whenm the player is ready to save.
 ///
-typedef void PlayerEditCallback(String name, String jerseyNumber);
+typedef void PlayerEditCallback(
+    String name, String jerseyNumber, bool opponent);
 
 ///
 /// Class top handle editing the player, does a callback whemn the
@@ -17,8 +18,12 @@ class PlayerEdit extends StatefulWidget {
   final Player player;
   final PlayerEditCallback onSave;
   final Function onDelete;
+  final bool hasOpponentField;
 
-  PlayerEdit({this.player, this.onSave, this.onDelete});
+  PlayerEdit({this.player,
+    this.onSave,
+    this.onDelete,
+    @required this.hasOpponentField});
 
   @override
   State<StatefulWidget> createState() {
@@ -30,16 +35,19 @@ class _PlayerEditState extends State<PlayerEdit> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _name;
   String _jerseyNumber;
+  bool opponent = false;
 
   void _saveForm() {
     if (!_formKey.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(Messages.of(context).errorForm)));
+          SnackBar(content: Text(Messages
+              .of(context)
+              .errorForm)));
 
       return;
     }
     _formKey.currentState.save();
-    widget.onSave(_name, _jerseyNumber);
+    widget.onSave(_name, _jerseyNumber, opponent);
   }
 
   @override
@@ -70,8 +78,12 @@ class _PlayerEditState extends State<PlayerEdit> {
           TextFormField(
             decoration: InputDecoration(
               icon: Icon(MdiIcons.tshirtCrew),
-              hintText: Messages.of(context).jersyNumber,
-              labelText: Messages.of(context).jersyNumber,
+              hintText: Messages
+                  .of(context)
+                  .jersyNumber,
+              labelText: Messages
+                  .of(context)
+                  .jersyNumber,
             ),
             onSaved: (String str) {
               _jerseyNumber = str;
@@ -79,14 +91,28 @@ class _PlayerEditState extends State<PlayerEdit> {
             initialValue: widget.player?.jerseyNumber ?? "",
             autovalidate: false,
           ),
+          widget.hasOpponentField
+              ? CheckboxListTile(
+            value: opponent,
+            onChanged: (bool result) => setState(() => opponent = result),
+            title: Text(Messages
+                .of(context)
+                .opponent),
+          )
+              : SizedBox(height: 0),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ButtonBar(
               children: [
                 FlatButton(
                   child: Text(
-                      MaterialLocalizations.of(context).cancelButtonLabel,
-                      style: Theme.of(context).textTheme.button),
+                      MaterialLocalizations
+                          .of(context)
+                          .cancelButtonLabel,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .button),
                   onPressed: () => Navigator.pop(context),
                 ),
                 FlatButton.icon(

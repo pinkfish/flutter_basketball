@@ -22,8 +22,28 @@ class GameShotLocations extends StatefulWidget {
   }
 }
 
-class _GameShotLocationsState extends State<GameShotLocations> {
+class _GameShotLocationsState extends State<GameShotLocations>
+    with SingleTickerProviderStateMixin {
   String _selectedPlayer;
+  double _fraction = 0.0;
+  Animation<double> _animation;
+  Iterable<GameEvent> _oldEvents;
+  Iterable<GameEvent> _events;
+  AnimationController _controller;
+
+  Iterable<GameEvent> _playerEvents(String playerUid) {
+    return widget.state.gameEvents.where(
+      (GameEvent ev) {
+        if (ev.type != GameEventType.Made && ev.type != GameEventType.Missed) {
+          return false;
+        }
+        if (playerUid != null && ev.playerUid != playerUid) {
+          return false;
+        }
+        return _filterPlayer(ev.playerUid);
+      },
+    ).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +79,9 @@ class _GameShotLocationsState extends State<GameShotLocations> {
                       width: min(box.maxWidth, box.maxHeight),
                       child: CustomPaint(
                         painter: _ImageBasketballStuff(
-                          widget.state.gameEvents.where(
-                            (GameEvent ev) {
-                              if (_selectedPlayer != null &&
-                                  ev.playerUid != _selectedPlayer) {
-                                return false;
-                              }
-                              return _filterPlayer(ev.playerUid);
-                            },
-                          ),
+                          events: _events,
+                          oldEvents: _oldEvents,
+                          fraction: _fraction,
                         ),
                       ),
                     ),
@@ -124,21 +138,48 @@ class _GameShotLocationsState extends State<GameShotLocations> {
   }
 
   void _selectPlayer(BuildContext context, String playerUid) {
-    print("Selecting $playerUid");
+    _controller.forward(from: 0.0);
+
     setState(() {
+      String newPlayerUid;
       if (_selectedPlayer == playerUid) {
-        _selectedPlayer = null;
+        newPlayerUid = null;
       } else {
-        _selectedPlayer = playerUid;
+        newPlayerUid = playerUid;
       }
+      var newEvents = _playerEvents(newPlayerUid);
+
+      print("${_oldEvents.length}  ${_events.length} ${newEvents.length}");
+      _selectedPlayer = newPlayerUid;
+      _oldEvents = _events.where((GameEvent ev) => !newEvents.contains(ev));
+      _events = newEvents;
     });
+  }
+
+  void initState() {
+    super.initState();
+    _events = _playerEvents(_selectedPlayer);
+    _oldEvents = [];
+    _controller = AnimationController(
+        duration: Duration(milliseconds: 1000), vsync: this);
+
+    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller)
+      ..addListener(() {
+        setState(() {
+          _fraction = _animation.value;
+        });
+      });
+
+    _controller.forward();
   }
 }
 
 class _ImageBasketballStuff extends CustomPainter {
   final Iterable<GameEvent> events;
+  final Iterable<GameEvent> oldEvents;
+  final double fraction;
 
-  _ImageBasketballStuff(this.events);
+  _ImageBasketballStuff({this.events, this.oldEvents, this.fraction});
 
   final Paint madePainter = new Paint()
     ..color = Colors.blue[400]
@@ -148,37 +189,46 @@ class _ImageBasketballStuff extends CustomPainter {
     ..strokeWidth = 1.5
     ..style = PaintingStyle.stroke;
 
-  void _drawCross(Canvas canvas, Offset pos, Paint painter) {
-    canvas.drawLine(Offset(pos.dx - 5, pos.dy + 5),
-        Offset(pos.dx + 5, pos.dy - 5), painter);
-    canvas.drawLine(Offset(pos.dx + 5, pos.dy + 5),
-        Offset(pos.dx - 5, pos.dy - 5), painter);
+  void _drawCross(Canvas canvas, Offset pos, Paint painter, double fraction) {
+    double x = pos.dx;
+    double y = pos.dy;
+    double extra = 5 * fraction;
+    canvas.drawLine(
+        Offset(x - extra, y + extra), Offset(x + extra, y - extra), painter);
+    canvas.drawLine(
+        Offset(x + extra, y + extra), Offset(x - extra, y - extra), painter);
+  }
+
+  void _drawEvent(Size size, Canvas canvas, GameEvent e, double fraction) {
+    if (e.courtLocation != null) {
+      Offset pos;
+      if (size.width < size.height) {
+        pos = Offset(
+          (size.height - size.width) / 2 + size.width * e.courtLocation.x,
+          size.width * e.courtLocation.y,
+        );
+      } else {
+        pos = Offset(
+          size.height * e.courtLocation.x,
+          (size.width - size.height) / 2 + size.height * e.courtLocation.y,
+        );
+      }
+      if (e.type == GameEventType.Made) {
+        canvas.drawCircle(pos, 7 * fraction, madePainter);
+      } else {
+        _drawCross(canvas, pos, missedPainter, fraction);
+      }
+    }
   }
 
   @override
   void paint(Canvas canvas, Size size) {
+    print("paint ${events.length} ${oldEvents.length}");
     for (GameEvent e in events) {
-      if (e.courtLocation != null) {
-        if (size.width < size.height) {
-          canvas.drawCircle(
-              Offset(
-                (size.height - size.width) / 2 + size.width * e.courtLocation.x,
-                size.width * e.courtLocation.y,
-              ),
-              10,
-              e.type == GameEventType.Made ? madePainter : missedPainter);
-        } else {
-          Offset pos = Offset(
-            size.height * e.courtLocation.x,
-            (size.width - size.height) / 2 + size.height * e.courtLocation.y,
-          );
-          if (e.type == GameEventType.Made) {
-            canvas.drawCircle(pos, 7, madePainter);
-          } else {
-            _drawCross(canvas, pos, missedPainter);
-          }
-        }
-      }
+      _drawEvent(size, canvas, e, fraction);
+    }
+    for (GameEvent e in oldEvents) {
+      _drawEvent(size, canvas, e, 1 - fraction);
     }
   }
 
