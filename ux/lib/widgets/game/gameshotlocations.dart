@@ -110,8 +110,8 @@ class _GameShotLocationsState extends State<GameShotLocations>
   }
 
   static int _sortFunc(Game game, String a, String b) {
-    PlayerSummary asum = game.players[a] ?? game.opponents[a];
-    PlayerSummary bsum = game.players[b] ?? game.opponents[b];
+    PlayerGameSummary asum = game.players[a] ?? game.opponents[a];
+    PlayerGameSummary bsum = game.players[b] ?? game.opponents[b];
     return (bsum.fullData.one.attempts +
             bsum.fullData.two.attempts +
             bsum.fullData.three.attempts) -
@@ -149,7 +149,6 @@ class _GameShotLocationsState extends State<GameShotLocations>
       }
       var newEvents = _playerEvents(newPlayerUid);
 
-      print("${_oldEvents.length}  ${_events.length} ${newEvents.length}");
       _selectedPlayer = newPlayerUid;
       _oldEvents = _events.where((GameEvent ev) => !newEvents.contains(ev));
       _events = newEvents;
@@ -223,7 +222,6 @@ class _ImageBasketballStuff extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print("paint ${events.length} ${oldEvents.length}");
     for (GameEvent e in events) {
       _drawEvent(size, canvas, e, fraction);
     }

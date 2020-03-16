@@ -63,11 +63,11 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 EditPlayerScreen(vals["id"][0].toString())));
-    router.define("/GameStats/:id/:team",
+    router.define("/GameStats/:id/:season/:team",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
-                GameStatsScreen(
-                    vals["id"][0].toString(), vals["team"][0].toString())));
+                GameStatsScreen(vals["id"][0].toString(),
+                    vals["season"][0].toString(), vals["team"][0].toString())));
     router.define("/GamePlayer/:game/:player",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

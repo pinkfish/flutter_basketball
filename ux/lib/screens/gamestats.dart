@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:built_collection/built_collection.dart';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
@@ -12,6 +11,7 @@ import 'package:basketballstats/widgets/game/startperiod.dart';
 import 'package:basketballstats/widgets/game/timeoutstop.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/util/roundbutton.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -29,10 +29,11 @@ typedef SelectCallback = void Function(BuildContext context);
 ///
 class GameStatsScreen extends StatelessWidget {
   final String gameUid;
+  final String seasonUid;
   final String teamUid;
   final ChangeStack stack = new ChangeStack();
 
-  GameStatsScreen(this.gameUid, this.teamUid);
+  GameStatsScreen(this.gameUid, this.seasonUid, this.teamUid);
 
   Future<void> _doAddPoints(BuildContext context, int pts, bool made) async {
     // ignore: close_sinks
@@ -285,9 +286,7 @@ class GameStatsScreen extends StatelessWidget {
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
-          Messages
-              .of(context)
-              .defensiveReboundButton,
+          Messages.of(context).defensiveReboundButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.DefensiveRebound),
       ),

@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/deleted.dart';
 import 'package:basketballstats/widgets/game/gameeventlist.dart';
 import 'package:basketballstats/widgets/loading.dart';
@@ -31,7 +32,8 @@ class _GameDetailsStateScreen extends State<GamePlayerDetailsScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => SingleGameBloc(
-          gameUid: widget.gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
+          gameUid: widget.gameUid,
+          db: RepositoryProvider.of<BasketballDatabase>(context)),
       child: Scaffold(
         appBar: AppBar(
           title: Row(

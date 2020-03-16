@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 import '../data/game.dart';
 import '../data/gameevent.dart';
 import '../data/player.dart';
-import '../data/playersummary.dart';
+import '../data/playergamesummary.dart';
+import '../data/season.dart';
 import '../data/team.dart';
 
 ///
@@ -14,14 +15,20 @@ abstract class BasketballDatabase {
   /// Gets all the currently known teams.
   Stream<BuiltList<Team>> getAllTeams();
 
-  /// Gets all the currently known games for this team.
-  Stream<BuiltList<Game>> getTeamGames({@required String teamUid});
+  /// Gets all the currently known games for this season.
+  Stream<BuiltList<Game>> getSeasonGames({@required String seasonUid});
+
+  /// Gets all the currently known seasons for this team.
+  Stream<BuiltList<Season>> getTeamSeasons({@required String teamUid});
 
   /// Gets all the updates for this specific team.
   Stream<Team> getTeam({@required String teamUid});
 
   /// Gets all the updates for this speific game.
   Stream<Game> getGame({@required String gameUid});
+
+  /// Gets all the updates for this speific season.
+  Stream<Season> getSeason({@required String seasonUid});
 
   /// Loads all the game events for this game.
   Stream<BuiltList<GameEvent>> getGameEvents({@required String gameUid});
@@ -36,10 +43,13 @@ abstract class BasketballDatabase {
   Future<void> addGameEvent({@required GameEvent event});
 
   /// Adds a new team into the database
-  Future<String> addTeam({@required Team team});
+  Future<String> addTeam({@required Team team, @required Season season});
 
   /// Adds a new game into the database
   Future<String> addGame({@required Game game});
+
+  /// Adds a new season into the database
+  Future<String> addSeason({@required String teamUid, @required Season season});
 
   /// Updates the team in the database.
   Future<void> updateTeam({@required Team team});
@@ -47,12 +57,15 @@ abstract class BasketballDatabase {
   /// Updates the game in the database.
   Future<void> updateGame({@required Game game});
 
+  /// Updates the season in the database.
+  Future<void> updateSeason({@required Season season});
+
   /// Updates the game in the database.
   Future<void> updateGamePlayerData(
       {@required String gameUid,
       @required String playerUid,
       @required bool opponent,
-      @required PlayerSummary summary});
+      @required PlayerGameSummary summary});
 
   /// Updates the player in the database.
   Future<void> updatePlayer({@required Player player});
@@ -63,21 +76,25 @@ abstract class BasketballDatabase {
 
   Future<void> deleteTeam({@required String teamUid});
 
+  Future<void> deleteSeason({@required String seasonUid});
+
   Future<void> deleteGameEvent({@required String gameEventUid});
 
-  Future<void> deleteGamePlayer({@required String gameUid,
-    @required String playerUid,
-    @required bool opponent});
+  Future<void> deleteGamePlayer(
+      {@required String gameUid,
+      @required String playerUid,
+      @required bool opponent});
 
-  Future<void> deleteTeamPlayer(
-      {@required String teamUid, @required String playerUid});
+  Future<void> deleteSeasonPlayer(
+      {@required String seasonUid, @required String playerUid});
 
-  Future<void> addGamePlayer({@required String gameUid,
-    @required String playerUid,
-    @required bool opponent});
+  Future<void> addGamePlayer(
+      {@required String gameUid,
+      @required String playerUid,
+      @required bool opponent});
 
-  Future<void> addTeamPlayer(
-      {@required String teamUid, @required String playerUid});
+  Future<void> addSeasonPlayer(
+      {@required String seasonUid, @required String playerUid});
 
   Future<String> addPlayer({@required Player player});
 

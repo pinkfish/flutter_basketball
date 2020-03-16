@@ -19,8 +19,8 @@ class PlayerMultiselect extends StatelessWidget {
     List<String> players = game.players.keys.toList();
     players.addAll(game.opponents.keys);
     players.sort((String a, String b) {
-      PlayerSummary asum = game.players[a] ?? game.opponents[a];
-      PlayerSummary bsum = game.players[b] ?? game.opponents[b];
+      PlayerGameSummary asum = game.players[a] ?? game.opponents[a];
+      PlayerGameSummary bsum = game.players[b] ?? game.opponents[b];
       if (asum.currentlyPlaying) {
         return -1;
       }

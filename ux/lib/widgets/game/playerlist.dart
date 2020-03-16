@@ -194,7 +194,7 @@ class _PlayerListState extends State<PlayerList> {
     );
   }
 
-  int _sortFunction(PlayerSummary s1, PlayerSummary s2) {
+  int _sortFunction(PlayerGameSummary s1, PlayerGameSummary s2) {
     switch (_sortBy) {
       case SortPlayerBy.Points:
         return s2.fullData.points - s1.fullData.points;
@@ -239,14 +239,13 @@ class _PlayerListState extends State<PlayerList> {
     return 0;
   }
 
-  Widget _playerSummary(String uid, PlayerSummary s, BoxConstraints constraints,
-      Orientation orientation) {
+  Widget _playerSummary(String uid, PlayerGameSummary s,
+      BoxConstraints constraints, Orientation orientation) {
     double width = constraints.maxWidth / 8;
     double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
     return GestureDetector(
-      onTap: () =>
-          Navigator.pushNamed(
-              context, "/GamePlayer/" + widget.game.uid + "/" + uid),
+      onTap: () => Navigator.pushNamed(
+          context, "/GamePlayer/" + widget.game.uid + "/" + uid),
       child: Row(
         children: <Widget>[
           SizedBox(

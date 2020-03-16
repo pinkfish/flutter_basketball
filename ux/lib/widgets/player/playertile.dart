@@ -1,5 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/bloc/singleplayerbloc.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +37,7 @@ class PlayerTile extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => SinglePlayerBloc(
           playerUid: this.playerUid,
-          db: BlocProvider.of<TeamsBloc>(context).db),
+          db: RepositoryProvider.of<BasketballDatabase>(context)),
       child: Builder(
         builder: (BuildContext context) {
           return AnimatedSwitcher(
@@ -46,8 +47,7 @@ class PlayerTile extends StatelessWidget {
               builder: (BuildContext context, SinglePlayerState state) {
                 if (state is SinglePlayerDeleted) {
                   if (compactDisplay) {
-                    return Text(Messages
-                        .of(context)
+                    return Text(Messages.of(context)
                         .unknown);
                   }
                   return Card(

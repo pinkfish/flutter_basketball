@@ -128,7 +128,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                           "/GameStats/" +
                               widget.state.game.uid +
                               "/" +
-                              widget.state.game.teamUid),
+                              widget.state.game.seasonUid),
                     ),
             ),
     );
@@ -412,8 +412,8 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
     }
   }
 
-  Widget _playerSummary(String uid, PlayerSummary s, BoxConstraints constraints,
-      Orientation orientation) {
+  Widget _playerSummary(String uid, PlayerGameSummary s,
+      BoxConstraints constraints, Orientation orientation) {
     double width = constraints.maxWidth / 6;
     double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
     return Row(

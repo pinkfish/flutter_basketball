@@ -28,6 +28,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   static const String playersTable = "Players";
   static const String gamesTable = "Games";
   static const String gameEventsTable = "GameEvents";
+  static const String seasonsTable = "Seasons";
 
   static const String indexColumn = "uid";
   static const String secondaryIndexColumn = "otherUid";
@@ -40,6 +41,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   static const List<String> _tablesSecondaryIndex = const <String>[
     gamesTable,
     gameEventsTable,
+    seasonsTable,
   ];
 
   SqlfliteDatabase() {
@@ -96,11 +98,11 @@ class SqlfliteDatabase extends BasketballDatabase {
     print('Inserting ${json.encode(newG.toMap())}');
     await db.insert(gamesTable, {
       indexColumn: uid,
-      secondaryIndexColumn: game.teamUid,
+      secondaryIndexColumn: game.seasonUid,
       dataColumn: json.encode(newG.toMap()),
     });
-    _controller.add(
-        _TableChange(table: gamesTable, uid: uid, secondaryUid: game.teamUid));
+    _controller.add(_TableChange(
+        table: gamesTable, uid: uid, secondaryUid: game.seasonUid));
     return uid;
   }
 
@@ -125,38 +127,53 @@ class SqlfliteDatabase extends BasketballDatabase {
       {String gameUid, String playerUid, bool opponent}) async {
     Game t = await _getGame(gameUid: gameUid);
     if (opponent) {
-      t = t.rebuild(
-          (b) => b..opponents.putIfAbsent(playerUid, () => PlayerSummary()));
+      t = t.rebuild((b) =>
+      b..opponents.putIfAbsent(playerUid, () => PlayerGameSummary()));
     } else {
       t = t.rebuild(
-          (b) => b..players.putIfAbsent(playerUid, () => PlayerSummary()));
+              (b) =>
+          b
+            ..players.putIfAbsent(playerUid, () => PlayerGameSummary()));
     }
     await updateGame(game: t);
-    _controller.add(
-        _TableChange(table: gamesTable, uid: gameUid, secondaryUid: t.teamUid));
+    _controller.add(_TableChange(
+        table: gamesTable, uid: gameUid, secondaryUid: t.seasonUid));
     return playerUid;
   }
 
   @override
-  Future<String> addTeam({Team team}) async {
+  Future<String> addTeam({Team team, Season season}) async {
     Database db = await _complete.future;
     String uid = uuid.v5(Uuid.NAMESPACE_OID, teamsTable);
-    Team newT = team.rebuild((b) => b..uid = uid);
+    String seasonUid = uuid.v5(Uuid.NAMESPACE_OID, seasonsTable);
+    Team newT = team.rebuild((b) =>
+    b
+      ..uid = uid
+      ..currentSeasonUid = seasonUid);
+    Season newS = season.rebuild((b) =>
+    b
+      ..teamUid = uid
+      ..uid = seasonUid);
     await db.insert(teamsTable, {
       indexColumn: uid,
       dataColumn: json.encode(newT.toMap()),
+    });
+    await db.insert(seasonsTable, {
+      indexColumn: seasonUid,
+      secondaryIndexColumn: uid,
+      dataColumn: json.encode(newS.toMap()),
     });
     _controller.add(_TableChange(table: teamsTable, uid: uid));
     return uid;
   }
 
   @override
-  Future<void> addTeamPlayer({String teamUid, String playerUid}) async {
-    Team t = await _getTeam(teamUid: teamUid);
-    await updateTeam(
-        team:
-            t.rebuild((b) => b..playerUids.putIfAbsent(playerUid, () => true)));
-    _controller.add(_TableChange(table: teamsTable, uid: teamUid));
+  Future<void> addSeasonPlayer({String seasonUid, String playerUid}) async {
+    Season t = await _getSeason(seasonUid: seasonUid);
+    await updateSeason(
+        season: t.rebuild((b) =>
+        b..playerUids.putIfAbsent(playerUid, () => PlayerTeamSummary())));
+    _controller.add(_TableChange(table: seasonsTable, uid: seasonUid));
     return playerUid;
   }
 
@@ -165,8 +182,8 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _complete.future;
     Game g = await _getGame(gameUid: gameUid);
     await db.delete(gamesTable, where: "uid = ?", whereArgs: [gameUid]);
-    _controller.add(
-        _TableChange(table: gamesTable, uid: gameUid, secondaryUid: g.teamUid));
+    _controller.add(_TableChange(
+        table: gamesTable, uid: gameUid, secondaryUid: g.seasonUid));
     return null;
   }
 
@@ -197,7 +214,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<void> updateGamePlayerData({String gameUid,
     String playerUid,
     bool opponent,
-    PlayerSummary summary}) async {
+    PlayerGameSummary summary}) async {
     Game t = await _getGame(gameUid: gameUid);
     if (opponent) {
       t = t.rebuild((b) => b..opponents.putIfAbsent(playerUid, () => summary));
@@ -225,22 +242,46 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> deleteTeamPlayer({String teamUid, String playerUid}) async {
-    Team t = await _getTeam(teamUid: teamUid);
-    return updateTeam(team: t.rebuild((b) => b..playerUids.remove(playerUid)));
+  Future<void> deleteSeason({String seasonUid}) async {
+    Database db = await _complete.future;
+    await db.delete(seasonsTable, where: "uid = ?", whereArgs: [seasonUid]);
+    _controller.add(_TableChange(table: seasonsTable, uid: seasonUid));
+    // TODO: Delete from the other places it is referenced too.
+    return null;
+  }
+
+  @override
+  Future<void> deleteSeasonPlayer({String seasonUid, String playerUid}) async {
+    Season s = await _getSeason(seasonUid: seasonUid);
+    return updateSeason(
+        season: s.rebuild((b) => b..playerUids.remove(playerUid)));
   }
 
   Future<Team> _getTeam({String teamUid}) async {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
-        await db.query(teamsTable, where: "uid = ?", whereArgs: [teamUid]);
+    await db.query(teamsTable, where: "uid = ?", whereArgs: [teamUid]);
     print("Query $maps");
     if (maps.isEmpty) {
       return null;
     }
     return maps
         .map((Map<String, dynamic> e) =>
-            Team.fromMap(json.decode(e[dataColumn])))
+        Team.fromMap(json.decode(e[dataColumn])))
+        .first;
+  }
+
+  Future<Season> _getSeason({String seasonUid}) async {
+    Database db = await _complete.future;
+    final List<Map<String, dynamic>> maps =
+    await db.query(seasonsTable, where: "uid = ?", whereArgs: [seasonUid]);
+    print("Query $maps");
+    if (maps.isEmpty) {
+      return null;
+    }
+    return maps
+        .map((Map<String, dynamic> e) =>
+        Season.fromMap(json.decode(e[dataColumn])))
         .first;
   }
 
@@ -248,11 +289,11 @@ class SqlfliteDatabase extends BasketballDatabase {
   Stream<Player> getPlayer({String playerUid}) async* {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
-        await db.query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
+    await db.query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
     print("Query $maps");
     yield maps
         .map((Map<String, dynamic> e) =>
-            Player.fromMap(json.decode(e[dataColumn])))
+        Player.fromMap(json.decode(e[dataColumn])))
         .first;
     await for (_TableChange table in _tableChange) {
       print("Table change getPlayer $table");
@@ -336,13 +377,33 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
+  Stream<Season> getSeason({String seasonUid}) async* {
+    yield await _getSeason(seasonUid: seasonUid);
+    Database db = await _complete.future;
+    await for (_TableChange table in _tableChange) {
+      print("Table change getTeam $table");
+      if (!db.isOpen) {
+        print("db is not open");
+        // Exit out of here.
+        return;
+      }
+      if (table.uid == seasonUid || table.secondaryUid == seasonUid) {
+        print("yay us");
+        yield await _getSeason(seasonUid: seasonUid);
+      } else {
+        print("no us $seasonUid ${table.uid}");
+      }
+    }
+  }
+
+  @override
   Stream<BuiltList<Team>> getAllTeams() async* {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps = await db.query(teamsTable);
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
-            Team.fromMap(json.decode(e[dataColumn])))
+        Team.fromMap(json.decode(e[dataColumn])))
         .toList());
     print("getTeams waiting for change");
     await for (_TableChange table in _tableChange) {
@@ -376,7 +437,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         where: 'uid = ?',
         whereArgs: [game.uid]);
     _controller.add(_TableChange(
-        table: gamesTable, uid: game.uid, secondaryUid: game.teamUid));
+        table: gamesTable, uid: game.uid, secondaryUid: game.seasonUid));
     return null;
   }
 
@@ -412,16 +473,67 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Game>> getTeamGames({String teamUid}) async* {
+  Future<void> updateSeason({Season season}) async {
+    Database db = await _complete.future;
+    db.update(
+        seasonsTable,
+        {
+          indexColumn: season.uid,
+          dataColumn: json.encode(season.toMap()),
+        },
+        where: "uid = ?",
+        whereArgs: [season.uid]);
+
+    _controller.add(_TableChange(table: seasonsTable, uid: season.uid));
+    return null;
+  }
+
+  @override
+  Stream<BuiltList<Game>> getSeasonGames({String seasonUid}) async* {
+    print("Waiting for database");
+    Database db = await _complete.future;
+    print("Got  database " + seasonUid);
+    final List<Map<String, dynamic>> maps = await db.query(gamesTable,
+        where: secondaryIndexColumn + " = ?", whereArgs: [seasonUid]);
+    print("Query $maps");
+    yield BuiltList.from(maps
+        .map((Map<String, dynamic> e) =>
+        Game.fromMap(json.decode(e[dataColumn])))
+        .toList());
+    await for (_TableChange table in _tableChange) {
+      print("Table change $table");
+      if (!db.isOpen) {
+        // Exit out of here.
+        return;
+      }
+      if (table.secondaryUid == seasonUid) {
+        final List<Map<String, dynamic>> maps = await db.query(gamesTable,
+            where: indexColumn + " = ?", whereArgs: [seasonUid]);
+        yield BuiltList.from(maps
+            .map((Map<String, dynamic> e) =>
+            Game.fromMap(json.decode(e[dataColumn])))
+            .where((Game t) => t.uid != null)
+            .toList());
+      }
+    }
+  }
+
+  @override
+  Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) async* {
+    // TODO: Work this one out...
+  }
+
+  @override
+  Stream<BuiltList<Season>> getTeamSeasons({String teamUid}) async* {
     print("Waiting for database");
     Database db = await _complete.future;
     print("Got  database " + teamUid);
-    final List<Map<String, dynamic>> maps = await db.query(gamesTable,
+    final List<Map<String, dynamic>> maps = await db.query(seasonsTable,
         where: secondaryIndexColumn + " = ?", whereArgs: [teamUid]);
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
-            Game.fromMap(json.decode(e[dataColumn])))
+        Season.fromMap(json.decode(e[dataColumn])))
         .toList());
     await for (_TableChange table in _tableChange) {
       print("Table change $table");
@@ -430,12 +542,12 @@ class SqlfliteDatabase extends BasketballDatabase {
         return;
       }
       if (table.secondaryUid == teamUid) {
-        final List<Map<String, dynamic>> maps = await db.query(gamesTable,
+        final List<Map<String, dynamic>> maps = await db.query(seasonsTable,
             where: indexColumn + " = ?", whereArgs: [teamUid]);
         yield BuiltList.from(maps
             .map((Map<String, dynamic> e) =>
-                Game.fromMap(json.decode(e[dataColumn])))
-            .where((Game t) => t.uid != null)
+            Season.fromMap(json.decode(e[dataColumn])))
+            .where((Season t) => t.uid != null)
             .toList());
       }
     }
@@ -458,10 +570,32 @@ class SqlfliteDatabase extends BasketballDatabase {
     return uid;
   }
 
+  @override
+  Future<String> addSeason({String teamUid, Season season}) async {
+    print("Calling addSeason");
+    Database db = await _complete.future;
+    String uid = uuid.v5(Uuid.NAMESPACE_OID, seasonsTable);
+    Season newS = season.rebuild((b) =>
+    b
+      ..uid = uid
+      ..teamUid = teamUid);
+    print('Inserting ${json.encode(newS.toMap())}');
+    await db.insert(seasonsTable, {
+      indexColumn: uid,
+      secondaryIndexColumn: teamUid,
+      dataColumn: json.encode(newS.toMap()),
+    });
+    print("Adding table to stream");
+    _controller.add(
+        _TableChange(table: seasonsTable, uid: uid, secondaryUid: teamUid));
+    print("Done...");
+    return uid;
+  }
+
   BuiltList<GameEvent> _getGameEvents(List<Map<String, dynamic>> data) {
     var evs = data
         .map((Map<String, dynamic> e) =>
-            GameEvent.fromMap(json.decode(e[dataColumn])))
+        GameEvent.fromMap(json.decode(e[dataColumn])))
         .toList();
     evs.sort((GameEvent a, GameEvent b) => a.timestamp.compareTo(b.timestamp));
     return BuiltList.from(evs);
@@ -492,12 +626,6 @@ class SqlfliteDatabase extends BasketballDatabase {
 
   @override
   Stream<bool> get onDatabaseChange => null;
-
-  @override
-  Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) {
-    // TODO: implement getGamesForPlayer
-    return null;
-  }
 }
 
 ///

@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
-import '../widgets/util/datetimepicker.dart';
 import '../widgets/savingoverlay.dart';
+import '../widgets/util/datetimepicker.dart';
 
 class AddGameScreen extends StatelessWidget {
   final String teamUid;
+  final String seasonUid;
 
-  AddGameScreen({@required this.teamUid});
+  AddGameScreen({@required this.teamUid, @required this.seasonUid});
 
   @override
   Widget build(BuildContext context) {
@@ -19,20 +20,20 @@ class AddGameScreen extends StatelessWidget {
         title: Text(Messages.of(context).title),
       ),
       body: BlocProvider(
-        create: (BuildContext context) => SingleTeamBloc(
-            db: BlocProvider.of<TeamsBloc>(context).db, teamUid: teamUid),
+        create: (BuildContext context) => SingleSeasonBloc(
+            db: BlocProvider.of<TeamsBloc>(context).db, seasonUid: seasonUid),
         child: BlocProvider(
           create: (BuildContext context) => AddGameBloc(
-              teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
+              seasonUid: seasonUid, db: BlocProvider.of<TeamsBloc>(context).db),
           child: Builder(builder: (BuildContext context) {
             return BlocBuilder(
-                bloc: BlocProvider.of<SingleTeamBloc>(context),
-                builder: (BuildContext context, SingleTeamBlocState state) {
+                bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                builder: (BuildContext context, SingleSeasonBlocState state) {
                   if (state is SingleTeamDeleted) {
                     return Center(child: Text(Messages.of(context).unknown));
                   }
                   return _AddGameForm(
-                    team: state.team,
+                    season: state.season,
                   );
                 });
           }),
@@ -43,9 +44,9 @@ class AddGameScreen extends StatelessWidget {
 }
 
 class _AddGameForm extends StatefulWidget {
-  final Team team;
+  final Season season;
 
-  _AddGameForm({@required this.team});
+  _AddGameForm({@required this.season});
 
   @override
   State<StatefulWidget> createState() {
@@ -63,24 +64,28 @@ class _AddGameFormState extends State<_AddGameForm> {
   void _saveForm(AddGameBloc bloc) {
     if (!_formKey.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(Messages.of(context).errorForm)));
+          SnackBar(content: Text(Messages
+              .of(context)
+              .errorForm)));
       return;
     }
     _formKey.currentState.save();
-    var map = MapBuilder<String, PlayerSummary>();
-    map.addEntries(widget.team.playerUids.keys
-        .map((var e) => MapEntry(e, PlayerSummary())));
+    var map = MapBuilder<String, PlayerGameSummary>();
+    map.addEntries(widget.season.playerUids.keys
+        .map((var e) => MapEntry(e, PlayerGameSummary())));
     bloc.add(AddGameEventCommit(
-        newGame: Game((b) => b
+        newGame: Game((b) =>
+        b
           ..opponentName = _opponent
-          ..teamUid = widget.team.uid
+          ..seasonUid = widget.season.uid
+          ..teamUid = widget.season.teamUid
           ..players = map
           ..location = _location ?? ""
           ..summary = (GameSummaryBuilder()
             ..pointsAgainst = 0
             ..pointsFor = 0)
           ..eventTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
-                  _time.hour, _time.minute)
+              _time.hour, _time.minute)
               .toUtc())));
   }
 

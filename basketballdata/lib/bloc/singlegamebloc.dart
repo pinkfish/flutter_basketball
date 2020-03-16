@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballdata/data/gameperiod.dart';
-import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
@@ -10,6 +7,14 @@ import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../data/game.dart';
+import '../data/gameevent.dart';
+import '../data/gameeventtype.dart';
+import '../data/gameperiod.dart';
+import '../data/gamesummary.dart';
+import '../data/player.dart';
+import '../data/playergamesummary.dart';
+import '../data/playersummarydata.dart';
+import '../db/basketballdatabase.dart';
 
 ///
 /// The basic data for the game and all the data associated with it.
@@ -179,7 +184,7 @@ class SingleGameUpdatePlayer extends SingleGameEvent {
 /// The summary with the opponent flag.
 ///
 class PlayerSummaryWithOpponent {
-  final PlayerSummary summary;
+  final PlayerGameSummary summary;
   final bool opponent;
 
   PlayerSummaryWithOpponent(this.opponent, this.summary);
@@ -408,7 +413,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       yield SingleGameSaving(singleGameState: state);
       try {
         for (MapEntry<String, PlayerSummaryWithOpponent> entry
-        in event.summary.entries) {
+            in event.summary.entries) {
           await db.updateGamePlayerData(
               gameUid: gameUid,
               opponent: entry.value.opponent,
@@ -447,17 +452,17 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (evList.length == state.gameEvents.length && state.loadedGameEvents) {
       return;
     }
-    Map<String, PlayerSummaryBuilder> players = state.game.players
+    Map<String, PlayerGameSummaryBuilder> players = state.game.players
         .toMap()
-        .map((var e, var v) => MapEntry(e, PlayerSummaryBuilder()));
-    Map<String, PlayerSummaryBuilder> opponents = state.game.opponents
+        .map((var e, var v) => MapEntry(e, PlayerGameSummaryBuilder()));
+    Map<String, PlayerGameSummaryBuilder> opponents = state.game.opponents
         .toMap()
-        .map((var e, var v) => MapEntry(e, PlayerSummaryBuilder()));
+        .map((var e, var v) => MapEntry(e, PlayerGameSummaryBuilder()));
     GameSummaryBuilder gameSummary = GameSummaryBuilder()
       ..pointsFor = 0
       ..pointsAgainst = 0;
-    PlayerSummaryBuilder playerSummary = PlayerSummaryBuilder();
-    PlayerSummaryBuilder opponentSummary = PlayerSummaryBuilder();
+    PlayerGameSummaryBuilder playerSummary = PlayerGameSummaryBuilder();
+    PlayerGameSummaryBuilder opponentSummary = PlayerGameSummaryBuilder();
 
     var sortedList = evList.toList();
     sortedList
@@ -582,12 +587,13 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (state.game.playerSummaery != playerSummary.build() ||
         state.game.opponentSummary != opponentSummary.build() ||
         state.game.summary != gameSummary.build() ||
-        state.game.players.entries.every((MapEntry<String, PlayerSummary> e) =>
+        state.game.players.entries.every(
+                (MapEntry<String, PlayerGameSummary> e) =>
             players[e.key].build() == e.value) ||
         state.game.currentPeriod != currentPeriod ||
         state.game.opponents.entries.every(
-            (MapEntry<String, PlayerSummary> e) =>
-                opponents[e.key].build() == e.value)) {
+                (MapEntry<String, PlayerGameSummary> e) =>
+            opponents[e.key].build() == e.value)) {
       db.updateGame(
           game: state.game.rebuild((b) => b
             ..summary = gameSummary

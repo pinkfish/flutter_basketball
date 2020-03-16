@@ -1,10 +1,6 @@
 import 'dart:async';
 
-import 'package:basketballdata/data/game.dart';
-import 'package:basketballdata/data/gameevent.dart';
-import 'package:basketballdata/data/player.dart';
-import 'package:basketballdata/data/playersummary.dart';
-import 'package:basketballdata/data/team.dart';
+import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/firestoredatabase.dart';
 import 'package:basketballstats/services/sqflitedatabase.dart';
@@ -76,19 +72,19 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addTeam({Team team}) {
+  Future<String> addTeam({Team team, Season season}) {
     if (useSql)
-      return _sql.addTeam(team: team);
+      return _sql.addTeam(team: team, season: season);
     else
-      return _fs.addTeam(team: team);
+      return _fs.addTeam(team: team, season: season);
   }
 
   @override
-  Future<void> addTeamPlayer({String teamUid, String playerUid}) {
+  Future<void> addSeasonPlayer({String seasonUid, String playerUid}) {
     if (useSql)
-      return _sql.addTeamPlayer(teamUid: teamUid, playerUid: playerUid);
+      return _sql.addSeasonPlayer(seasonUid: seasonUid, playerUid: playerUid);
     else
-      return _fs.addTeamPlayer(teamUid: teamUid, playerUid: playerUid);
+      return _fs.addSeasonPlayer(seasonUid: seasonUid, playerUid: playerUid);
   }
 
   @override
@@ -127,11 +123,12 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> deleteTeamPlayer({String teamUid, String playerUid}) {
+  Future<void> deleteSeasonPlayer({String seasonUid, String playerUid}) {
     if (useSql)
-      return _sql.deleteTeamPlayer(teamUid: teamUid, playerUid: playerUid);
+      return _sql.deleteSeasonPlayer(
+          seasonUid: seasonUid, playerUid: playerUid);
     else
-      return _fs.deleteTeamPlayer(teamUid: teamUid, playerUid: playerUid);
+      return _fs.deleteSeasonPlayer(seasonUid: seasonUid, playerUid: playerUid);
   }
 
   @override
@@ -183,11 +180,11 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Stream<BuiltList<Game>> getTeamGames({String teamUid}) {
+  Stream<BuiltList<Season>> getTeamSeasons({String teamUid}) {
     if (useSql)
-      return _sql.getTeamGames(teamUid: teamUid);
+      return _sql.getTeamSeasons(teamUid: teamUid);
     else
-      return _fs.getTeamGames(teamUid: teamUid);
+      return _fs.getTeamSeasons(teamUid: teamUid);
   }
 
   @override
@@ -238,7 +235,7 @@ class MultiplexDatabase extends BasketballDatabase {
       {String gameUid,
       String playerUid,
       bool opponent,
-      PlayerSummary summary}) {
+      PlayerGameSummary summary}) {
     if (useSql)
       return _sql.updateGamePlayerData(
           playerUid: playerUid,
@@ -251,5 +248,45 @@ class MultiplexDatabase extends BasketballDatabase {
           gameUid: gameUid,
           opponent: opponent,
           summary: summary);
+  }
+
+  @override
+  Future<String> addSeason({String teamUid, Season season}) {
+    if (useSql)
+      return _sql.addSeason(teamUid: teamUid, season: season);
+    else
+      return _fs.addSeason(teamUid: teamUid, season: season);
+  }
+
+  @override
+  Future<void> deleteSeason({String seasonUid}) {
+    if (useSql)
+      return _sql.deleteSeason(seasonUid: seasonUid);
+    else
+      return _fs.deleteSeason(seasonUid: seasonUid);
+  }
+
+  @override
+  Future<void> updateSeason({Season season}) {
+    if (useSql)
+      return _sql.updateSeason(season: season);
+    else
+      return _fs.updateSeason(season: season);
+  }
+
+  @override
+  Stream<Season> getSeason({String seasonUid}) {
+    if (useSql)
+      return _sql.getSeason(seasonUid: seasonUid);
+    else
+      return _fs.getSeason(seasonUid: seasonUid);
+  }
+
+  @override
+  Stream<BuiltList<Game>> getSeasonGames({String seasonUid}) {
+    if (useSql)
+      return _sql.getSeasonGames(seasonUid: seasonUid);
+    else
+      return _fs.getSeasonGames(seasonUid: seasonUid);
   }
 }

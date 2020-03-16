@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/player/playeredit.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,9 @@ class AddPlayerGameScreen extends StatelessWidget {
         title: Text(Messages.of(context).title),
       ),
       body: BlocProvider(
-        create: (BuildContext context) =>
-            AddPlayerBloc(db: BlocProvider.of<TeamsBloc>(context).db),
+        create: (BuildContext context) => AddPlayerBloc(
+          db: RepositoryProvider.of<BasketballDatabase>(context),
+        ),
         child: _AddPlayerGameInside(),
       ),
     );

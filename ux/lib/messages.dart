@@ -32,36 +32,57 @@ class Messages {
       desc: "Message to show while loading data", locale: locale);
   String get addTeamTooltip => Intl.message("Add Team",
       desc: "Message to on the tooltip to add a team", locale: locale);
+
   String get addGameTooltip => Intl.message("Add Game",
       desc: "Message to on the tooltip to add a game", locale: locale);
+
   String get addPlayerTooltip => Intl.message("Add Player",
       desc: "Message to on the tooltip to add a player", locale: locale);
+
   String get noTeams => Intl.message("No Teams",
       desc: "Message to say there are no teams currently setup",
       locale: locale);
+
   String get noGames => Intl.message("No Games",
       desc: "Message to say there are no games currently setup",
       locale: locale);
+
+  String get noSeasons => Intl.message("No Seasons",
+      desc: "Message to say there are no seasons currently setup",
+      locale: locale);
+
   String get noPlayers => Intl.message("No Players",
       desc: "Message to say there are no players currently setup",
       locale: locale);
+
   String get about => Intl.message("About",
       desc: "Menu item to open information about the app", locale: locale);
+
   String get settings => Intl.message("Settings",
       desc: "Menu item to open information settings of the app",
       locale: locale);
+
   String get eventTime =>
       Intl.message("Event Time", desc: "Time of the event", locale: locale);
+
   String get teamName =>
       Intl.message("Team Name", desc: "Name of the team", locale: locale);
+
+  String get seasonName =>
+      Intl.message("Season Name", desc: "Name of the season", locale: locale);
+
   String get playerName =>
       Intl.message("Player Name", desc: "Name of the player", locale: locale);
+
   String get opponent => Intl.message("Opponent",
       desc: "The opponent in the game", locale: locale);
+
   String get location =>
       Intl.message("Location", desc: "Location of the game", locale: locale);
+
   String get jersyNumber => Intl.message("Jersey Number",
       desc: "Jersey number for the playerr", locale: locale);
+
   String get emptyText => Intl.message("Must not be empty",
       desc: "Hint text to say the name must not be empty", locale: locale);
 
@@ -144,27 +165,39 @@ class Messages {
   String get deletePlayer => Intl.message("Delete Player",
       desc: "Dialog title for deleting a playern", locale: locale);
 
-  String get endTimeout => Intl.message("End timeout",
-      desc: "Text to end the timeout", locale: locale);
+  String get endTimeout =>
+      Intl.message("End timeout",
+          desc: "Text to end the timeout", locale: locale);
 
-  String get period => Intl.message("Period",
-      desc: "Dialog title for sertting the current period", locale: locale);
+  String get period =>
+      Intl.message("Period",
+          desc: "Dialog title for sertting the current period", locale: locale);
 
-  String get periodButton => Intl.message("PERIOD",
-      desc: "Button to set the current period", locale: locale);
+  String get periodButton =>
+      Intl.message("PERIOD",
+          desc: "Button to set the current period", locale: locale);
 
-  String get noPlayersForTeamDialog => Intl.message(
-      "You must have some players in a team "
-      "to be able to create a game.",
-      desc: "Text in a dialog to warn you need players",
-      locale: locale);
+  String get noPlayersForSeasonDialog =>
+      Intl.message(
+          "You must have some players in a season "
+              "to be able to create a game.",
+          desc: "Text in a dialog to warn you need players",
+          locale: locale);
 
-  String get namerequired => Intl.message("Name is required.",
-      desc: "Text in a snackbar to say the name is required", locale: locale);
-  String get emailrequired => Intl.message("Email is required.",
-      desc: "Text in a snackbar to say the email is required", locale: locale);
-  String get invalidemail => Intl.message("Invalid email",
-      desc: "Text in a snackbar to say the email is invalid", locale: locale);
+  String get namerequired =>
+      Intl.message("Name is required.",
+          desc: "Text in a snackbar to say the name is required",
+          locale: locale);
+
+  String get emailrequired =>
+      Intl.message("Email is required.",
+          desc: "Text in a snackbar to say the email is required",
+          locale: locale);
+
+  String get invalidemail =>
+      Intl.message("Invalid email",
+          desc: "Text in a snackbar to say the email is invalid",
+          locale: locale);
   String get emptypassword => Intl.message("Empty password",
       desc: "Snackbar to show the password is empty", locale: locale);
   String get email =>

@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/player/playeredit.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import '../messages.dart';
 ///
 /// Adds a player to the world.
 ///
-class AddPlayerTeamScreen extends StatelessWidget {
+class AddPlayerSeasonScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,18 +18,19 @@ class AddPlayerTeamScreen extends StatelessWidget {
         title: Text(Messages.of(context).title),
       ),
       body: BlocProvider(
-        create: (BuildContext context) =>
-            AddPlayerBloc(db: BlocProvider.of<TeamsBloc>(context).db),
-        child: _AddPlayerInside(),
+        create: (BuildContext context) => AddPlayerBloc(
+            db: RepositoryProvider.of<BasketballDatabase>(context)),
+        child: _AddPlayerSeasonInside(),
       ),
     );
   }
 }
 
-class _AddPlayerInside extends StatelessWidget {
+class _AddPlayerSeasonInside extends StatelessWidget {
   void _saveForm(AddPlayerBloc bloc, String name, String jersey) {
     bloc.add(AddPlayerEventCommit(
-        newPlayer: Player((b) => b
+        newPlayer: Player((b) =>
+        b
           ..name = name
           ..jerseyNumber = jersey ?? "")));
   }

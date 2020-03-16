@@ -67,12 +67,13 @@ class _TeamSummary extends StatelessWidget {
     return BlocConsumer(
         bloc: BlocProvider.of<SingleTeamBloc>(context),
         listener: (BuildContext context, SingleTeamBlocState state) {
-          if (state is SingleTeamLoaded && !state.loadedGames) {
-            BlocProvider.of<SingleTeamBloc>(context).add(SingleTeamLoadGames());
+          if (state is SingleTeamLoaded && !state.loadedSeasons) {
+            BlocProvider.of<SingleTeamBloc>(context)
+                .add(SingleTeamLoadSeasons());
           }
         },
         builder: (BuildContext context, SingleTeamBlocState state) {
-          if (state is SingleTeamLoaded && !state.loadedGames ||
+          if (state is SingleTeamLoaded && !state.loadedSeasons ||
               state is SingleTeamUninitialized) {
             return Text(Messages.of(context).loading,
                 style: Theme.of(context).textTheme.subtitle);
@@ -80,8 +81,11 @@ class _TeamSummary extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Played ${state.games.length} games",
-                  style: Theme.of(context).textTheme.subtitle),
+              Text("Played ${state.seasons.length} seasons",
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle),
               Text("${state.team.playerUids.length} players",
                   style: Theme.of(context).textTheme.subtitle)
             ],

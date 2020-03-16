@@ -1,10 +1,10 @@
-import 'package:basketballdata/data/gamesummary.dart';
-import 'package:basketballdata/data/playersummary.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'gameperiod.dart';
+import 'gamesummary.dart';
+import 'playergamesummary.dart';
 import 'serializers.dart';
 
 part 'game.g.dart';
@@ -15,6 +15,8 @@ abstract class Game implements Built<Game, GameBuilder> {
   @nullable
   String get uid;
 
+  String get seasonUid;
+
   DateTime get eventTime;
 
   String get location;
@@ -23,15 +25,15 @@ abstract class Game implements Built<Game, GameBuilder> {
 
   String get teamUid;
 
-  BuiltMap<String, PlayerSummary> get players;
+  BuiltMap<String, PlayerGameSummary> get players;
 
-  BuiltMap<String, PlayerSummary> get opponents;
+  BuiltMap<String, PlayerGameSummary> get opponents;
 
   GameSummary get summary;
 
-  PlayerSummary get playerSummaery;
+  PlayerGameSummary get playerSummaery;
 
-  PlayerSummary get opponentSummary;
+  PlayerGameSummary get opponentSummary;
 
   GamePeriod get currentPeriod;
 
@@ -57,11 +59,13 @@ abstract class Game implements Built<Game, GameBuilder> {
     return Duration(seconds: diff);
   }
 
-  static void _initializeBuilder(GameBuilder b) => b
+  static void _initializeBuilder(GameBuilder b) =>
+      b
     ..summary = GameSummaryBuilder()
-    ..playerSummaery = PlayerSummaryBuilder()
-    ..opponentSummary = PlayerSummaryBuilder()
+    ..playerSummaery = PlayerGameSummaryBuilder()
+    ..opponentSummary = PlayerGameSummaryBuilder()
     ..opponentName = "unknown"
+    ..seasonUid = ""
     ..currentPeriod = GamePeriod.NotStarted
     ..gameTime = Duration(milliseconds: 0);
 

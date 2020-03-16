@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../data/season.dart';
 import '../../data/team.dart';
 import '../../db/basketballdatabase.dart';
 import 'additemstate.dart';
@@ -15,8 +16,9 @@ abstract class AddTeamEvent extends Equatable {}
 ///
 class AddTeamEventCommit extends AddTeamEvent {
   final Team newTeam;
+  final Season firstSeason;
 
-  AddTeamEventCommit({@required this.newTeam});
+  AddTeamEventCommit({@required this.newTeam, @required this.firstSeason});
 
   @override
   List<Object> get props => [this.newTeam];
@@ -41,7 +43,8 @@ class AddTeamBloc extends Bloc<AddTeamEvent, AddItemState> {
       yield AddItemSaving();
 
       try {
-        String uid = await db.addTeam(team: event.newTeam);
+        String uid =
+            await db.addTeam(team: event.newTeam, season: event.firstSeason);
         yield AddItemDone(uid: uid);
       } catch (e, s) {
         print(e);

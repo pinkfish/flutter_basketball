@@ -58,8 +58,8 @@ class GamePlayerList extends StatelessWidget {
       this.compactDisplay = false});
 
   static int _sortFunc(Game game, String a, String b) {
-    PlayerSummary asum = game.players[a] ?? game.opponents[a];
-    PlayerSummary bsum = game.players[b] ?? game.opponents[b];
+    PlayerGameSummary asum = game.players[a] ?? game.opponents[a];
+    PlayerGameSummary bsum = game.players[b] ?? game.opponents[b];
     if (asum.currentlyPlaying) {
       return -1;
     }

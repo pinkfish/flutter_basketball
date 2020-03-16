@@ -30,7 +30,8 @@ class _AddTeamForm extends StatefulWidget {
 
 class _AddTeamFormState extends State<_AddTeamForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _name;
+  String _name = "";
+  String _seasonName = "";
 
   void _saveForm(AddTeamBloc bloc) {
     if (!_formKey.currentState.validate()) {
@@ -40,7 +41,10 @@ class _AddTeamFormState extends State<_AddTeamForm> {
       return;
     }
     _formKey.currentState.save();
-    bloc.add(AddTeamEventCommit(newTeam: Team((b) => b..name = _name)));
+
+    bloc.add(AddTeamEventCommit(
+        newTeam: Team((b) => b..name = _name),
+        firstSeason: Season((b) => b..name = _seasonName)));
   }
 
   @override
@@ -70,16 +74,47 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                   TextFormField(
                     decoration: InputDecoration(
                       icon: Icon(Icons.people),
-                      hintText: Messages.of(context).teamName,
-                      labelText: Messages.of(context).teamName,
+                      hintText: Messages
+                          .of(context)
+                          .teamName,
+                      labelText: Messages
+                          .of(context)
+                          .teamName,
                     ),
                     onSaved: (String str) {
                       _name = str;
                     },
+                    initialValue: _name,
                     autovalidate: false,
                     validator: (String str) {
                       if (str == null || str == '') {
-                        return Messages.of(context).emptyText;
+                        return Messages
+                            .of(context)
+                            .emptyText;
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.people),
+                      hintText: Messages
+                          .of(context)
+                          .seasonName,
+                      labelText: Messages
+                          .of(context)
+                          .seasonName,
+                    ),
+                    onSaved: (String str) {
+                      _seasonName = str;
+                    },
+                    initialValue: _seasonName,
+                    autovalidate: false,
+                    validator: (String str) {
+                      if (str == null || str == '') {
+                        return Messages
+                            .of(context)
+                            .emptyText;
                       }
                       return null;
                     },

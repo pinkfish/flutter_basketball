@@ -1,17 +1,17 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
 import '../widgets/deleted.dart';
-import '../widgets/game/gametile.dart';
 import '../widgets/loading.dart';
-import '../widgets/player/playertile.dart';
 import '../widgets/savingoverlay.dart';
-import 'addplayerteam.dart';
+import '../widgets/seasons/seasonexpansionpanel.dart';
+import 'addplayerseason.dart';
 
 class TeamDetailsScreen extends StatefulWidget {
   final String teamUid;
@@ -25,80 +25,71 @@ class TeamDetailsScreen extends StatefulWidget {
 }
 
 class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
+  Set<String> _expandedPanels = Set();
+  bool _loaded = false;
   int _currentIndex = 0;
 
   Widget _innerData(SingleTeamBlocState state) {
-    if (_currentIndex == 0) {
-      Widget inner;
-      if (!state.loadedGames) {
-        inner = Center(
-          child: Text(
-            Messages.of(context).loading,
-            textScaleFactor: 2.0,
-          ),
-        );
-      } else if (state.games.isEmpty) {
-        inner = Center(
-          child: Text(
-            Messages.of(context).noGames,
-            textScaleFactor: 2.0,
-          ),
-        );
-      } else {
-        inner = ListView(
-          children: state.games
-              .map(
-                (Game g) => Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: GameTile(
-                      game: g,
-                      onTap: () =>
-                          Navigator.pushNamed(context, "/Game/" + g.uid),
-                    )),
-              )
-              .toList(),
-        );
-      }
-      return Column(
-        children: <Widget>[
-          Card(
-            child: ListTile(
-              title: Text(
-                state.team.name,
-                textScaleFactor: 1.5,
-              ),
-              subtitle: Text(
-                "${state.team.playerUids.length} players",
-                textScaleFactor: 1.5,
-              ),
-              trailing: IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () =>
-                    Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
-              ),
-            ),
-          ),
-          Expanded(
-            child: inner,
-          ),
-        ],
+    Widget inner;
+    if (!state.loadedSeasons) {
+      inner = Center(
+        child: Text(
+          Messages.of(context).loading,
+          textScaleFactor: 2.0,
+        ),
+      );
+    } else if (state.seasons.isEmpty) {
+      inner = Center(
+        child: Text(
+          Messages.of(context).noSeasons,
+          textScaleFactor: 2.0,
+        ),
       );
     } else {
-      if (state.team.playerUids.isEmpty) {
-        return Center(
-          child: Text(Messages.of(context).noPlayers),
-        );
-      }
-      return ListView(
-        children: state.team.playerUids.keys
-            .map((String str) => PlayerTile(
-                  playerUid: str,
-                  onTap: (String playerUid) =>
-                      Navigator.pushNamed(context, "/Player/" + str),
-                ))
+      inner = ExpansionPanelList(
+        expansionCallback: (int index, bool expanded) {
+          if (expanded) {
+            _expandedPanels.add(state.seasons[index].uid);
+          } else {
+            _expandedPanels.remove(state.seasons[index].uid);
+          }
+        },
+        children: state.seasons
+            .map(
+              (Season g) => SeasonExpansionPanel(
+                season: g,
+                initiallyExpanded: _expandedPanels.contains(g.uid),
+                onGameTapped: (String gameUid) =>
+                    Navigator.pushNamed(context, "/Game/" + gameUid),
+              ),
+            )
             .toList(),
       );
     }
+    return Column(
+      children: <Widget>[
+        Card(
+          child: ListTile(
+            title: Text(
+              state.team.name,
+              textScaleFactor: 1.5,
+            ),
+            subtitle: Text(
+              "${state.team.playerUids.length} players",
+              textScaleFactor: 1.5,
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () =>
+                  Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
+            ),
+          ),
+        ),
+        Expanded(
+          child: inner,
+        ),
+      ],
+    );
   }
 
   @override
@@ -106,9 +97,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     return BlocProvider(
       create: (BuildContext context) {
         var bloc = SingleTeamBloc(
-            db: BlocProvider.of<TeamsBloc>(context).db,
+            db: RepositoryProvider.of<BasketballDatabase>(context),
             teamUid: widget.teamUid);
-        bloc.add(SingleTeamLoadGames());
+        bloc.add(SingleTeamLoadSeasons());
         return bloc;
       },
       child: Builder(builder: (BuildContext context) {
@@ -128,13 +119,19 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           body: BlocConsumer(
             bloc: BlocProvider.of<SingleTeamBloc>(context),
             listener: (BuildContext context, SingleTeamBlocState state) {
-              if (!state.loadedGames && !(state is SingleTeamUninitialized)) {
+              if (!state.loadedSeasons && !(state is SingleTeamUninitialized)) {
                 BlocProvider.of<SingleTeamBloc>(context)
-                    .add(SingleTeamLoadGames());
+                    .add(SingleTeamLoadSeasons());
               }
               if (state is SingleTeamDeleted) {
                 print("Pop deleted");
                 Navigator.pop(context);
+              }
+              if (state is SingleTeamLoaded) {
+                if (!_loaded) {
+                  _expandedPanels.add(state.team.currentSeasonUid);
+                }
+                _loaded = true;
               }
             },
             builder: (BuildContext context, SingleTeamBlocState state) {
@@ -168,8 +165,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             ],
           ),
           floatingActionButton: BlocBuilder(
-            bloc: BlocProvider.of<SingleTeamBloc>(context),
-            builder: (BuildContext context, SingleTeamBlocState state) {
+            bloc: BlocProvider.of<SingleSeasonBloc>(context),
+            builder: (BuildContext context, SingleSeasonBlocState state) {
               return AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),
                 transitionBuilder: (Widget child, Animation<double> animation) {
@@ -177,15 +174,25 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 },
                 child: FloatingActionButton.extended(
                   onPressed: _currentIndex == 0
-                      ? () => _addGame(context, state.team.uid, state)
-                      : () => _addPlayer(context),
+                      ? () => _addGame(context, state.season.uid, state)
+                      : () =>
+                      _addPlayer(
+                          context, BlocProvider.of<SingleSeasonBloc>(context)),
                   tooltip: _currentIndex == 0
-                      ? Messages.of(context).addGameTooltip
-                      : Messages.of(context).addPlayerTooltip,
+                      ? Messages
+                      .of(context)
+                      .addGameTooltip
+                      : Messages
+                      .of(context)
+                      .addPlayerTooltip,
                   icon: Icon(Icons.add),
                   label: _currentIndex == 0
-                      ? Text(Messages.of(context).addGameButton)
-                      : Text(Messages.of(context).addPlayerButton),
+                      ? Text(Messages
+                      .of(context)
+                      .addGameButton)
+                      : Text(Messages
+                      .of(context)
+                      .addPlayerButton),
                 ),
               );
             },
@@ -195,45 +202,48 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     );
   }
 
-  void _addGame(
-      BuildContext context, String teamUid, SingleTeamBlocState state) {
-    if (state.team.playerUids.isEmpty) {
+  void _addGame(BuildContext context, String teamUid,
+      SingleSeasonBlocState state) {
+    if (state.season.playerUids.isEmpty) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(Messages.of(context).noPlayers),
-          content: Text(
-            Messages.of(context).noPlayersForTeamDialog,
-            softWrap: true,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel),
-              onPressed: () {
-                print("Ok button");
-                Navigator.of(context).pop();
-              },
+        builder: (BuildContext context) =>
+            AlertDialog(
+              title: Text(Messages
+                  .of(context)
+                  .noPlayers),
+              content: Text(
+                Messages
+                    .of(context)
+                    .noPlayersForSeasonDialog,
+                softWrap: true,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(MaterialLocalizations.of(context).okButtonLabel),
+                  onPressed: () {
+                    print("Ok button");
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
       );
     } else {
       Navigator.pushNamed(context, "/AddGame/" + teamUid);
     }
   }
 
-  void _addPlayer(BuildContext context) {
-    SingleTeamBloc bloc = // ignore: close_sinks
-        BlocProvider.of<SingleTeamBloc>(context);
+  void _addPlayer(BuildContext context, SingleSeasonBloc bloc) {
     showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AddPlayerTeamScreen())
+        context: context,
+        builder: (BuildContext context) => AddPlayerSeasonScreen())
         .then((FutureOr<String> playerUid) {
       if (playerUid == null || playerUid == "") {
         // Canceled.
         return;
       }
-      bloc.add(SingleTeamAddPlayer(playerUid: playerUid));
+      bloc.add(SingleSeasonAddPlayer(playerUid: playerUid));
     });
   }
 }

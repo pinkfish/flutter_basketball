@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:basketballstats/services/multiplexdatabase.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -29,54 +30,56 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  static MultiplexDatabase _db = MultiplexDatabase();
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     // Log an error if the db fails to open.
-    _db.waitTillOpen();
+    //_db.waitTillOpen();
 
-    return MultiBlocProvider(
-      providers: <BlocProvider>[
-        BlocProvider<TeamsBloc>(
-          create: (BuildContext context) => TeamsBloc(db: _db),
-        ),
-        BlocProvider<AuthenticationBloc>(
-          create: (BuildContext context) =>
-              AuthenticationBloc(analyticsSubsystem: analytics),
-        ),
-        BlocProvider<LoginBloc>(
-          create: (BuildContext context) =>
-              LoginBloc(analyticsSubsystem: analytics),
-        )
-      ],
-      child: MaterialApp(
-        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          MessagesDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
+    return RepositoryProvider<BasketballDatabase>(
+      create: (BuildContext context) => MultiplexDatabase(),
+      child: MultiBlocProvider(
+        providers: <BlocProvider>[
+          BlocProvider<TeamsBloc>(
+            create: (BuildContext context) => TeamsBloc(
+                db: RepositoryProvider.of<BasketballDatabase>(context)),
+          ),
+          BlocProvider<AuthenticationBloc>(
+            create: (BuildContext context) =>
+                AuthenticationBloc(analyticsSubsystem: analytics),
+          ),
+          BlocProvider<LoginBloc>(
+            create: (BuildContext context) =>
+                LoginBloc(analyticsSubsystem: analytics),
+          )
         ],
-        supportedLocales: const <Locale>[
-          const Locale('en', 'US'),
-          const Locale('en', 'UK'),
-          const Locale('en', 'AU'),
-        ],
-        onGenerateTitle: (BuildContext context) => Messages.of(context).title,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.green,
+        child: MaterialApp(
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            MessagesDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          supportedLocales: const <Locale>[
+            const Locale('en', 'US'),
+            const Locale('en', 'UK'),
+            const Locale('en', 'AU'),
+          ],
+          onGenerateTitle: (BuildContext context) => Messages.of(context).title,
+          theme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.green,
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            primarySwatch: Colors.green,
+          ),
+          home: SplashScreen(),
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: analytics),
+          ],
+          initialRoute: "Home",
+          onGenerateRoute: _buildRoute,
         ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          primarySwatch: Colors.green,
-        ),
-        home: SplashScreen(),
-        navigatorObservers: [
-          FirebaseAnalyticsObserver(analytics: analytics),
-        ],
-        initialRoute: "Home",
-        onGenerateRoute: _buildRoute,
       ),
     );
   }
