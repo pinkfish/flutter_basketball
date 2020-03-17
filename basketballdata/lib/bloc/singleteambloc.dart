@@ -28,14 +28,15 @@ abstract class SingleTeamBlocState extends Equatable {
 /// We have a team, default state.
 ///
 class SingleTeamLoaded extends SingleTeamBlocState {
-  SingleTeamLoaded({@required SingleTeamBlocState state,
-    Team team,
-    BuiltList<Season> seasons,
-    bool loadedSeasons})
+  SingleTeamLoaded(
+      {@required SingleTeamBlocState state,
+      Team team,
+      BuiltList<Season> seasons,
+      bool loadedSeasons})
       : super(
-      team: team ?? state.team,
-      seasons: seasons ?? state.seasons,
-      loadedSeasons: loadedSeasons ?? state.loadedSeasons);
+            team: team ?? state.team,
+            seasons: seasons ?? state.seasons,
+            loadedSeasons: loadedSeasons ?? state.loadedSeasons);
 
   @override
   String toString() {
@@ -129,6 +130,20 @@ class SingleTeamDelete extends SingleTeamEvent {
 }
 
 ///
+/// Adds a player to this specific season for this team.
+///
+class SingleTeamAddSeasonPlayer extends SingleTeamEvent {
+  final String seasonUid;
+  final String playerUid;
+
+  SingleTeamAddSeasonPlayer(
+      {@required this.seasonUid, @required this.playerUid});
+
+  @override
+  List<Object> get props => [seasonUid, playerUid];
+}
+
+///
 /// Loads the games associated with this team.
 ///
 class SingleTeamLoadSeasons extends SingleTeamEvent {
@@ -218,6 +233,16 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
         } else {
           yield SingleTeamLoaded(state: state, team: event.team);
         }
+      } catch (e) {
+        yield SingleTeamSaveFailed(singleTeamState: state, error: e);
+      }
+    }
+
+    if (event is SingleTeamAddSeasonPlayer) {
+      yield SingleTeamSaving(singleTeamState: state);
+      try {
+        await db.addSeasonPlayer(
+            seasonUid: event.seasonUid, playerUid: event.playerUid);
       } catch (e) {
         yield SingleTeamSaveFailed(singleTeamState: state, error: e);
       }

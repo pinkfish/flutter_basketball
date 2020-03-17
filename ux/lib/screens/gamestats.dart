@@ -295,9 +295,7 @@ class GameStatsScreen extends StatelessWidget {
       RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
-        child: Text(Messages
-            .of(context)
-            .turnoverButton),
+        child: Text(Messages.of(context).turnoverButton),
         onPressed: () => _doBasicEvent(context, GameEventType.Turnover),
       ),
       RoundButton(

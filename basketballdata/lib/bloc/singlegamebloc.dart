@@ -588,12 +588,12 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         state.game.opponentSummary != opponentSummary.build() ||
         state.game.summary != gameSummary.build() ||
         state.game.players.entries.every(
-                (MapEntry<String, PlayerGameSummary> e) =>
-            players[e.key].build() == e.value) ||
+            (MapEntry<String, PlayerGameSummary> e) =>
+                players[e.key].build() == e.value) ||
         state.game.currentPeriod != currentPeriod ||
         state.game.opponents.entries.every(
-                (MapEntry<String, PlayerGameSummary> e) =>
-            opponents[e.key].build() == e.value)) {
+            (MapEntry<String, PlayerGameSummary> e) =>
+                opponents[e.key].build() == e.value)) {
       db.updateGame(
           game: state.game.rebuild((b) => b
             ..summary = gameSummary

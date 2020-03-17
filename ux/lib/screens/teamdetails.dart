@@ -5,6 +5,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
 import '../widgets/deleted.dart';
@@ -48,7 +49,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     } else {
       inner = ExpansionPanelList(
         expansionCallback: (int index, bool expanded) {
-          if (expanded) {
+          print("Expansion callback $index $expanded $_expandedPanels");
+          if (!expanded) {
             _expandedPanels.add(state.seasons[index].uid);
           } else {
             _expandedPanels.remove(state.seasons[index].uid);
@@ -68,24 +70,18 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     }
     return Column(
       children: <Widget>[
-        Card(
-          child: ListTile(
-            title: Text(
-              state.team.name,
-              textScaleFactor: 1.5,
-            ),
-            subtitle: Text(
-              "${state.team.playerUids.length} players",
-              textScaleFactor: 1.5,
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () =>
-                  Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
-            ),
+        ListTile(
+          title: Text(
+            state.team.name,
+            textScaleFactor: 1.5,
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () =>
+                Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
           ),
         ),
-        Expanded(
+        SingleChildScrollView(
           child: inner,
         ),
       ],
@@ -165,8 +161,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             ],
           ),
           floatingActionButton: BlocBuilder(
-            bloc: BlocProvider.of<SingleSeasonBloc>(context),
-            builder: (BuildContext context, SingleSeasonBlocState state) {
+            bloc: BlocProvider.of<SingleTeamBloc>(context),
+            builder: (BuildContext context, SingleTeamBlocState state) {
               return AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),
                 transitionBuilder: (Widget child, Animation<double> animation) {
@@ -174,25 +170,17 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 },
                 child: FloatingActionButton.extended(
                   onPressed: _currentIndex == 0
-                      ? () => _addGame(context, state.season.uid, state)
-                      : () =>
-                      _addPlayer(
-                          context, BlocProvider.of<SingleSeasonBloc>(context)),
+                      ? () =>
+                          _addGame(context, state.team.currentSeasonUid, state)
+                      : () => _addPlayer(
+                          context, BlocProvider.of<SingleTeamBloc>(context)),
                   tooltip: _currentIndex == 0
-                      ? Messages
-                      .of(context)
-                      .addGameTooltip
-                      : Messages
-                      .of(context)
-                      .addPlayerTooltip,
+                      ? Messages.of(context).addGameTooltip
+                      : Messages.of(context).addPlayerTooltip,
                   icon: Icon(Icons.add),
                   label: _currentIndex == 0
-                      ? Text(Messages
-                      .of(context)
-                      .addGameButton)
-                      : Text(Messages
-                      .of(context)
-                      .addPlayerButton),
+                      ? Text(Messages.of(context).addGameButton)
+                      : Text(Messages.of(context).addPlayerButton),
                 ),
               );
             },
@@ -202,48 +190,48 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     );
   }
 
-  void _addGame(BuildContext context, String teamUid,
-      SingleSeasonBlocState state) {
+  void _addGame(
+      BuildContext context, String seasonUid, SingleTeamBlocState state) {
+    /*
     if (state.season.playerUids.isEmpty) {
       showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            AlertDialog(
-              title: Text(Messages
-                  .of(context)
-                  .noPlayers),
-              content: Text(
-                Messages
-                    .of(context)
-                    .noPlayersForSeasonDialog,
-                softWrap: true,
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(MaterialLocalizations.of(context).okButtonLabel),
-                  onPressed: () {
-                    print("Ok button");
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(Messages.of(context).noPlayers),
+          content: Text(
+            Messages.of(context).noPlayersForSeasonDialog,
+            softWrap: true,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(MaterialLocalizations.of(context).okButtonLabel),
+              onPressed: () {
+                print("Ok button");
+                Navigator.of(context).pop();
+              },
             ),
+          ],
+        ),
       );
-    } else {
-      Navigator.pushNamed(context, "/AddGame/" + teamUid);
+    } else */
+    {
+      Navigator.pushNamed(context, "/AddGame/" + seasonUid);
     }
   }
 
-  void _addPlayer(BuildContext context, SingleSeasonBloc bloc) {
-    showDialog<String>(
+  void _addPlayer(BuildContext context, SingleTeamBloc bloc) {
+    showDialog<Tuple2<String, String>>(
         context: context,
-        builder: (BuildContext context) => AddPlayerSeasonScreen())
-        .then((FutureOr<String> playerUid) {
+        builder: (BuildContext context) => AddPlayerSeasonScreen(
+              defaultSeasonUid: bloc.state.team.currentSeasonUid,
+            )).then((FutureOr<Tuple2<String, String>> playerUid) async {
       if (playerUid == null || playerUid == "") {
         // Canceled.
         return;
       }
-      bloc.add(SingleSeasonAddPlayer(playerUid: playerUid));
+      var v = await playerUid;
+      bloc.add(
+          SingleTeamAddSeasonPlayer(seasonUid: v.item2, playerUid: v.item1));
     });
   }
 }

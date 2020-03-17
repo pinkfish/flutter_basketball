@@ -74,12 +74,8 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                   TextFormField(
                     decoration: InputDecoration(
                       icon: Icon(Icons.people),
-                      hintText: Messages
-                          .of(context)
-                          .teamName,
-                      labelText: Messages
-                          .of(context)
-                          .teamName,
+                      hintText: Messages.of(context).teamName,
+                      labelText: Messages.of(context).teamName,
                     ),
                     onSaved: (String str) {
                       _name = str;

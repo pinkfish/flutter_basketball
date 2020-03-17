@@ -47,8 +47,7 @@ class PlayerTile extends StatelessWidget {
               builder: (BuildContext context, SinglePlayerState state) {
                 if (state is SinglePlayerDeleted) {
                   if (compactDisplay) {
-                    return Text(Messages.of(context)
-                        .unknown);
+                    return Text(Messages.of(context).unknown);
                   }
                   return Card(
                     color: color,
@@ -139,8 +138,9 @@ class PlayerTile extends StatelessWidget {
                                   .textTheme
                                   .title,
                             ),
-                            (this.extra != null ? extra(playerUid) : SizedBox(
-                                width: 0)),
+                            (this.extra != null
+                                ? extra(playerUid)
+                                : SizedBox(width: 0)),
                           ],
                         ),
                       ),

@@ -6,36 +6,37 @@ import 'gameperiod.dart';
 import 'playersummarydata.dart';
 import 'serializers.dart';
 
-part 'playerteamsummary.g.dart';
+part 'playerseasonsummary.g.dart';
 
 ///
 /// This is the player summary for the game.  Tracks per period
 /// details about the game.
 ///
-abstract class PlayerTeamSummary
-    implements Built<PlayerTeamSummary, PlayerTeamSummaryBuilder> {
+abstract class PlayerSeasonSummary
+    implements Built<PlayerSeasonSummary, PlayerSeasonSummaryBuilder> {
   BuiltMap<GamePeriod, PlayerSummaryData> get perSeason;
 
   bool get playing;
 
-  static void _initializeBuilder(PlayerTeamSummaryBuilder b) =>
+  static void _initializeBuilder(PlayerSeasonSummaryBuilder b) =>
       b..playing = true;
 
-  PlayerTeamSummary._();
+  PlayerSeasonSummary._();
 
-  factory PlayerTeamSummary([updates(PlayerTeamSummaryBuilder b)]) =
-      _$PlayerTeamSummary;
+  factory PlayerSeasonSummary([updates(PlayerSeasonSummaryBuilder b)]) =
+      _$PlayerSeasonSummary;
 
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(PlayerTeamSummary.serializer, this);
+    return serializers.serializeWith(PlayerSeasonSummary.serializer, this);
   }
 
-  static PlayerTeamSummary fromMap(Map<String, dynamic> jsonData) {
-    return serializers.deserializeWith(PlayerTeamSummary.serializer, jsonData);
+  static PlayerSeasonSummary fromMap(Map<String, dynamic> jsonData) {
+    return serializers.deserializeWith(
+        PlayerSeasonSummary.serializer, jsonData);
   }
 
-  static Serializer<PlayerTeamSummary> get serializer =>
-      _$playerTeamSummarySerializer;
+  static Serializer<PlayerSeasonSummary> get serializer =>
+      _$playerSeasonSummarySerializer;
 
   @memoized
   PlayerSummaryData get fullData {

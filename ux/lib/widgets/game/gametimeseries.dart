@@ -48,7 +48,7 @@ class _GameTimeseriesData extends State<GameTimeseries> {
       data: widget.state.gameEvents
           .where((e) => e.type == eventType && !e.opponent || first)
           .map((e) {
-        if (first && e.type != type) {
+        if (first && e.type != eventType) {
           first = false;
           return _CumulativeScore(total, Duration(milliseconds: 0));
         }

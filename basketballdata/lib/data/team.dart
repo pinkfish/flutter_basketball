@@ -1,8 +1,6 @@
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import 'playerteamsummary.dart';
 import 'serializers.dart';
 
 part 'team.g.dart';
@@ -17,10 +15,9 @@ abstract class Team implements Built<Team, TeamBuilder> {
   @nullable
   String get photoUid;
 
-  BuiltMap<String, PlayerTeamSummary> get playerUids;
-
   String get name;
 
+  @nullable
   String get currentSeasonUid;
 
   Team._();

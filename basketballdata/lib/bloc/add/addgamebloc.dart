@@ -29,11 +29,10 @@ class AddGameEventCommit extends AddGameEvent {
 class AddGameBloc extends Bloc<AddGameEvent, AddItemState> {
   final BasketballDatabase db;
   final String seasonUid;
+  final String teamUid;
 
-  // TODO: Put teamUid back in.
-  //final String teamUid;
-
-  AddGameBloc({@required this.db, @required this.seasonUid});
+  AddGameBloc(
+      {@required this.db, @required this.seasonUid, @required this.teamUid});
 
   @override
   AddItemState get initialState => new AddItemUninitialized();

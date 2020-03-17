@@ -150,36 +150,12 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return LoadingWidget();
     }
     if (_currentIndex == 0) {
-      TextStyle minDataStyle = Theme
-          .of(context)
-          .textTheme
-          .subhead
-          .copyWith(
-          fontSize: Theme
-              .of(context)
-              .textTheme
-              .subhead
-              .fontSize * 1.25);
-      TextStyle dataStyle = Theme
-          .of(context)
-          .textTheme
-          .subhead
-          .copyWith(
-          fontSize: Theme
-              .of(context)
-              .textTheme
-              .subhead
-              .fontSize * 1.25);
-      TextStyle pointsStyle = Theme
-          .of(context)
-          .textTheme
-          .subhead
-          .copyWith(
-          fontSize: Theme
-              .of(context)
-              .textTheme
-              .subhead
-              .fontSize * 4.0);
+      TextStyle minDataStyle = Theme.of(context).textTheme.subhead.copyWith(
+          fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
+      TextStyle dataStyle = Theme.of(context).textTheme.subhead.copyWith(
+          fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
+      TextStyle pointsStyle = Theme.of(context).textTheme.subhead.copyWith(
+          fontSize: Theme.of(context).textTheme.subhead.fontSize * 4.0);
       Widget retWidget = Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -473,7 +449,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         // Canceled.
         return;
       }
-      bloc.add(SingleGameAddPlayer(playerUid: r.item1));
+      bloc.add(SingleGameAddPlayer(playerUid: r.item1, opponent: r.item2));
     });
   }
 }

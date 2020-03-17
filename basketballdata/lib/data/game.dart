@@ -59,8 +59,7 @@ abstract class Game implements Built<Game, GameBuilder> {
     return Duration(seconds: diff);
   }
 
-  static void _initializeBuilder(GameBuilder b) =>
-      b
+  static void _initializeBuilder(GameBuilder b) => b
     ..summary = GameSummaryBuilder()
     ..playerSummaery = PlayerGameSummaryBuilder()
     ..opponentSummary = PlayerGameSummaryBuilder()

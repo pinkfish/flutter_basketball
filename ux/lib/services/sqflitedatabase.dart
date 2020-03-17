@@ -128,7 +128,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Game t = await _getGame(gameUid: gameUid);
     if (opponent) {
       t = t.rebuild((b) =>
-      b..opponents.putIfAbsent(playerUid, () => PlayerGameSummary()));
+          b..opponents.putIfAbsent(playerUid, () => PlayerGameSummary()));
     } else {
       t = t.rebuild(
               (b) =>
@@ -172,7 +172,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Season t = await _getSeason(seasonUid: seasonUid);
     await updateSeason(
         season: t.rebuild((b) =>
-        b..playerUids.putIfAbsent(playerUid, () => PlayerTeamSummary())));
+        b..playerUids.putIfAbsent(playerUid, () => PlayerSeasonSummary())));
     _controller.add(_TableChange(table: seasonsTable, uid: seasonUid));
     return playerUid;
   }

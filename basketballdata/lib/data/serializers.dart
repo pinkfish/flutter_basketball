@@ -16,7 +16,7 @@ import 'gamesummary.dart';
 import 'player.dart';
 import 'playergamesummary.dart';
 import 'playersummarydata.dart';
-import 'playerteamsummary.dart';
+import 'playerseasonsummary.dart';
 import 'season.dart';
 import 'team.dart';
 
@@ -33,7 +33,7 @@ part 'serializers.g.dart';
   MadeAttempt,
   PlayerGameSummary,
   PlayerSummaryData,
-  PlayerTeamSummary,
+  PlayerSeasonSummary,
   Player,
   Season,
   Team,

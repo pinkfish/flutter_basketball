@@ -2,7 +2,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import 'playerteamsummary.dart';
+import 'playerseasonsummary.dart';
 import 'serializers.dart';
 
 part 'season.g.dart';
@@ -11,13 +11,14 @@ part 'season.g.dart';
 /// Data class representing a season.
 ///
 abstract class Season implements Built<Season, SeasonBuilder> {
-  String get name;
-
+  @nullable
   String get uid;
+
+  String get name;
 
   String get teamUid;
 
-  BuiltMap<String, PlayerTeamSummary> get playerUids;
+  BuiltMap<String, PlayerSeasonSummary> get playerUids;
 
   Season._();
 

@@ -81,13 +81,8 @@ class _TeamSummary extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text("Played ${state.seasons.length} seasons",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .subtitle),
-              Text("${state.team.playerUids.length} players",
-                  style: Theme.of(context).textTheme.subtitle)
+              Text(Messages.of(context).playedSeasons(state.seasons.length),
+                  style: Theme.of(context).textTheme.subtitle),
             ],
           );
         });

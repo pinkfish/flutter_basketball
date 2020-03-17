@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
+import '../widgets/deleted.dart';
+import '../widgets/loading.dart';
 import '../widgets/savingoverlay.dart';
 import '../widgets/util/datetimepicker.dart';
 
 class AddGameScreen extends StatelessWidget {
-  final String teamUid;
   final String seasonUid;
 
-  AddGameScreen({@required this.teamUid, @required this.seasonUid});
+  AddGameScreen({@required this.seasonUid});
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +23,27 @@ class AddGameScreen extends StatelessWidget {
       body: BlocProvider(
         create: (BuildContext context) => SingleSeasonBloc(
             db: BlocProvider.of<TeamsBloc>(context).db, seasonUid: seasonUid),
-        child: BlocProvider(
-          create: (BuildContext context) => AddGameBloc(
-              seasonUid: seasonUid, db: BlocProvider.of<TeamsBloc>(context).db),
-          child: Builder(builder: (BuildContext context) {
-            return BlocBuilder(
-                bloc: BlocProvider.of<SingleSeasonBloc>(context),
-                builder: (BuildContext context, SingleSeasonBlocState state) {
-                  if (state is SingleTeamDeleted) {
-                    return Center(child: Text(Messages.of(context).unknown));
-                  }
-                  return _AddGameForm(
-                    season: state.season,
-                  );
-                });
-          }),
+        child: BlocBuilder(
+          bloc: BlocProvider.of<SingleSeasonBloc>(context),
+          builder: (BuildContext context, SingleSeasonBlocState state) {
+            if (state is SingleSeasonDeleted) {
+              return Center(child: DeletedWidget());
+            }
+            if (state is SingleSeasonUninitialized) {
+              return Center(child: LoadingWidget());
+            }
+            return BlocProvider(
+              create: (BuildContext context) => AddGameBloc(
+                  teamUid: state.season.teamUid,
+                  seasonUid: seasonUid,
+                  db: BlocProvider.of<TeamsBloc>(context).db),
+              child: Builder(builder: (BuildContext context) {
+                return _AddGameForm(
+                  season: state.season,
+                );
+              }),
+            );
+          },
         ),
       ),
     );
