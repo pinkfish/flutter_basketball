@@ -17,6 +17,40 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}   
         channel: 'stable' # or: 'dev' or 'beta'
+    - uses: axel-op/dart-package-analyzer@v2.0.0
+      with:
+        # Required:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        # Optional:
+        relativePath: ux
+    # You can then use this id to retrieve the outputs in the next steps.
+    # The following step shows how to exit the workflow with an error if a score is below 100:
+    - name: Check scores
+      run: |
+        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
+        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
+        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
+        then
+          echo "Scores are not both equal to 100"
+          exit 1
+        fi
+    - uses: axel-op/dart-package-analyzer@v2.0.0
+      with:
+        # Required:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        # Optional:
+        relativePath: basketball
+    # You can then use this id to retrieve the outputs in the next steps.
+    # The following step shows how to exit the workflow with an error if a score is below 100:
+    - name: Check scores
+      run: |
+        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
+        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
+        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
+        then
+          echo "Scores are not both equal to 100"
+          exit 1
+        fi
     - run: flutter pub get
       working-directory: ux
     - run: flutter pub get
