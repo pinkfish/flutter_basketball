@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
+import 'package:basketballstats/widgets/seasons/seasonname.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -50,16 +51,20 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       inner = ExpansionPanelList(
         expansionCallback: (int index, bool expanded) {
           print("Expansion callback $index $expanded $_expandedPanels");
-          if (!expanded) {
-            _expandedPanels.add(state.seasons[index].uid);
-          } else {
-            _expandedPanels.remove(state.seasons[index].uid);
-          }
+          setState(() {
+            if (!expanded) {
+              _expandedPanels.add(state.seasons[index].uid);
+            } else {
+              _expandedPanels.remove(state.seasons[index].uid);
+            }
+          });
         },
         children: state.seasons
             .map(
               (Season g) => SeasonExpansionPanel(
                 season: g,
+                isExpanded: _expandedPanels.contains(g.uid),
+                loadGames: _expandedPanels.contains(g.uid),
                 initiallyExpanded: _expandedPanels.contains(g.uid),
                 onGameTapped: (String gameUid) =>
                     Navigator.pushNamed(context, "/Game/" + gameUid),
@@ -69,11 +74,17 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       );
     }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
+          leading: Icon(MdiIcons.basketball),
           title: Text(
             state.team.name,
             textScaleFactor: 1.5,
+          ),
+          subtitle: SeasonName(
+            seasonUid: state.team.currentSeasonUid,
+            textScaleFactor: 1.2,
           ),
           trailing: IconButton(
             icon: Icon(Icons.edit),
@@ -81,9 +92,15 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
           ),
         ),
-        SingleChildScrollView(
-          child: inner,
+        SizedBox(height: 5.0),
+        Text(
+          Messages.of(context).seasons,
+          style: Theme.of(context).textTheme.subhead,
+          textScaleFactor: 1.5,
+          textAlign: TextAlign.start,
         ),
+        SizedBox(height: 5.0),
+        inner,
       ],
     );
   }
@@ -138,10 +155,14 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 return LoadingWidget();
               }
               return SavingOverlay(
-                  saving: state is SingleTeamSaving,
+                saving: state is SingleTeamSaving,
+                child: SingleChildScrollView(
                   child: AnimatedSwitcher(
-                      duration: Duration(milliseconds: 500),
-                      child: _innerData(state)));
+                    duration: Duration(milliseconds: 500),
+                    child: _innerData(state),
+                  ),
+                ),
+              );
             },
           ),
           bottomNavigationBar: BottomNavigationBar(

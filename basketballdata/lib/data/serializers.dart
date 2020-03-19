@@ -18,6 +18,7 @@ import 'playergamesummary.dart';
 import 'playersummarydata.dart';
 import 'playerseasonsummary.dart';
 import 'season.dart';
+import 'seasonsummary.dart';
 import 'team.dart';
 
 part 'serializers.g.dart';
@@ -36,6 +37,7 @@ part 'serializers.g.dart';
   PlayerSeasonSummary,
   Player,
   Season,
+  SeasonSummary,
   Team,
 ])
 final Serializers serializers =

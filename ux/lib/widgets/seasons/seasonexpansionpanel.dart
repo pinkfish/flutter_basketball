@@ -14,21 +14,27 @@ class SeasonExpansionPanel extends ExpansionPanel {
   final OnGameCallback onGameTapped;
   final bool initiallyExpanded;
   final bool loadGames;
+  final bool isExpanded;
 
   SeasonExpansionPanel(
       {@required this.season,
       this.onGameTapped,
       this.loadGames = false,
+      this.isExpanded = false,
       this.initiallyExpanded = false})
       : super(
           headerBuilder: (BuildContext context, bool expanded) {
             return ListTile(
-                leading: Icon(Icons.people),
-                title: Text(
-                  season.name,
-                  textScaleFactor: 1.2,
-                ));
+              leading: Icon(Icons.people),
+              title: Text(
+                season.name,
+                textScaleFactor: 1.2,
+              ),
+              subtitle: Text(
+                  "Win ${season.summary.wins} Loses ${season.summary.loses}"),
+            );
           },
+          isExpanded: isExpanded,
           body: BlocProvider(
             create: (BuildContext context) => SingleSeasonBloc(
               seasonUid: season.uid,
@@ -65,8 +71,12 @@ class SeasonExpansionPanel extends ExpansionPanel {
                       return Column(
                           children: state.games
                               .map(
-                                (Game g) => GameTile(game: g),
-                              )
+                                (Game g) =>
+                                GameTile(
+                                  game: g,
+                                  onTap: () => onGameTapped(g.uid),
+                                ),
+                          )
                               .toList());
                     }),
               ),

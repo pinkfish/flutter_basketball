@@ -288,17 +288,17 @@ class Messages {
   String get fouls => Intl.message("Fouls",
       desc: "Drop down menu item for fouls", locale: locale);
 
-  String get turnovers =>
-      Intl.message("Turnovers",
-          desc: "Drop down menu item for turnovers", locale: locale);
+  String get turnovers => Intl.message("Turnovers",
+      desc: "Drop down menu item for turnovers", locale: locale);
 
-  String get blocks =>
-      Intl.message("Blocks",
-          desc: "Drop down menu item for fouls", locale: locale);
+  String get blocks => Intl.message("Blocks",
+      desc: "Drop down menu item for fouls", locale: locale);
 
-  String get points =>
-      Intl.message("Points",
-          desc: "Drop down menu item for points", locale: locale);
+  String get points => Intl.message("Points",
+      desc: "Drop down menu item for points", locale: locale);
+
+  String get seasons => Intl.message("Seasons",
+      desc: "Header for the seasons section", locale: locale);
 
   String playedSeasons(int num) {
     return Intl.message("Played $num seasons",

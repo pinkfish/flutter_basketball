@@ -3,6 +3,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'playerseasonsummary.dart';
+import 'seasonsummary.dart';
 import 'serializers.dart';
 
 part 'season.g.dart';
@@ -20,7 +21,12 @@ abstract class Season implements Built<Season, SeasonBuilder> {
 
   BuiltMap<String, PlayerSeasonSummary> get playerUids;
 
+  SeasonSummary get summary;
+
   Season._();
+
+  static void _initializeBuilder(SeasonBuilder b) =>
+      b..summary = SeasonSummaryBuilder();
 
   factory Season([updates(SeasonBuilder b)]) = _$Season;
 
