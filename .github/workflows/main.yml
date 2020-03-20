@@ -34,8 +34,8 @@ jobs:
           #EOF
           #ssh-keyscan -t rsa github.com > known_hosts
           #mv known_hosts ~/.ssh/known_hosts
-    #- run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
-    #  working-directory: ux
+    - run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
+      working-directory: ux
     - run: flutter pub get
       working-directory: ux
     - run: flutter pub get
@@ -82,10 +82,10 @@ jobs:
         fi
     #- run: flutter test
     #  working-directory: ux
-    - name: Fastlane Action
-      uses: maierj/fastlane-action@v1.4.0
-      with:
-        subdirectory: ux/android/fastlane
-        lane: beta
-#    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
-#      working-directory: ux
+    #- name: Fastlane Action
+    #  uses: maierj/fastlane-action@v1.4.0
+    #  with:
+    #    subdirectory: ux/android/fastlane
+    #    lane: beta
+    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+      working-directory: ux
