@@ -37,9 +37,11 @@ jobs:
 #    - run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
 #      working-directory: ux
     - run: flutter pub get
-      working-directory: ux
-    - run: flutter pub get
       working-directory: basketballdata
+    - run: flutter pub run build_runner build
+      working-directory: basketballdata
+    - run: flutter packages get
+      working-directory: ux
     #- run: flutter test
     #  working-directory: ux
     #- name: Fastlane Action
