@@ -66,8 +66,8 @@ jobs:
           EOF
           ssh-keyscan -t rsa github.com > known_hosts
           mv known_hosts ~/.ssh/known_hosts
-    - run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
-      working-directory: ux
+    #- run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
+    #  working-directory: ux
     - run: flutter pub get
       working-directory: ux
     - run: flutter pub get
