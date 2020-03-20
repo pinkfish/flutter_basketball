@@ -49,5 +49,9 @@ jobs:
     #  with:
     #    subdirectory: ux/android/fastlane
     #    lane: beta
+    - run: echo ${GOOGLESERVICES} > android/app/google-services.json	
+      working-directory: ux	
+      env: 	
+        GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
     - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
       working-directory: ux
