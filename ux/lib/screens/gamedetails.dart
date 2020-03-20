@@ -9,7 +9,7 @@ import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
 import '../widgets/deleted.dart';
-import '../widgets/game/GameTimeseries.dart';
+import '../widgets/game/gametimeseries.dart';
 import '../widgets/game/gameshotlocations.dart';
 import '../widgets/game/playerlist.dart';
 import '../widgets/loading.dart';
@@ -17,7 +17,7 @@ import '../widgets/player/playername.dart';
 import '../widgets/savingoverlay.dart';
 import 'addplayergame.dart';
 
-///
+///ß
 /// Shows details of the game.
 ///
 class GameDetailsScreen extends StatelessWidget {
