@@ -64,6 +64,7 @@ jobs:
           Hostname github.com
           IdentityFile ~/.ssh/id_rsa
           EOF
+          ssh-keyscan -t rsa github.com > known_hosts
           mv known_hosts ~/.ssh/known_hosts
     - run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
       working-directory: ux
