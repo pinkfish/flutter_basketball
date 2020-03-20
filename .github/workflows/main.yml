@@ -57,6 +57,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.github_token }}
       shell: bash
       run: |
+          mkdir -p ~/.ssh
           echo ${GUTHUB_TOKEN} > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           cat <<EOF >~/.ssh/config
