@@ -367,9 +367,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return SingleChildScrollView(child: retWidget);
     } else if (_currentIndex == 1) {
       if (state.game.players.isEmpty) {
-        return Text(Messages
-            .of(context)
-            .noPlayers);
+        return Text(Messages.of(context).noPlayers);
       }
       return PlayerList(game: state.game, orientation: widget.orientation);
     } else if (_currentIndex == 2) {
