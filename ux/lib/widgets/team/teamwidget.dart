@@ -33,7 +33,7 @@ class TeamWidget extends StatelessWidget {
                 subtitle: _TeamSummary(),
                 leading: team.photoUid != null
                     ? Image.network(team.photoUid)
-                    : Icon(Icons.people),
+                    : Icon(MdiIcons.tshirtCrew),
                 onTap: () => _onTap(context),
               ),
               ButtonBar(

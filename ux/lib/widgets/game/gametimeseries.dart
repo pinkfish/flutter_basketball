@@ -143,6 +143,8 @@ class _GameTimeseriesData extends State<GameTimeseries> {
           _getEventSeries(GameEventType.Block, Colors.blue, false),
           _getEventSeries(GameEventType.Block, Colors.lightBlue, true),
         ];
+      default:
+        return [];
     }
   }
 

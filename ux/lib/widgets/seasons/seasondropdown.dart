@@ -40,10 +40,12 @@ class SeasonDropDown extends StatelessWidget {
         }
         return DropdownButton(
           value: value,
-          items: state.seasons.map((Season s) => DropdownMenuItem(
-                value: s.uid,
-                child: Text(s.name),
-              )),
+          items: state.seasons
+              .map((Season s) => DropdownMenuItem(
+                    value: s.uid,
+                    child: Text(s.name),
+                  ))
+              .toList(),
           onChanged: onChanged,
         );
       },

@@ -2,7 +2,9 @@ import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../messages.dart';
 import '../deleted.dart';
 import '../game/gametile.dart';
 import '../loading.dart';
@@ -15,23 +17,49 @@ class SeasonExpansionPanel extends ExpansionPanel {
   final bool initiallyExpanded;
   final bool loadGames;
   final bool isExpanded;
+  final String currentSeason;
 
   SeasonExpansionPanel(
       {@required this.season,
       this.onGameTapped,
+      this.currentSeason,
       this.loadGames = false,
       this.isExpanded = false,
       this.initiallyExpanded = false})
       : super(
           headerBuilder: (BuildContext context, bool expanded) {
             return ListTile(
-              leading: Icon(Icons.people),
-              title: Text(
+              leading: Icon(MdiIcons.calendar),
+              title: season.uid == currentSeason
+                  ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    season.name,
+                    textScaleFactor: 1.2,
+                    textAlign: TextAlign.start,
+                  ),
+                  Text(
+                    Messages
+                        .of(context)
+                        .currentSeason,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .caption
+                        .copyWith(fontStyle: FontStyle.italic),
+                  ),
+                ],
+              )
+                  : Text(
                 season.name,
                 textScaleFactor: 1.2,
+                textAlign: TextAlign.end,
               ),
               subtitle: Text(
-                  "Win ${season.summary.wins} Loses ${season.summary.loses}"),
+                Messages.of(context)
+                    .winLoss(season.summary.wins, season.summary.loses, 0),
+              ),
             );
           },
           isExpanded: isExpanded,

@@ -515,6 +515,11 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
             playerSum.three.made++;
             playerSum.three.attempts++;
           }
+          if (ev.opponent) {
+            gameSummary.pointsAgainst += ev.points;
+          } else {
+            gameSummary.pointsFor += ev.points;
+          }
           break;
         case GameEventType.Missed:
           if (ev.points == 1) {
@@ -584,6 +589,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     // See if this is different the current state and update if it is.
+    print(gameSummary.build());
     if (state.game.playerSummaery != playerSummary.build() ||
         state.game.opponentSummary != opponentSummary.build() ||
         state.game.summary != gameSummary.build() ||

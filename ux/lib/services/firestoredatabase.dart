@@ -72,10 +72,9 @@ class FirestoreDatabase extends BasketballDatabase {
     var seasonRef = Firestore.instance.collection(seasonsTable).document();
 
     var map = team
-        .rebuild((b) =>
-    b
-      ..uid = ref.documentID
-      ..currentSeasonUid = seasonRef.documentID)
+        .rebuild((b) => b
+          ..uid = ref.documentID
+          ..currentSeasonUid = seasonRef.documentID)
         .toMap();
     map.putIfAbsent(userUidField, () => userUid);
     ref.setData(map);
@@ -197,6 +196,7 @@ class FirestoreDatabase extends BasketballDatabase {
         .collection(teamsTable)
         .where(userUidField, isEqualTo: userUid);
     QuerySnapshot snap = await q.getDocuments();
+    print(snap.documents);
     yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>
         Team.fromMap(_fixTeamSnapshot(_addUid(snap.documentID, snap.data)))));
 

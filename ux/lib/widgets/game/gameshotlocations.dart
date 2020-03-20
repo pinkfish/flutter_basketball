@@ -45,51 +45,63 @@ class _GameShotLocationsState extends State<GameShotLocations>
     ).toList();
   }
 
+  Widget _gamePlayerList(BuildContext context) {
+    return SingleChildScrollView(
+      child: GamePlayerList(
+        game: widget.state.game,
+        sort: _sortFunc,
+        onSelectPlayer: _selectPlayer,
+        orientation: Orientation.portrait,
+        filterPlayer: (String playerUid) => _filterPlayer(playerUid),
+        compactDisplay: true,
+        selectedPlayer: _selectedPlayer,
+        extra: _extraDetails,
+      ),
+    );
+  }
+
+  Widget _courtDetails(BuildContext context, BoxConstraints box) {
+    return Stack(
+      children: <Widget>[
+        SvgPicture.asset(
+          "assets/images/Basketball_Halfcourt.svg",
+        ),
+        SizedBox(
+          height: min(box.maxWidth, box.maxHeight),
+          width: min(box.maxWidth, box.maxHeight),
+          child: CustomPaint(
+            painter: _ImageBasketballStuff(
+              events: _events,
+              oldEvents: _oldEvents,
+              fraction: _fraction,
+            ),
+          ),
+        ),
+        //_ImageBasketballStuff(widget.state.gameEvents),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints box) => Row(
-              children: [
-                SizedBox(
-                  width: min(box.maxHeight, 200),
-                  child: SingleChildScrollView(
-                    child: GamePlayerList(
-                      game: widget.state.game,
-                      sort: _sortFunc,
-                      onSelectPlayer: _selectPlayer,
-                      orientation: Orientation.portrait,
-                      filterPlayer: (String playerUid) =>
-                          _filterPlayer(playerUid),
-                      compactDisplay: true,
-                      selectedPlayer: _selectedPlayer,
-                      extra: _extraDetails,
-                    ),
-                  ),
-                ),
-                Stack(
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      "assets/images/Basketball_Halfcourt.svg",
-                    ),
-                    SizedBox(
-                      height: min(box.maxWidth, box.maxHeight),
-                      width: min(box.maxWidth, box.maxHeight),
-                      child: CustomPaint(
-                        painter: _ImageBasketballStuff(
-                          events: _events,
-                          oldEvents: _oldEvents,
-                          fraction: _fraction,
-                        ),
-                      ),
-                    ),
-                    //_ImageBasketballStuff(widget.state.gameEvents),
-                  ],
-                ),
-              ],
-            ),
+            builder: (BuildContext context, BoxConstraints box) =>
+                box.maxHeight < box.maxWidth
+                    ? Row(
+                        children: [
+                          Expanded(
+                            child: _gamePlayerList(context),
+                          ),
+                          _courtDetails(context, box),
+                        ],
+                      )
+                    : Column(children: [
+                        _courtDetails(context, box),
+                        Expanded(child: _gamePlayerList(context)),
+                      ]),
           ),
         ),
       ],

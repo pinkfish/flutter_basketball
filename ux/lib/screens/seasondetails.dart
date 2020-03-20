@@ -226,9 +226,10 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
     SingleSeasonBloc bloc = // ignore: close_sinks
         BlocProvider.of<SingleSeasonBloc>(context);
     showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AddPlayerSeasonScreen())
-        .then((FutureOr<String> playerUid) {
+        context: context,
+        builder: (BuildContext context) => AddPlayerSeasonScreen(
+              defaultSeasonUid: widget.seasonUid,
+            )).then((FutureOr<String> playerUid) {
       if (playerUid == null || playerUid == "") {
         // Canceled.
         return;

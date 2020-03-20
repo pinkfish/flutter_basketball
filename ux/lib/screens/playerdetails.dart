@@ -1,14 +1,14 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/deleted.dart';
-import 'package:basketballstats/widgets/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
+import '../widgets/deleted.dart';
+import '../widgets/loading.dart';
 
 ///
-/// Shows the details for the playr in a nice happy screen
+/// Shows the details for the player in a nice happy screen.
 ///
 class PlayerDetailsScreen extends StatelessWidget {
   final String playerUid;
@@ -43,9 +43,7 @@ class _PlayerDetails extends StatelessWidget {
         if (state is SinglePlayerUninitialized) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(Messages
-                  .of(context)
-                  .title),
+              title: Text(Messages.of(context).title),
             ),
             body: LoadingWidget(),
           );

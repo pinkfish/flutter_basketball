@@ -127,7 +127,7 @@
         <entry key="charts_common">
           <value>
             <list>
-              <option value="$USER_HOME$/development/flutter/.pub-cache/git/charts-d3d0ca3324d03a99e384c26949fb58a260111df5/charts_common/lib" />
+              <option value="$USER_HOME$/development/flutter/.pub-cache/git/charts-d6a3a5e6339ecb96f0f04b0f250ced1a2eebede0/charts_common/lib" />
               <option value="$USER_HOME$/development/flutter/.pub-cache/git/charts-7dd5c34d4e92f1402eb1e0338565225c4037d5c4/charts_common/lib" />
             </list>
           </value>
@@ -135,7 +135,7 @@
         <entry key="charts_flutter">
           <value>
             <list>
-              <option value="$USER_HOME$/development/flutter/.pub-cache/git/charts-d3d0ca3324d03a99e384c26949fb58a260111df5/charts_flutter/lib" />
+              <option value="$USER_HOME$/development/flutter/.pub-cache/git/charts-d6a3a5e6339ecb96f0f04b0f250ced1a2eebede0/charts_flutter/lib" />
             </list>
           </value>
         </entry>
@@ -943,8 +943,8 @@
     </properties>
     <CLASSES>
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-7dd5c34d4e92f1402eb1e0338565225c4037d5c4/charts_common/lib" />
-      <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-d3d0ca3324d03a99e384c26949fb58a260111df5/charts_common/lib" />
-      <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-d3d0ca3324d03a99e384c26949fb58a260111df5/charts_flutter/lib" />
+      <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-d6a3a5e6339ecb96f0f04b0f250ced1a2eebede0/charts_common/lib" />
+      <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-d6a3a5e6339ecb96f0f04b0f250ced1a2eebede0/charts_flutter/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-1.0.3/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.39.4/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/archive-2.0.11/lib" />

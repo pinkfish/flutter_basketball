@@ -300,8 +300,23 @@ class Messages {
   String get seasons => Intl.message("Seasons",
       desc: "Header for the seasons section", locale: locale);
 
+  String get currentSeason => Intl.message("Current",
+      desc: "Subtitle to markt he season as current", locale: locale);
+
+  String seasonSummary(PlayerSeasonSummary summary) {
+    return Intl.message(
+        "Pts ${summary.fullData.points} Blks ${summary.fullData.blocks} Stls ${summary.fullData.steals}",
+        desc: "Subtitle to markt he season as current",
+        locale: locale);
+  }
+
   String playedSeasons(int num) {
     return Intl.message("Played $num seasons",
+        desc: "Number of seasons playeed for the team", locale: locale);
+  }
+
+  String winLoss(int wins, int loses, int ties) {
+    return Intl.message("Win $wins Loss $loses",
         desc: "Number of seasons playeed for the team", locale: locale);
   }
 

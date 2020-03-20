@@ -9,6 +9,9 @@ import '../widgets/loading.dart';
 import '../widgets/savingoverlay.dart';
 import '../widgets/util/datetimepicker.dart';
 
+///
+/// Class to add a game to a specific season.
+///
 class AddGameScreen extends StatelessWidget {
   final String seasonUid;
 

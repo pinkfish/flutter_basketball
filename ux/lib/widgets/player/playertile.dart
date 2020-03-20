@@ -22,12 +22,14 @@ class PlayerTile extends StatelessWidget {
   final ShapeBorder shape;
   final bool compactDisplay;
   final PlayerExtraFunc extra;
+  final PlayerSeasonSummary summary;
 
   PlayerTile(
       {@required this.playerUid,
       this.onTap,
       this.editButton = true,
       this.color,
+      this.summary,
       this.shape,
       this.extra,
       this.compactDisplay = false});
@@ -56,6 +58,11 @@ class PlayerTile extends StatelessWidget {
                       title: Text(Messages
                           .of(context)
                           .unknown),
+                      subtitle: summary != null
+                          ? Text(
+                        Messages.of(context).seasonSummary(summary),
+                      )
+                          : null,
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -189,6 +196,11 @@ class PlayerTile extends StatelessWidget {
                           ),
                         ),
                       ),
+                      subtitle: summary != null
+                          ? Text(
+                        Messages.of(context).seasonSummary(summary),
+                      )
+                          : null,
                       trailing: editButton
                           ? IconButton(
                         icon: Icon(Icons.edit),

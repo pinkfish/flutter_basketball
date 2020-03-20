@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:basketballstats/widgets/seasons/seasonname.dart';
+import 'package:basketballstats/widgets/player/playertile.dart';
+import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -30,8 +31,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   Set<String> _expandedPanels = Set();
   bool _loaded = false;
   int _currentIndex = 0;
+  String _seasonPlayers;
 
-  Widget _innerData(SingleTeamBlocState state) {
+  Widget _innerTeamData(SingleTeamBlocState state) {
     Widget inner;
     if (!state.loadedSeasons) {
       inner = Center(
@@ -50,7 +52,6 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     } else {
       inner = ExpansionPanelList(
         expansionCallback: (int index, bool expanded) {
-          print("Expansion callback $index $expanded $_expandedPanels");
           setState(() {
             if (!expanded) {
               _expandedPanels.add(state.seasons[index].uid);
@@ -63,6 +64,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             .map(
               (Season g) => SeasonExpansionPanel(
                 season: g,
+                currentSeason: state.team.currentSeasonUid,
                 isExpanded: _expandedPanels.contains(g.uid),
                 loadGames: _expandedPanels.contains(g.uid),
                 initiallyExpanded: _expandedPanels.contains(g.uid),
@@ -77,14 +79,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
-          leading: Icon(MdiIcons.basketball),
+          leading: Icon(MdiIcons.tshirtCrew),
           title: Text(
             state.team.name,
             textScaleFactor: 1.5,
-          ),
-          subtitle: SeasonName(
-            seasonUid: state.team.currentSeasonUid,
-            textScaleFactor: 1.2,
           ),
           trailing: IconButton(
             icon: Icon(Icons.edit),
@@ -94,13 +92,66 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         ),
         SizedBox(height: 5.0),
         Text(
-          Messages.of(context).seasons,
-          style: Theme.of(context).textTheme.subhead,
+          Messages
+              .of(context)
+              .seasons,
+          style: Theme
+              .of(context)
+              .textTheme
+              .subhead,
           textScaleFactor: 1.5,
           textAlign: TextAlign.start,
         ),
         SizedBox(height: 5.0),
         inner,
+      ],
+    );
+  }
+
+  Widget _innerPlayerData(SingleTeamBlocState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        SeasonDropDown(
+          value: _seasonPlayers,
+          onChanged: (String str) => setState(() => _seasonPlayers = str),
+        ),
+        SingleChildScrollView(
+          child: BlocProvider(
+            create: (BuildContext context) =>
+                SingleSeasonBloc(
+                    db: RepositoryProvider.of<BasketballDatabase>(context),
+                    seasonUid: _seasonPlayers),
+            child: Builder(
+              builder: (BuildContext context) =>
+                  BlocBuilder(
+                    bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                    builder: (BuildContext context,
+                        SingleSeasonBlocState state) {
+                      if (state is SingleSeasonUninitialized) {
+                        return LoadingWidget();
+                      }
+                      if (state is SingleSeasonDeleted) {
+                        return DeletedWidget();
+                      }
+                      return Column(
+                        children: state.season.playerUids.keys
+                            .map((String str) =>
+                            PlayerTile(
+                              playerUid: str,
+                              editButton: true,
+                              summary: state.season.playerUids[str],
+                              onTap: (String playerUid) =>
+                                  Navigator.pushNamed(
+                                      context, "/Player/" + str),
+                            ))
+                            .toList(),
+                      );
+                    },
+                  ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -142,7 +193,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
               }
               if (state is SingleTeamLoaded) {
                 if (!_loaded) {
-                  _expandedPanels.add(state.team.currentSeasonUid);
+                  setState(() {
+                    _expandedPanels.add(state.team.currentSeasonUid);
+                    _seasonPlayers = state.team.currentSeasonUid;
+                  });
                 }
                 _loaded = true;
               }
@@ -159,7 +213,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 child: SingleChildScrollView(
                   child: AnimatedSwitcher(
                     duration: Duration(milliseconds: 500),
-                    child: _innerData(state),
+                    child: _currentIndex == 0
+                        ? _innerTeamData(state)
+                        : _innerPlayerData(state),
                   ),
                 ),
               );
@@ -213,29 +269,35 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
 
   void _addGame(
       BuildContext context, String seasonUid, SingleTeamBlocState state) {
-    /*
-    if (state.season.playerUids.isEmpty) {
+    Season s = state.seasons
+        .firstWhere((Season s) => s.uid == seasonUid, orElse: () => null);
+    if (s.playerUids.isEmpty) {
       showDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(Messages.of(context).noPlayers),
-          content: Text(
-            Messages.of(context).noPlayersForSeasonDialog,
-            softWrap: true,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel),
-              onPressed: () {
-                print("Ok button");
-                Navigator.of(context).pop();
-              },
+        builder: (BuildContext context) =>
+            AlertDialog(
+              title: Text(Messages
+                  .of(context)
+                  .noPlayers),
+              content: Text(
+                Messages
+                    .of(context)
+                    .noPlayersForSeasonDialog,
+                softWrap: true,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text(MaterialLocalizations
+                      .of(context)
+                      .okButtonLabel),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
       );
-    } else */
-    {
+    } else {
       Navigator.pushNamed(context, "/AddGame/" + seasonUid);
     }
   }
@@ -244,13 +306,16 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     showDialog<Tuple2<String, String>>(
         context: context,
         builder: (BuildContext context) => AddPlayerSeasonScreen(
-              defaultSeasonUid: bloc.state.team.currentSeasonUid,
+          defaultSeasonUid: _seasonPlayers,
             )).then((FutureOr<Tuple2<String, String>> playerUid) async {
-      if (playerUid == null || playerUid == "") {
+      if (playerUid == null) {
         // Canceled.
         return;
       }
       var v = await playerUid;
+      if (v.item1 == null || v.item1.isEmpty) {
+        return;
+      }
       bloc.add(
           SingleTeamAddSeasonPlayer(seasonUid: v.item2, playerUid: v.item1));
     });
