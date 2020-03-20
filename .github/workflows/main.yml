@@ -82,5 +82,10 @@ jobs:
         fi
     #- run: flutter test
     #  working-directory: ux
-    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
-      working-directory: ux
+    - name: Fastlane Action
+      uses: maierj/fastlane-action@v1.4.0
+      with:
+        subdirectory: ux/android/fastlane
+        lane: beta
+#    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+#      working-directory: ux
