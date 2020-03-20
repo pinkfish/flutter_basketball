@@ -37,7 +37,7 @@ dependencies:
   charts_flutter:
     #path: /Users/david/development/charts/charts_flutter
     git:
-      url: git://github.com/pinkfish/charts.git
+      url: https://github.com/pinkfish/charts.git
       path: charts_flutter
 
 dev_dependencies:
