@@ -39,7 +39,7 @@ jobs:
         # Required:
         githubToken: ${{ secrets.GITHUB_TOKEN }}
         # Optional:
-        relativePath: basketball
+        relativePath: basketballdata
     # You can then use this id to retrieve the outputs in the next steps.
     # The following step shows how to exit the workflow with an error if a score is below 100:
     - name: Check scores
