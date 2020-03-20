@@ -57,13 +57,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.github_token }}
       shell: bash
       run: |
-          echo ${GUTHUB_TOKEN} > /root/.ssh/id_rsa
-          chmod 600 /root/.ssh/id_rsa
-          cat <<EOF >/root/.ssh/config
+          echo ${GUTHUB_TOKEN} > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat <<EOF >~/.ssh/config
           Hostname github.com
-          IdentityFile /root/.ssh/id_rsa
+          IdentityFile ~/.ssh/id_rsa
           EOF
-          mv known_hosts /root/.ssh/known_hosts
+          mv known_hosts ~/.ssh/known_hosts
     - run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
       working-directory: ux
     - run: flutter pub get
