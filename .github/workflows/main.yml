@@ -18,40 +18,6 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}   
         channel: 'stable' # or: 'dev' or 'beta'
-    - uses: axel-op/dart-package-analyzer@v2.0.0
-      with:
-        # Required:
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        # Optional:
-        relativePath: ux
-    # You can then use this id to retrieve the outputs in the next steps.
-    # The following step shows how to exit the workflow with an error if a score is below 100:
-    - name: Check scores
-      run: |
-        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
-        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
-        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
-        then
-          echo "Scores are not both equal to 100"
-          exit 1
-        fi
-    - uses: axel-op/dart-package-analyzer@v2.0.0
-      with:
-        # Required:
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        # Optional:
-        relativePath: basketballdata
-    # You can then use this id to retrieve the outputs in the next steps.
-    # The following step shows how to exit the workflow with an error if a score is below 100:
-    - name: Check scores
-      run: |
-        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
-        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
-        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
-        then
-          echo "Scores are not both equal to 100"
-          exit 1
-        fi
     # Set up git with key and domain
     - name: 'gcr.io/cloud-builders/git'
       env:
@@ -80,6 +46,40 @@ jobs:
         GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
     - run: flutter pub run build_runner build
       working-directory: basketballdata
+    - uses: axel-op/dart-package-analyzer@v2.0.0
+      with:
+        # Required:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        # Optional:
+        relativePath: ux
+    # You can then use this id to retrieve the outputs in the next steps.
+    # The following step shows how to exit the workflow with an error if a score is below 100:
+    - name: Check scores (ux)
+      run: |
+        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
+        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
+        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
+        then
+          echo "Scores are not both equal to 100"
+          exit 1
+        fi
+    - uses: axel-op/dart-package-analyzer@v2.0.0
+      with:
+        # Required:
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
+        # Optional:
+        relativePath: basketballdata
+    # You can then use this id to retrieve the outputs in the next steps.
+    # The following step shows how to exit the workflow with an error if a score is below 100:
+    - name: Check scores (basketballdata)
+      run: |
+        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
+        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
+        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
+        then
+          echo "Scores are not both equal to 100"
+          exit 1
+        fi
     #- run: flutter test
     #  working-directory: ux
     - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
