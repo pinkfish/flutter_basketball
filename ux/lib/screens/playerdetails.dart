@@ -51,9 +51,7 @@ class _PlayerDetails extends StatelessWidget {
         if (state is SinglePlayerDeleted) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(Messages
-                  .of(context)
-                  .title),
+              title: Text(Messages.of(context).title),
             ),
             body: DeletedWidget(),
           );

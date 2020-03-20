@@ -32,30 +32,27 @@ class SeasonExpansionPanel extends ExpansionPanel {
               leading: Icon(MdiIcons.calendar),
               title: season.uid == currentSeason
                   ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    season.name,
-                    textScaleFactor: 1.2,
-                    textAlign: TextAlign.start,
-                  ),
-                  Text(
-                    Messages
-                        .of(context)
-                        .currentSeason,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(fontStyle: FontStyle.italic),
-                  ),
-                ],
-              )
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          season.name,
+                          textScaleFactor: 1.2,
+                          textAlign: TextAlign.start,
+                        ),
+                        Text(
+                          Messages.of(context).currentSeason,
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption
+                              .copyWith(fontStyle: FontStyle.italic),
+                        ),
+                      ],
+                    )
                   : Text(
-                season.name,
-                textScaleFactor: 1.2,
-                textAlign: TextAlign.end,
-              ),
+                      season.name,
+                      textScaleFactor: 1.2,
+                      textAlign: TextAlign.end,
+                    ),
               subtitle: Text(
                 Messages.of(context)
                     .winLoss(season.summary.wins, season.summary.loses, 0),

@@ -79,10 +79,9 @@ class FirestoreDatabase extends BasketballDatabase {
     map.putIfAbsent(userUidField, () => userUid);
     ref.setData(map);
     var seasonMap = season
-        .rebuild((b) =>
-    b
-      ..teamUid = ref.documentID
-      ..uid = seasonRef.documentID)
+        .rebuild((b) => b
+          ..teamUid = ref.documentID
+          ..uid = seasonRef.documentID)
         .toMap();
     seasonRef.setData(seasonMap);
     return ref.documentID;

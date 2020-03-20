@@ -74,9 +74,7 @@ class _AddGameFormState extends State<_AddGameForm> {
   void _saveForm(AddGameBloc bloc) {
     if (!_formKey.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(Messages
-              .of(context)
-              .errorForm)));
+          SnackBar(content: Text(Messages.of(context).errorForm)));
       return;
     }
     _formKey.currentState.save();
