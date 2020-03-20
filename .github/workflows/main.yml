@@ -51,6 +51,21 @@ jobs:
           echo "Scores are not both equal to 100"
           exit 1
         fi
+    # Set up git with key and domain
+    - name: 'gcr.io/cloud-builders/git'
+      env:
+        GITHUB_TOKEN: ${{ secrets.github_token }}
+      shell: bash
+      run: |
+          echo ${GUTHUB_TOKEN} > /root/.ssh/id_rsa
+          chmod 600 /root/.ssh/id_rsa
+          cat <<EOF >/root/.ssh/config
+          Hostname github.com
+          IdentityFile /root/.ssh/id_rsa
+          EOF
+          mv known_hosts /root/.ssh/known_hosts
+    - run: git config --global url.”https://{token}:@github.com/".insteadOf “https://github.com/"
+      working-directory: ux
     - run: flutter pub get
       working-directory: ux
     - run: flutter pub get
