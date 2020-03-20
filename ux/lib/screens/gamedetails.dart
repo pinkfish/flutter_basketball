@@ -9,15 +9,15 @@ import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
 import '../widgets/deleted.dart';
-import '../widgets/game/gametimeseries.dart';
 import '../widgets/game/gameshotlocations.dart';
+import '../widgets/game/gametimeseries.dart';
 import '../widgets/game/playerlist.dart';
 import '../widgets/loading.dart';
 import '../widgets/player/playername.dart';
 import '../widgets/savingoverlay.dart';
 import 'addplayergame.dart';
 
-///ß
+///
 /// Shows details of the game.
 ///
 class GameDetailsScreen extends StatelessWidget {
@@ -295,71 +295,70 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           Divider(),
           LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                double width = constraints.maxWidth / 6;
-                if (widget.orientation == Orientation.landscape) {
-                  return SizedBox(
-                    height: 0.0,
-                  );
-                }
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    SizedBox(
-                      width: width * 2,
-                      child: Text("",
-                          style:
+            double width = constraints.maxWidth / 6;
+            if (widget.orientation == Orientation.landscape) {
+              return SizedBox(
+                height: 0.0,
+              );
+            }
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(
+                  width: width * 2,
+                  child: Text("",
+                      style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text("Pts",
-                          style:
+                ),
+                SizedBox(
+                  width: width,
+                  child: Text("Pts",
+                      style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text("Fouls",
-                          style:
+                ),
+                SizedBox(
+                  width: width,
+                  child: Text("Fouls",
+                      style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text("T/O",
-                          style:
+                ),
+                SizedBox(
+                  width: width,
+                  child: Text("T/O",
+                      style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text("Steals",
-                          style:
+                ),
+                SizedBox(
+                  width: width,
+                  child: Text("Steals",
+                      style:
                           minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                );
-              }),
+                ),
+              ],
+            );
+          }),
           widget.orientation == Orientation.landscape
               ? SizedBox(
-            height: 0.0,
-          )
+                  height: 0.0,
+                )
               : Expanded(
-            child: SingleChildScrollView(
-              child: LayoutBuilder(
-                builder:
-                    (BuildContext context, BoxConstraints constraints) {
-                  return Column(
-                    children: state.game.players.keys
-                        .map((String s) =>
-                        _playerSummary(
-                            s,
-                            state.game.players[s],
-                            constraints,
-                            widget.orientation))
-                        .toList(),
-                  );
-                },
-              ),
-            ),
-          ),
+                  child: SingleChildScrollView(
+                    child: LayoutBuilder(
+                      builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        return Column(
+                          children: state.game.players.keys
+                              .map((String s) => _playerSummary(
+                                  s,
+                                  state.game.players[s],
+                                  constraints,
+                                  widget.orientation))
+                              .toList(),
+                        );
+                      },
+                    ),
+                  ),
+                ),
         ]),
       );
       if (widget.orientation == Orientation.portrait) {
