@@ -96,8 +96,7 @@ class SeasonExpansionPanel extends ExpansionPanel {
                       return Column(
                           children: state.games
                               .map(
-                                (Game g) =>
-                                GameTile(
+                                (Game g) => GameTile(
                                   game: g,
                                   onTap: () => onGameTapped(g.uid),
                                 ),

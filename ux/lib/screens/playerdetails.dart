@@ -59,9 +59,7 @@ class _PlayerDetails extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(Messages
-                .of(context)
-                .title),
+            title: Text(Messages.of(context).title),
           ),
           body: Container(
             child: Column(

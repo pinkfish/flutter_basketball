@@ -82,8 +82,7 @@ class _AddGameFormState extends State<_AddGameForm> {
     map.addEntries(widget.season.playerUids.keys
         .map((var e) => MapEntry(e, PlayerGameSummary())));
     bloc.add(AddGameEventCommit(
-        newGame: Game((b) =>
-        b
+        newGame: Game((b) => b
           ..opponentName = _opponent
           ..seasonUid = widget.season.uid
           ..teamUid = widget.season.teamUid
@@ -93,7 +92,7 @@ class _AddGameFormState extends State<_AddGameForm> {
             ..pointsAgainst = 0
             ..pointsFor = 0)
           ..eventTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
-              _time.hour, _time.minute)
+                  _time.hour, _time.minute)
               .toUtc())));
   }
 
