@@ -19,12 +19,12 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}   
         channel: 'stable' # or: 'dev' or 'beta'
     # Set up git with key and domain
-    - name: 'gcr.io/cloud-builders/git'
-      env:
-        GITHUB_TOKEN: ${{ secrets.github_token }}
-      shell: bash
-      run: |
-          git remote add github "https://pinkfish:$GITHUB_TOKEN@github.com/charts.git"
+    #- name: 'gcr.io/cloud-builders/git'
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.github_token }}
+    #  shell: bash
+    #  run: |
+    #     git remote add github "https://pinkfish:$GITHUB_TOKEN@github.com/charts.git"
           #mkdir -p ~/.ssh
           #echo ${GUTHUB_TOKEN} > ~/.ssh/id_rsa
           #chmod 600 ~/.ssh/id_rsa
@@ -40,46 +40,6 @@ jobs:
       working-directory: ux
     - run: flutter pub get
       working-directory: basketballdata
-    - run: echo ${GOOGLESERVICES} > android/app/google-services.json
-      working-directory: ux
-      env: 
-        GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
-    - run: flutter pub run build_runner build
-      working-directory: basketballdata
-    - uses: axel-op/dart-package-analyzer@v2.0.0
-      with:
-        # Required:
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        # Optional:
-        relativePath: ux
-    # You can then use this id to retrieve the outputs in the next steps.
-    # The following step shows how to exit the workflow with an error if a score is below 100:
-    - name: Check scores (ux)
-      run: |
-        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
-        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
-        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
-        then
-          echo "Scores are not both equal to 100"
-          exit 1
-        fi
-    - uses: axel-op/dart-package-analyzer@v2.0.0
-      with:
-        # Required:
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
-        # Optional:
-        relativePath: basketballdata
-    # You can then use this id to retrieve the outputs in the next steps.
-    # The following step shows how to exit the workflow with an error if a score is below 100:
-    - name: Check scores (basketballdata)
-      run: |
-        MAINTENANCE_SCORE=${{ steps.analysis.outputs.maintenance }}
-        HEALTH_SCORE=${{ steps.analysis.outputs.health }}
-        if (( $(echo "$MAINTENANCE_SCORE < 100" | bc) )) || (( $(echo "$HEALTH_SCORE < 100" | bc) ))
-        then
-          echo "Scores are not both equal to 100"
-          exit 1
-        fi
     #- run: flutter test
     #  working-directory: ux
     #- name: Fastlane Action
