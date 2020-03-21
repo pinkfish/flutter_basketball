@@ -27,7 +27,7 @@ jobs:
         run: npm install
         working-directory: firebase/functions
       - name: Build
-        run: npm run build-prod
+        run: npm run build
         working-directory: firebase/functions
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
