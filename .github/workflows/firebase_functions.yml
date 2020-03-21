@@ -32,8 +32,8 @@ jobs:
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
-          name: dist
-          path: dist
+          name: firebase/functions/dist
+          path: firebase/functions/dist
   deploy:
     name: Deploy
     needs: build
