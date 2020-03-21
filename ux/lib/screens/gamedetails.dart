@@ -402,8 +402,8 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           width: width,
           child: Text(
             (s.fullData.one.made +
-                s.fullData.two.made * 2 +
-                s.fullData.three.made * 3)
+                    s.fullData.two.made * 2 +
+                    s.fullData.three.made * 3)
                 .toString(),
             textScaleFactor: scale,
           ),
@@ -437,8 +437,8 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
     SingleGameBloc bloc = // ignore: close_sinks
         BlocProvider.of<SingleGameBloc>(context);
     showDialog<Tuple2<String, bool>>(
-        context: context,
-        builder: (BuildContext context) => AddPlayerGameScreen())
+            context: context,
+            builder: (BuildContext context) => AddPlayerGameScreen())
         .then((FutureOr<Tuple2<String, bool>> result) async {
       var r = await result;
 

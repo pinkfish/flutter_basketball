@@ -12,7 +12,7 @@ abstract class SeasonSummary
     implements Built<SeasonSummary, SeasonSummaryBuilder> {
   int get wins;
 
-  int get loses;
+  int get losses;
 
   int get pointsFor;
 
@@ -24,7 +24,7 @@ abstract class SeasonSummary
     ..pointsFor = 0
     ..pointsAgainst = 0
     ..wins = 0
-    ..loses = 0;
+    ..losses = 0;
 
   factory SeasonSummary([void Function(SeasonSummaryBuilder) updates]) =
       _$SeasonSummary;

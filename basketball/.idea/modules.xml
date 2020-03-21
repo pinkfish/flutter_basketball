@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/../basketballdata/basketballdata.iml" filepath="$PROJECT_DIR$/../basketballdata/basketballdata.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../firebase/firebase.iml" filepath="$PROJECT_DIR$/../firebase/firebase.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ux/ux.iml" filepath="$PROJECT_DIR$/../ux/ux.iml" />
     </modules>
   </component>

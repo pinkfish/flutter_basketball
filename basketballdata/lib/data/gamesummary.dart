@@ -9,8 +9,12 @@ abstract class GameSummary implements Built<GameSummary, GameSummaryBuilder> {
   int get pointsFor;
   int get pointsAgainst;
 
+  bool get finished;
+
   GameSummary._();
   factory GameSummary([updates(GameSummaryBuilder b)]) = _$GameSummary;
+
+  static void _initializeBuilder(GameSummaryBuilder b) => b..finished = false;
 
   Map<String, dynamic> toMap() {
     return serializers.serializeWith(GameSummary.serializer, this);
