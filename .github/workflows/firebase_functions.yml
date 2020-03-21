@@ -9,10 +9,12 @@ on:
     branches: [ master ]
     paths: 
       - "firebase/functions/**"
+      - ".github/workflows/firebase_functions.yaml"
   pull_request:
     branches: [ master ]
     paths:
       - "firebase/functions/**"
+      - ".github/workflows/firebase_functions.yaml"
 
 jobs:
   build:
@@ -23,10 +25,10 @@ jobs:
         uses: actions/checkout@master
       - name: Install Dependencies
         run: npm install
-        working-directory: firebase
+        working-directory: firebase/functions
       - name: Build
         run: npm run build-prod
-        working-directory: firebase
+        working-directory: firebase/functions
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
