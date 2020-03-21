@@ -55,7 +55,7 @@ class SeasonExpansionPanel extends ExpansionPanel {
                     ),
               subtitle: Text(
                 Messages.of(context)
-                    .winLoss(season.summary.wins, season.summary.loses, 0),
+                    .winLoss(season.summary.wins, season.summary.losses, 0),
               ),
             );
           },
