@@ -86,9 +86,7 @@ class _PlayerDetails extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border:
-                        Border.all(color: Theme
-                            .of(context)
-                            .accentColor),
+                            Border.all(color: Theme.of(context).accentColor),
                       ),
                     ),
                     SizedBox(width: 20.0),
