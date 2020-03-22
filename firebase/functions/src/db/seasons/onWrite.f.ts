@@ -1,8 +1,11 @@
 import * as functions from "firebase-functions";
 const admin = require("firebase-admin");
+try { admin.initializeApp(); } catch(e) {
+console.log(e);
+}
 const db = admin.firestore();
 
-export const updateSeasonSummary = functions.firestore
+export default functions.firestore
   .document("Games/{gameUid}")
   .onWrite((change, context) => {
     // If it didn't exist or still exists then we update.

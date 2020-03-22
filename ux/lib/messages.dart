@@ -340,6 +340,9 @@ class Messages {
       case GamePeriod.Period4:
         return Intl.message("Period 4",
             desc: "The game is in period 4", locale: locale);
+      case GamePeriod.Finished:
+        return Intl.message("Finished",
+            desc: "The game has finished", locale: locale);
     }
     return unknown;
   }

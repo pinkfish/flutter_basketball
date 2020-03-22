@@ -572,6 +572,11 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
           break;
         case GameEventType.PeriodStart:
           currentPeriod = ev.period;
+          if (ev.period == GamePeriod.Finished) {
+            gameSummary.finished = true;
+          } else {
+            gameSummary.finished = false;
+          }
           break;
       }
       if (ev.type != GameEventType.PeriodStart &&

@@ -16,9 +16,11 @@ class GamePeriod extends EnumClass {
   static const GamePeriod Period3 = _$period3;
   static const GamePeriod Period4 = _$period4;
   static const GamePeriod OverTime = _$overTime;
+  static const GamePeriod Finished = _$finished;
 
   const GamePeriod._(String name) : super(name);
 
   static BuiltSet<GamePeriod> get values => _$values;
+
   static GamePeriod valueOf(String name) => _$valueOf(name);
 }

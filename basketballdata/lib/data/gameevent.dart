@@ -7,6 +7,10 @@ import 'serializers.dart';
 
 part 'gameevent.g.dart';
 
+///
+/// Events in a game.  This tracks all the things that happen in a game
+/// so it can be graphed amongst other things.
+///
 abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   @nullable
   String get uid;
@@ -51,6 +55,9 @@ abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   static Serializer<GameEvent> get serializer => _$gameEventSerializer;
 }
 
+///
+/// The x,y location of the shot on the basketball key.
+///
 abstract class GameEventLocation
     implements Built<GameEventLocation, GameEventLocationBuilder> {
   double get x;

@@ -11,6 +11,9 @@ part 'game.g.dart';
 
 enum GameResult { Win, Tie, Loss }
 
+///
+/// Data about the game itself.
+///
 abstract class Game implements Built<Game, GameBuilder> {
   @nullable
   String get uid;
@@ -25,23 +28,33 @@ abstract class Game implements Built<Game, GameBuilder> {
 
   String get teamUid;
 
+  /// Summary for this specific player.
   BuiltMap<String, PlayerGameSummary> get players;
 
+  /// Summary for this specific opponent.
   BuiltMap<String, PlayerGameSummary> get opponents;
 
+  /// Summary for the overall game (this is only pts for vs against).
   GameSummary get summary;
 
+  /// Total summary for the game for this players.
   PlayerGameSummary get playerSummaery;
 
+  /// Total summary for the game for the opponents.
   PlayerGameSummary get opponentSummary;
 
   GamePeriod get currentPeriod;
 
+  /// Tracks when this game is running from.  This is used when the
+  /// game starts to track the current position in the game.
   @nullable
   DateTime get runningFrom;
 
+  /// How long into the game we are currently.
   Duration get gameTime;
 
+  /// Works out what the result of the game is based on the summary
+  /// data.
   @memoized
   GameResult get result => summary.pointsFor > summary.pointsAgainst
       ? GameResult.Win

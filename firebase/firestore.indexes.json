@@ -1,4 +1,33 @@
 {
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "GameEvents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "gameUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timestamp",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "Games",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "players.Iu2SiV3nFZuMttMnSHTx.playing",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "eventTime",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }
