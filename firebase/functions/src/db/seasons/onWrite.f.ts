@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-const admin = require("firebase-admin");
+import admin from "firebase-admin";
 try { admin.initializeApp(); } catch(e) {
 console.log(e);
 }
@@ -7,7 +7,7 @@ const db = admin.firestore();
 
 export default functions.firestore
   .document("Games/{gameUid}")
-  .onWrite((change, context) => {
+  .onWrite((change) => {
     // If it didn't exist or still exists then we update.
     const beforeSummary = change.before.exists
       ? change.before.data()?.summary

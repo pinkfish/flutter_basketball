@@ -1,13 +1,8 @@
 import * as functions from "firebase-functions";
-const admin = require("firebase-admin");
-try { admin.initializeApp(); } catch(e) {
-console.log(e);
-}
-const db = admin.firestore();
 
 export  default functions.firestore
   .document("GameEvents/{gameUid}")
-  .onDelete((snapshot, context) => {
+  .onDelete((snapshot) => {
   return snapshot;
   /*
   const eventType = snapshot.data()?.type;

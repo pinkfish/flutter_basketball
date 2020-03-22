@@ -32,7 +32,7 @@ for (let f = 0, fl = files.length; f < fl; f++) {
     !process.env.FUNCTION_NAME ||
     process.env.FUNCTION_NAME === functionName
   ) {
-     const module = require(resolve(__dirname, funcDir, file));
+     const module = require(resolve(__dirname, funcDir, file)); // eslint-disable-line
      if (!module.default) continue;
      set(exports, propPath, module.default);
   }

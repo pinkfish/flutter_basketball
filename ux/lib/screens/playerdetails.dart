@@ -1,4 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
+import 'package:basketballstats/widgets/player/teamdetailsexpansionpanel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,8 @@ class PlayerDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => SinglePlayerBloc(
-          db: BlocProvider.of<TeamsBloc>(context).db, playerUid: playerUid),
+          db: RepositoryProvider.of<BasketballDatabase>(context),
+          playerUid: playerUid),
       child: _PlayerDetails(),
     );
   }
@@ -31,7 +34,7 @@ class _PlayerDetails extends StatelessWidget {
     return BlocConsumer(
       bloc: BlocProvider.of<SinglePlayerBloc>(context),
       listener: (BuildContext context, SinglePlayerState state) {
-        if (state is SinglePlayerLoaded) {
+        if (state is SinglePlayerLoaded && !state.loadedGames) {
           BlocProvider.of<SinglePlayerBloc>(context)
               .add(SinglePlayerLoadGames());
         }
@@ -112,7 +115,15 @@ class _PlayerDetails extends StatelessWidget {
                       onPressed: () => _doDelete(context, state),
                     ),
                   ],
-                )
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: TeamDetailsExpansionPanel(
+                      games: state.games,
+                      playerUid: state.player.uid,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
