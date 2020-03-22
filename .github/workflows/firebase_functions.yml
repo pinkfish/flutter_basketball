@@ -9,10 +9,12 @@ on:
     branches: [ master ]
     paths: 
       - "firebase/functions/**"
+      - ".github/workflows/firebase_functions.yml"
   pull_request:
     branches: [ master ]
     paths:
       - "firebase/functions/**"
+      - ".github/workflows/firebase_functions.yml"
 
 jobs:
   build:
@@ -23,15 +25,15 @@ jobs:
         uses: actions/checkout@master
       - name: Install Dependencies
         run: npm install
-        working-directory: firebase
+        working-directory: firebase/functions
       - name: Build
-        run: npm run build-prod
-        working-directory: firebase
+        run: npm run build
+        working-directory: firebase/functions
       - name: Archive Production Artifact
         uses: actions/upload-artifact@master
         with:
           name: dist
-          path: dist
+          path: firebase/functions/lib
   deploy:
     name: Deploy
     needs: build
@@ -48,5 +50,6 @@ jobs:
         with:
           args: deploy --only functions
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
           PROJECT_PATH: firebase
+          PROJECT_ID: basketballstats-8ed93
