@@ -76,17 +76,11 @@ class _PlayerDetails extends StatelessWidget {
                       child: Center(
                         child: Text(
                           state.player.jerseyNumber,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .caption
-                              .copyWith(
-                            color: Theme
-                                .of(context)
-                                .accentColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                          ),
+                          style: Theme.of(context).textTheme.caption.copyWith(
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                              ),
                         ),
                       ),
                       decoration: BoxDecoration(
