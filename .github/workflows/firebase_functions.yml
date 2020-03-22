@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: dist
-          path: firebase/functions/dist
+          path: firebase/functions/lib
   deploy:
     name: Deploy
     needs: build
