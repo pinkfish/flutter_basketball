@@ -52,3 +52,4 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
           PROJECT_PATH: firebase
+          PROJECT_ID: basketballstats-8ed93
