@@ -146,9 +146,7 @@ class _PlayerDetails extends StatelessWidget {
               },
             ),
             FlatButton(
-              child: Text(MaterialLocalizations
-                  .of(context)
-                  .okButtonLabel),
+              child: Text(MaterialLocalizations.of(context).okButtonLabel),
               onPressed: () {
                 BlocProvider.of<SinglePlayerBloc>(context)
                     .add(SinglePlayerDelete());

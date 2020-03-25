@@ -271,7 +271,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                         var cmp = a.seasonUid.compareTo(b.seasonUid);
                         if (cmp == 0) {
                           cmp = _getPercentForSorting(
-                              a.players[widget.playerUid].fullData.one) -
+                                  a.players[widget.playerUid].fullData.one) -
                               _getPercentForSorting(
                                   b.players[widget.playerUid].fullData.one);
                           cmp *= (sortAscending ? -1 : 1);
@@ -294,7 +294,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                         var cmp = a.seasonUid.compareTo(b.seasonUid);
                         if (cmp == 0) {
                           cmp = _getPercentForSorting(
-                              a.players[widget.playerUid].fullData.two) -
+                                  a.players[widget.playerUid].fullData.two) -
                               _getPercentForSorting(
                                   b.players[widget.playerUid].fullData.two);
                           cmp *= (sortAscending ? -1 : 1);
@@ -317,7 +317,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                         var cmp = a.seasonUid.compareTo(b.seasonUid);
                         if (cmp == 0) {
                           cmp = _getPercentForSorting(
-                              a.players[widget.playerUid].fullData.three) -
+                                  a.players[widget.playerUid].fullData.three) -
                               _getPercentForSorting(
                                   b.players[widget.playerUid].fullData.three);
                           cmp *= (sortAscending ? -1 : 1);
@@ -328,9 +328,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                   ),
                   DataColumn(
                     label: Text(
-                      Messages
-                          .of(context)
-                          .steals,
+                      Messages.of(context).steals,
                       style: headerStyle,
                     ),
                     onSort: (int index, bool ascending) {
@@ -351,9 +349,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                   ),
                   DataColumn(
                     label: Text(
-                      Messages
-                          .of(context)
-                          .blocks,
+                      Messages.of(context).blocks,
                       style: headerStyle,
                     ),
                     onSort: (int index, bool ascending) {
@@ -374,9 +370,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                   ),
                   DataColumn(
                     label: Text(
-                      Messages
-                          .of(context)
-                          .turnovers,
+                      Messages.of(context).turnovers,
                       style: headerStyle,
                     ),
                     onSort: (int index, bool ascending) {
@@ -397,9 +391,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                   ),
                   DataColumn(
                     label: Text(
-                      Messages
-                          .of(context)
-                          .fouls,
+                      Messages.of(context).fouls,
                       style: headerStyle,
                     ),
                     onSort: (int index, bool ascending) {
@@ -494,16 +486,11 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData
-                .one.attempts} 2: ${playerData.two.made} of ${playerData.two
-                .attempts} 3: ${playerData.three.made} of ${playerData.three
-                .attempts}"),
+            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData.one.attempts} 2: ${playerData.two.made} of ${playerData.two.attempts} 3: ${playerData.three.made} of ${playerData.three.attempts}"),
         Text(
-            "Stls ${playerData.steals} Blks ${playerData
-                .blocks} Fls ${playerData.fouls}"),
+            "Stls ${playerData.steals} Blks ${playerData.blocks} Fls ${playerData.fouls}"),
         Text(
-            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData
-                .defensiveRebounds}"),
+            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData.defensiveRebounds}"),
       ],
     );
   }
