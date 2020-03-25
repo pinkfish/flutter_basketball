@@ -68,9 +68,9 @@ class SinglePlayerSaving extends SinglePlayerState {
 class SinglePlayerSaveSuccessful extends SinglePlayerState {
   SinglePlayerSaveSuccessful({@required SinglePlayerState singlePlayerState})
       : super(
-      player: singlePlayerState.player,
-      loadedGames: singlePlayerState.loadedGames,
-      games: singlePlayerState.games);
+            player: singlePlayerState.player,
+            loadedGames: singlePlayerState.loadedGames,
+            games: singlePlayerState.games);
 
   @override
   String toString() {

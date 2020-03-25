@@ -166,9 +166,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           builder: (BuildContext context, SingleSeasonBlocState state) {
             if (state is SingleSeasonUninitialized) {
               return ListTile(
-                title: Text(Messages
-                    .of(context)
-                    .loading),
+                title: Text(Messages.of(context).loading),
               );
             }
             if (state is SingleSeasonDeleted) {
