@@ -179,10 +179,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
               leading: Icon(MdiIcons.calendar),
               title: Text(
                 state.season.name,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .title,
+                style: Theme.of(context).textTheme.title,
               ),
               subtitle: getSummaryDetails(playerData),
             );
