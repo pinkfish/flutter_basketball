@@ -369,8 +369,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) async* {
     Query q = Firestore.instance
         .collection(gamesTable)
-        .where("players." + playerUid + ".playing", isEqualTo: true)
-        .orderBy("eventTime");
+        .where("players." + playerUid + ".playing", isEqualTo: true);
     QuerySnapshot snap = await q.getDocuments();
     yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
         Game.fromMap(_addUid(snap.documentID, snap.data))));

@@ -320,6 +320,12 @@ class Messages {
         desc: "Number of seasons playeed for the team", locale: locale);
   }
 
+  String getGameVs(String opponent, String place) {
+    return Intl.message("vs $opponent at $place",
+        desc: "Heading for a game showing the opponent and the place",
+        locale: locale);
+  }
+
   String getPeriodName(GamePeriod p) {
     switch (p) {
       case GamePeriod.NotStarted:

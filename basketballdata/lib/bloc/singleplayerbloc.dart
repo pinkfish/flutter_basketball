@@ -23,7 +23,7 @@ abstract class SinglePlayerState extends Equatable {
       @required this.loadedGames});
 
   @override
-  List<Object> get props => [player];
+  List<Object> get props => [player, loadedGames, games];
 }
 
 ///
@@ -52,9 +52,9 @@ class SinglePlayerLoaded extends SinglePlayerState {
 class SinglePlayerSaving extends SinglePlayerState {
   SinglePlayerSaving({@required SinglePlayerState singlePlayerState})
       : super(
-      player: singlePlayerState.player,
-      loadedGames: singlePlayerState.loadedGames,
-      games: singlePlayerState.games);
+            player: singlePlayerState.player,
+            loadedGames: singlePlayerState.loadedGames,
+            games: singlePlayerState.games);
 
   @override
   String toString() {
@@ -261,9 +261,11 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
     if (event is SinglePlayerLoadGames) {
       _lock.synchronized(() {
         if (_gameEventSub == null) {
-          _gameEventSub = db.getGamesForPlayer(playerUid: playerUid).listen(
-                  (BuiltList<Game> ev) =>
-                  add(_SinglePlayerLoadedGames(games: ev)));
+          _gameEventSub = db
+              .getGamesForPlayer(playerUid: playerUid)
+              .listen((BuiltList<Game> ev) {
+            add(_SinglePlayerLoadedGames(games: ev));
+          });
         }
       });
     }

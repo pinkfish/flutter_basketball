@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../messages.dart';
+
 class GameTile extends StatelessWidget {
   final Game game;
   final Function onTap;
@@ -34,8 +36,11 @@ class GameTile extends StatelessWidget {
       child: ListTile(
         leading: Icon(MdiIcons.basketball),
         title: Text(
-          "vs " + game.opponentName + " at " + game.location,
-          style: Theme.of(context).textTheme.title,
+          Messages.of(context).getGameVs(game.opponentName, game.location),
+          style: Theme
+              .of(context)
+              .textTheme
+              .title,
           textScaleFactor: 1.2,
         ),
         subtitle: Text(

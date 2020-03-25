@@ -19,10 +19,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "players.Iu2SiV3nFZuMttMnSHTx.playing",
-          "order": "ASCENDING"
-        },
-        {
           "fieldPath": "eventTime",
           "order": "ASCENDING"
         }
