@@ -202,8 +202,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                 children: widget.games
                     .where((Game g) => g.seasonUid == seasonUid)
                     .map(
-                      (Game g) =>
-                      ListTile(
+                      (Game g) => ListTile(
                           title: Text(
                             Messages.of(context)
                                 .getGameVs(g.opponentName, g.location),
