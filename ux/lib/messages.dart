@@ -288,6 +288,9 @@ class Messages {
   String get fouls => Intl.message("Fouls",
       desc: "Drop down menu item for fouls", locale: locale);
 
+  String get steals => Intl.message("Steals",
+      desc: "Drop down menu item for steals", locale: locale);
+
   String get turnovers => Intl.message("Turnovers",
       desc: "Drop down menu item for turnovers", locale: locale);
 

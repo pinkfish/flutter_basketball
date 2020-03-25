@@ -92,10 +92,7 @@ class _PlayerDetails extends StatelessWidget {
                     SizedBox(width: 20.0),
                     Text(
                       state.player.name,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline,
+                      style: Theme.of(context).textTheme.headline,
                       textScaleFactor: 1.5,
                     ),
                   ],

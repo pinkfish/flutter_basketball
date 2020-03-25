@@ -30,12 +30,21 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
   Map<String, Set<String>> teamSeason = {};
   Set<String> expandedPanels = Set();
   Set<String> loadedStuff = Set();
+  List<Game> sortedGames;
+  int sortColumnIndex = 1;
+  bool sortAscending = false;
 
-  void initState() {
-    super.initState();
-    var games = widget.games.toList();
-    games.sort((Game a, Game b) => a.seasonUid.compareTo(b.seasonUid));
-    games.forEach((Game g) {
+  void _buildState() {
+    sortedGames = widget.games.toList();
+    sortedGames.sort((Game a, Game b) {
+      var cmp = a.seasonUid.compareTo(b.seasonUid);
+      if (cmp == 0) {
+        cmp = b.players[widget.playerUid].fullData.points -
+            a.players[widget.playerUid].fullData.points;
+      }
+      return cmp;
+    });
+    sortedGames.forEach((Game g) {
       if (!teamSeason.containsKey(g.teamUid)) {
         teamSeason[g.teamUid] = Set();
         teamBlocs[g.teamUid] = SingleTeamBloc(
@@ -67,6 +76,17 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     teamBlocs = {};
     seasonBlocs = {};
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _buildState();
+  }
+
+  @override
+  void didUpdateWidget(TeamDetailsExpansionPanel oldWidget) {
+    _buildState();
   }
 
   @override
@@ -181,7 +201,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                 state.season.name,
                 style: Theme.of(context).textTheme.title,
               ),
-              subtitle: getSummaryDetails(playerData),
+              subtitle: _getSummaryDetails(playerData),
             );
           },
         );
@@ -192,42 +212,307 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           bloc: seasonBlocs[seasonUid],
           builder: (BuildContext context, SingleSeasonBlocState state) {
             if (state is SingleSeasonUninitialized) {
-              return Text(Messages.of(context).loading);
+              return Text(Messages
+                  .of(context)
+                  .loading);
             }
             if (state is SingleSeasonDeleted) {
-              return Text(Messages.of(context).unknown);
+              return Text(Messages
+                  .of(context)
+                  .unknown);
             }
             // Show the games.
-            return Column(
-                children: widget.games
+            TextStyle headerStyle = Theme
+                .of(context)
+                .textTheme
+                .subtitle;
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                columnSpacing: 5.0,
+                sortAscending: sortAscending,
+                sortColumnIndex: sortColumnIndex,
+                columns: [
+                  DataColumn(
+                    label: Container(
+                      width: 50,
+                      child: Text(
+                        "",
+                        overflow: TextOverflow.fade,
+                        softWrap: true,
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = a.players[widget.playerUid].fullData.points -
+                              b.players[widget.playerUid].fullData.points;
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                    label: Text(
+                      Messages
+                          .of(context)
+                          .points,
+                      style: headerStyle,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      "1",
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = _getPercentForSorting(
+                              a.players[widget.playerUid].fullData.one) -
+                              _getPercentForSorting(
+                                  b.players[widget.playerUid].fullData.one);
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      "2",
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = _getPercentForSorting(
+                              a.players[widget.playerUid].fullData.two) -
+                              _getPercentForSorting(
+                                  b.players[widget.playerUid].fullData.two);
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      "3",
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = _getPercentForSorting(
+                              a.players[widget.playerUid].fullData.three) -
+                              _getPercentForSorting(
+                                  b.players[widget.playerUid].fullData.three);
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      Messages
+                          .of(context)
+                          .steals,
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = a.players[widget.playerUid].fullData.steals -
+                              b.players[widget.playerUid].fullData.steals;
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      Messages
+                          .of(context)
+                          .blocks,
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = a.players[widget.playerUid].fullData.blocks -
+                              b.players[widget.playerUid].fullData.blocks;
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      Messages
+                          .of(context)
+                          .turnovers,
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = a.players[widget.playerUid].fullData.turnovers -
+                              b.players[widget.playerUid].fullData.turnovers;
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                  DataColumn(
+                    label: Text(
+                      Messages
+                          .of(context)
+                          .fouls,
+                      style: headerStyle,
+                    ),
+                    onSort: (int index, bool ascending) {
+                      setState(() {
+                        sortAscending = ascending;
+                        sortColumnIndex = index;
+                      });
+                      sortedGames.sort((Game a, Game b) {
+                        var cmp = a.seasonUid.compareTo(b.seasonUid);
+                        if (cmp == 0) {
+                          cmp = a.players[widget.playerUid].fullData.fouls -
+                              b.players[widget.playerUid].fullData.fouls;
+                          cmp *= (sortAscending ? -1 : 1);
+                        }
+                        return cmp;
+                      });
+                    },
+                  ),
+                ],
+                rows: sortedGames
                     .where((Game g) => g.seasonUid == seasonUid)
-                    .map(
-                      (Game g) => ListTile(
-                          title: Text(
-                            Messages.of(context)
-                                .getGameVs(g.opponentName, g.location),
-                            textScaleFactor: 1.25,
-                          ),
-                          subtitle: getSummaryDetails(
-                              g.players[widget.playerUid].fullData)),
-                    )
-                    .toList());
+                    .map(_gameDataRow)
+                    .toList(),
+              ),
+            );
           },
         ),
       ),
     );
   }
 
-  Widget getSummaryDetails(PlayerSummaryData playerData) {
+  int _getPercentForSorting(MadeAttempt att) {
+    if (att == null || att.attempts == 0) {
+      return -1;
+    }
+    return ((att.made ~/ att.attempts) * 100);
+  }
+
+  String _getMadeMissed(MadeAttempt att) {
+    if (att == null || att.attempts == 0) {
+      return "n/a";
+    }
+    return ((att.made / att.attempts) * 100).toStringAsFixed(0) + "%";
+  }
+
+  DataRow _gameDataRow(Game g) {
+    return DataRow(
+      cells: [
+        DataCell(
+          Container(
+            width: 50,
+            child: Text(
+              g.opponentName,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+            ),
+          ),
+        ),
+        DataCell(
+          Container(
+            width: 10,
+            child: Text(g.players[widget.playerUid].fullData.points.toString()),
+          ),
+        ),
+        DataCell(
+          Text(_getMadeMissed(g.players[widget.playerUid].fullData.one)),
+        ),
+        DataCell(
+          Text(_getMadeMissed(g.players[widget.playerUid].fullData.two)),
+        ),
+        DataCell(
+          Text(_getMadeMissed(g.players[widget.playerUid].fullData.three)),
+        ),
+        DataCell(
+          Text(g.players[widget.playerUid].fullData.steals.toString()),
+        ),
+        DataCell(
+          Text(g.players[widget.playerUid].fullData.blocks.toString()),
+        ),
+        DataCell(
+          Text(g.players[widget.playerUid].fullData.turnovers.toString()),
+        ),
+        DataCell(
+          Text(g.players[widget.playerUid].fullData.fouls.toString()),
+        ),
+      ],
+    );
+  }
+
+  Widget _getSummaryDetails(PlayerSummaryData playerData) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData.one.attempts} 2: ${playerData.two.made} of ${playerData.two.attempts} 3: ${playerData.three.made} of ${playerData.three.attempts}"),
+            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData
+                .one.attempts} 2: ${playerData.two.made} of ${playerData.two
+                .attempts} 3: ${playerData.three.made} of ${playerData.three
+                .attempts}"),
         Text(
-            "Stls ${playerData.steals} Blks ${playerData.blocks} Fls ${playerData.fouls}"),
+            "Stls ${playerData.steals} Blks ${playerData
+                .blocks} Fls ${playerData.fouls}"),
         Text(
-            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData.defensiveRebounds}"),
+            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData
+                .defensiveRebounds}"),
       ],
     );
   }
