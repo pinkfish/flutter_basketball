@@ -253,9 +253,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                       });
                     },
                     label: Text(
-                      Messages
-                          .of(context)
-                          .points,
+                      Messages.of(context).points,
                       style: headerStyle,
                     ),
                   ),

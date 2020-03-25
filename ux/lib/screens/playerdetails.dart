@@ -134,20 +134,13 @@ class _PlayerDetails extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(Messages
-              .of(context)
-              .deletePlayer),
+          title: Text(Messages.of(context).deletePlayer),
           content: Text(
               Messages.of(context).deletePlayerAreYouSure(state.player.name)),
           actions: <Widget>[
             FlatButton(
-              child: Text(MaterialLocalizations
-                  .of(context)
-                  .cancelButtonLabel,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .button),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel,
+                  style: Theme.of(context).textTheme.button),
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
               },
