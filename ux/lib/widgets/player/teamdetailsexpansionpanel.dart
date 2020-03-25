@@ -171,9 +171,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
             }
             if (state is SingleSeasonDeleted) {
               return ListTile(
-                title: Text(Messages
-                    .of(context)
-                    .unknown),
+                title: Text(Messages.of(context).unknown),
               );
             }
             var playerData = state.season.playerUids[widget.playerUid].fullData;

@@ -87,9 +87,9 @@ class SinglePlayerSaveFailed extends SinglePlayerState {
   SinglePlayerSaveFailed(
       {@required SinglePlayerState singlePlayerState, this.error})
       : super(
-      player: singlePlayerState.player,
-      loadedGames: singlePlayerState.loadedGames,
-      games: singlePlayerState.games);
+            player: singlePlayerState.player,
+            loadedGames: singlePlayerState.loadedGames,
+            games: singlePlayerState.games);
 
   @override
   String toString() {
