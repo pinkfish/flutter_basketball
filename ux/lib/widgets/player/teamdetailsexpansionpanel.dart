@@ -212,20 +212,13 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           bloc: seasonBlocs[seasonUid],
           builder: (BuildContext context, SingleSeasonBlocState state) {
             if (state is SingleSeasonUninitialized) {
-              return Text(Messages
-                  .of(context)
-                  .loading);
+              return Text(Messages.of(context).loading);
             }
             if (state is SingleSeasonDeleted) {
-              return Text(Messages
-                  .of(context)
-                  .unknown);
+              return Text(Messages.of(context).unknown);
             }
             // Show the games.
-            TextStyle headerStyle = Theme
-                .of(context)
-                .textTheme
-                .subtitle;
+            TextStyle headerStyle = Theme.of(context).textTheme.subtitle;
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(

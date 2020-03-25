@@ -119,9 +119,7 @@ class _PlayerDetails extends StatelessWidget {
           floatingActionButton: FloatingActionButton.extended(
             heroTag: "editPlayer",
             icon: Icon(Icons.edit),
-            label: Text(Messages
-                .of(context)
-                .editButton),
+            label: Text(Messages.of(context).editButton),
             onPressed: () =>
                 Navigator.pushNamed(context, "/EditPlayer/" + state.player.uid),
           ),
