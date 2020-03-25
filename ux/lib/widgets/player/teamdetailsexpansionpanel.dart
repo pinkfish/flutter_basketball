@@ -210,7 +210,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                           ),
                           subtitle: getSummaryDetails(
                               g.players[widget.playerUid].fullData)),
-                )
+                    )
                     .toList());
           },
         ),
@@ -223,16 +223,11 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData
-                .one.attempts} 2: ${playerData.two.made} of ${playerData.two
-                .attempts} 3: ${playerData.three.made} of ${playerData.three
-                .attempts}"),
+            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData.one.attempts} 2: ${playerData.two.made} of ${playerData.two.attempts} 3: ${playerData.three.made} of ${playerData.three.attempts}"),
         Text(
-            "Stls ${playerData.steals} Blks ${playerData
-                .blocks} Fls ${playerData.fouls}"),
+            "Stls ${playerData.steals} Blks ${playerData.blocks} Fls ${playerData.fouls}"),
         Text(
-            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData
-                .defensiveRebounds}"),
+            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData.defensiveRebounds}"),
       ],
     );
   }
