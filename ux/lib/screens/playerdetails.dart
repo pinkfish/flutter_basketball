@@ -81,8 +81,8 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
           body: Container(
             child: OrientationBuilder(
                 builder: (BuildContext context, Orientation o) {
-                  return _playerDetailsStuff(context, o, state);
-                }),
+              return _playerDetailsStuff(context, o, state);
+            }),
           ),
           floatingActionButton: AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
