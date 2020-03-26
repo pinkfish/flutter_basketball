@@ -90,26 +90,23 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
                 ScaleTransition(scale: a, child: w),
             child: _showGraphs
                 ? SizedBox(
-              height: 0,
-            )
+                    height: 0,
+                  )
                 : FloatingActionButton.extended(
-              heroTag: "editPlayer",
-              icon: Icon(Icons.edit),
-              label: Text(Messages
-                  .of(context)
-                  .editButton),
-              onPressed: () =>
-                  Navigator.pushNamed(
-                      context, "/EditPlayer/" + state.player.uid),
-            ),
+                    heroTag: "editPlayer",
+                    icon: Icon(Icons.edit),
+                    label: Text(Messages.of(context).editButton),
+                    onPressed: () => Navigator.pushNamed(
+                        context, "/EditPlayer/" + state.player.uid),
+                  ),
           ),
         );
       },
     );
   }
 
-  Widget _playerDetailsStuff(BuildContext context, Orientation orientation,
-      SinglePlayerState state) {
+  Widget _playerDetailsStuff(
+      BuildContext context, Orientation orientation, SinglePlayerState state) {
     if (orientation == Orientation.portrait) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,9 +143,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
               children: <Widget>[
                 FlatButton.icon(
                   icon: Icon(MdiIcons.chartLine),
-                  label: Text(Messages
-                      .of(context)
-                      .stats),
+                  label: Text(Messages.of(context).stats),
                   onPressed: () => setState(() => _showGraphs = !_showGraphs),
                 ),
                 IconButton(
@@ -179,33 +174,22 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
           child: Center(
             child: Text(
               state.player.jerseyNumber,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .caption
-                  .copyWith(
-                color: Theme
-                    .of(context)
-                    .accentColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0,
-              ),
+              style: Theme.of(context).textTheme.caption.copyWith(
+                    color: Theme.of(context).accentColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
             ),
           ),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Theme
-                .of(context)
-                .accentColor),
+            border: Border.all(color: Theme.of(context).accentColor),
           ),
         ),
         SizedBox(width: 20.0),
         Text(
           state.player.name,
-          style: Theme
-              .of(context)
-              .textTheme
-              .headline,
+          style: Theme.of(context).textTheme.headline,
           textScaleFactor: 1.5,
         ),
       ],
@@ -218,20 +202,13 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(Messages
-              .of(context)
-              .deletePlayer),
+          title: Text(Messages.of(context).deletePlayer),
           content: Text(
               Messages.of(context).deletePlayerAreYouSure(state.player.name)),
           actions: <Widget>[
             FlatButton(
-              child: Text(MaterialLocalizations
-                  .of(context)
-                  .cancelButtonLabel,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .button),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel,
+                  style: Theme.of(context).textTheme.button),
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
               },
