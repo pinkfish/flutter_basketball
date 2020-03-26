@@ -4,6 +4,7 @@ import 'package:basketballstats/widgets/player/teamdetailsexpansionpanel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
 import '../widgets/deleted.dart';
@@ -23,12 +24,25 @@ class PlayerDetailsScreen extends StatelessWidget {
       create: (BuildContext context) => SinglePlayerBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
           playerUid: playerUid),
-      child: _PlayerDetails(),
+      child: _PlayerDetails(playerUid),
     );
   }
 }
 
-class _PlayerDetails extends StatelessWidget {
+class _PlayerDetails extends StatefulWidget {
+  final String playerUid;
+
+  _PlayerDetails(this.playerUid);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PlayerDetailsState();
+  }
+}
+
+class _PlayerDetailsState extends State<_PlayerDetails> {
+  bool _showGraphs = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
@@ -62,69 +76,141 @@ class _PlayerDetails extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(Messages.of(context).title),
+            title: Text(Messages
+                .of(context)
+                .title),
           ),
           body: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Wrap(
-                  children: [
-                    Container(
-                      width: 40.0,
-                      height: 40.0,
-                      child: Center(
-                        child: Text(
-                          state.player.jerseyNumber,
-                          style: Theme.of(context).textTheme.caption.copyWith(
-                                color: Theme.of(context).accentColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                              ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: Theme.of(context).accentColor),
-                      ),
-                    ),
-                    SizedBox(width: 20.0),
-                    Text(
-                      state.player.name,
-                      style: Theme.of(context).textTheme.headline,
-                      textScaleFactor: 1.5,
-                    ),
-                  ],
-                ),
-                ButtonBar(
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () => _doDelete(context, state),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: TeamDetailsExpansionPanel(
-                      games: state.games,
-                      playerUid: state.player.uid,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: OrientationBuilder(
+                builder: (BuildContext context, Orientation o) {
+                  return _playerDetailsStuff(context, o, state);
+                }),
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            heroTag: "editPlayer",
-            icon: Icon(Icons.edit),
-            label: Text(Messages.of(context).editButton),
-            onPressed: () =>
-                Navigator.pushNamed(context, "/EditPlayer/" + state.player.uid),
+          floatingActionButton: AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            transitionBuilder: (Widget w, Animation a) =>
+                ScaleTransition(scale: a, child: w),
+            child: _showGraphs
+                ? SizedBox(
+              height: 0,
+            )
+                : FloatingActionButton.extended(
+              heroTag: "editPlayer",
+              icon: Icon(Icons.edit),
+              label: Text(Messages
+                  .of(context)
+                  .editButton),
+              onPressed: () =>
+                  Navigator.pushNamed(
+                      context, "/EditPlayer/" + state.player.uid),
+            ),
           ),
         );
       },
+    );
+  }
+
+  Widget _playerDetailsStuff(BuildContext context, Orientation orientation,
+      SinglePlayerState state) {
+    if (orientation == Orientation.portrait) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _playerDetails(context, state),
+          ButtonBar(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () => _doDelete(context, state),
+              ),
+            ],
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: TeamDetailsExpansionPanel(
+                games: state.games,
+                playerUid: state.player.uid,
+                showGraphs: _showGraphs,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _playerDetails(context, state),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton.icon(
+                  icon: Icon(MdiIcons.chartLine),
+                  label: Text(Messages
+                      .of(context)
+                      .stats),
+                  onPressed: () => setState(() => _showGraphs = !_showGraphs),
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _doDelete(context, state),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Expanded(
+          child: TeamDetailsExpansionPanel(
+            games: state.games,
+            playerUid: state.player.uid,
+            showGraphs: _showGraphs,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _playerDetails(BuildContext context, SinglePlayerState state) {
+    return Wrap(
+      children: [
+        Container(
+          width: 40.0,
+          height: 40.0,
+          child: Center(
+            child: Text(
+              state.player.jerseyNumber,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .caption
+                  .copyWith(
+                color: Theme
+                    .of(context)
+                    .accentColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
+            ),
+          ),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Theme
+                .of(context)
+                .accentColor),
+          ),
+        ),
+        SizedBox(width: 20.0),
+        Text(
+          state.player.name,
+          style: Theme
+              .of(context)
+              .textTheme
+              .headline,
+          textScaleFactor: 1.5,
+        ),
+      ],
     );
   }
 
@@ -134,7 +220,9 @@ class _PlayerDetails extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text(Messages.of(context).deletePlayer),
+          title: Text(Messages
+              .of(context)
+              .deletePlayer),
           content: Text(
               Messages.of(context).deletePlayerAreYouSure(state.player.name)),
           actions: <Widget>[

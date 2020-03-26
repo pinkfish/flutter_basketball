@@ -297,6 +297,9 @@ class Messages {
   String get blocks => Intl.message("Blocks",
       desc: "Drop down menu item for fouls", locale: locale);
 
+  String get rebounds => Intl.message("Rebounds",
+      desc: "Drop down menu item for rebounds", locale: locale);
+
   String get points => Intl.message("Points",
       desc: "Drop down menu item for points", locale: locale);
 
@@ -306,9 +309,27 @@ class Messages {
   String get currentSeason => Intl.message("Current",
       desc: "Subtitle to markt he season as current", locale: locale);
 
+  String get pointsTitle =>
+      Intl.message("Pts", desc: "Points abbreviation", locale: locale);
+
+  String get stealsTitle =>
+      Intl.message("Stl", desc: "Steals abbreviation", locale: locale);
+
+  String get blocksTitle =>
+      Intl.message("Blk", desc: "Blocks abbreviation", locale: locale);
+
+  String get turnoversTitle =>
+      Intl.message("T/O", desc: "Turnover abbreviation", locale: locale);
+
+  String get offensiveReboundTitle => Intl.message("O/RB",
+      desc: "Offensive rebound abbreviation", locale: locale);
+
+  String get defensiveReboundTitle => Intl.message("D/RB",
+      desc: "Defensive rebound abbreviation", locale: locale);
+
   String seasonSummary(PlayerSeasonSummary summary) {
     return Intl.message(
-        "Pts ${summary.fullData.points} Blks ${summary.fullData.blocks} Stls ${summary.fullData.steals}",
+        "Pts ${summary.summary.points} Blks ${summary.summary.blocks} Stls ${summary.summary.steals}",
         desc: "Subtitle to markt he season as current",
         locale: locale);
   }

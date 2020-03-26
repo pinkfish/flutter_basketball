@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/data/seasonsummary.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
@@ -296,8 +298,54 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
             .getSeasonGames(seasonUid: this.seasonUid)
             .listen((BuiltList<Game> games) {
           add(_SingleSeasonUpdateGames(games: games));
+          _updateSeasonStats(games);
         });
       });
+    }
+  }
+
+  void _updateSeasonStats(BuiltList<Game> games) {
+    SeasonSummaryBuilder summary = SeasonSummaryBuilder();
+    Map<String, PlayerSeasonSummaryBuilder> playerSummary = {};
+    for (var g in games) {
+      summary.pointsFor += g.summary.pointsFor;
+      summary.pointsAgainst += g.summary.pointsAgainst;
+      summary.wins += (summary.pointsFor > summary.pointsAgainst) ? 1 : 0;
+      summary.losses += (summary.pointsFor > summary.pointsAgainst) ? 0 : 1;
+
+      for (var p in g.players.entries) {
+        if (!playerSummary.containsKey(p.key)) {
+          playerSummary[p.key] = PlayerSeasonSummaryBuilder();
+        }
+        var b = playerSummary[p.key].summary;
+        b.fouls += p.value.fullData.fouls;
+        b.steals += p.value.fullData.steals;
+        b.one.attempts += p.value.fullData.one.attempts;
+        b.one.made += p.value.fullData.one.made;
+        b.two.attempts += p.value.fullData.two.attempts;
+        b.two.made += p.value.fullData.two.made;
+        b.three.attempts += p.value.fullData.three.attempts;
+        b.three.made += p.value.fullData.three.made;
+        b.blocks += p.value.fullData.blocks;
+        b.turnovers += p.value.fullData.turnovers;
+        b.defensiveRebounds += p.value.fullData.defensiveRebounds;
+        b.offensiveRebounds += p.value.fullData.offensiveRebounds;
+        b.assists += p.value.fullData.assists;
+      }
+    }
+    if (state.season.summary != summary.build() ||
+        state.season.playerUids.entries
+            .any((var e) => playerSummary[e.key].build() != e.value)) {
+      var season = state.season.toBuilder();
+      season.summary = summary;
+      for (var e in state.season.playerUids.entries) {
+        if (playerSummary.containsKey(e.key)) {
+          season.playerUids[e.key] = playerSummary[e.key].build();
+        }
+      }
+
+      // Do an update.
+      add(SingleSeasonUpdate(season: season.build()));
     }
   }
 }

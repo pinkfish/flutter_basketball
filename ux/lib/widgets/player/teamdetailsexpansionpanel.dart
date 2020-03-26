@@ -1,5 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
+import 'package:basketballstats/widgets/player/teamplayergraphs.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,12 @@ import '../loading.dart';
 class TeamDetailsExpansionPanel extends StatefulWidget {
   final BuiltList<Game> games;
   final String playerUid;
+  final bool showGraphs;
 
-  TeamDetailsExpansionPanel({@required this.games, @required this.playerUid});
+  TeamDetailsExpansionPanel(
+      {@required this.games,
+      @required this.playerUid,
+      @required this.showGraphs});
 
   @override
   State<StatefulWidget> createState() {
@@ -33,6 +38,8 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
   List<Game> sortedGames;
   int sortColumnIndex = 1;
   bool sortAscending = false;
+
+  String graphSeasonUid;
 
   void _buildState() {
     sortedGames = widget.games.toList();
@@ -51,6 +58,9 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           db: RepositoryProvider.of<BasketballDatabase>(context),
           teamUid: g.teamUid,
         );
+      }
+      if (graphSeasonUid == null) {
+        graphSeasonUid = g.seasonUid;
       }
       teamSeason[g.teamUid].add(g.seasonUid);
       if (!seasonBlocs.containsKey(g.seasonUid)) {
@@ -87,22 +97,38 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
   @override
   void didUpdateWidget(TeamDetailsExpansionPanel oldWidget) {
     _buildState();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
   Widget build(BuildContext context) {
     List<String> teams = teamSeason.keys.toList();
-    return ExpansionPanelList(
-      expansionCallback: (int item, bool expanded) {
-        setState(() {
-          if (!expanded) {
-            expandedPanels.add(teams[item]);
-          } else {
-            expandedPanels.remove(teams[item]);
-          }
-        });
-      },
-      children: _getExpansionPanelList(context, teams),
+    if (widget.showGraphs) {
+      return BlocBuilder(
+        bloc: seasonBlocs[graphSeasonUid],
+        builder: (BuildContext context, SingleSeasonBlocState state) =>
+            Padding(
+              padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
+              child: TeamPlayerGraphs(
+                playerUid: widget.playerUid,
+                seasonState: state,
+              ),
+            ),
+      );
+    }
+    return SingleChildScrollView(
+      child: ExpansionPanelList(
+        expansionCallback: (int item, bool expanded) {
+          setState(() {
+            if (!expanded) {
+              expandedPanels.add(teams[item]);
+            } else {
+              expandedPanels.remove(teams[item]);
+            }
+          });
+        },
+        children: _getExpansionPanelList(context, teams),
+      ),
     );
   }
 
@@ -142,21 +168,23 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                       state is SingleTeamDeleted) {
                     return LoadingWidget();
                   }
-                  List<String> seasons = teamSeason[teamUid].toList();
-                  return ExpansionPanelList(
-                      expansionCallback: (int item, bool expanded) {
-                        setState(() {
-                          if (!expanded) {
-                            expandedPanels.add(seasons[item]);
-                          } else {
-                            expandedPanels.remove(seasons[item]);
-                          }
-                        });
-                      },
-                      children: seasons
-                          .map((String seasonUid) =>
-                              _getSeasonPanel(seasonUid, state))
-                          .toList());
+                  Iterable<String> seasons = teamSeason[teamUid];
+                  return MultiBlocListener(
+                    listeners: seasons
+                        .map((String s) =>
+                        BlocListener(
+                          bloc: seasonBlocs[s],
+                          listener: (BuildContext context,
+                              SingleSeasonBlocState state) {
+                            if (state is SingleSeasonLoaded &&
+                                !state.loadedGames) {
+                              seasonBlocs[s].add(SingleSeasonLoadGames());
+                            }
+                          },
+                        ))
+                        .toList(),
+                    child: _getDataTableByTeam(state.team),
+                  );
                 },
                 listener: (BuildContext context, SingleTeamBlocState state) {
                   if (state is SingleTeamLoaded && !state.loadedSeasons) {
@@ -173,252 +201,299 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
               ),
             ),
           ),
-        )
+    )
         .toList();
   }
 
-  ExpansionPanel _getSeasonPanel(String seasonUid, SingleTeamBlocState state) {
-    return ExpansionPanel(
-      isExpanded: expandedPanels.contains(seasonUid),
-      headerBuilder: (BuildContext context, bool isExpanded) {
-        return BlocBuilder(
-          bloc: seasonBlocs[seasonUid],
-          builder: (BuildContext context, SingleSeasonBlocState state) {
-            if (state is SingleSeasonUninitialized) {
-              return ListTile(
-                title: Text(Messages.of(context).loading),
-              );
-            }
-            if (state is SingleSeasonDeleted) {
-              return ListTile(
-                title: Text(Messages.of(context).unknown),
-              );
-            }
-            var playerData = state.season.playerUids[widget.playerUid].fullData;
-            return ListTile(
-              leading: Icon(MdiIcons.calendar),
-              title: Text(
-                state.season.name,
-                style: Theme.of(context).textTheme.title,
+  Widget _getDataTableByTeam(Team team) {
+    List<DataRow> rows = [];
+    if (team.currentSeasonUid != null &&
+        seasonBlocs.containsKey(team.currentSeasonUid)) {
+      Season s = seasonBlocs[team.currentSeasonUid].state.season;
+
+      rows.add(_seasonDataRow(s));
+      rows.addAll(sortedGames
+          .where((Game g) => g.seasonUid == team.currentSeasonUid)
+          .map(_gameDataRow));
+    }
+
+    for (String seasonUid in teamSeason[team.uid]) {
+      if (seasonUid == team.currentSeasonUid) continue;
+      Season s = seasonBlocs[seasonUid].state.season;
+      rows.add(_seasonDataRow(s));
+      rows.addAll(sortedGames
+          .where((Game g) => g.seasonUid == seasonUid)
+          .map(_gameDataRow));
+    }
+
+    // Show the games.
+    TextStyle headerStyle = Theme
+        .of(context)
+        .textTheme
+        .subtitle;
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: DataTable(
+        columnSpacing: 5.0,
+        sortAscending: sortAscending,
+        sortColumnIndex: sortColumnIndex,
+        columns: [
+          DataColumn(
+            label: Container(
+              width: 60,
+              child: Text(
+                "",
+                overflow: TextOverflow.fade,
+                softWrap: true,
               ),
-              subtitle: _getSummaryDetails(playerData),
-            );
-          },
-        );
-      },
-      body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 500),
-        child: BlocBuilder(
-          bloc: seasonBlocs[seasonUid],
-          builder: (BuildContext context, SingleSeasonBlocState state) {
-            if (state is SingleSeasonUninitialized) {
-              return Text(Messages.of(context).loading);
-            }
-            if (state is SingleSeasonDeleted) {
-              return Text(Messages.of(context).unknown);
-            }
-            // Show the games.
-            TextStyle headerStyle = Theme.of(context).textTheme.subtitle;
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columnSpacing: 5.0,
-                sortAscending: sortAscending,
-                sortColumnIndex: sortColumnIndex,
-                columns: [
-                  DataColumn(
-                    label: Container(
-                      width: 50,
-                      child: Text(
-                        "",
-                        overflow: TextOverflow.fade,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  DataColumn(
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = a.players[widget.playerUid].fullData.points -
-                              b.players[widget.playerUid].fullData.points;
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                    label: Text(
-                      Messages.of(context).points,
-                      style: headerStyle,
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "1",
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = _getPercentForSorting(
-                                  a.players[widget.playerUid].fullData.one) -
-                              _getPercentForSorting(
-                                  b.players[widget.playerUid].fullData.one);
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "2",
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = _getPercentForSorting(
-                                  a.players[widget.playerUid].fullData.two) -
-                              _getPercentForSorting(
-                                  b.players[widget.playerUid].fullData.two);
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                  DataColumn(
-                    label: Text(
-                      "3",
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = _getPercentForSorting(
-                                  a.players[widget.playerUid].fullData.three) -
-                              _getPercentForSorting(
-                                  b.players[widget.playerUid].fullData.three);
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                  DataColumn(
-                    label: Text(
-                      Messages.of(context).steals,
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = a.players[widget.playerUid].fullData.steals -
-                              b.players[widget.playerUid].fullData.steals;
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                  DataColumn(
-                    label: Text(
-                      Messages.of(context).blocks,
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = a.players[widget.playerUid].fullData.blocks -
-                              b.players[widget.playerUid].fullData.blocks;
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                  DataColumn(
-                    label: Text(
-                      Messages.of(context).turnovers,
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = a.players[widget.playerUid].fullData.turnovers -
-                              b.players[widget.playerUid].fullData.turnovers;
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                  DataColumn(
-                    label: Text(
-                      Messages.of(context).fouls,
-                      style: headerStyle,
-                    ),
-                    onSort: (int index, bool ascending) {
-                      setState(() {
-                        sortAscending = ascending;
-                        sortColumnIndex = index;
-                      });
-                      sortedGames.sort((Game a, Game b) {
-                        var cmp = a.seasonUid.compareTo(b.seasonUid);
-                        if (cmp == 0) {
-                          cmp = a.players[widget.playerUid].fullData.fouls -
-                              b.players[widget.playerUid].fullData.fouls;
-                          cmp *= (sortAscending ? -1 : 1);
-                        }
-                        return cmp;
-                      });
-                    },
-                  ),
-                ],
-                rows: sortedGames
-                    .where((Game g) => g.seasonUid == seasonUid)
-                    .map(_gameDataRow)
-                    .toList(),
-              ),
-            );
-          },
-        ),
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.opponentName.compareTo(b.opponentName);
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.points -
+                      b.players[widget.playerUid].fullData.points;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+            label: Text(
+              Messages
+                  .of(context)
+                  .pointsTitle,
+              style: headerStyle,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "1",
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = _getPercentForSorting(
+                      a.players[widget.playerUid].fullData.one) -
+                      _getPercentForSorting(
+                          b.players[widget.playerUid].fullData.one);
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              "2",
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = _getPercentForSorting(
+                      a.players[widget.playerUid].fullData.two) -
+                      _getPercentForSorting(
+                          b.players[widget.playerUid].fullData.two);
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              "3",
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = _getPercentForSorting(
+                      a.players[widget.playerUid].fullData.three) -
+                      _getPercentForSorting(
+                          b.players[widget.playerUid].fullData.three);
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              Messages
+                  .of(context)
+                  .offensiveReboundTitle,
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.offensiveRebounds -
+                      b.players[widget.playerUid].fullData.offensiveRebounds;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              Messages
+                  .of(context)
+                  .defensiveReboundTitle,
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.defensiveRebounds -
+                      b.players[widget.playerUid].fullData.defensiveRebounds;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              Messages
+                  .of(context)
+                  .stealsTitle,
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.steals -
+                      b.players[widget.playerUid].fullData.steals;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              Messages
+                  .of(context)
+                  .blocksTitle,
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.blocks -
+                      b.players[widget.playerUid].fullData.blocks;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              Messages
+                  .of(context)
+                  .turnoversTitle,
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.turnovers -
+                      b.players[widget.playerUid].fullData.turnovers;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+          DataColumn(
+            label: Text(
+              Messages
+                  .of(context)
+                  .fouls,
+              style: headerStyle,
+            ),
+            onSort: (int index, bool ascending) {
+              setState(() {
+                sortAscending = ascending;
+                sortColumnIndex = index;
+              });
+              sortedGames.sort((Game a, Game b) {
+                var cmp = a.seasonUid.compareTo(b.seasonUid);
+                if (cmp == 0) {
+                  cmp = a.players[widget.playerUid].fullData.fouls -
+                      b.players[widget.playerUid].fullData.fouls;
+                  cmp *= (sortAscending ? -1 : 1);
+                }
+                return cmp;
+              });
+            },
+          ),
+        ],
+        rows: rows,
       ),
     );
   }
@@ -442,7 +517,8 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
       cells: [
         DataCell(
           Container(
-            width: 50,
+            width: 60,
+            padding: EdgeInsets.only(left: 10.0),
             child: Text(
               g.opponentName,
               overflow: TextOverflow.fade,
@@ -466,6 +542,14 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           Text(_getMadeMissed(g.players[widget.playerUid].fullData.three)),
         ),
         DataCell(
+          Text(g.players[widget.playerUid].fullData.offensiveRebounds
+              .toString()),
+        ),
+        DataCell(
+          Text(g.players[widget.playerUid].fullData.defensiveRebounds
+              .toString()),
+        ),
+        DataCell(
           Text(g.players[widget.playerUid].fullData.steals.toString()),
         ),
         DataCell(
@@ -481,16 +565,90 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     );
   }
 
-  Widget _getSummaryDetails(PlayerSummaryData playerData) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-            "Pts ${playerData.points} 1: ${playerData.one.made} of ${playerData.one.attempts} 2: ${playerData.two.made} of ${playerData.two.attempts} 3: ${playerData.three.made} of ${playerData.three.attempts}"),
-        Text(
-            "Stls ${playerData.steals} Blks ${playerData.blocks} Fls ${playerData.fouls}"),
-        Text(
-            "Off rb ${playerData.offensiveRebounds} Def rb ${playerData.defensiveRebounds}"),
+  DataRow _seasonDataRow(Season s) {
+    TextStyle style = Theme
+        .of(context)
+        .textTheme
+        .body1
+        .copyWith(color: Theme
+        .of(context)
+        .accentColor);
+    return DataRow(
+      cells: [
+        DataCell(
+          Container(
+            width: 60,
+            child: Text(
+              s.name,
+              overflow: TextOverflow.fade,
+              softWrap: true,
+              style: style,
+            ),
+          ),
+        ),
+        DataCell(
+          Container(
+            width: 10,
+            child: Text(
+              s.playerUids[widget.playerUid].summary.points.toString(),
+              style: style,
+            ),
+          ),
+        ),
+        DataCell(
+          Text(
+            _getMadeMissed(s.playerUids[widget.playerUid].summary.one),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            _getMadeMissed(s.playerUids[widget.playerUid].summary.two),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            _getMadeMissed(s.playerUids[widget.playerUid].summary.three),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            s.playerUids[widget.playerUid].summary.offensiveRebounds.toString(),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            s.playerUids[widget.playerUid].summary.defensiveRebounds.toString(),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            s.playerUids[widget.playerUid].summary.steals.toString(),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            s.playerUids[widget.playerUid].summary.blocks.toString(),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            s.playerUids[widget.playerUid].summary.turnovers.toString(),
+            style: style,
+          ),
+        ),
+        DataCell(
+          Text(
+            s.playerUids[widget.playerUid].summary.fouls.toString(),
+            style: style,
+          ),
+        ),
       ],
     );
   }
