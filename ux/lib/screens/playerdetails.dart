@@ -76,9 +76,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(Messages
-                .of(context)
-                .title),
+            title: Text(Messages.of(context).title),
           ),
           body: Container(
             child: OrientationBuilder(
@@ -227,8 +225,13 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
               Messages.of(context).deletePlayerAreYouSure(state.player.name)),
           actions: <Widget>[
             FlatButton(
-              child: Text(MaterialLocalizations.of(context).cancelButtonLabel,
-                  style: Theme.of(context).textTheme.button),
+              child: Text(MaterialLocalizations
+                  .of(context)
+                  .cancelButtonLabel,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .button),
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
               },

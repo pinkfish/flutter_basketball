@@ -106,14 +106,13 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     if (widget.showGraphs) {
       return BlocBuilder(
         bloc: seasonBlocs[graphSeasonUid],
-        builder: (BuildContext context, SingleSeasonBlocState state) =>
-            Padding(
-              padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
-              child: TeamPlayerGraphs(
-                playerUid: widget.playerUid,
-                seasonState: state,
-              ),
-            ),
+        builder: (BuildContext context, SingleSeasonBlocState state) => Padding(
+          padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
+          child: TeamPlayerGraphs(
+            playerUid: widget.playerUid,
+            seasonState: state,
+          ),
+        ),
       );
     }
     return SingleChildScrollView(
