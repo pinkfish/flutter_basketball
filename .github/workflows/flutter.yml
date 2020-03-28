@@ -59,6 +59,10 @@ jobs:
       working-directory: ux	
       env: 	
         GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
+    - run: echo ${GOOGLESERVICES} > ~/app-fastlane.json	
+      working-directory: ux	
+      env: 	
+        FASTLANE: ${{ secrets.fastlaneApp }}
    # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
    #   working-directory: ux
     - name: Fastlane Action
