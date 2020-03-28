@@ -66,3 +66,9 @@ jobs:
       with:
         lane: alpha
         subdirectory: ux/android
+    - uses: matheusalbino/git-commit@v1.0.1
+      with:
+        user-name: pinkfishfrog
+        user-email: pinkfishfrog@gmail.com
+        message: Change notes for the new release.
+        github-token: ${{ secrets.GITHUB_TOKEN }}
