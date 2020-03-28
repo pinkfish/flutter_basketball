@@ -6,6 +6,7 @@ on:
     paths: 
       - ux/**
       - firebasedata/**
+      -  .github/workflows/flutter.yml
 
 
 jobs:
@@ -58,5 +59,20 @@ jobs:
       working-directory: ux	
       env: 	
         GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
-    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
-      working-directory: ux
+    - run: echo ${FASTLANE} > ~/app-fastlane.json	
+      working-directory: ux	
+      env: 	
+        FASTLANE: ${{ secrets.fastlaneApp }}
+   # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+   #   working-directory: ux
+    - name: Fastlane Action
+      uses: maierj/fastlane-action@v1.4.0
+      with:
+        lane: alpha
+        subdirectory: ux/android
+    - uses: matheusalbino/git-commit@v1.0.1
+      with:
+        user-name: pinkfishfrog
+        user-email: pinkfishfrog@gmail.com
+        message: Change notes for the new release.
+        github-token: ${{ secrets.GITHUB_TOKEN }}
