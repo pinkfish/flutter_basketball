@@ -1,0 +1,11 @@
+Add in player graphs for the team data.
+Add in player graphs for the team data.
+Add in player graphs for the team data.
+Add in player graphs for the team data.
+Update to use the datatable to layout the player details.
+Update to use a datatable for viewing the data for the player.
+Update to use a datatable for viewing the data for the player.
+Update to use a datatable for viewing the data for the player.
+Update the readme.
+Merge branch 'master' of github.com:pinkfish/flutter_basketball
+Update for

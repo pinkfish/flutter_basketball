@@ -59,6 +59,12 @@ platform :android do
       build_and_push_to_play_store_track(track: "beta")
   end
 
+  desc "Submit a new Beta Build to App store"
+  lane :alpha do
+      build_and_push_to_play_store_track(track: "alpha")
+  end
+
+
   desc "Deploy a new version to the Google Play"
   lane :deploy do
     gradle(task: "clean assembleRelease")

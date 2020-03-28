@@ -35,5 +35,9 @@ GoogleService-Info.plist
 # Web related
 lib/generated_plugin_registrant.dart
 
+# Fastlane stuff
+/android/fastlane/plugin/firebase_app_distribution/ruby/2.6.0/
+
+
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages

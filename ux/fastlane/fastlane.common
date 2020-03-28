@@ -29,16 +29,20 @@ end
 desc "Generate release notes"
 lane :release_notes do |options|
     changelog = changelog_from_git_commits
+    bits = changelog.split('\n')
+    bits = bits.uniq
+    changelog = bits.join('\n')
     "Release notes:\n#{changelog}"
     puts Dir.pwd
     if options[:OS]=="android"
       get_build_name_and_build_number
       puts "build number = '#{@build_number}' #{Dir.pwd}"
 
-      File.write("metadata/android/en-US/changelogs/#{@build_number}.txt", "#{changelog}")
+      File.write("metadata/android/en-US/changelogs/#{@build_number}.txt", "#{changelog[0,500]}")
       begin
-        git_add(path:"metadata/android/en-US/changelogs/#{@build_number}.txt")
-      rescue
+        git_add(path:"{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
+      rescue => error
+        puts error
         puts "File already added"
       end
     else

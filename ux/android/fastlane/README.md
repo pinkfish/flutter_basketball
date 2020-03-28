@@ -39,6 +39,11 @@ Submit a new Beta Build to Crashlytics Beta
 fastlane android beta
 ```
 Submit a new Beta Build to App store
+### android alpha
+```
+fastlane android alpha
+```
+Submit a new Beta Build to App store
 ### android deploy
 ```
 fastlane android deploy

@@ -1,0 +1,12 @@
+Stats for basketball.
+
+Lets you breakdown a series of seasons/teams basketball stats by player and by game
+to see trends on a per game basis as well as overall season trends for the team
+along with trends on a per player basis.
+
+Lets you control if you track where in the keyway the shots are taking from to give
+an overview of where the hits come from and where the misses come from.
+
+Lets you see a summary view of the team as well as per player summary views for
+the game and for the season.  Creates customisable graphs to see which games players
+had what sorts of results and how their games look over time.
