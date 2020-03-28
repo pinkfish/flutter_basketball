@@ -6,7 +6,7 @@ on:
     paths: 
       - ux/**
       - firebasedata/**
-      -  ".github/workflows/firebase_functions.yml"
+      -  .github/workflows/flutter.yml
 
 
 jobs:
