@@ -59,7 +59,7 @@ jobs:
       working-directory: ux	
       env: 	
         GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
-    - run: echo ${GOOGLESERVICES} > ~/app-fastlane.json	
+    - run: echo ${FASTLANE} > ~/app-fastlane.json	
       working-directory: ux	
       env: 	
         FASTLANE: ${{ secrets.fastlaneApp }}
