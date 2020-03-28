@@ -6,6 +6,7 @@ on:
     paths: 
       - ux/**
       - firebasedata/**
+      -  ".github/workflows/firebase_functions.yml"
 
 
 jobs:
@@ -58,5 +59,10 @@ jobs:
       working-directory: ux	
       env: 	
         GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
-    - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
-      working-directory: ux
+   # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+   #   working-directory: ux
+    - name: Fastlane Action
+      uses: maierj/fastlane-action@v1.4.0
+      with:
+        lane: alpha
+        subdirectory: ux/android
