@@ -21,6 +21,11 @@ or alternatively using `brew cask install fastlane`
 fastlane ios release
 ```
 Push a new release build to the App Store
+### ios beta
+```
+fastlane ios beta
+```
+
 
 ----
 

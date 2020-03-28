@@ -10,20 +10,9 @@ end
 desc "Get build name and build number"
 private_lane :get_build_name_and_build_number do
     load_ci_config
-    # if running on travis get build number from environment
-    if ENV["CI_SERVER"]=="TRAVIS"
-      @build_number=ENV["TRAVIS_BUILD_NUMBER"]
-    elsif ENV["CI_SERVER"]=="GITHUB"
-      @build_number=ENV["CI_PIPELINE_ID"]
-    elsif ENV["CI_SERVER"]== "LOCAL"
-      @build_number=number_of_commits()
-    else
-      load_ci_config
-      ci_server = ENV["CI_SERVER"]
-      ci_project_id = ENV["CI_PROJECT_ID"]
-      @build_number=sh("../../script/ci-helper --get-build-number #{ci_server} #{ci_project_id}").chomp("\n")
-    end
-    @build_name=last_git_tag
+
+    @build_number=number_of_commits()
+    @build_name=last_git_tag.sub(".0", "." + build_number)
 end
 
 desc "Generate release notes"
@@ -40,7 +29,7 @@ lane :release_notes do |options|
 
       File.write("metadata/android/en-US/changelogs/#{@build_number}.txt", "#{changelog[0,500]}")
       begin
-        git_add(path:"{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
+        git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
       rescue => error
         puts error
         puts "File already added"
