@@ -29,11 +29,6 @@ Generate release notes
 fastlane android test
 ```
 Runs all the tests
-### android crashalytics
-```
-fastlane android crashalytics
-```
-Submit a new Beta Build to Crashlytics Beta
 ### android beta
 ```
 fastlane android beta
