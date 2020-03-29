@@ -68,7 +68,7 @@ jobs:
     - name: Clean ruby cache
       working-directory: ux/android
       run: |
-        sudo gem install bundle
+        sudo gem install bundler
         bundle clean
     - name: Fastlane Action
       uses: maierj/fastlane-action@v1.4.0
