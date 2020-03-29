@@ -65,13 +65,13 @@ jobs:
         FASTLANE: ${{ secrets.fastlaneApp }}
    # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
    #   working-directory: ux
-    - name: Clean ruby cache	
-      working-directory: ux/android	
-      run: |	
-        sudo gem install bundler	
-        bundle install
-        bundle clean
-        rm -rf /home/runner/work/flutter_basketball/flutter_basketball/ux/android/fastlane/plugin/firebase_app_distribution
+   # - name: Clean ruby cache	
+   #   working-directory: ux/android	
+   #   run: |	
+   #     sudo gem install bundler	
+   #     bundle install
+   #     bundle clean
+   #     rm -rf /home/runner/work/flutter_basketball/flutter_basketball/ux/android/fastlane/plugin/firebase_app_distribution
     - name: Fastlane Action
       uses: maierj/fastlane-action@v1.4.0
       with:
