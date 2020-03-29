@@ -1,0 +1,11 @@
+Merge branch 'master' of github.com:pinkfish/flutter_basketball
+Rename bundle install
+Add in missing files.
+Install bundle and then cleanup the cache
+Cleanup the ruby cache
+Change fastlane to use the git commit number as the last part of the version number.
+Merge branch 'master' of github.com:pinkfish/flutter_basketball
+Fix up the build for ios and add in the git cl number number into the android release.
+Fix up the fastlane app config
+Add in the app-fastl;ane.json
+Update to flutter for github a
