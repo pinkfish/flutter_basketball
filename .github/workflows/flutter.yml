@@ -66,8 +66,10 @@ jobs:
    # - run: flutter build appbundle --target-platform android-arm,android-arm64,android-x64
    #   working-directory: ux
     - name: Clean ruby cache
-      working-directory: ux/android/fastlane
-      run: bundle clean
+      working-directory: ux/android
+      run: |
+        sudo gem install bundle
+        bundle clean
     - name: Fastlane Action
       uses: maierj/fastlane-action@v1.4.0
       with:
