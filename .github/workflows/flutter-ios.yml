@@ -38,6 +38,8 @@ jobs:
       working-directory: ux	
       env: 	
         FASTLANE: ${{ secrets.fastlaneApp }}
+    - run: pod install	
+      working-directory: ux/ios
     - name: Fastlane Action
       uses: maierj/fastlane-action@v1.4.0
       with:
