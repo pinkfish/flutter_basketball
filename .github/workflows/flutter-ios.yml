@@ -30,10 +30,10 @@ jobs:
       working-directory: basketballdata
     - run: flutter packages get
       working-directory: ux
-    - run: echo ${GOOGLESERVICES} > android/app/google-services.json	
+    - run: echo ${GOOGLESERVICES} > ios/Runner/GoogleService-Info.plist	
       working-directory: ux	
       env: 	
-        GOOGLESERVICES: ${{ secrets.googleservicesAndroid }}
+        GOOGLESERVICES: ${{ secrets.googleservicesIos }}
     - run: echo ${FASTLANE} > ~/app-fastlane.json	
       working-directory: ux	
       env: 	
