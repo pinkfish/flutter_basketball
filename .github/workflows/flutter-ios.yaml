@@ -39,7 +39,7 @@ jobs:
       working-directory: ux	
       env: 	
         FASTLANE: ${{ secrets.fastlaneApp }}
-      - name: Fastlane Action
+    - name: Fastlane Action
       uses: maierj/fastlane-action@v1.4.0
       with:
         lane: beta
