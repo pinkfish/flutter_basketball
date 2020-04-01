@@ -46,7 +46,7 @@ jobs:
         lane: beta
         subdirectory: ux/ios
       env:
-        FASTLANE_SESSION: ${{ secretes.appleFastlaneSession }}
+        FASTLANE_SESSION: ${{ secrets.appleFastlaneSession }}
     - uses: matheusalbino/git-commit@v1.0.1
       with:
         user-name: pinkfishfrog
