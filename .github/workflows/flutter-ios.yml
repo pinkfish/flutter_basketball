@@ -45,6 +45,8 @@ jobs:
       with:
         lane: beta
         subdirectory: ux/ios
+      env:
+        FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secretes.appleAppSpecificPassword }}
     - uses: matheusalbino/git-commit@v1.0.1
       with:
         user-name: pinkfishfrog
