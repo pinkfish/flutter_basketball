@@ -147,8 +147,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Team newT = team.rebuild((b) => b
       ..uid = uid
       ..currentSeasonUid = seasonUid);
-    Season newS = season.rebuild((b) =>
-    b
+    Season newS = season.rebuild((b) => b
       ..teamUid = uid
       ..uid = seasonUid);
     await db.insert(teamsTable, {
