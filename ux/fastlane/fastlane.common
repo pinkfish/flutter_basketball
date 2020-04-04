@@ -12,6 +12,7 @@ private_lane :get_build_name_and_build_number do
     load_ci_config
 
     @build_number=number_of_commits()
+    puts last_git_tag
     @build_name=last_git_tag.sub(".0", "." + (@build_number).to_s)
     puts @build_name
     puts @build_number

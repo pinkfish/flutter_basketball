@@ -686,7 +686,7 @@
         <entry key="screenshots">
           <value>
             <list>
-              <option value="$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/screenshots-2.1.1/lib" />
+              <option value="$USER_HOME$/development/flutter/.pub-cache/git/screenshots-8f6f9f5a965642a876947f7b5ea4ef529b152262/lib" />
             </list>
           </value>
         </entry>
@@ -963,6 +963,7 @@
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-7dd5c34d4e92f1402eb1e0338565225c4037d5c4/charts_common/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-d6a3a5e6339ecb96f0f04b0f250ced1a2eebede0/charts_common/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/charts-d6a3a5e6339ecb96f0f04b0f250ced1a2eebede0/charts_flutter/lib" />
+      <root url="file://$USER_HOME$/development/flutter/.pub-cache/git/screenshots-8f6f9f5a965642a876947f7b5ea4ef529b152262/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-1.0.3/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-0.39.4/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/archive-2.0.11/lib" />
@@ -1059,7 +1060,6 @@
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.0.5/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/resource-2.1.6/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.23.1/lib" />
-      <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/screenshots-2.1.1/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/shelf-0.7.5/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_packages_handler-1.0.4/lib" />
       <root url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/shelf_packages_handler-2.0.0/lib" />
