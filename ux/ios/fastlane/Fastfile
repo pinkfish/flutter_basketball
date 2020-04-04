@@ -27,10 +27,15 @@ platform :ios do
   end
 
   lane :beta do
+<<<<<<< HEAD
     increment_build_number(
       build_number: latest_testflight_build_number + 1,
       xcodeproj: "Runner.xcodeproj"
     )
+=======
+    get_certificates           # invokes cert
+    get_provisioning_profile   # invokes sigh
+>>>>>>> f961e1697f95b15c3696674f17600383116a8188
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
     upload_to_testflight
   end

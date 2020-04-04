@@ -168,7 +168,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Season t = await _getSeason(seasonUid: seasonUid);
     await updateSeason(
         season: t.rebuild((b) =>
-        b..playerUids.putIfAbsent(playerUid, () => PlayerSeasonSummary())));
+            b..playerUids.putIfAbsent(playerUid, () => PlayerSeasonSummary())));
     _controller.add(_TableChange(table: seasonsTable, uid: seasonUid));
     return playerUid;
   }
@@ -207,10 +207,11 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> updateGamePlayerData({String gameUid,
-    String playerUid,
-    bool opponent,
-    PlayerGameSummary summary}) async {
+  Future<void> updateGamePlayerData(
+      {String gameUid,
+      String playerUid,
+      bool opponent,
+      PlayerGameSummary summary}) async {
     Game t = await _getGame(gameUid: gameUid);
     if (opponent) {
       t = t.rebuild((b) => b..opponents.putIfAbsent(playerUid, () => summary));
@@ -256,28 +257,28 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<Team> _getTeam({String teamUid}) async {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
-    await db.query(teamsTable, where: "uid = ?", whereArgs: [teamUid]);
+        await db.query(teamsTable, where: "uid = ?", whereArgs: [teamUid]);
     print("Query $maps");
     if (maps.isEmpty) {
       return null;
     }
     return maps
         .map((Map<String, dynamic> e) =>
-        Team.fromMap(json.decode(e[dataColumn])))
+            Team.fromMap(json.decode(e[dataColumn])))
         .first;
   }
 
   Future<Season> _getSeason({String seasonUid}) async {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
-    await db.query(seasonsTable, where: "uid = ?", whereArgs: [seasonUid]);
+        await db.query(seasonsTable, where: "uid = ?", whereArgs: [seasonUid]);
     print("Query $maps");
     if (maps.isEmpty) {
       return null;
     }
     return maps
         .map((Map<String, dynamic> e) =>
-        Season.fromMap(json.decode(e[dataColumn])))
+            Season.fromMap(json.decode(e[dataColumn])))
         .first;
   }
 
@@ -285,11 +286,11 @@ class SqlfliteDatabase extends BasketballDatabase {
   Stream<Player> getPlayer({String playerUid}) async* {
     Database db = await _complete.future;
     final List<Map<String, dynamic>> maps =
-    await db.query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
+        await db.query(playersTable, where: "uid = ?", whereArgs: [playerUid]);
     print("Query $maps");
     yield maps
         .map((Map<String, dynamic> e) =>
-        Player.fromMap(json.decode(e[dataColumn])))
+            Player.fromMap(json.decode(e[dataColumn])))
         .first;
     await for (_TableChange table in _tableChange) {
       print("Table change getPlayer $table");
@@ -399,7 +400,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
-        Team.fromMap(json.decode(e[dataColumn])))
+            Team.fromMap(json.decode(e[dataColumn])))
         .toList());
     print("getTeams waiting for change");
     await for (_TableChange table in _tableChange) {
@@ -494,7 +495,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
-        Game.fromMap(json.decode(e[dataColumn])))
+            Game.fromMap(json.decode(e[dataColumn])))
         .toList());
     await for (_TableChange table in _tableChange) {
       print("Table change $table");
@@ -507,7 +508,7 @@ class SqlfliteDatabase extends BasketballDatabase {
             where: indexColumn + " = ?", whereArgs: [seasonUid]);
         yield BuiltList.from(maps
             .map((Map<String, dynamic> e) =>
-            Game.fromMap(json.decode(e[dataColumn])))
+                Game.fromMap(json.decode(e[dataColumn])))
             .where((Game t) => t.uid != null)
             .toList());
       }
@@ -529,7 +530,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     print("Query $maps");
     yield BuiltList.from(maps
         .map((Map<String, dynamic> e) =>
-        Season.fromMap(json.decode(e[dataColumn])))
+            Season.fromMap(json.decode(e[dataColumn])))
         .toList());
     await for (_TableChange table in _tableChange) {
       print("Table change $table");
@@ -542,7 +543,7 @@ class SqlfliteDatabase extends BasketballDatabase {
             where: indexColumn + " = ?", whereArgs: [teamUid]);
         yield BuiltList.from(maps
             .map((Map<String, dynamic> e) =>
-            Season.fromMap(json.decode(e[dataColumn])))
+                Season.fromMap(json.decode(e[dataColumn])))
             .where((Season t) => t.uid != null)
             .toList());
       }
@@ -571,8 +572,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     print("Calling addSeason");
     Database db = await _complete.future;
     String uid = uuid.v5(Uuid.NAMESPACE_OID, seasonsTable);
-    Season newS = season.rebuild((b) =>
-    b
+    Season newS = season.rebuild((b) => b
       ..uid = uid
       ..teamUid = teamUid);
     print('Inserting ${json.encode(newS.toMap())}');
@@ -591,7 +591,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   BuiltList<GameEvent> _getGameEvents(List<Map<String, dynamic>> data) {
     var evs = data
         .map((Map<String, dynamic> e) =>
-        GameEvent.fromMap(json.decode(e[dataColumn])))
+            GameEvent.fromMap(json.decode(e[dataColumn])))
         .toList();
     evs.sort((GameEvent a, GameEvent b) => a.timestamp.compareTo(b.timestamp));
     return BuiltList.from(evs);
