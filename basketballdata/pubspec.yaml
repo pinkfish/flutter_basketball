@@ -13,7 +13,7 @@ dependencies:
   built_value: ^7.0.9
   built_collection: ^4.3.2
   bloc: ^3.0.0
-  equatable: ^1.1.0
+  equatable: ^1.1.1
   async: ^2.4.0
   synchronized: ^2.2.0
 

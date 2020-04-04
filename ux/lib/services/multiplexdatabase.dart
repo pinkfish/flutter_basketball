@@ -15,12 +15,12 @@ class MultiplexDatabase extends BasketballDatabase {
   Stream<bool> _stream;
   bool useSql = true;
 
-  MultiplexDatabase() {
+  MultiplexDatabase(bool forceSql) {
     _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
       if (user != null) {
         _fs.userUid = user.uid;
-        useSql = false;
+        useSql = false || forceSql;
       } else {
         useSql = true;
       }
@@ -29,7 +29,7 @@ class MultiplexDatabase extends BasketballDatabase {
     FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
       if (user != null) {
         _fs.userUid = user.uid;
-        useSql = false;
+        useSql = false || forceSql;
       } else {
         useSql = true;
       }

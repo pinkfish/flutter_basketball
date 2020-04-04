@@ -55,7 +55,7 @@ class SqlfliteDatabase extends BasketballDatabase {
       // Set the path to the database. Note: Using the `join` function from the
       // `path` package is best practice to ensure the path is correctly
       // constructed for each platform.
-      join(await getDatabasesPath(), 'doggie_database.db'),
+      join(await getDatabasesPath(), 'basketball.db'),
       version: 1,
       onCreate: (Database db, int version) async {
         await Future.forEach(_tables, (String table) async {
@@ -131,9 +131,7 @@ class SqlfliteDatabase extends BasketballDatabase {
           b..opponents.putIfAbsent(playerUid, () => PlayerGameSummary()));
     } else {
       t = t.rebuild(
-              (b) =>
-          b
-            ..players.putIfAbsent(playerUid, () => PlayerGameSummary()));
+          (b) => b..players.putIfAbsent(playerUid, () => PlayerGameSummary()));
     }
     await updateGame(game: t);
     _controller.add(_TableChange(

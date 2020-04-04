@@ -1,13 +1,19 @@
 // Imports the Flutter Driver API.
 import 'package:flutter_driver/flutter_driver.dart';
+import 'package:screenshots/screenshots.dart';
 import 'package:test/test.dart';
 
 void main() {
+  Future<void> delayStuff([int milliseconds = 250]) async {
+    await Future<void>.delayed(Duration(milliseconds: milliseconds));
+  }
+
   group('Basketball Stats Main Page', () {
     final contentSection = find.byValueKey('teamsContent');
-    final buttonFinder = find.byTooltip('Add Team');
-    //final config = Config();
-    final saveButtonFinder = find.byValueKey('saveButton');
+    final addTeamButtonFinder = find.byTooltip('Add Team');
+    final config = Config();
+    final saveButtonFinder = find.byValueKey('saveButtonTeam');
+
     FlutterDriver driver;
 
     // Connect to the Flutter driver before running any tests.
@@ -25,47 +31,61 @@ void main() {
     test('No teams', () async {
       await driver.waitFor(find.text("No Teams"));
 
-      // await screenshot(driver, config, "noteams");
+      await screenshot(driver, config, "noteams",
+          waitUntilNoTransientCallbacks: false);
     });
 
-    test('add team', () async {
+    test('single team', () async {
       // Waif for the screen to load.
       await driver.waitFor(find.text("No Teams"));
 
       // First, tap the button.
-      await driver.tap(buttonFinder);
+      await driver.tap(addTeamButtonFinder);
+
+      await delayStuff(500);
 
       print("Clicking button");
 
       // Wait for the editbox for the name to show up.
-      await driver.waitFor(find.text("Add Team"));
-      //await driver.waitFor(saveButtonFinder);
+      await driver.runUnsynchronized(() => driver.waitFor(saveButtonFinder));
 
       print("Team Name");
 
-      var tree = await driver.getRenderTree();
-      print(tree.toJson());
-
-      //await screenshot(driver, config, "addteamdialog");
+      screenshot(driver, config, "addteamdialog",
+          waitUntilNoTransientCallbacks: false);
 
       print("After screenshot");
 
+      await driver.runUnsynchronized(
+          () => driver.tap(find.byValueKey("teamFormField")));
+
+      print("Enter team");
+
       await driver.enterText("Frog");
 
-      print("Stuff");
-      print(driver.getRenderTree());
+      print("Select season");
 
-      await driver.tap(saveButtonFinder);
+      await driver.runUnsynchronized(
+          () => driver.tap(find.byValueKey("seasonFormField")));
+
+      print("Enter season");
+      await driver.enterText("2020");
+
+      print("Saving...");
+      await driver.runUnsynchronized(() => driver.tap(saveButtonFinder));
 
       print("Save button");
 
-      await driver.waitFor(contentSection);
+      await driver.runUnsynchronized(() => driver.waitFor(contentSection));
 
       print("content");
 
-      await driver.waitFor(find.text("Frog"));
+      await driver.runUnsynchronized(() => driver.waitFor(find.text("Frog")));
 
-      //await screenshot(driver, config, "singleteam");
+      await screenshot(driver, config, "singleteam",
+          waitUntilNoTransientCallbacks: false);
+
+      // Open the team itself.
     });
   });
 }

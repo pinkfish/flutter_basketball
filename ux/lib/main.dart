@@ -26,10 +26,14 @@ void main() {
   // Send error logs up to crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  runApp(MyApp());
+  runApp(MyApp(false));
 }
 
 class MyApp extends StatelessWidget {
+  final bool forceSql;
+
+  MyApp(this.forceSql);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class MyApp extends StatelessWidget {
     //_db.waitTillOpen();
 
     return RepositoryProvider<BasketballDatabase>(
-      create: (BuildContext context) => MultiplexDatabase(),
+      create: (BuildContext context) => MultiplexDatabase(forceSql),
       child: MultiBlocProvider(
         providers: <BlocProvider>[
           BlocProvider<TeamsBloc>(
