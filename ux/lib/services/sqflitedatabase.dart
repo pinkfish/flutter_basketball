@@ -144,8 +144,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _complete.future;
     String uid = uuid.v5(Uuid.NAMESPACE_OID, teamsTable);
     String seasonUid = uuid.v5(Uuid.NAMESPACE_OID, seasonsTable);
-    Team newT = team.rebuild((b) =>
-    b
+    Team newT = team.rebuild((b) => b
       ..uid = uid
       ..currentSeasonUid = seasonUid);
     Season newS = season.rebuild((b) =>
