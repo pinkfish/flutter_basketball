@@ -123,12 +123,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               FlatButton(
-                child: Text(Messages
-                    .of(context)
-                    .createaccountButton),
-                textColor: Theme
-                    .of(context)
-                    .accentColor,
+                child: Text(Messages.of(context).createaccountButton),
+                textColor: Theme.of(context).accentColor,
                 onPressed: () {
                   _loginBloc.add(LoginEventReset());
                   onPressed("/Login/SignUp");
