@@ -1,4 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/authenticationbloc.dart';
+import 'package:basketballstats/services/loginbloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,24 +21,53 @@ class TeamsScreen extends StatelessWidget {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           child: BlocBuilder(
-            key: Key('teamsContent'),
-            bloc: BlocProvider.of<TeamsBloc>(context),
-            builder: (BuildContext context, TeamsBlocState state) {
-              if (state is TeamsBlocUninitialized) {
-                return Text(Messages.of(context).loading);
-              }
-              if (state is TeamsBlocLoaded) {
-                if (state.teams.isEmpty) {
-                  return Center(
-                    child: Text(Messages.of(context).noTeams),
-                  );
-                }
-                return ListView(
-                  children: state.teams.map((t) => TeamWidget(t)).toList(),
+            bloc: BlocProvider.of<AuthenticationBloc>(context),
+            builder: (BuildContext context, AuthenticationState state) {
+              if (state is AuthenticationLoggedInUnverified) {
+                // Say you need to verify first.
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(Messages.of(context)
+                        .verifyexplanation(state.user.email)),
+                    RaisedButton(
+                        child:
+                            new Text(Messages.of(context).resendverifyButton),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        onPressed: () => BlocProvider.of<LoginBloc>(context)
+                            .add(LoginEventResendEmail())),
+                    RaisedButton(
+                        child: new Text(Messages.of(context).logoutButton),
+                        color: Theme.of(context).primaryColor,
+                        textColor: Colors.white,
+                        onPressed: () => BlocProvider.of<LoginBloc>(context)
+                            .add(LoginEventLogout()))
+                  ],
+                );
+              } else {
+                return BlocBuilder(
+                  key: Key('teamsContent'),
+                  bloc: BlocProvider.of<TeamsBloc>(context),
+                  builder: (BuildContext context, TeamsBlocState state) {
+                    if (state is TeamsBlocUninitialized) {
+                      return Text(Messages.of(context).loading);
+                    }
+                    if (state is TeamsBlocLoaded) {
+                      if (state.teams.isEmpty) {
+                        return Center(
+                          child: Text(Messages.of(context).noTeams),
+                        );
+                      }
+                      return ListView(
+                        children:
+                            state.teams.map((t) => TeamWidget(t)).toList(),
+                      );
+                    }
+                    return Text(Messages.of(context).unknown);
+                  },
                 );
               }
-
-              return Text(Messages.of(context).unknown);
             },
           ),
         ),

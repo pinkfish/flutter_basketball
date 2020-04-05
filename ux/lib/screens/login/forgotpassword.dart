@@ -131,12 +131,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 },
               ),
               FlatButton(
-                  child: Text(Messages
-                      .of(context)
-                      .loginButton),
-                  textColor: Theme
-                      .of(context)
-                      .accentColor,
+                  child: Text(Messages.of(context).loginButton),
+                  textColor: Theme.of(context).accentColor,
                   onPressed: () {
                     _loginBloc.add(LoginEventReset());
                     // Go back to the initial state.

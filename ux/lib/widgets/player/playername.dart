@@ -33,7 +33,7 @@ class PlayerName extends StatelessWidget {
                   !(state is SinglePlayerLoaded)) {
                 return Text(
                   _nameCache[playerUid],
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,
@@ -62,7 +62,10 @@ class PlayerName extends StatelessWidget {
                 _nameCache[playerUid] = state.player.name;
                 return Text(
                   state.player.name,
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,

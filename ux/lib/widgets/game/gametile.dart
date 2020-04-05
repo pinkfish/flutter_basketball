@@ -13,7 +13,7 @@ class GameTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle style = Theme.of(context).textTheme.subhead;
+    TextStyle style = Theme.of(context).textTheme.subtitle1;
     switch (game.result) {
       case GameResult.Win:
         style = style.copyWith(
@@ -37,14 +37,23 @@ class GameTile extends StatelessWidget {
         leading: Icon(MdiIcons.basketball),
         title: Text(
           Messages.of(context).getGameVs(game.opponentName, game.location),
-          style: Theme.of(context).textTheme.title,
+          style: Theme
+              .of(context)
+              .textTheme
+              .headline6,
           textScaleFactor: 1.2,
         ),
         subtitle: Text(
           DateFormat("dd MMM hh:mm").format(game.eventTime.toLocal()),
-          style: Theme.of(context).textTheme.subtitle.copyWith(
-                color: Theme.of(context).accentColor,
-              ),
+          style: Theme
+              .of(context)
+              .textTheme
+              .subtitle2
+              .copyWith(
+            color: Theme
+                .of(context)
+                .accentColor,
+          ),
           textScaleFactor: 1.2,
         ),
         onTap: this.onTap,

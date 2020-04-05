@@ -189,7 +189,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
         SizedBox(width: 20.0),
         Text(
           state.player.name,
-          style: Theme.of(context).textTheme.headline,
+          style: Theme.of(context).textTheme.headline5,
           textScaleFactor: 1.5,
         ),
       ],

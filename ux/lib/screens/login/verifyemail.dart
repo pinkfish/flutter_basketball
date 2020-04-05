@@ -73,7 +73,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       ),
       body: new SingleChildScrollView(
         controller: scrollController,
-        child: BlocListener(
+        child: BlocConsumer(
           bloc: _loginBloc,
           listener: (BuildContext context, LoginState state) {
             if (state is LoginVerificationDone) {
@@ -94,80 +94,98 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 Navigator.pushNamed(context, "/");
               });
             } else if (state is LoginVerificationFailed) {
-              showInSnackBar(Messages.of(context).verifyemailerror);
+              showInSnackBar(Messages
+                  .of(context)
+                  .verifyemailerror);
             } else if (!(state is LoginEmailNotValidated)) {
               Navigator.popAndPushNamed(context, "/Login/Home");
             }
           },
-          child: BlocBuilder(
-            bloc: _loginBloc,
-            builder: (BuildContext context, LoginState state) {
-              if (state is LoginEmailNotValidated) {
-                return new Container(
-                  padding: new EdgeInsets.all(16.0),
-                  //decoration: new BoxDecoration(image: backgroundImage),
-                  child: new Column(
-                    children: <Widget>[
-                      new Container(
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            // Show a circle avatar just to make it clear that this is signed in page.
-                            new Center(
-                              child: new CircleAvatar(
-                                radius: width / 2,
-                                child: new Text(state.userData.displayName ??
-                                    Messages.of(context).unknown),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      new Container(
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            new Text(messages
-                                .verifyexplanation(state.userData.email)),
-                            new Container(
-                              child: new RaisedButton(
-                                  child: new Text(messages.resendverifyButton),
-                                  color: Theme.of(context).primaryColor,
-                                  textColor: Colors.white,
-                                  onPressed: _handleSubmitted),
-                              margin:
-                                  new EdgeInsets.only(top: 20.0, bottom: 20.0),
-                            ),
-                          ],
-                        ),
-                      ),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          builder: (BuildContext context, LoginState state) {
+            if (state is LoginEmailNotValidated ||
+                state is LoginSignupSucceeded) {
+              return new Container(
+                padding: new EdgeInsets.all(16.0),
+                child: new Column(
+                  children: <Widget>[
+                    new Container(
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new FlatButton(
-                            child: new Text(messages.createaccountButton),
-                            textColor: Theme.of(context).accentColor,
-                            onPressed: () => _onSignup(context),
-                          ),
-                          new FlatButton(
-                            child: new Text(messages.logoutButton),
-                            textColor: Theme
-                                .of(context)
-                                .accentColor,
-                            onPressed: () => _onLogout(context),
+                          // Show a circle avatar just to make it clear that this is signed in page.
+                          new Center(
+                            child: new CircleAvatar(
+                              radius: width / 2,
+                              child: new Text((state is LoginEmailNotValidated
+                                  ? state.userData.displayName
+                                  : state is LoginSignupSucceeded
+                                  ? state.userData.displayName
+                                  : null) ??
+                                  Messages
+                                      .of(context)
+                                      .unknown),
+                            ),
                           ),
                         ],
-                      )
-                    ],
-                  ),
-                );
-              } else {
-                return Text(Messages.of(context).loading);
-              }
-            },
-          ),
+                      ),
+                    ),
+                    new Container(
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(messages.verifyexplanation(
+                              (state is LoginEmailNotValidated
+                                  ? state.userData.email
+                                  : state is LoginSignupSucceeded
+                                  ? state.userData.email
+                                  : null) ??
+                                  Messages
+                                      .of(context)
+                                      .unknown)),
+                          new Container(
+                            child: RaisedButton(
+                                child: new Text(messages.resendverifyButton),
+                                color: Theme
+                                    .of(context)
+                                    .primaryColor,
+                                textColor: Colors.white,
+                                onPressed: _handleSubmitted),
+                            margin:
+                            new EdgeInsets.only(top: 20.0, bottom: 20.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new FlatButton(
+                          child: new Text(messages.createaccountButton),
+                          textColor: Theme
+                              .of(context)
+                              .accentColor,
+                          onPressed: () => _onSignup(context),
+                        ),
+                        new FlatButton(
+                          child: new Text(messages.logoutButton),
+                          textColor: Theme
+                              .of(context)
+                              .accentColor,
+                          onPressed: () => _onLogout(context),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return Text(Messages
+                  .of(context)
+                  .loading);
+            }
+          },
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 
@@ -42,6 +43,7 @@ class LoginValidating extends LoginState {
 
 enum LoginFailedReason {
   BadPassword,
+  InternalError,
 }
 
 ///
@@ -389,11 +391,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         var user = await FirebaseAuth.instance.currentUser();
         // Reload the user.
         user.reload();
-        yield LoginSucceeded(userData: signedIn);
+        if (!signedIn.isEmailVerified) {
+          yield LoginEmailNotValidated(userData: signedIn);
+        } else {
+          yield LoginSucceeded(userData: signedIn);
+        }
       }
     }
 
     if (event is LoginAsGoogleUser) {
+      print("LOgin as google usder");
+      yield LoginValidating();
       try {
         final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
         final GoogleSignInAuthentication googleAuth =
@@ -406,7 +414,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await FirebaseAuth.instance.signInWithCredential(credential);
         var user = result.user;
         if (user != null) {
-          print("Error loggd in as $user");
+          print("Error logged in as $user");
           analyticsSubsystem.logLogin();
           yield LoginSucceeded(userData: user);
         } else {
@@ -417,9 +425,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       } catch (error) {
         print('Error: $error');
-        // Failed to login, probably bad password.
-        yield LoginFailed(
-            userData: null, reason: LoginFailedReason.BadPassword);
+        if (error is PlatformException) {
+          switch (error.code) {
+            case 'concurrent-requests':
+              _googleSignIn.disconnect();
+              yield LoginFailed(
+                  userData: null, reason: LoginFailedReason.InternalError);
+              break;
+            default:
+              break;
+          }
+        } else {
+          // Failed to login, probably bad password.
+          yield LoginFailed(
+              userData: null, reason: LoginFailedReason.BadPassword);
+        }
       }
     }
 
@@ -437,18 +457,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginEventSignupUser) {
       yield LoginValidatingSignup();
       LoginEventSignupUser signup = event;
-      var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: signup.email, password: signup.password);
-      if (result.user == null) {
-        yield LoginSignupFailed(userData: result.user);
-      } else {
-        var update = UserUpdateInfo();
-        update.displayName = signup.displayName;
-        await result.user.updateProfile(update);
-        await result.user.sendEmailVerification();
-        FirebaseAuth.instance.signInWithEmailAndPassword(
+      try {
+        var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: signup.email, password: signup.password);
-        yield LoginSignupSucceeded(userData: result.user);
+        if (result.user == null) {
+          yield LoginSignupFailed(userData: result.user);
+        } else {
+          var update = UserUpdateInfo();
+          update.displayName = signup.displayName;
+          await result.user.updateProfile(update);
+          await result.user.sendEmailVerification();
+          yield LoginSignupSucceeded(userData: result.user);
+          AuthResult newResult = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+              email: signup.email, password: signup.password);
+          if (!newResult.user.isEmailVerified) {
+            // Send a password verify email
+            newResult.user.sendEmailVerification();
+            yield LoginEmailNotValidated(userData: newResult.user);
+          } else {
+            yield LoginSucceeded(userData: newResult.user);
+          }
+        }
+      } catch (error) {
+        print("Error $error");
+        yield LoginSignupFailed(userData: null);
       }
     }
   }

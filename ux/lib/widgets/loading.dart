@@ -26,7 +26,7 @@ class LoadingWidget extends StatelessWidget {
               height: 0,
             ),
       Text(Messages.of(context).loading,
-          style: Theme.of(context).textTheme.display1),
+          style: Theme.of(context).textTheme.headline4),
       CircularProgressIndicator(),
     ]);
   }

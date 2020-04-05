@@ -143,7 +143,7 @@ class _GameShotLocationsState extends State<GameShotLocations>
         textAlign: TextAlign.end,
         style: Theme.of(context)
             .textTheme
-            .subtitle
+            .subtitle1
             .copyWith(color: Theme.of(context).accentColor),
       ),
     );

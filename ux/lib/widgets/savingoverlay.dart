@@ -42,16 +42,17 @@ class SavingOverlay extends StatelessWidget {
                 new RichText(
                   text: new TextSpan(
                     text: quote.quote,
-                    style: Theme.of(context).textTheme.title,
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                   textAlign: TextAlign.center,
                   softWrap: true,
                 ),
                 new SizedBox(height: 10.0),
                 new Text(quote.author,
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
-                        .subhead
+                        .subtitle1
                         .copyWith(fontStyle: FontStyle.italic)),
                 new SizedBox(height: 20.0),
                 new CircularProgressIndicator(),

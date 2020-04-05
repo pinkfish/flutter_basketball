@@ -613,10 +613,9 @@ class _GameStateSection extends StatelessWidget {
         if (state is SingleGameDeleted) {
           return DeletedWidget();
         }
-        var style = Theme
-            .of(context)
+        var style = Theme.of(context)
             .textTheme
-            .headline
+            .headline5
             .copyWith(fontWeight: FontWeight.bold);
         return Container(
           decoration: BoxDecoration(
@@ -649,7 +648,7 @@ class _GameStateSection extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .body1,
+                              .bodyText2,
                           textScaleFactor: 1.5,
                         ),
                         IconButton(
@@ -670,7 +669,7 @@ class _GameStateSection extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .body1,
+                              .bodyText2,
                           textScaleFactor: 1.5,
                         ),
                       ],
@@ -769,7 +768,7 @@ class _GameStateSection extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .body1,
+                              .bodyText2,
                           textScaleFactor: 1.5,
                         ),
                         IconButton(
@@ -790,7 +789,7 @@ class _GameStateSection extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .body1,
+                              .bodyText2,
                           textScaleFactor: 1.5,
                         ),
                       ],

@@ -151,7 +151,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                   return ListTile(
                     title: Text(
                       state.team.name,
-                      style: Theme.of(context).textTheme.title,
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     leading: Icon(MdiIcons.tshirtCrew),
                   );
@@ -229,7 +229,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     TextStyle headerStyle = Theme
         .of(context)
         .textTheme
-        .subtitle;
+        .subtitle1;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
@@ -568,7 +568,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     TextStyle style = Theme
         .of(context)
         .textTheme
-        .body1
+        .bodyText2
         .copyWith(color: Theme
         .of(context)
         .accentColor);

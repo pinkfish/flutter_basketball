@@ -32,8 +32,8 @@ class _PlayerListState extends State<PlayerList> {
     return SingleChildScrollView(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        TextStyle minDataStyle = Theme.of(context).textTheme.subhead.copyWith(
-            fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
+        TextStyle minDataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+            fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25);
 
         double width = constraints.maxWidth / 8;
         double scale = widget.orientation == Orientation.portrait ? 1.0 : 1.2;

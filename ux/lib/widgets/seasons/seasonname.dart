@@ -33,7 +33,7 @@ class SeasonName extends StatelessWidget {
                   !(state is SingleSeasonLoaded)) {
                 return Text(
                   _nameCache[seasonUid],
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,
@@ -62,7 +62,10 @@ class SeasonName extends StatelessWidget {
                 _nameCache[seasonUid] = state.season.name;
                 return Text(
                   state.season.name,
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,

@@ -24,7 +24,7 @@ class DeletedWidget extends StatelessWidget {
               height: 0,
             ),
       Text(Messages.of(context).unknown,
-          style: Theme.of(context).textTheme.display1),
+          style: Theme.of(context).textTheme.headline4),
       Icon(Icons.error, size: 40.0, color: Theme.of(context).errorColor),
     ]);
   }

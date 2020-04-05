@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/loginbloc.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -192,6 +193,11 @@ class Messages {
   String get emptypassword => Intl.message("Empty password",
       desc: "Snackbar to show the password is empty", locale: locale);
 
+  String get passwordtooshort =>
+      Intl.message("Password must be 6 characters long",
+          desc: "Snackbar message to say the password is too short",
+          locale: locale);
+
   String get email =>
       Intl.message("Email", desc: "Email hint text", locale: locale);
 
@@ -226,22 +232,36 @@ class Messages {
   String get password =>
       Intl.message('Password', desc: 'Input box for a password');
 
-  String get verifypassword => Intl.message('Verify password',
-      desc: 'Input box for a verification to the main password password');
+  String get verifypassword =>
+      Intl.message('Verify password',
+          desc: 'Input box for a verification to the main password password');
 
-  String get formerror => Intl.message('Please fix the items outlined in red',
-      name: 'Error in a form', desc: 'Error when submitting a form');
+  String get formerror =>
+      Intl.message('Please fix the items outlined in red',
+          name: 'Error in a form', desc: 'Error when submitting a form');
 
-  String get passwordnotcorrect =>
-      Intl.message('Email and/or password incorrect',
-          desc: 'Passwords or email is not correct, login failed');
+  String loginFailureReason(LoginFailedReason reason) {
+    switch (reason) {
+      case LoginFailedReason.BadPassword:
+        return Intl.message('Email and/or password incorrect',
+            desc: 'Passwords or email is not correct, login failed',
+            locale: locale);
+      case LoginFailedReason.InternalError:
+        return Intl.message('Internal Error',
+            desc:
+            'Something happened inside the login system, not a bad password',
+            locale: locale);
+    }
+  }
 
-  String get passwordsnotmatching => Intl.message('Passwords must match',
-      desc: 'Passwords must match signup form error');
+  String get passwordsnotmatching =>
+      Intl.message('Passwords must match',
+          desc: 'Passwords must match signup form error');
 
-  String get createdaccount => Intl.message(
-      "Created an account, please look in your email for the verification code..",
-      desc:
+  String get createdaccount =>
+      Intl.message(
+          "Created an account, please look in your email for the verification code..",
+          desc:
           "Confirmation message after requesting the email verification code");
 
   String get youremailHint =>
@@ -321,15 +341,27 @@ class Messages {
   String get turnoversTitle =>
       Intl.message("T/O", desc: "Turnover abbreviation", locale: locale);
 
-  String get offensiveReboundTitle => Intl.message("O/RB",
-      desc: "Offensive rebound abbreviation", locale: locale);
+  String get offensiveReboundTitle =>
+      Intl.message("O/RB",
+          desc: "Offensive rebound abbreviation", locale: locale);
 
-  String get defensiveReboundTitle => Intl.message("D/RB",
-      desc: "Defensive rebound abbreviation", locale: locale);
+  String get defensiveReboundTitle =>
+      Intl.message("D/RB",
+          desc: "Defensive rebound abbreviation", locale: locale);
+
+  String getUnverified(String name, bool unverified) {
+    if (unverified) {
+      return Intl.message("$name [unverified]",
+          desc: "If the user is unverified", locale: locale);
+    } else {
+      return name;
+    }
+  }
 
   String seasonSummary(PlayerSeasonSummary summary) {
     return Intl.message(
-        "Pts ${summary.summary.points} Blks ${summary.summary.blocks} Stls ${summary.summary.steals}",
+        "Pts ${summary.summary.points} Blks ${summary.summary
+            .blocks} Stls ${summary.summary.steals}",
         desc: "Subtitle to markt he season as current",
         locale: locale);
   }

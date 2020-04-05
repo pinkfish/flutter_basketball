@@ -40,16 +40,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void showInSnackBar(String value) {
-    print("Showing snack of $value");
     _scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
   void _handleSubmitted() async {
-    print('Submit');
     final FormState form = formKey.currentState;
     if (!form.validate()) {
-      print('Validate?');
       autovalidate = true; // Start validating on every change.
       setState(() {
         errorText = Messages.of(context).formerror;
@@ -183,15 +180,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(Messages
-            .of(context)
-            .loginButton),
+        title: Text(Messages.of(context).loginButton),
       ),
       body: BlocListener(
         bloc: _loginBloc,
         listener: (BuildContext context, LoginState state) {
           if (state is LoginFailed) {
-            errorText = Messages.of(context).passwordnotcorrect;
+            errorText = Messages.of(context).loginFailureReason(state.reason);
             showInSnackBar(errorText);
           } else if (state is LoginSucceeded) {
             Navigator.pop(context);

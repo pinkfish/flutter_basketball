@@ -39,10 +39,7 @@ class GameEventWidget extends StatelessWidget {
             ),
             Text(
               Messages.of(context).getGameEventType(gameEvent),
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .title,
+              style: Theme.of(context).textTheme.headline6,
               textScaleFactor: 1.2,
               softWrap: true,
               overflow: TextOverflow.fade,
@@ -58,7 +55,7 @@ class GameEventWidget extends StatelessWidget {
               style: Theme
                   .of(context)
                   .textTheme
-                  .body1,
+                  .bodyText2,
             ),
             SizedBox(width: 20.0),
             gameEvent.playerUid != null && gameEvent.playerUid.isNotEmpty
@@ -76,10 +73,10 @@ class GameEventWidget extends StatelessWidget {
               style: Theme
                   .of(context)
                   .textTheme
-                  .body1,
+                  .bodyText2,
               softWrap: true,
               overflow: TextOverflow.fade,
-                      ),
+            ),
           ],
         ),
       ),

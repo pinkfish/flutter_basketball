@@ -28,7 +28,7 @@ class TeamWidget extends StatelessWidget {
                 dense: false,
                 title: Text(
                   team.name,
-                  style: Theme.of(context).textTheme.title,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 subtitle: _TeamSummary(),
                 leading: team.photoUid != null
@@ -75,14 +75,22 @@ class _TeamSummary extends StatelessWidget {
         builder: (BuildContext context, SingleTeamBlocState state) {
           if (state is SingleTeamLoaded && !state.loadedSeasons ||
               state is SingleTeamUninitialized) {
-            return Text(Messages.of(context).loading,
-                style: Theme.of(context).textTheme.subtitle);
+            return Text(Messages
+                .of(context)
+                .loading,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subtitle1);
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(Messages.of(context).playedSeasons(state.seasons.length),
-                  style: Theme.of(context).textTheme.subtitle),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .subtitle1),
             ],
           );
         });

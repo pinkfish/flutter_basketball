@@ -89,6 +89,7 @@ class MyApp extends StatelessWidget {
   }
 
   Route<dynamic> _buildRoute(RouteSettings routeSettings) {
+    print("${routeSettings.name}");
     return AppRouter.instance.generator(routeSettings);
   }
 }

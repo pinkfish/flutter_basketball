@@ -124,7 +124,6 @@ class AuthenticationBloc
   AuthenticationState _updateWithUser(FirebaseUser user) {
     if (user.isEmailVerified) {
       analyticsSubsystem.setUserId(user.uid);
-
       if (currentUser != null) {
         if (user == currentUser) {
           return null;

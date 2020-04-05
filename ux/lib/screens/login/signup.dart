@@ -59,8 +59,6 @@ class _SignupScreenState extends State<SignupScreen> {
       showInSnackBar(Messages.of(context).formerror);
     } else {
       form.save();
-      //email = _email;
-      //password = _password;
       _loginBloc.add(LoginEventSignupUser(
           email: _email,
           password: _password,
@@ -73,6 +71,9 @@ class _SignupScreenState extends State<SignupScreen> {
     String old = _passwordFieldKey.currentState.value;
     if (value != old) {
       return Messages.of(context).passwordsnotmatching;
+    }
+    if (value.length < 6) {
+      return Messages.of(context).passwordtooshort;
     }
     return null;
   }

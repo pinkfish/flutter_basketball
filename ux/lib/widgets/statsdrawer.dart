@@ -14,7 +14,7 @@ class StatsDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.body1;
+    final TextStyle textStyle = Theme.of(context).textTheme.bodyText2;
     final List<Widget> aboutBoxChildren = <Widget>[
       SizedBox(height: 24),
       RichText(
@@ -44,9 +44,15 @@ class StatsDrawer extends StatelessWidget {
                   state is AuthenticationLoggedInUnverified) {
                 return UserAccountsDrawerHeader(
                   accountEmail: Text(state.user.email),
-                  accountName: Text(state.user.displayName),
+                  accountName: Text(
+                    Messages.of(context).getUnverified(
+                        state.user.displayName ?? Messages
+                            .of(context)
+                            .unknown,
+                        state is AuthenticationLoggedInUnverified),
+                  ),
                   currentAccountPicture:
-                      Image.asset("assets/images/basketball.png"),
+                  Image.asset("assets/images/basketball.png"),
                 );
               }
               return DrawerHeader(
@@ -60,11 +66,40 @@ class StatsDrawer extends StatelessWidget {
           BlocBuilder(
             bloc: BlocProvider.of<AuthenticationBloc>(context),
             builder: (BuildContext context, AuthenticationState state) {
+              if (state is AuthenticationLoggedInUnverified) {
+                return Column(
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(MdiIcons.email),
+                      title: Text(Messages
+                          .of(context)
+                          .resendverifyButton),
+                      onTap: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(LoginEventResendEmail());
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(MdiIcons.logout),
+                      title: Text(Messages
+                          .of(context)
+                          .logoutButton),
+                      onTap: () {
+                        BlocProvider.of<LoginBloc>(context)
+                            .add(LoginEventLogout());
+                      },
+                    ),
+                  ],
+                );
+              }
+
               if (state is AuthenticationLoggedIn ||
                   state is AuthenticationLoggedInUnverified) {
                 return ListTile(
                   leading: Icon(MdiIcons.logout),
-                  title: Text(Messages.of(context).logoutButton),
+                  title: Text(Messages
+                      .of(context)
+                      .logoutButton),
                   onTap: () {
                     BlocProvider.of<LoginBloc>(context).add(LoginEventLogout());
                   },
@@ -76,7 +111,7 @@ class StatsDrawer extends StatelessWidget {
                     .of(context)
                     .loginButton),
                 onTap: () {
-                  Navigator.popAndPushNamed(context, "/Login/Home");
+                  Navigator.pushNamed(context, "/Login/Home");
                 },
               );
             },
@@ -85,7 +120,7 @@ class StatsDrawer extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text(Messages.of(context).settings),
             onTap: () {
-              Navigator.popAndPushNamed(context, "/Settings");
+              Navigator.pushNamed(context, "/Settings");
             },
           ),
           AboutListTile(

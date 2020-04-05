@@ -93,7 +93,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         SizedBox(height: 5.0),
         Text(
           Messages.of(context).seasons,
-          style: Theme.of(context).textTheme.subhead,
+          style: Theme.of(context).textTheme.subtitle1,
           textScaleFactor: 1.5,
           textAlign: TextAlign.start,
         ),

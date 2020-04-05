@@ -118,8 +118,8 @@ class _PlayerDetailsBodyState extends State<_PlayerDetailBody> {
           return DeletedWidget();
         }
         PlayerSummaryData summary;
-        TextStyle dataStyle = Theme.of(context).textTheme.subhead.copyWith(
-            fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
+        TextStyle dataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+            fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25);
         if (period == GamePeriod.NotStarted) {
           summary = state.game.players[widget.playerUid].fullData;
         } else {

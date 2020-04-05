@@ -1,0 +1,14 @@
+add in the ios splash screens.
+Add in the android splash screen and fix up the ios info for running the app with google sign in.
+print the last git tag.
+Merge branch 'master' of github.com:pinkfish/flutter_basketball
+Change the sql lite db to force always on.
+Change the sql lite db to force always on.
+Update to work with flutter driver testing.
+Fix typo
+Update to use the fastlane session
+Add in apple app specific password
+Add in cert + sigh
+Add in the googleservices info
+Add in the pod install
+U

@@ -75,7 +75,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         title: widget.state.game == null
             ? Text(Messages.of(context).title)
             : Text("vs " + widget.state.game.opponentName,
-                style: Theme.of(context).textTheme.display1),
+                style: Theme.of(context).textTheme.headline4),
       ),
       body: SavingOverlay(
         saving: widget.state is SingleGameSaving,
@@ -150,12 +150,36 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return LoadingWidget();
     }
     if (_currentIndex == 0) {
-      TextStyle minDataStyle = Theme.of(context).textTheme.subhead.copyWith(
-          fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
-      TextStyle dataStyle = Theme.of(context).textTheme.subhead.copyWith(
-          fontSize: Theme.of(context).textTheme.subhead.fontSize * 1.25);
-      TextStyle pointsStyle = Theme.of(context).textTheme.subhead.copyWith(
-          fontSize: Theme.of(context).textTheme.subhead.fontSize * 4.0);
+      TextStyle minDataStyle = Theme
+          .of(context)
+          .textTheme
+          .subtitle1
+          .copyWith(
+          fontSize: Theme
+              .of(context)
+              .textTheme
+              .subtitle1
+              .fontSize * 1.25);
+      TextStyle dataStyle = Theme
+          .of(context)
+          .textTheme
+          .subtitle1
+          .copyWith(
+          fontSize: Theme
+              .of(context)
+              .textTheme
+              .subtitle1
+              .fontSize * 1.25);
+      TextStyle pointsStyle = Theme
+          .of(context)
+          .textTheme
+          .subtitle1
+          .copyWith(
+          fontSize: Theme
+              .of(context)
+              .textTheme
+              .subtitle1
+              .fontSize * 4.0);
       Widget retWidget = Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -181,7 +205,10 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
               DateFormat("H:m MMM, d").format(state.game.eventTime.toLocal()) +
                   " at " +
                   state.game.location,
-              style: Theme.of(context).textTheme.headline),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline5),
           Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

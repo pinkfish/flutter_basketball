@@ -140,10 +140,7 @@ class PlayerTile extends StatelessWidget {
                             ),
                             Text(
                               state.player.name,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .title,
+                              style: Theme.of(context).textTheme.headline6,
                             ),
                             (this.extra != null
                                 ? extra(playerUid)
@@ -164,7 +161,7 @@ class PlayerTile extends StatelessWidget {
                         style: Theme
                             .of(context)
                             .textTheme
-                            .title,
+                            .headline6,
                       ),
                       leading: ConstrainedBox(
                         constraints:
