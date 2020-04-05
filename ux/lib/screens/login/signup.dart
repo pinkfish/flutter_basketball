@@ -7,14 +7,17 @@ import '../../services/loginbloc.dart';
 import '../../services/validations.dart';
 import '../../widgets/savingoverlay.dart';
 
+///
+/// Handles the signup flow.
+///
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key key}) : super(key: key);
 
   @override
-  SignupScreenState createState() => new SignupScreenState();
+  _SignupScreenState createState() => new _SignupScreenState();
 }
 
-class SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<FormFieldState<String>> _passwordFieldKey =

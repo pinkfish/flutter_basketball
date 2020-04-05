@@ -8,14 +8,17 @@ import '../../services/validations.dart';
 import '../../widgets/loginheader.dart';
 import '../../widgets/savingoverlay.dart';
 
+///
+/// Basic login setup.
+///
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
 
   @override
-  LoginScreenState createState() => new LoginScreenState();
+  _LoginScreenState createState() => new _LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScrollController scrollController = new ScrollController();
@@ -121,12 +124,8 @@ class LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       FlatButton(
-                        child: Text(Messages
-                            .of(context)
-                            .createaccountButton),
-                        textColor: Theme
-                            .of(context)
-                            .accentColor,
+                        child: Text(Messages.of(context).createaccountButton),
+                        textColor: Theme.of(context).accentColor,
                         onPressed: () => onPressed("/Login/SignUp"),
                       ),
                       FlatButton(

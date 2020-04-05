@@ -4,14 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../messages.dart';
 import '../../services/loginbloc.dart';
 
+///
+/// Screen to verify the users email.
+///
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key key}) : super(key: key);
 
   @override
-  VerifyEmailScreenState createState() => new VerifyEmailScreenState();
+  _VerifyEmailScreenState createState() => new _VerifyEmailScreenState();
 }
 
-class VerifyEmailScreenState extends State<VerifyEmailScreen> {
+class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScrollController scrollController = new ScrollController();
   bool autovalidate = false;
@@ -145,9 +148,7 @@ class VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         children: <Widget>[
                           new FlatButton(
                             child: new Text(messages.createaccountButton),
-                            textColor: Theme
-                                .of(context)
-                                .accentColor,
+                            textColor: Theme.of(context).accentColor,
                             onPressed: () => _onSignup(context),
                           ),
                           new FlatButton(

@@ -8,14 +8,17 @@ import '../../services/validations.dart';
 import '../../widgets/loginheader.dart';
 import '../../widgets/savingoverlay.dart';
 
+///
+/// Page to request a new password :)
+///
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key key}) : super(key: key);
 
   @override
-  ForgotPasswordScreenState createState() => new ForgotPasswordScreenState();
+  _ForgotPasswordScreenState createState() => new _ForgotPasswordScreenState();
 }
 
-class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   ScrollController scrollController = new ScrollController();
@@ -95,12 +98,8 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 },
               ),
               FlatButton(
-                child: Text(Messages
-                    .of(context)
-                    .loginButton),
-                textColor: Theme
-                    .of(context)
-                    .accentColor,
+                child: Text(Messages.of(context).loginButton),
+                textColor: Theme.of(context).accentColor,
                 onPressed: () {
                   _loginBloc.add(LoginEventReset());
                   onPressed("/Login/Home");

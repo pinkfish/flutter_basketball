@@ -437,15 +437,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginEventSignupUser) {
       yield LoginValidatingSignup();
       LoginEventSignupUser signup = event;
-      /*
-       FusedUserProfile profile = new FusedUserProfile((b) => b
-        ..displayName = signup.displayName
-        ..phoneNumber = signup.phoneNumber
-        ..email = signup.email
-        ..emailOnUpdates = true
-        ..emailUpcomingGame = true
-        ..notifyOnlyForGames = true);
-      UserData data = await userAuth.createUser(user, profile);*/
       var result = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: signup.email, password: signup.password);
       if (result.user == null) {
