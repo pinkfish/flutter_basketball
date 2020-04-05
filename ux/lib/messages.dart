@@ -232,13 +232,11 @@ class Messages {
   String get password =>
       Intl.message('Password', desc: 'Input box for a password');
 
-  String get verifypassword =>
-      Intl.message('Verify password',
-          desc: 'Input box for a verification to the main password password');
+  String get verifypassword => Intl.message('Verify password',
+      desc: 'Input box for a verification to the main password password');
 
-  String get formerror =>
-      Intl.message('Please fix the items outlined in red',
-          name: 'Error in a form', desc: 'Error when submitting a form');
+  String get formerror => Intl.message('Please fix the items outlined in red',
+      name: 'Error in a form', desc: 'Error when submitting a form');
 
   String loginFailureReason(LoginFailedReason reason) {
     switch (reason) {
@@ -249,19 +247,17 @@ class Messages {
       case LoginFailedReason.InternalError:
         return Intl.message('Internal Error',
             desc:
-            'Something happened inside the login system, not a bad password',
+                'Something happened inside the login system, not a bad password',
             locale: locale);
     }
   }
 
-  String get passwordsnotmatching =>
-      Intl.message('Passwords must match',
-          desc: 'Passwords must match signup form error');
+  String get passwordsnotmatching => Intl.message('Passwords must match',
+      desc: 'Passwords must match signup form error');
 
-  String get createdaccount =>
-      Intl.message(
-          "Created an account, please look in your email for the verification code..",
-          desc:
+  String get createdaccount => Intl.message(
+      "Created an account, please look in your email for the verification code..",
+      desc:
           "Confirmation message after requesting the email verification code");
 
   String get youremailHint =>

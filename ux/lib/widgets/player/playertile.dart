@@ -55,13 +55,11 @@ class PlayerTile extends StatelessWidget {
                     color: color,
                     shape: shape,
                     child: ListTile(
-                      title: Text(Messages
-                          .of(context)
-                          .unknown),
+                      title: Text(Messages.of(context).unknown),
                       subtitle: summary != null
                           ? Text(
-                        Messages.of(context).seasonSummary(summary),
-                      )
+                              Messages.of(context).seasonSummary(summary),
+                            )
                           : null,
                       leading: Stack(
                         children: <Widget>[

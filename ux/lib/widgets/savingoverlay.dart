@@ -49,8 +49,7 @@ class SavingOverlay extends StatelessWidget {
                 ),
                 new SizedBox(height: 10.0),
                 new Text(quote.author,
-                    style: Theme
-                        .of(context)
+                    style: Theme.of(context)
                         .textTheme
                         .subtitle1
                         .copyWith(fontStyle: FontStyle.italic)),

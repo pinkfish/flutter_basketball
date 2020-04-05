@@ -302,9 +302,7 @@ class GameStatsScreen extends StatelessWidget {
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
-          Messages
-              .of(context)
-              .stealButton,
+          Messages.of(context).stealButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.Steal),
       ),

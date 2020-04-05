@@ -52,23 +52,20 @@ class GameEventWidget extends StatelessWidget {
               softWrap: true,
               overflow: TextOverflow.fade,
               textScaleFactor: 1.2,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .bodyText2,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
             SizedBox(width: 20.0),
             gameEvent.playerUid != null && gameEvent.playerUid.isNotEmpty
                 ? showName
-                    ? PlayerName(
-                        playerUid: gameEvent.playerUid,
-                      )
-                    : SizedBox(width: 0)
+                ? PlayerName(
+              playerUid: gameEvent.playerUid,
+            )
+                : SizedBox(width: 0)
                 : showPeriod
-                    ? SizedBox(
-                        width: 0,
-                      )
-                    : Text(
+                ? SizedBox(
+              width: 0,
+            )
+                : Text(
               Messages.of(context).getPeriodName(gameEvent.period),
               style: Theme
                   .of(context)

@@ -94,9 +94,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 Navigator.pushNamed(context, "/");
               });
             } else if (state is LoginVerificationFailed) {
-              showInSnackBar(Messages
-                  .of(context)
-                  .verifyemailerror);
+              showInSnackBar(Messages.of(context).verifyemailerror);
             } else if (!(state is LoginEmailNotValidated)) {
               Navigator.popAndPushNamed(context, "/Login/Home");
             }

@@ -46,13 +46,11 @@ class StatsDrawer extends StatelessWidget {
                   accountEmail: Text(state.user.email),
                   accountName: Text(
                     Messages.of(context).getUnverified(
-                        state.user.displayName ?? Messages
-                            .of(context)
-                            .unknown,
+                        state.user.displayName ?? Messages.of(context).unknown,
                         state is AuthenticationLoggedInUnverified),
                   ),
                   currentAccountPicture:
-                  Image.asset("assets/images/basketball.png"),
+                      Image.asset("assets/images/basketball.png"),
                 );
               }
               return DrawerHeader(

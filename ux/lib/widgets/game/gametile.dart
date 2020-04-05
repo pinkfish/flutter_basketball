@@ -37,10 +37,7 @@ class GameTile extends StatelessWidget {
         leading: Icon(MdiIcons.basketball),
         title: Text(
           Messages.of(context).getGameVs(game.opponentName, game.location),
-          style: Theme
-              .of(context)
-              .textTheme
-              .headline6,
+          style: Theme.of(context).textTheme.headline6,
           textScaleFactor: 1.2,
         ),
         subtitle: Text(
