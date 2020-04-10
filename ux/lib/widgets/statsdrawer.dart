@@ -90,9 +90,7 @@ class StatsDrawer extends StatelessWidget {
               if (state is AuthenticationLoggedIn) {
                 return ListTile(
                   leading: Icon(MdiIcons.logout),
-                  title: Text(Messages
-                      .of(context)
-                      .logoutButton),
+                  title: Text(Messages.of(context).logoutButton),
                   onTap: () {
                     BlocProvider.of<LoginBloc>(context).add(LoginEventLogout());
                   },

@@ -358,8 +358,7 @@ class Messages {
 
   String seasonSummary(PlayerSeasonSummary summary) {
     return Intl.message(
-        "Pts ${summary.summary.points} Blks ${summary.summary
-            .blocks} Stls ${summary.summary.steals}",
+        "Pts ${summary.summary.points} Blks ${summary.summary.blocks} Stls ${summary.summary.steals}",
         desc: "Subtitle to markt he season as current",
         locale: locale);
   }
