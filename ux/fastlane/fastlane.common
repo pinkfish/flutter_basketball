@@ -8,26 +8,54 @@ def load_ci_config
 end
 
 desc "Get build name and build number"
-private_lane :get_build_name_and_build_number do
+private_lane :get_build_name_and_build_number do |options|
     load_ci_config
 
     @build_number=number_of_commits()
-    puts last_git_tag
-    @build_name=last_git_tag.sub(".0", "." + (@build_number).to_s)
+    lane_name = Actions.lane_context[Actions::SharedValues::LANE_NAME].to_s.delete(' ')
+    puts "frog"
+    puts last_git_tag(pattern: "build\/" + lane_name)
+    puts "after frog"
+    @version_git_tag = last_git_tag(pattern: "build\/" + lane_name )
+    if @version_git_tag == nil
+      tag = "0.1.0"
+      # Choose whatever the current last tag is.
+      @version_git_tag = last_git_tag
+    else
+      tag = @version_git_tag.delete("build/" + lane_name)
+      tag = tag.delete("v")
+      puts "Tag"
+      puts tag
+      puts lane_name
+    end
+    bits = tag.split(".")
+    bits[-1] = @build_number.to_s
+    tag = bits.join(".")
+    @build_name=bits.join(".")
+    puts "BUild Name"
     puts @build_name
+    puts "Build Number"
     puts @build_number
 end
 
+desc "Tag the branch with the latest build"
+private_lane :tag_branch do |options|
+ bits = @build_name.split(".")
+ bits = bits.slice(0, 2)
+ add_git_tag(grouping: "build", prefix: "v" + bits.join(".") + ".", build_number: @build_number)
+end
+
+
 desc "Generate release notes"
 lane :release_notes do |options|
-    changelog = changelog_from_git_commits
+    get_build_name_and_build_number(OS: options[:OS])
+    changelog = changelog_from_git_commits(between: [@version_git_tag, "HEAD"])
     bits = changelog.split('\n')
     bits = bits.uniq
     changelog = bits.join('\n')
     "Release notes:\n#{changelog}"
     puts Dir.pwd
     if options[:OS]=="android"
-      get_build_name_and_build_number
       puts "build number = '#{@build_number}' #{Dir.pwd}"
 
       File.write("metadata/android/en-US/changelogs/#{@build_number}.txt", "#{changelog[0,500]}")

@@ -249,7 +249,11 @@ class Messages {
             desc:
                 'Something happened inside the login system, not a bad password',
             locale: locale);
+      case LoginFailedReason.Cancelled:
+        return Intl.message('Login Cancelled',
+            desc: 'Login was cancelled', locale: locale);
     }
+    return unknown;
   }
 
   String get passwordsnotmatching => Intl.message('Passwords must match',

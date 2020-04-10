@@ -40,6 +40,7 @@ platform :android do
         #skip_upload_screenshots: false,
         #skip_upload_images: false
       )
+      tag_branch(OS: "android")
     end
 
   #desc "Submit a new Beta Build to Crashlytics Beta"

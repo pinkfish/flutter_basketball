@@ -44,6 +44,7 @@ class LoginValidating extends LoginState {
 enum LoginFailedReason {
   BadPassword,
   InternalError,
+  Cancelled,
 }
 
 ///
@@ -344,7 +345,13 @@ class LoginAsGoogleUser extends LoginEvent {
 ///
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final FirebaseAnalytics analyticsSubsystem;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'profile',
+      'openid',
+    ],
+  );
 
   LoginBloc({@required this.analyticsSubsystem});
 
@@ -413,8 +420,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         AuthResult result =
             await FirebaseAuth.instance.signInWithCredential(credential);
         var user = result.user;
+        assert(!user.isAnonymous);
         if (user != null) {
-          print("Error logged in as $user");
+          assert(await user.getIdToken() != null);
+
+          final FirebaseUser currentUser =
+              await FirebaseAuth.instance.currentUser();
+          assert(user.uid == currentUser.uid);
+          print("Logged in as $user");
           analyticsSubsystem.logLogin();
           yield LoginSucceeded(userData: user);
         } else {
@@ -432,13 +445,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               yield LoginFailed(
                   userData: null, reason: LoginFailedReason.InternalError);
               break;
+            case 'sign_in_cancelled':
+              yield LoginFailed(
+                  userData: null, reason: LoginFailedReason.Cancelled);
+              break;
             default:
               break;
           }
         } else {
           // Failed to login, probably bad password.
           yield LoginFailed(
-              userData: null, reason: LoginFailedReason.BadPassword);
+              userData: null, reason: LoginFailedReason.InternalError);
         }
       }
     }

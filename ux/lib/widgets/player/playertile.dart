@@ -72,21 +72,14 @@ class PlayerTile extends StatelessWidget {
                 }
                 if (state is SinglePlayerUninitialized) {
                   if (compactDisplay) {
-                    return Text(Messages
-                        .of(context)
-                        .loading);
+                    return Text(Messages.of(context).loading);
                   }
                   return Card(
                     color: color,
                     shape: shape,
                     child: ListTile(
-                      title: Text(Messages
-                          .of(context)
-                          .loading,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .caption),
+                      title: Text(Messages.of(context).loading,
+                          style: Theme.of(context).textTheme.caption),
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -114,25 +107,20 @@ class PlayerTile extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     state.player.jerseyNumber,
-                                    style: Theme
-                                        .of(context)
+                                    style: Theme.of(context)
                                         .textTheme
                                         .caption
                                         .copyWith(
-                                      color: Theme
-                                          .of(context)
-                                          .accentColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.0,
-                                    ),
+                                          color: Theme.of(context).accentColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
                                   ),
                                 ),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      color: Theme
-                                          .of(context)
-                                          .primaryColor),
+                                      color: Theme.of(context).primaryColor),
                                 ),
                               ),
                             ),
@@ -156,53 +144,41 @@ class PlayerTile extends StatelessWidget {
                       onTap: onTap != null ? () => onTap(playerUid) : null,
                       title: Text(
                         state.player.name,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .headline6,
+                        style: Theme.of(context).textTheme.headline6,
                       ),
                       leading: ConstrainedBox(
                         constraints:
-                        BoxConstraints.tightFor(height: 40.0, width: 40.0),
+                            BoxConstraints.tightFor(height: 40.0, width: 40.0),
                         child: Container(
                           child: Center(
                             child: Text(
                               state.player.jerseyNumber,
                               style:
-                              Theme
-                                  .of(context)
-                                  .textTheme
-                                  .caption
-                                  .copyWith(
-                                color: Theme
-                                    .of(context)
-                                    .accentColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                              ),
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        color: Theme.of(context).accentColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                      ),
                             ),
                           ),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor),
+                                color: Theme.of(context).primaryColor),
                           ),
                         ),
                       ),
                       subtitle: summary != null
                           ? Text(
-                        Messages.of(context).seasonSummary(summary),
-                      )
+                              Messages.of(context).seasonSummary(summary),
+                            )
                           : null,
                       trailing: editButton
                           ? IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () =>
-                            Navigator.pushNamed(
-                                context, "/EditPlayer/" + state.player.uid),
-                      )
+                              icon: Icon(Icons.edit),
+                              onPressed: () => Navigator.pushNamed(
+                                  context, "/EditPlayer/" + state.player.uid),
+                            )
                           : null,
                     ),
                   );
@@ -211,9 +187,7 @@ class PlayerTile extends StatelessWidget {
                   color: color,
                   shape: shape,
                   child: ListTile(
-                    title: Text(Messages
-                        .of(context)
-                        .unknown),
+                    title: Text(Messages.of(context).unknown),
                     leading: Stack(
                       children: <Widget>[
                         Icon(MdiIcons.tshirtCrewOutline),

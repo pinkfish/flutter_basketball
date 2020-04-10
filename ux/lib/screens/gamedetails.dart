@@ -181,10 +181,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
               DateFormat("H:m MMM, d").format(state.game.eventTime.toLocal()) +
                   " at " +
                   state.game.location,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline5),
+              style: Theme.of(context).textTheme.headline5),
           Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

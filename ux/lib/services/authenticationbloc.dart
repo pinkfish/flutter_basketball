@@ -15,7 +15,7 @@ abstract class AuthenticationState extends Equatable {
   AuthenticationState({@required this.user});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [user?.email];
 }
 
 class AuthenticationUninitialized extends AuthenticationState {
@@ -123,15 +123,17 @@ class AuthenticationBloc
 
   AuthenticationState _updateWithUser(FirebaseUser user) {
     if (user.isEmailVerified) {
+      print("Verified user ${user.providerId ?? "frog"}");
       analyticsSubsystem.setUserId(user.uid);
       if (currentUser != null) {
         if (user == currentUser) {
           return null;
         }
       }
-
+      print("Email verified");
       return AuthenticationLoggedIn(user: user);
     } else {
+      print("Email not verified ${user.providerId ?? "frog"}");
       return AuthenticationLoggedInUnverified(user: user);
     }
   }

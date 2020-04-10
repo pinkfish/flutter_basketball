@@ -69,9 +69,7 @@ class StatsDrawer extends StatelessWidget {
                   children: <Widget>[
                     ListTile(
                       leading: Icon(MdiIcons.email),
-                      title: Text(Messages
-                          .of(context)
-                          .resendverifyButton),
+                      title: Text(Messages.of(context).resendverifyButton),
                       onTap: () {
                         BlocProvider.of<LoginBloc>(context)
                             .add(LoginEventResendEmail());
@@ -91,8 +89,7 @@ class StatsDrawer extends StatelessWidget {
                 );
               }
 
-              if (state is AuthenticationLoggedIn ||
-                  state is AuthenticationLoggedInUnverified) {
+              if (state is AuthenticationLoggedIn) {
                 return ListTile(
                   leading: Icon(MdiIcons.logout),
                   title: Text(Messages

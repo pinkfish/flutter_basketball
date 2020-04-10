@@ -49,6 +49,7 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   Future<void> open() async {
+    print("open database");
     //await deleteDatabase(join(await getDatabasesPath(), 'doggie_database.db'));
     // Open the database and store the reference.
     Database database = await openDatabase(

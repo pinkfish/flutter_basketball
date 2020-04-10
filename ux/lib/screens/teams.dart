@@ -23,6 +23,7 @@ class TeamsScreen extends StatelessWidget {
           child: BlocBuilder(
             bloc: BlocProvider.of<AuthenticationBloc>(context),
             builder: (BuildContext context, AuthenticationState state) {
+              print("State $state");
               if (state is AuthenticationLoggedInUnverified) {
                 // Say you need to verify first.
                 return Column(

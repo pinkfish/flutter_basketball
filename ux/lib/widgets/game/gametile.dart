@@ -42,15 +42,9 @@ class GameTile extends StatelessWidget {
         ),
         subtitle: Text(
           DateFormat("dd MMM hh:mm").format(game.eventTime.toLocal()),
-          style: Theme
-              .of(context)
-              .textTheme
-              .subtitle2
-              .copyWith(
-            color: Theme
-                .of(context)
-                .accentColor,
-          ),
+          style: Theme.of(context).textTheme.subtitle2.copyWith(
+                color: Theme.of(context).accentColor,
+              ),
           textScaleFactor: 1.2,
         ),
         onTap: this.onTap,
