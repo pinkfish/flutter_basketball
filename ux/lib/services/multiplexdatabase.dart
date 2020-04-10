@@ -18,22 +18,28 @@ class MultiplexDatabase extends BasketballDatabase {
   MultiplexDatabase(bool forceSql) {
     _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
+      bool oldSql = useSql;
       if (user != null) {
         _fs.userUid = user.uid;
         useSql = false || forceSql;
       } else {
         useSql = true;
       }
-      _controller.add(useSql);
+      if (oldSql != useSql) {
+        _controller.add(useSql);
+      }
     });
     FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
+      bool oldSql = useSql;
       if (user != null) {
         _fs.userUid = user.uid;
         useSql = false || forceSql;
       } else {
         useSql = true;
       }
-      _controller.add(useSql);
+      if (oldSql != useSql) {
+        _controller.add(useSql);
+      }
     });
     _sql.open().catchError((e, trace) {
       Crashlytics.instance.recordError(e, trace);

@@ -164,7 +164,10 @@ class AuthenticationBloc
     if (user != null) {
       add(_AuthenticationLogIn(user: user));
     } else {
-      add(_AuthenticationLogOut());
+      if (state is AuthenticationLoggedIn ||
+          state is AuthenticationLoggedInUnverified) {
+        add(_AuthenticationLogOut());
+      }
     }
   }
 }

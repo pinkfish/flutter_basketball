@@ -99,7 +99,7 @@ abstract class BasketballDatabase {
   Future<String> addPlayer({@required Player player});
 
   ///
-  /// Returns a stream that says if th underlying database
+  /// Returns a stream that says if the underlying database
   /// changed for some reason.
   ///
   Stream<bool> get onDatabaseChange;

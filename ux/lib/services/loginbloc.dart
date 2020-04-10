@@ -411,30 +411,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginValidating();
       try {
         final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final AuthCredential credential = GoogleAuthProvider.getCredential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        AuthResult result =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        var user = result.user;
-        assert(!user.isAnonymous);
-        if (user != null) {
-          assert(await user.getIdToken() != null);
+        if (googleUser != null) {
+          final GoogleSignInAuthentication googleAuth =
+              await googleUser.authentication;
+          final AuthCredential credential = GoogleAuthProvider.getCredential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
+          AuthResult result =
+              await FirebaseAuth.instance.signInWithCredential(credential);
+          var user = result.user;
+          assert(!user.isAnonymous);
+          if (user != null) {
+            assert(await user.getIdToken() != null);
 
-          final FirebaseUser currentUser =
-              await FirebaseAuth.instance.currentUser();
-          assert(user.uid == currentUser.uid);
-          print("Logged in as $user");
-          analyticsSubsystem.logLogin();
-          yield LoginSucceeded(userData: user);
+            final FirebaseUser currentUser =
+                await FirebaseAuth.instance.currentUser();
+            assert(user.uid == currentUser.uid);
+            print("Logged in as $user");
+            analyticsSubsystem.logLogin();
+            yield LoginSucceeded(userData: user);
+          } else {
+            print('Error: null usders...');
+
+            yield LoginFailed(
+                userData: null, reason: LoginFailedReason.BadPassword);
+          }
         } else {
-          print('Error: null usders...');
-
           yield LoginFailed(
-              userData: null, reason: LoginFailedReason.BadPassword);
+              userData: null, reason: LoginFailedReason.Cancelled);
         }
       } catch (error) {
         print('Error: $error');
