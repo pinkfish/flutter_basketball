@@ -341,13 +341,11 @@ class Messages {
   String get turnoversTitle =>
       Intl.message("T/O", desc: "Turnover abbreviation", locale: locale);
 
-  String get offensiveReboundTitle =>
-      Intl.message("O/RB",
-          desc: "Offensive rebound abbreviation", locale: locale);
+  String get offensiveReboundTitle => Intl.message("O/RB",
+      desc: "Offensive rebound abbreviation", locale: locale);
 
-  String get defensiveReboundTitle =>
-      Intl.message("D/RB",
-          desc: "Defensive rebound abbreviation", locale: locale);
+  String get defensiveReboundTitle => Intl.message("D/RB",
+      desc: "Defensive rebound abbreviation", locale: locale);
 
   String getUnverified(String name, bool unverified) {
     if (unverified) {
