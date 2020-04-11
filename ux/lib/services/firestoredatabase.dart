@@ -3,6 +3,7 @@ import 'package:basketballdata/data/game.dart';
 import 'package:basketballdata/data/gameevent.dart';
 import 'package:basketballdata/data/player.dart';
 import 'package:basketballdata/data/team.dart';
+import 'package:basketballdata/data/teamuser.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,7 @@ class FirestoreDatabase extends BasketballDatabase {
   static const String gameEventsTable = "GameEvents";
 
   static const String userUidField = "userUid";
+  static const String enabledField = "enabled";
 
   String userUid;
 
@@ -71,17 +73,19 @@ class FirestoreDatabase extends BasketballDatabase {
     var ref = Firestore.instance.collection(teamsTable).document();
     var seasonRef = Firestore.instance.collection(seasonsTable).document();
 
+    team = team.rebuild((b) => b..users[userUid] = TeamUser());
     var map = team
-        .rebuild((b) => b
-          ..uid = ref.documentID
-          ..currentSeasonUid = seasonRef.documentID)
+        .rebuild((b) =>
+    b
+      ..uid = ref.documentID
+      ..currentSeasonUid = seasonRef.documentID)
         .toMap();
-    map.putIfAbsent(userUidField, () => userUid);
     ref.setData(map);
     var seasonMap = season
-        .rebuild((b) => b
-          ..teamUid = ref.documentID
-          ..uid = seasonRef.documentID)
+        .rebuild((b) =>
+    b
+      ..teamUid = ref.documentID
+      ..uid = seasonRef.documentID)
         .toMap();
     seasonRef.setData(seasonMap);
     return ref.documentID;
@@ -192,7 +196,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Stream<BuiltList<Team>> getAllTeams() async* {
     Query q = Firestore.instance
         .collection(teamsTable)
-        .where(userUidField, isEqualTo: userUid);
+        .where("${userUidField}.${userUid}.${enabledField}", isEqualTo: true);
     QuerySnapshot snap = await q.getDocuments();
     print(snap.documents);
     yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>

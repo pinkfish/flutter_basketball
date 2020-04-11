@@ -3,71 +3,71 @@
   <testsuite name="fastlane.lanes">
 
 
-      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.011634">
+      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.134423">
 
       </testcase>
 
 
       <testcase classname="fastlane.lanes" name="01: Switch to android build_and_push_to_play_store_track lane"
-                time="0.002984">
+                time="0.00182">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="02: Switch to android release_notes lane" time="0.003351">
+      <testcase classname="fastlane.lanes" name="02: Switch to android release_notes lane" time="0.001476">
 
       </testcase>
 
 
       <testcase classname="fastlane.lanes" name="03: Switch to android get_build_name_and_build_number lane"
-                time="0.002676">
+                time="0.001442">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="04: number_of_commits" time="0.497561">
+      <testcase classname="fastlane.lanes" name="04: number_of_commits" time="0.566862">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="05: last_git_tag" time="0.029661">
+      <testcase classname="fastlane.lanes" name="05: last_git_tag" time="0.019158">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="06: last_git_tag" time="0.022375">
+      <testcase classname="fastlane.lanes" name="06: last_git_tag" time="0.018173">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="07: changelog_from_git_commits" time="0.016756">
+      <testcase classname="fastlane.lanes" name="07: changelog_from_git_commits" time="0.024181">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="08: git_add" time="0.016127">
+      <testcase classname="fastlane.lanes" name="08: git_add" time="0.245651">
 
       </testcase>
 
 
       <testcase classname="fastlane.lanes"
-                name="09: cd ../.. &amp;&amp; flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=0.2.164 --build-number=164"
-                time="1002.421122">
+                name="09: cd ../.. &amp;&amp; flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=0.2.168 --build-number=168"
+                time="451.551499">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="10: upload_to_play_store" time="126.802752">
+      <testcase classname="fastlane.lanes" name="10: upload_to_play_store" time="126.239193">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="11: Switch to android tag_branch lane" time="0.001747">
+      <testcase classname="fastlane.lanes" name="11: Switch to android tag_branch lane" time="0.001795">
 
       </testcase>
 
 
-      <testcase classname="fastlane.lanes" name="12: add_git_tag" time="1.075908">
+      <testcase classname="fastlane.lanes" name="12: add_git_tag" time="0.544889">
 
       </testcase>
 

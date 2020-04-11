@@ -1,3 +1,5 @@
+import 'package:basketballdata/data/teamuser.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -20,7 +22,10 @@ abstract class Team implements Built<Team, TeamBuilder> {
   @nullable
   String get currentSeasonUid;
 
+  BuiltMap<String, TeamUser> get users;
+
   Team._();
+
   factory Team([updates(TeamBuilder b)]) = _$Team;
 
   Map<String, dynamic> toMap() {

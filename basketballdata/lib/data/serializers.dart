@@ -15,11 +15,12 @@ import 'gameperiod.dart';
 import 'gamesummary.dart';
 import 'player.dart';
 import 'playergamesummary.dart';
-import 'playersummarydata.dart';
 import 'playerseasonsummary.dart';
+import 'playersummarydata.dart';
 import 'season.dart';
 import 'seasonsummary.dart';
 import 'team.dart';
+import 'teamuser.dart';
 
 part 'serializers.g.dart';
 
@@ -39,6 +40,7 @@ part 'serializers.g.dart';
   Season,
   SeasonSummary,
   Team,
+  TeamUser,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
