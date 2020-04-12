@@ -81,10 +81,9 @@ class FirestoreDatabase extends BasketballDatabase {
         .toMap();
     ref.setData(map);
     var seasonMap = season
-        .rebuild((b) =>
-    b
-      ..teamUid = ref.documentID
-      ..uid = seasonRef.documentID)
+        .rebuild((b) => b
+          ..teamUid = ref.documentID
+          ..uid = seasonRef.documentID)
         .toMap();
     seasonRef.setData(seasonMap);
     return ref.documentID;
