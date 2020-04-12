@@ -1,4 +1,4 @@
-package com.whelksoft.ux
+package com.whelksoft.basketballstats
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
