@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/season.dart';
@@ -49,6 +50,7 @@ class AddTeamBloc extends Bloc<AddTeamEvent, AddItemState> {
       } catch (e, s) {
         print(e);
         print(s);
+        Crashlytics.instance.recordError(e, s);
         yield AddItemSaveFailed(error: e);
       }
     }

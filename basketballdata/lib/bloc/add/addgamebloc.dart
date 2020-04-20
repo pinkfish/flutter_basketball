@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/game.dart';
@@ -47,7 +48,8 @@ class AddGameBloc extends Bloc<AddGameEvent, AddItemState> {
         String uid = await db.addGame(
             game: event.newGame.rebuild((b) => b.seasonUid = this.seasonUid));
         yield AddItemDone(uid: uid);
-      } catch (e) {
+      } catch (e, s) {
+        Crashlytics.instance.recordError(e, s);
         yield AddItemSaveFailed(error: e);
       }
     }

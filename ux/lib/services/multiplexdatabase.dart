@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class MultiplexDatabase extends BasketballDatabase {
-  final FirestoreDatabase _fs = FirestoreDatabase();
+  final FirestoreDatabase _fs;
   final SqlfliteDatabase _sql = SqlfliteDatabase();
   final StreamController<bool> _controller = StreamController<bool>();
   final FirebaseAnalytics analyticsSubsystem;
@@ -18,7 +18,8 @@ class MultiplexDatabase extends BasketballDatabase {
   Stream<bool> _stream;
   bool useSql = true;
 
-  MultiplexDatabase(bool forceSql, this.analyticsSubsystem) {
+  MultiplexDatabase(bool forceSql, this.analyticsSubsystem)
+      : _fs = FirestoreDatabase(analyticsSubsystem) {
     _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
       bool oldSql = useSql;
