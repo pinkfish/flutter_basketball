@@ -1,0 +1,2 @@
+Fix the basketball data and it it works with saving maps.
+Fix thw package name for the android activity.

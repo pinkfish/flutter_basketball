@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
     //_db.waitTillOpen();
 
     return RepositoryProvider<BasketballDatabase>(
-      create: (BuildContext context) => MultiplexDatabase(forceSql),
+      create: (BuildContext context) => MultiplexDatabase(forceSql, analytics),
       child: MultiBlocProvider(
         providers: <BlocProvider>[
           BlocProvider<TeamsBloc>(

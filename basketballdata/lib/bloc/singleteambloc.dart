@@ -4,6 +4,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -50,9 +51,9 @@ class SingleTeamLoaded extends SingleTeamBlocState {
 class SingleTeamSaving extends SingleTeamBlocState {
   SingleTeamSaving({@required SingleTeamBlocState singleTeamState})
       : super(
-      team: singleTeamState.team,
-      seasons: singleTeamState.seasons,
-      loadedSeasons: singleTeamState.loadedSeasons);
+            team: singleTeamState.team,
+            seasons: singleTeamState.seasons,
+            loadedSeasons: singleTeamState.loadedSeasons);
 
   @override
   String toString() {
@@ -233,8 +234,9 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
         } else {
           yield SingleTeamLoaded(state: state, team: event.team);
         }
-      } catch (e) {
-        yield SingleTeamSaveFailed(singleTeamState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleTeamSaveFailed(singleTeamState: state, error: error);
       }
     }
 
@@ -243,16 +245,18 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
       try {
         await db.addSeasonPlayer(
             seasonUid: event.seasonUid, playerUid: event.playerUid);
-      } catch (e) {
-        yield SingleTeamSaveFailed(singleTeamState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleTeamSaveFailed(singleTeamState: state, error: error);
       }
     }
 
     if (event is SingleTeamDelete) {
       try {
         await db.deleteTeam(teamUid: teamUid);
-      } catch (e) {
-        yield SingleTeamSaveFailed(singleTeamState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleTeamSaveFailed(singleTeamState: state, error: error);
       }
     }
 

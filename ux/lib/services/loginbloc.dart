@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
@@ -366,7 +367,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginInitial();
     }
     if (event is LoginEventReload) {
-      //userAuth.reload();
+      var user = await FirebaseAuth.instance.currentUser();
+      user.reload();
     }
     if (event is LoginEventLogout) {
       FirebaseAuth.instance.signOut();
@@ -386,15 +388,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (result.user != null) {
           signedIn = result.user;
         }
-      } catch (error) {
+      } catch (error, stack) {
         print('Error: $error');
+        Crashlytics.instance.recordError(error, stack);
         // Failed to login, probably bad password.
         yield LoginFailed(
             userData: signedIn, reason: LoginFailedReason.BadPassword);
       }
 
       if (signedIn != null) {
-        analyticsSubsystem.logLogin();
+        analyticsSubsystem.logLogin(loginMethod: "UserPassword");
         var user = await FirebaseAuth.instance.currentUser();
         // Reload the user.
         user.reload();
@@ -429,7 +432,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 await FirebaseAuth.instance.currentUser();
             assert(user.uid == currentUser.uid);
             print("Logged in as $user");
-            analyticsSubsystem.logLogin();
+            analyticsSubsystem.logLogin(loginMethod: "GoogleUser");
             yield LoginSucceeded(userData: user);
           } else {
             print('Error: null usders...');
@@ -441,7 +444,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginFailed(
               userData: null, reason: LoginFailedReason.Cancelled);
         }
-      } catch (error) {
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
         print('Error: $error');
         if (error is PlatformException) {
           switch (error.code) {
@@ -467,15 +471,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is LoginEventForgotPasswordSend) {
       yield LoginValidatingForgotPassword();
-
+      analyticsSubsystem.logEvent(name: "ForgotPassword");
       LoginEventForgotPasswordSend forgot = event;
       try {
         await FirebaseAuth.instance.sendPasswordResetEmail(email: forgot.email);
         yield LoginForgotPasswordDone();
-      } catch (error) {
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
         yield LoginForgotPasswordFailed(error: error);
       }
     }
+
     if (event is LoginEventSignupUser) {
       yield LoginValidatingSignup();
       LoginEventSignupUser signup = event;
@@ -492,7 +498,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginSignupSucceeded(userData: result.user);
           AuthResult newResult = await FirebaseAuth.instance
               .signInWithEmailAndPassword(
-                  email: signup.email, password: signup.password);
+              email: signup.email, password: signup.password);
           if (!newResult.user.isEmailVerified) {
             // Send a password verify email
             newResult.user.sendEmailVerification();
@@ -501,8 +507,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             yield LoginSucceeded(userData: newResult.user);
           }
         }
-      } catch (error) {
+      } catch (error, stack) {
         print("Error $error");
+        Crashlytics.instance.recordError(error, stack);
         yield LoginSignupFailed(userData: null);
       }
     }

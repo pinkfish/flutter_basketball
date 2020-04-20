@@ -245,7 +245,7 @@ class _PlayerListState extends State<PlayerList> {
     double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
-          context, "/GamePlayer/" + widget.game.uid + "/" + uid),
+          context, "/Game/Player/" + widget.game.uid + "/" + uid),
       child: Row(
         children: <Widget>[
           SizedBox(

@@ -4,6 +4,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -233,8 +234,9 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
         Player player = state.player;
         await db.deletePlayer(playerUid: player.uid);
         yield SinglePlayerDeleted();
-      } catch (e) {
-        yield SinglePlayerSaveFailed(singlePlayerState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SinglePlayerSaveFailed(singlePlayerState: state, error: error);
       }
     }
 
@@ -245,8 +247,9 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
         Player player = event.player;
         await db.updatePlayer(player: player);
         yield SinglePlayerSaveSuccessful(singlePlayerState: state);
-      } catch (e) {
-        yield SinglePlayerSaveFailed(singlePlayerState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SinglePlayerSaveFailed(singlePlayerState: state, error: error);
       }
     }
 

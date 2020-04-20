@@ -125,7 +125,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                       label: Text(Messages.of(context).statsButton),
                       onPressed: () => Navigator.pushNamed(
                           context,
-                          "/GameStats/" +
+                          "/Game/Stats/" +
                               widget.state.game.uid +
                               "/" +
                               widget.state.game.seasonUid),

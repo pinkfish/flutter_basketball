@@ -20,7 +20,7 @@ class SplashScreen extends StatelessWidget {
         bloc: BlocProvider.of<TeamsBloc>(context),
         listener: (BuildContext context, TeamsBlocState state) {
           if (state is TeamsBlocLoaded) {
-            Navigator.popAndPushNamed(context, "/Teams");
+            Navigator.popAndPushNamed(context, "/Team/List");
           }
         },
         child: Container(

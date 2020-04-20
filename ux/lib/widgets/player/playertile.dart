@@ -177,7 +177,7 @@ class PlayerTile extends StatelessWidget {
                           ? IconButton(
                               icon: Icon(Icons.edit),
                               onPressed: () => Navigator.pushNamed(
-                                  context, "/EditPlayer/" + state.player.uid),
+                                  context, "/Player/Edit/" + state.player.uid),
                             )
                           : null,
                     ),

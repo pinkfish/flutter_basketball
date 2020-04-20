@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
 ///
@@ -152,8 +153,9 @@ class AuthenticationBloc
     if (event is _AuthenticationLogOut) {
       try {
         await FirebaseAuth.instance.signOut();
-      } catch (e) {
-        print("Error $e");
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        print("Error $error");
       }
       // Finished logging out.
       yield AuthenticationLoggedOut();

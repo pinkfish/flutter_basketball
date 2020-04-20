@@ -6,6 +6,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -246,8 +247,9 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
         } else {
           yield SingleSeasonLoaded(state: state, season: event.season);
         }
-      } catch (e) {
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
 
@@ -260,8 +262,9 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
         } else {
           yield SingleSeasonLoaded(state: state);
         }
-      } catch (e) {
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
 
@@ -274,16 +277,18 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
         } else {
           yield SingleSeasonLoaded(state: state);
         }
-      } catch (e) {
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
 
     if (event is SingleSeasonDelete) {
       try {
         await db.deleteSeason(seasonUid: seasonUid);
-      } catch (e) {
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
 

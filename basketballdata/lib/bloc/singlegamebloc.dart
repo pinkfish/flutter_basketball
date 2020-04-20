@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -356,8 +357,9 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         Game game = event.game;
         await db.updateGame(game: game);
         yield SingleGameLoaded(game: event.game, state: state);
-      } catch (e) {
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
 
@@ -368,9 +370,10 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
         await db.addGameEvent(
             event: event.event.rebuild((b) => b..gameUid = this.gameUid));
-      } catch (e) {
-        print(e);
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        print(error);
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
 
@@ -378,8 +381,9 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameRemoveEvent) {
       try {
         await db.deleteGameEvent(gameEventUid: event.eventUid);
-      } catch (e) {
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
 
@@ -403,8 +407,9 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
             gameUid: gameUid,
             playerUid: event.playerUid,
             opponent: event.opponent);
-      } catch (e) {
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
 
@@ -413,15 +418,16 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       yield SingleGameSaving(singleGameState: state);
       try {
         for (MapEntry<String, PlayerSummaryWithOpponent> entry
-            in event.summary.entries) {
+        in event.summary.entries) {
           await db.updateGamePlayerData(
               gameUid: gameUid,
               opponent: entry.value.opponent,
               summary: entry.value.summary,
               playerUid: entry.key);
         }
-      } catch (e) {
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
     // Removes a player from the game.
@@ -432,8 +438,9 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
             gameUid: gameUid,
             playerUid: event.playerUid,
             opponent: event.opponent);
-      } catch (e) {
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
 
@@ -441,8 +448,9 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameDelete) {
       try {
         await db.deleteGame(gameUid: gameUid);
-      } catch (e) {
-        yield SingleGameSaveFailed(singleGameState: state, error: e);
+      } catch (error, stack) {
+        Crashlytics.instance.recordError(error, stack);
+        yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
     }
   }

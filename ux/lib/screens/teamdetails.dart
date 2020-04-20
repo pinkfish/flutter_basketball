@@ -69,7 +69,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 loadGames: _expandedPanels.contains(g.uid),
                 initiallyExpanded: _expandedPanels.contains(g.uid),
                 onGameTapped: (String gameUid) =>
-                    Navigator.pushNamed(context, "/Game/" + gameUid),
+                    Navigator.pushNamed(context, "/Game/View/" + gameUid),
               ),
             )
             .toList(),
@@ -87,7 +87,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           trailing: IconButton(
             icon: Icon(Icons.edit),
             onPressed: () =>
-                Navigator.pushNamed(context, "/EditTeam/" + widget.teamUid),
+                Navigator.pushNamed(context, "/Team/Edit/" + widget.teamUid),
           ),
         ),
         SizedBox(height: 5.0),
@@ -113,37 +113,32 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         ),
         SingleChildScrollView(
           child: BlocProvider(
-            create: (BuildContext context) =>
-                SingleSeasonBloc(
-                    db: RepositoryProvider.of<BasketballDatabase>(context),
-                    seasonUid: _seasonPlayers),
+            create: (BuildContext context) => SingleSeasonBloc(
+                db: RepositoryProvider.of<BasketballDatabase>(context),
+                seasonUid: _seasonPlayers),
             child: Builder(
-              builder: (BuildContext context) =>
-                  BlocBuilder(
-                    bloc: BlocProvider.of<SingleSeasonBloc>(context),
-                    builder: (BuildContext context,
-                        SingleSeasonBlocState state) {
-                      if (state is SingleSeasonUninitialized) {
-                        return LoadingWidget();
-                      }
-                      if (state is SingleSeasonDeleted) {
-                        return DeletedWidget();
-                      }
-                      return Column(
-                        children: state.season.playerUids.keys
-                            .map((String str) =>
-                            PlayerTile(
+              builder: (BuildContext context) => BlocBuilder(
+                bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                builder: (BuildContext context, SingleSeasonBlocState state) {
+                  if (state is SingleSeasonUninitialized) {
+                    return LoadingWidget();
+                  }
+                  if (state is SingleSeasonDeleted) {
+                    return DeletedWidget();
+                  }
+                  return Column(
+                    children: state.season.playerUids.keys
+                        .map((String str) => PlayerTile(
                               playerUid: str,
                               editButton: true,
                               summary: state.season.playerUids[str],
-                              onTap: (String playerUid) =>
-                                  Navigator.pushNamed(
-                                      context, "/Player/" + str),
+                              onTap: (String playerUid) => Navigator.pushNamed(
+                                  context, "/Player/View/" + str),
                             ))
-                            .toList(),
-                      );
-                    },
-                  ),
+                        .toList(),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -293,7 +288,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             ),
       );
     } else {
-      Navigator.pushNamed(context, "/AddGame/" + seasonUid);
+      Navigator.pushNamed(context, "/Game/Add/" + seasonUid);
     }
   }
 

@@ -97,7 +97,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
                     icon: Icon(Icons.edit),
                     label: Text(Messages.of(context).editButton),
                     onPressed: () => Navigator.pushNamed(
-                        context, "/EditPlayer/" + state.player.uid),
+                        context, "/Player/Edit/" + state.player.uid),
                   ),
           ),
         );

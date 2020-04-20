@@ -83,6 +83,6 @@ class TeamsScreen extends StatelessWidget {
   }
 
   void _addTeam(BuildContext context) {
-    Navigator.pushNamed(context, "/AddTeam");
+    Navigator.pushNamed(context, "/Team/Add");
   }
 }

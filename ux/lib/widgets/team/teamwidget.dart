@@ -57,7 +57,7 @@ class TeamWidget extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    Navigator.pushNamed(context, "/Team/" + team.uid);
+    Navigator.pushNamed(context, "/Team/View/" + team.uid);
   }
 }
 
@@ -75,22 +75,14 @@ class _TeamSummary extends StatelessWidget {
         builder: (BuildContext context, SingleTeamBlocState state) {
           if (state is SingleTeamLoaded && !state.loadedSeasons ||
               state is SingleTeamUninitialized) {
-            return Text(Messages
-                .of(context)
-                .loading,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .subtitle1);
+            return Text(Messages.of(context).loading,
+                style: Theme.of(context).textTheme.subtitle1);
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(Messages.of(context).playedSeasons(state.seasons.length),
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .subtitle1),
+                  style: Theme.of(context).textTheme.subtitle1),
             ],
           );
         });

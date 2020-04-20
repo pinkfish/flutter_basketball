@@ -53,7 +53,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
                     child: GameTile(
                       game: g,
                       onTap: () =>
-                          Navigator.pushNamed(context, "/Season/" + g.uid),
+                          Navigator.pushNamed(context, "/Season/View/" + g.uid),
                     )),
               )
               .toList(),
@@ -74,7 +74,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
               trailing: IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () => Navigator.pushNamed(
-                    context, "/EditSeason/" + widget.seasonUid),
+                    context, "/Season/Edit/" + widget.seasonUid),
               ),
             ),
           ),
@@ -92,9 +92,9 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
       return ListView(
         children: state.season.playerUids.keys
             .map((String str) => PlayerTile(
-                  playerUid: str,
-                  onTap: (String playerUid) =>
-                      Navigator.pushNamed(context, "/Player/" + str),
+          playerUid: str,
+          onTap: (String playerUid) =>
+              Navigator.pushNamed(context, "/Player/View/" + str),
                 ))
             .toList(),
       );
@@ -218,7 +218,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
         ),
       );
     } else {
-      Navigator.pushNamed(context, "/AddGame/" + seasonUid);
+      Navigator.pushNamed(context, "/Game/Add/" + seasonUid);
     }
   }
 

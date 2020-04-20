@@ -5,6 +5,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/firestoredatabase.dart';
 import 'package:basketballstats/services/sqflitedatabase.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
@@ -12,10 +13,12 @@ class MultiplexDatabase extends BasketballDatabase {
   final FirestoreDatabase _fs = FirestoreDatabase();
   final SqlfliteDatabase _sql = SqlfliteDatabase();
   final StreamController<bool> _controller = StreamController<bool>();
+  final FirebaseAnalytics analyticsSubsystem;
+
   Stream<bool> _stream;
   bool useSql = true;
 
-  MultiplexDatabase(bool forceSql) {
+  MultiplexDatabase(bool forceSql, this.analyticsSubsystem) {
     _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
       bool oldSql = useSql;
@@ -26,6 +29,8 @@ class MultiplexDatabase extends BasketballDatabase {
         useSql = true;
       }
       if (oldSql != useSql) {
+        analyticsSubsystem
+            .logEvent(name: "FirestoreDB", parameters: {"enabled": useSql});
         _controller.add(useSql);
       }
     });
@@ -38,6 +43,8 @@ class MultiplexDatabase extends BasketballDatabase {
         useSql = true;
       }
       if (oldSql != useSql) {
+        analyticsSubsystem
+            .logEvent(name: "FirestoreDB", parameters: {"enabled": useSql});
         _controller.add(useSql);
       }
     });

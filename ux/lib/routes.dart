@@ -31,44 +31,44 @@ class AppRouter {
 
   static Router _setupRoutes() {
     Router router = Router();
-    router.define("/Home",
+    router.define("/Home/Splash",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 SplashScreen()));
-    router.define("/Teams",
+    router.define("/Team/List",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 TeamsScreen()));
-    router.define("/AddTeam",
+    router.define("/Team/Add",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 AddTeamScreen()));
-    router.define("/AddGame/:id",
+    router.define("/Game/Add/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 AddGameScreen(seasonUid: vals["id"][0].toString())));
-    router.define("/Team/:id",
+    router.define("/Team/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 TeamDetailsScreen(teamUid: vals["id"][0].toString())));
-    router.define("/Game/:id",
+    router.define("/Game/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GameDetailsScreen(vals["id"][0].toString())));
-    router.define("/Player/:id",
+    router.define("/Player/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 PlayerDetailsScreen(vals["id"][0].toString())));
-    router.define("/EditPlayer/:id",
+    router.define("/Player/Edit/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 EditPlayerScreen(vals["id"][0].toString())));
-    router.define("/GameStats/:id/:season/:team",
+    router.define("/Game/Stats/:id/:season/:team",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GameStatsScreen(vals["id"][0].toString(),
                     vals["season"][0].toString(), vals["team"][0].toString())));
-    router.define("/GamePlayer/:game/:player",
+    router.define("/Game/Player/:game/:player",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GamePlayerDetailsScreen(
