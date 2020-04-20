@@ -264,28 +264,21 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     if (s.playerUids.isEmpty) {
       showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            AlertDialog(
-              title: Text(Messages
-                  .of(context)
-                  .noPlayers),
-              content: Text(
-                Messages
-                    .of(context)
-                    .noPlayersForSeasonDialog,
-                softWrap: true,
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text(MaterialLocalizations
-                      .of(context)
-                      .okButtonLabel),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(Messages.of(context).noPlayers),
+          content: Text(
+            Messages.of(context).noPlayersForSeasonDialog,
+            softWrap: true,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(MaterialLocalizations.of(context).okButtonLabel),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
+          ],
+        ),
       );
     } else {
       Navigator.pushNamed(context, "/Game/Add/" + seasonUid);
@@ -296,7 +289,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     showDialog<Tuple2<String, String>>(
         context: context,
         builder: (BuildContext context) => AddPlayerSeasonScreen(
-          defaultSeasonUid: _seasonPlayers,
+              defaultSeasonUid: _seasonPlayers,
             )).then((FutureOr<Tuple2<String, String>> playerUid) async {
       if (playerUid == null) {
         // Canceled.

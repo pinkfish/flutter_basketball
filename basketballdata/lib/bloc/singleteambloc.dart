@@ -70,9 +70,9 @@ class SingleTeamSaveFailed extends SingleTeamBlocState {
   SingleTeamSaveFailed(
       {@required SingleTeamBlocState singleTeamState, this.error})
       : super(
-      team: singleTeamState.team,
-      seasons: singleTeamState.seasons,
-      loadedSeasons: singleTeamState.loadedSeasons);
+            team: singleTeamState.team,
+            seasons: singleTeamState.seasons,
+            loadedSeasons: singleTeamState.loadedSeasons);
 
   @override
   String toString() {

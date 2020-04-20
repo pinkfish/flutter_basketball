@@ -92,9 +92,9 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
       return ListView(
         children: state.season.playerUids.keys
             .map((String str) => PlayerTile(
-          playerUid: str,
-          onTap: (String playerUid) =>
-              Navigator.pushNamed(context, "/Player/View/" + str),
+                  playerUid: str,
+                  onTap: (String playerUid) =>
+                      Navigator.pushNamed(context, "/Player/View/" + str),
                 ))
             .toList(),
       );

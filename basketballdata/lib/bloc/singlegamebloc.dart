@@ -418,7 +418,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
       yield SingleGameSaving(singleGameState: state);
       try {
         for (MapEntry<String, PlayerSummaryWithOpponent> entry
-        in event.summary.entries) {
+            in event.summary.entries) {
           await db.updateGamePlayerData(
               gameUid: gameUid,
               opponent: entry.value.opponent,

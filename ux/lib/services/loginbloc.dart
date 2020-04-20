@@ -498,7 +498,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           yield LoginSignupSucceeded(userData: result.user);
           AuthResult newResult = await FirebaseAuth.instance
               .signInWithEmailAndPassword(
-              email: signup.email, password: signup.password);
+                  email: signup.email, password: signup.password);
           if (!newResult.user.isEmailVerified) {
             // Send a password verify email
             newResult.user.sendEmailVerification();
