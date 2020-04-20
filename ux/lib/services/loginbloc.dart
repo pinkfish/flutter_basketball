@@ -459,6 +459,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   userData: null, reason: LoginFailedReason.Cancelled);
               break;
             default:
+              yield LoginFailed(
+                  userData: null, reason: LoginFailedReason.InternalError);
               break;
           }
         } else {

@@ -17,6 +17,7 @@ class FirestoreDatabase extends BasketballDatabase {
   static const String gameEventsTable = "GameEvents";
 
   static const String userUidField = "userUid";
+  static const String usersField = "users";
   static const String enabledField = "enabled";
 
   final FirebaseAnalytics analytics;
@@ -204,10 +205,14 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   Map<String, dynamic> _fixTeamSnapshot(Map<String, dynamic> snap) {
-    for (var data in snap["playerUids"].keys) {
-      if (snap["playerUids"][data] == true) {
-        snap["playerUids"][data] = PlayerSeasonSummary().toMap();
+    if (snap.containsKey("playerUids")) {
+      for (var data in snap["playerUids"].keys) {
+        if (snap["playerUids"][data] == true) {
+          snap["playerUids"][data] = PlayerSeasonSummary().toMap();
+        }
       }
+    } else {
+      print("No playerUids $snap");
     }
 
     return snap;
@@ -217,7 +222,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Stream<BuiltList<Team>> getAllTeams() async* {
     Query q = Firestore.instance
         .collection(teamsTable)
-        .where("${userUidField}.${userUid}.${enabledField}", isEqualTo: true);
+        .where("${usersField}.${userUid}.${enabledField}", isEqualTo: true);
     QuerySnapshot snap = await q.getDocuments();
     print(snap.documents);
     yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>
