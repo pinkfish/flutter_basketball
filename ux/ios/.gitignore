@@ -2,6 +2,7 @@
 *.mode2v3
 *.moved-aside
 *.pbxuser
+*.cer
 *.perspectivev3
 **/*sync/
 .sconsign.dblite
