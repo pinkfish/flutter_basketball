@@ -1,3 +1,4 @@
+import 'package:basketballdata/data/user.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
 
@@ -30,6 +31,9 @@ abstract class BasketballDatabase {
   /// Gets all the updates for this speific season.
   Stream<Season> getSeason({@required String seasonUid});
 
+  /// Gets all the updates for this speific user.
+  Stream<User> getUser({@required String userUid});
+
   /// Loads all the game events for this game.
   Stream<BuiltList<GameEvent>> getGameEvents({@required String gameUid});
 
@@ -51,6 +55,9 @@ abstract class BasketballDatabase {
   /// Adds a new season into the database
   Future<String> addSeason({@required String teamUid, @required Season season});
 
+  // Adds a user into the database
+  Future<String> addUser({@required User user});
+
   /// Updates the team in the database.
   Future<void> updateTeam({@required Team team});
 
@@ -59,6 +66,9 @@ abstract class BasketballDatabase {
 
   /// Updates the season in the database.
   Future<void> updateSeason({@required Season season});
+
+  /// Updates the season in the database.
+  Future<void> updateUser({@required User user});
 
   /// Updates the game in the database.
   Future<void> updateGamePlayerData(

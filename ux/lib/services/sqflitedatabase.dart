@@ -623,6 +623,24 @@ class SqlfliteDatabase extends BasketballDatabase {
 
   @override
   Stream<bool> get onDatabaseChange => null;
+
+  // Cannot add a user when using the sql db.
+  @override
+  Future<String> addUser({User user}) {
+    throw UnimplementedError();
+  }
+
+  // Cannot get a user when using the sql db.
+  @override
+  Stream<User> getUser({String userUid}) async* {
+    yield null;
+  }
+
+  // Cannot update a user when using the sql db.
+  @override
+  Future<void> updateUser({User user}) {
+    throw UnimplementedError();
+  }
 }
 
 ///

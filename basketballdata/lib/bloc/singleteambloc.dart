@@ -62,6 +62,22 @@ class SingleTeamSaving extends SingleTeamBlocState {
 }
 
 ///
+/// Saving operation is successful.
+///
+class SingleTeamSaveSuccessful extends SingleTeamBlocState {
+  SingleTeamSaveSuccessful({@required SingleTeamBlocState singleTeamState})
+      : super(
+            team: singleTeamState.team,
+            seasons: singleTeamState.seasons,
+            loadedSeasons: singleTeamState.loadedSeasons);
+
+  @override
+  String toString() {
+    return 'SingleTeamSaveSuccessful{}';
+  }
+}
+
+///
 /// Saving operation failed (goes back to loaded for success).
 ///
 class SingleTeamSaveFailed extends SingleTeamBlocState {
@@ -231,7 +247,10 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
         Team team = event.team;
         if (team != state.team) {
           await db.updateTeam(team: team);
+          // This will get overridden by the loaded event right afterwards.
+          yield SingleTeamSaveSuccessful(singleTeamState: state);
         } else {
+          yield SingleTeamSaveSuccessful(singleTeamState: state);
           yield SingleTeamLoaded(state: state, team: event.team);
         }
       } catch (error, stack) {

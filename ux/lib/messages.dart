@@ -34,6 +34,12 @@ class Messages {
   String get addTeamTooltip => Intl.message("Add Team",
       desc: "Message to on the tooltip to add a team", locale: locale);
 
+  String get addUserButton => Intl.message("Add User",
+      desc: "Button to add a user to a team", locale: locale);
+
+  String get usersTitle => Intl.message("Users",
+      desc: "Title of the users section in the team details", locale: locale);
+
   String get addGameTooltip => Intl.message("Add Game",
       desc: "Message to on the tooltip to add a game", locale: locale);
 

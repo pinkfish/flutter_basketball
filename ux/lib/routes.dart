@@ -14,6 +14,7 @@ import 'screens/login/verifyemail.dart';
 import 'screens/playerdetails.dart';
 import 'screens/splashscreen.dart';
 import 'screens/teamdetails.dart';
+import 'screens/teamedit.dart';
 import 'screens/teams.dart';
 
 ///
@@ -51,6 +52,10 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 TeamDetailsScreen(teamUid: vals["id"][0].toString())));
+    router.define("/Team/Edit/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                TeamEditScreen(teamUid: vals["id"][0].toString())));
     router.define("/Game/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

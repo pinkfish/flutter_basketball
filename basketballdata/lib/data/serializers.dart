@@ -21,6 +21,7 @@ import 'season.dart';
 import 'seasonsummary.dart';
 import 'team.dart';
 import 'teamuser.dart';
+import 'user.dart';
 
 part 'serializers.g.dart';
 
@@ -41,6 +42,7 @@ part 'serializers.g.dart';
   SeasonSummary,
   Team,
   TeamUser,
+  User,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

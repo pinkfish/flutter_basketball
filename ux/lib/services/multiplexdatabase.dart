@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/data/user.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/firestoredatabase.dart';
 import 'package:basketballstats/services/sqflitedatabase.dart';
@@ -302,5 +303,29 @@ class MultiplexDatabase extends BasketballDatabase {
       return _sql.getSeasonGames(seasonUid: seasonUid);
     else
       return _fs.getSeasonGames(seasonUid: seasonUid);
+  }
+
+  @override
+  Future<String> addUser({User user}) {
+    if (useSql)
+      return _sql.addUser(user: user);
+    else
+      return _fs.addUser(user: user);
+  }
+
+  @override
+  Stream<User> getUser({String userUid}) {
+    if (useSql)
+      return _sql.getUser(userUid: userUid);
+    else
+      return _fs.getUser(userUid: userUid);
+  }
+
+  @override
+  Future<void> updateUser({User user}) {
+    if (useSql)
+      return _sql.updateUser(user: user);
+    else
+      return _fs.updateUser(user: user);
   }
 }

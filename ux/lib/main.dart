@@ -53,8 +53,9 @@ class MyApp extends StatelessWidget {
                 AuthenticationBloc(analyticsSubsystem: analytics),
           ),
           BlocProvider<LoginBloc>(
-            create: (BuildContext context) =>
-                LoginBloc(analyticsSubsystem: analytics),
+            create: (BuildContext context) => LoginBloc(
+                analyticsSubsystem: analytics,
+                db: RepositoryProvider.of<BasketballDatabase>(context)),
           )
         ],
         child: MaterialApp(

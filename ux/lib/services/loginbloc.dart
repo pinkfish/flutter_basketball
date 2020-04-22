@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -346,6 +348,7 @@ class LoginAsGoogleUser extends LoginEvent {
 ///
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final FirebaseAnalytics analyticsSubsystem;
+  final BasketballDatabase db;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -354,7 +357,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ],
   );
 
-  LoginBloc({@required this.analyticsSubsystem});
+  LoginBloc({@required this.analyticsSubsystem, @required this.db});
 
   @override
   LoginState get initialState {
@@ -401,6 +404,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         var user = await FirebaseAuth.instance.currentUser();
         // Reload the user.
         user.reload();
+        await db.addUser(
+            user: User((b) => b
+              ..uid = user.uid
+              ..email = user.email
+              ..name = user.displayName));
         if (!signedIn.isEmailVerified) {
           yield LoginEmailNotValidated(userData: signedIn);
         } else {
@@ -431,6 +439,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             final FirebaseUser currentUser =
                 await FirebaseAuth.instance.currentUser();
             assert(user.uid == currentUser.uid);
+            await db.addUser(
+                user: User((b) => b
+                  ..uid = user.uid
+                  ..email = user.email
+                  ..name = user.displayName));
+
             print("Logged in as $user");
             analyticsSubsystem.logLogin(loginMethod: "GoogleUser");
             yield LoginSucceeded(userData: user);
@@ -501,6 +515,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           AuthResult newResult = await FirebaseAuth.instance
               .signInWithEmailAndPassword(
                   email: signup.email, password: signup.password);
+          // Put in the data into the basketball db too.
+          await db.addUser(
+              user: User((b) => b
+                ..uid = newResult.user.uid
+                ..email = newResult.user.email
+                ..name = newResult.user.displayName));
           if (!newResult.user.isEmailVerified) {
             // Send a password verify email
             newResult.user.sendEmailVerification();
