@@ -45,6 +45,7 @@ jobs:
       with:
         lane: beta
         subdirectory: ux/ios
+        bundle-install-path: ux/ios/packages 
       env:
         FASTLANE_SESSION: ${{ secrets.appleFastlaneSession }}
     - uses: matheusalbino/git-commit@v1.0.1
