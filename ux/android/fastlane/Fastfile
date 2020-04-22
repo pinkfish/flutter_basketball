@@ -43,6 +43,35 @@ platform :android do
       tag_branch(OS: "android")
     end
 
+   desc "Build and push to play store track"
+    private_lane :build_and_push_to_play_store_track_github do |options|
+      github_api_token = ENV["FL_GITHUB_RELEASE_API_TOKEN"]
+      UI.user_error!("Please provide a GitHub API token using `FL_GITHUB_RELEASE_API_TOKEN`") if github_api_token.to_s.length == 0
+      @build_number=number_of_commits()
+      @build_name=options[:version].delete("v")
+      release=get_github_release(url: "pinkfish/flutter_basketball", version: options[:version], api_token: github_api_token)
+      body = release["body"]
+      File.write("metadata/android/en-US/changelogs/#{@build_number}.txt", "#{body[0,500]}")
+      puts body
+      begin
+       git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
+     rescue => error
+        puts error
+        puts "File already added"
+      end
+
+      sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
+      upload_to_play_store(
+        track: options[:track],
+        aab: '../build/app/outputs/bundle/release/app-release.aab',
+        json_key_data: ENV['GOOGLE_DEVELOPER_SERVICE_ACCOUNT_ACTOR_FASTLANE'],
+        #skip_upload_screenshots: false,
+        #skip_upload_images: false
+      )
+      tag_branch(OS: "android")
+    end
+
+
   #desc "Submit a new Beta Build to Crashlytics Beta"
   #lane :crashalytics do
   #  gradle(task: "clean assembleRelease")
@@ -59,9 +88,9 @@ platform :android do
       build_and_push_to_play_store_track(track: "beta")
   end
 
-  desc "Submit a new Beta Build to App store"
-  lane :alpha do
-      build_and_push_to_play_store_track(track: "alpha")
+  desc "Submit a new Alpha Build to App store"
+  lane :alpha do [options]
+      build_and_push_to_play_store_track_github(track: "alpha", version: options[:version)
   end
 
   desc "Deploy a new version to the Google Play"
