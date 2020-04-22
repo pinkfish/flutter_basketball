@@ -43,7 +43,6 @@ dependencies:
       path: charts_flutter
 
   # For doing things with video
-  flutter_rtmp_publisher: ^0.0.1
   video_player: 0.10.9
 
 dev_dependencies:
