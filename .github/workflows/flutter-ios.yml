@@ -1,13 +1,8 @@
 name: Flutter - ios
 
 on: 
-  push:
-    branches: [master]
-    paths: 
-      - ux/**
-      - firebasedata/**
-      -  .github/workflows/flutter-ios.yml
-
+  release:
+    types: [created,edited]
 
 jobs:
   build:
@@ -45,7 +40,8 @@ jobs:
       with:
         lane: beta
         subdirectory: ux/ios
-        bundle-install-path: ux/ios/packages 
+        bundle-install-path: ux/ios/packages
+        options: '{"version": "${{ github.ref }}"}'
       env:
         FASTLANE_SESSION: ${{ secrets.appleFastlaneSession }}
     - uses: matheusalbino/git-commit@v1.0.1
