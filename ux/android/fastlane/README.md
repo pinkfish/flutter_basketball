@@ -38,7 +38,7 @@ Submit a new Beta Build to App store
 ```
 fastlane android alpha
 ```
-Submit a new Beta Build to App store
+Submit a new Alpha Build to App store
 ### android deploy
 ```
 fastlane android deploy

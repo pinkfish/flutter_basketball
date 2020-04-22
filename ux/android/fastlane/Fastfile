@@ -89,8 +89,8 @@ platform :android do
   end
 
   desc "Submit a new Alpha Build to App store"
-  lane :alpha do [options]
-      build_and_push_to_play_store_track_github(track: "alpha", version: options[:version)
+  lane :alpha do |options|
+      build_and_push_to_play_store_track_github(track: "alpha", version: options[:version])
   end
 
   desc "Deploy a new version to the Google Play"
