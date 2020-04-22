@@ -3,6 +3,7 @@
 *.moved-aside
 *.pbxuser
 *.cer
+*.ipa
 *.perspectivev3
 **/*sync/
 .sconsign.dblite
