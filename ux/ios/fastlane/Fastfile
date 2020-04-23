@@ -39,10 +39,16 @@ platform :ios do
       build_number: latest_testflight_build_number + 1,
       xcodeproj: "Runner.xcodeproj"
     )
-    commit_version_bump(
-      message: "Version Bump",
-      xcodeproj: "./Runner.xcodeproj",
-    )
+    begin
+      commit_version_bump(
+        message: "Version Bump",
+        xcodeproj: "./Runner.xcodeproj",
+      )
+    rescue => error
+      puts error
+      puts "Error commiting version number"
+    end
+
     get_certificates           # invokes cert
     get_provisioning_profile   # invokes sigh
     release=get_github_release(url: "pinkfish/flutter_basketball", version: options[:version], api_token: github_api_token)
