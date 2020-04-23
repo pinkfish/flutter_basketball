@@ -28,6 +28,10 @@ abstract class Game implements Built<Game, GameBuilder> {
 
   String get teamUid;
 
+  String get playbackUrl;
+
+  String get streamingUrl;
+
   /// Summary for this specific player.
   BuiltMap<String, PlayerGameSummary> get players;
 

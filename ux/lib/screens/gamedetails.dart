@@ -90,17 +90,21 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.graph),
-              title: Text(Messages.of(context).stats)),
+            icon: Icon(MdiIcons.graph),
+            title: Text(Messages.of(context).stats),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              title: Text(Messages.of(context).players)),
+            icon: Icon(Icons.people),
+            title: Text(Messages.of(context).players),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.chartLine),
-              title: Text(Messages.of(context).timeline)),
+            icon: Icon(MdiIcons.chartLine),
+            title: Text(Messages.of(context).timeline),
+          ),
           BottomNavigationBarItem(
-              icon: Icon(MdiIcons.scatterPlot),
-              title: Text(Messages.of(context).shots)),
+            icon: Icon(MdiIcons.scatterPlot),
+            title: Text(Messages.of(context).shots),
+          ),
         ],
         onTap: (int index) => setState(() => _currentIndex = index),
       ),

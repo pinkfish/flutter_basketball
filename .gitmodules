@@ -1,0 +1,3 @@
+[submodule "FlutterRtmpPlublisher"]
+	path = FlutterRtmpPlublisher
+	url = https://github.com/pinkfish/FlutterRtmpPlublisher.git

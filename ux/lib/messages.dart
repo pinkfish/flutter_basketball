@@ -169,6 +169,18 @@ class Messages {
   String get players => Intl.message("Players",
       desc: "Used when the data is unknown", locale: locale);
 
+  String get video =>
+      Intl.message("Video", desc: "Shows video for the game", locale: locale);
+
+  String get noVideo =>
+      Intl.message("No Video", desc: "No video to display", locale: locale);
+
+  String get streamButton => Intl.message("STREAM",
+      desc: "Button to display a stream", locale: locale);
+
+  String get uploadButton => Intl.message("UPLOAD",
+      desc: "Button to display upload a stream", locale: locale);
+
   String get deletePlayer => Intl.message("Delete Player",
       desc: "Dialog title for deleting a playern", locale: locale);
 
