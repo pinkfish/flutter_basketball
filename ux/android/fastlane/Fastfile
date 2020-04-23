@@ -65,7 +65,7 @@ platform :android do
           tag: version,
           force: true,
         )
-        push_to_git_remove(tags: true)
+        push_to_git_remote(tags: true, force: true)
       rescue => error
         puts error
         puts "Failed to update git tag"
