@@ -55,10 +55,22 @@ platform :android do
       puts body
       begin
        git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
-     rescue => error
-        puts error
-        puts "File already added"
+      rescue => error
+         puts error
+         puts "File already added"
       end
+
+      begin
+        add_git_tag(
+          tag: version,
+          force: true,
+        )
+        push_to_git_remove(tags: true)
+      rescue => error
+        puts error
+        puts "Failed to update git tag"
+      end
+
 
       sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
       upload_to_play_store(
@@ -68,7 +80,6 @@ platform :android do
         #skip_upload_screenshots: false,
         #skip_upload_images: false
       )
-      tag_branch(OS: "android")
     end
 
 
