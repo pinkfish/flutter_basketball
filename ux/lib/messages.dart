@@ -359,6 +359,18 @@ class Messages {
   String get turnoversTitle =>
       Intl.message("T/O", desc: "Turnover abbreviation", locale: locale);
 
+  String get pointsGameSummary =>
+      Intl.message("Pts", desc: "Points summary in game", locale: locale);
+
+  String get stealsGameSummary =>
+      Intl.message("Steals", desc: "Steals summary in game", locale: locale);
+
+  String get foulsGameSummary =>
+      Intl.message("Fouls", desc: "Fouls summary in game", locale: locale);
+
+  String get turnoversGameSummary =>
+      Intl.message("T/O", desc: "Turnover summary in game", locale: locale);
+
   String get offensiveReboundTitle => Intl.message("O/RB",
       desc: "Offensive rebound abbreviation", locale: locale);
 

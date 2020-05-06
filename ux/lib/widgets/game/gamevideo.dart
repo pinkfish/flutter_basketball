@@ -34,8 +34,8 @@ class _GameVideoState extends State<GameVideo> {
       listener: (BuildContext context, SingleGameState state) {
         if (state is SingleGameLoaded) {
           String newUrl;
-          if (state.game.streamingUrl.isNotEmpty) {
-            newUrl = state.game.streamingUrl;
+          if (state.game.streamingId.isNotEmpty) {
+            newUrl = state.game.streamingId;
           } else if (state.game.playbackUrl.isNotEmpty) {
             newUrl = state.game.playbackUrl;
           }

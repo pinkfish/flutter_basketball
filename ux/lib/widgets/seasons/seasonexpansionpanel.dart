@@ -11,6 +11,9 @@ import '../loading.dart';
 
 typedef void OnGameCallback(String gameUid);
 
+///
+/// SHows the season in the current team with all the exviting games
+///
 class SeasonExpansionPanel extends ExpansionPanel {
   final Season season;
   final OnGameCallback onGameTapped;

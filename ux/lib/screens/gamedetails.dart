@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/game/playerdatatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +12,6 @@ import '../messages.dart';
 import '../widgets/deleted.dart';
 import '../widgets/game/gameshotlocations.dart';
 import '../widgets/game/gametimeseries.dart';
-import '../widgets/game/playerlist.dart';
 import '../widgets/loading.dart';
 import '../widgets/player/playername.dart';
 import '../widgets/savingoverlay.dart';
@@ -160,220 +160,260 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
           fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25);
       TextStyle pointsStyle = Theme.of(context).textTheme.subtitle1.copyWith(
           fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 4.0);
-      Widget retWidget = Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/basketball.png'),
-            fit: BoxFit.fitWidth,
-            alignment: Alignment.topCenter,
-            colorFilter: ColorFilter.mode(
-                Colors.white.withOpacity(0.2), BlendMode.dstATop),
+
+      if (widget.orientation == Orientation.landscape) {
+        Widget stuff = Column(
+          children: [
+            Divider(),
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                double width = constraints.maxWidth / 6;
+                if (widget.orientation == Orientation.landscape) {
+                  return SizedBox(
+                    height: 0.0,
+                  );
+                }
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    SizedBox(
+                      width: width * 2,
+                      child: Text("",
+                          style: minDataStyle.copyWith(
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Text(Messages.of(context).pointsGameSummary,
+                          style: minDataStyle.copyWith(
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Text(Messages.of(context).foulsGameSummary,
+                          style: minDataStyle.copyWith(
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Text(Messages.of(context).turnoversGameSummary,
+                          style: minDataStyle.copyWith(
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    SizedBox(
+                      width: width,
+                      child: Text(Messages.of(context).stealsGameSummary,
+                          style: minDataStyle.copyWith(
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        );
+
+        Expanded(
+          child: SingleChildScrollView(
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return Column(
+                  children: state.game.players.keys
+                      .map((String s) => _playerSummary(
+                          s,
+                          state.game.players[s],
+                          constraints,
+                          widget.orientation))
+                      .toList(),
+                );
+              },
+            ),
+          ),
+        );
+      }
+
+      return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) =>
+            SingleChildScrollView(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/basketball.png'),
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topCenter,
+                colorFilter: ColorFilter.mode(
+                    Colors.white.withOpacity(0.2), BlendMode.dstATop),
+              ),
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(state.game.summary.pointsFor.toString(),
+                          style: pointsStyle),
+                      SizedBox(width: 30.0, child: Icon(Icons.add_circle)),
+                      Text(state.game.summary.pointsAgainst.toString(),
+                          style: pointsStyle),
+                    ],
+                  ),
+                  Divider(),
+                  Text(
+                      DateFormat("H:m MMM, d")
+                              .format(state.game.eventTime.toLocal()) +
+                          " at " +
+                          state.game.location,
+                      style: Theme.of(context).textTheme.headline5),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("1pt",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("2pt",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("3pt",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_madeSummary(state.game.playerSummaery.fullData.one),
+                          style: dataStyle),
+                      Text(_madeSummary(state.game.playerSummaery.fullData.two),
+                          style: dataStyle),
+                      Text(
+                          _madeSummary(
+                              state.game.playerSummaery.fullData.three),
+                          style: dataStyle),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          _madeSummary(state.game.opponentSummary.fullData.one),
+                          style: dataStyle),
+                      Text(
+                          _madeSummary(state.game.opponentSummary.fullData.two),
+                          style: dataStyle),
+                      Text(
+                          _madeSummary(
+                              state.game.opponentSummary.fullData.three),
+                          style: dataStyle),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Foul",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("Steals",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("Turnover",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(state.game.playerSummaery.fullData.fouls.toString(),
+                          style: dataStyle),
+                      Text(state.game.playerSummaery.fullData.steals.toString(),
+                          style: dataStyle),
+                      Text(
+                          state.game.playerSummaery.fullData.turnovers
+                              .toString(),
+                          style: dataStyle),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(state.game.opponentSummary.fullData.fouls.toString(),
+                          style: dataStyle),
+                      Text(
+                          state.game.opponentSummary.fullData.steals.toString(),
+                          style: dataStyle),
+                      Text(
+                          state.game.opponentSummary.fullData.turnovers
+                              .toString(),
+                          style: dataStyle),
+                    ],
+                  ),
+                  Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Off Rb",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("Def Db",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("Blocks",
+                          style:
+                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          state.game.playerSummaery.fullData.offensiveRebounds
+                              .toString(),
+                          style: dataStyle),
+                      Text(
+                          state.game.playerSummaery.fullData.defensiveRebounds
+                              .toString(),
+                          style: dataStyle),
+                      Text(state.game.playerSummaery.fullData.blocks.toString(),
+                          style: dataStyle),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                          state.game.opponentSummary.fullData.offensiveRebounds
+                              .toString(),
+                          style: dataStyle),
+                      Text(
+                          state.game.opponentSummary.fullData.defensiveRebounds
+                              .toString(),
+                          style: dataStyle),
+                      Text(
+                          state.game.opponentSummary.fullData.blocks.toString(),
+                          style: dataStyle),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(state.game.summary.pointsFor.toString(), style: pointsStyle),
-              SizedBox(width: 30.0, child: Icon(Icons.add_circle)),
-              Text(state.game.summary.pointsAgainst.toString(),
-                  style: pointsStyle),
-            ],
-          ),
-          Divider(),
-          Text(
-              DateFormat("H:m MMM, d").format(state.game.eventTime.toLocal()) +
-                  " at " +
-                  state.game.location,
-              style: Theme.of(context).textTheme.headline5),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("1pt",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-              Text("2pt",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-              Text("3pt",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(_madeSummary(state.game.playerSummaery.fullData.one),
-                  style: dataStyle),
-              Text(_madeSummary(state.game.playerSummaery.fullData.two),
-                  style: dataStyle),
-              Text(_madeSummary(state.game.playerSummaery.fullData.three),
-                  style: dataStyle),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(_madeSummary(state.game.opponentSummary.fullData.one),
-                  style: dataStyle),
-              Text(_madeSummary(state.game.opponentSummary.fullData.two),
-                  style: dataStyle),
-              Text(_madeSummary(state.game.opponentSummary.fullData.three),
-                  style: dataStyle),
-            ],
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Foul",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-              Text("Steals",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-              Text("Turnover",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(state.game.playerSummaery.fullData.fouls.toString(),
-                  style: dataStyle),
-              Text(state.game.playerSummaery.fullData.steals.toString(),
-                  style: dataStyle),
-              Text(state.game.playerSummaery.fullData.turnovers.toString(),
-                  style: dataStyle),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(state.game.opponentSummary.fullData.fouls.toString(),
-                  style: dataStyle),
-              Text(state.game.opponentSummary.fullData.steals.toString(),
-                  style: dataStyle),
-              Text(state.game.opponentSummary.fullData.turnovers.toString(),
-                  style: dataStyle),
-            ],
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Off Rb",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-              Text("Def Db",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-              Text("Blocks",
-                  style: dataStyle.copyWith(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                  state.game.playerSummaery.fullData.offensiveRebounds
-                      .toString(),
-                  style: dataStyle),
-              Text(
-                  state.game.playerSummaery.fullData.defensiveRebounds
-                      .toString(),
-                  style: dataStyle),
-              Text(state.game.playerSummaery.fullData.blocks.toString(),
-                  style: dataStyle),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                  state.game.opponentSummary.fullData.offensiveRebounds
-                      .toString(),
-                  style: dataStyle),
-              Text(
-                  state.game.opponentSummary.fullData.defensiveRebounds
-                      .toString(),
-                  style: dataStyle),
-              Text(state.game.opponentSummary.fullData.blocks.toString(),
-                  style: dataStyle),
-            ],
-          ),
-          Divider(),
-          LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-            double width = constraints.maxWidth / 6;
-            if (widget.orientation == Orientation.landscape) {
-              return SizedBox(
-                height: 0.0,
-              );
-            }
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  width: width * 2,
-                  child: Text("",
-                      style:
-                          minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
-                  width: width,
-                  child: Text("Pts",
-                      style:
-                          minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
-                  width: width,
-                  child: Text("Fouls",
-                      style:
-                          minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
-                  width: width,
-                  child: Text("T/O",
-                      style:
-                          minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-                SizedBox(
-                  width: width,
-                  child: Text("Steals",
-                      style:
-                          minDataStyle.copyWith(fontWeight: FontWeight.bold)),
-                ),
-              ],
-            );
-          }),
-          widget.orientation == Orientation.landscape
-              ? SizedBox(
-                  height: 0.0,
-                )
-              : Expanded(
-                  child: SingleChildScrollView(
-                    child: LayoutBuilder(
-                      builder:
-                          (BuildContext context, BoxConstraints constraints) {
-                        return Column(
-                          children: state.game.players.keys
-                              .map((String s) => _playerSummary(
-                                  s,
-                                  state.game.players[s],
-                                  constraints,
-                                  widget.orientation))
-                              .toList(),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-        ]),
       );
-      if (widget.orientation == Orientation.portrait) {
-        return retWidget;
-      }
-      return SingleChildScrollView(child: retWidget);
     } else if (_currentIndex == 1) {
       if (state.game.players.isEmpty) {
         return Text(Messages.of(context).noPlayers);
       }
-      return PlayerList(game: state.game, orientation: widget.orientation);
+      return PlayerDataTable(game: state.game, orientation: widget.orientation);
+      //return PlayerList(game: state.game, orientation: widget.orientation);
     } else if (_currentIndex == 2) {
       return Column(
         children: [

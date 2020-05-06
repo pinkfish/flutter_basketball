@@ -3,6 +3,9 @@ import 'package:basketballstats/widgets/player/playername.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+///
+/// Shows the list of players in the team.
+///
 class PlayerList extends StatefulWidget {
   final Orientation orientation;
   final Game game;
@@ -30,6 +33,7 @@ class _PlayerListState extends State<PlayerList> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         TextStyle minDataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
@@ -65,9 +69,7 @@ class _PlayerListState extends State<PlayerList> {
                         style: minDataStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _sortBy == SortPlayerBy.Points
-                              ? Theme
-                              .of(context)
-                              .accentColor
+                              ? Theme.of(context).accentColor
                               : null,
                         ),
                         textScaleFactor: scale,
@@ -86,9 +88,7 @@ class _PlayerListState extends State<PlayerList> {
                         style: minDataStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _sortBy == SortPlayerBy.MadePerentage
-                              ? Theme
-                              .of(context)
-                              .accentColor
+                              ? Theme.of(context).accentColor
                               : null,
                         ),
                         textScaleFactor: scale,
@@ -107,9 +107,7 @@ class _PlayerListState extends State<PlayerList> {
                         style: minDataStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _sortBy == SortPlayerBy.Fouls
-                              ? Theme
-                              .of(context)
-                              .accentColor
+                              ? Theme.of(context).accentColor
                               : null,
                         ),
                         textScaleFactor: scale,
@@ -128,9 +126,7 @@ class _PlayerListState extends State<PlayerList> {
                         style: minDataStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _sortBy == SortPlayerBy.Turnovers
-                              ? Theme
-                              .of(context)
-                              .accentColor
+                              ? Theme.of(context).accentColor
                               : null,
                         ),
                         textScaleFactor: scale,
@@ -149,9 +145,7 @@ class _PlayerListState extends State<PlayerList> {
                         style: minDataStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _sortBy == SortPlayerBy.Steals
-                              ? Theme
-                              .of(context)
-                              .accentColor
+                              ? Theme.of(context).accentColor
                               : null,
                         ),
                         textScaleFactor: scale,
@@ -170,9 +164,7 @@ class _PlayerListState extends State<PlayerList> {
                         style: minDataStyle.copyWith(
                           fontWeight: FontWeight.bold,
                           color: _sortBy == SortPlayerBy.Blocks
-                              ? Theme
-                              .of(context)
-                              .accentColor
+                              ? Theme.of(context).accentColor
                               : null,
                         ),
                         textScaleFactor: scale,
@@ -208,30 +200,30 @@ class _PlayerListState extends State<PlayerList> {
         return s2.fullData.blocks - s1.fullData.blocks;
       case SortPlayerBy.MadePerentage:
         if ((s2.fullData.one.attempts +
-            s2.fullData.two.attempts +
-            s2.fullData.three.attempts) >
+                s2.fullData.two.attempts +
+                s2.fullData.three.attempts) >
             0) {
           if ((s1.fullData.one.attempts +
-              s1.fullData.two.attempts +
-              s1.fullData.three.attempts) >
+                  s1.fullData.two.attempts +
+                  s1.fullData.three.attempts) >
               0) {
             return ((s2.fullData.one.made +
-                s2.fullData.two.made +
-                s2.fullData.three.made) ~/
-                (s2.fullData.one.attempts +
-                    s2.fullData.two.attempts +
-                    s2.fullData.three.attempts)) -
+                        s2.fullData.two.made +
+                        s2.fullData.three.made) ~/
+                    (s2.fullData.one.attempts +
+                        s2.fullData.two.attempts +
+                        s2.fullData.three.attempts)) -
                 ((s1.fullData.one.made +
-                    s1.fullData.two.made +
-                    s1.fullData.three.made) ~/
+                        s1.fullData.two.made +
+                        s1.fullData.three.made) ~/
                     (s1.fullData.one.attempts +
                         s1.fullData.two.attempts +
                         s1.fullData.three.attempts));
           }
           return 1;
         } else if ((s1.fullData.one.attempts +
-            s1.fullData.two.attempts +
-            s1.fullData.three.attempts) >
+                s1.fullData.two.attempts +
+                s1.fullData.three.attempts) >
             0) {
           return -1;
         }
@@ -259,8 +251,8 @@ class _PlayerListState extends State<PlayerList> {
             width: width,
             child: Text(
               (s.fullData.one.made +
-                  s.fullData.two.made * 2 +
-                  s.fullData.three.made * 3)
+                      s.fullData.two.made * 2 +
+                      s.fullData.three.made * 3)
                   .toString(),
               textScaleFactor: scale,
             ),
@@ -269,19 +261,19 @@ class _PlayerListState extends State<PlayerList> {
             width: width,
             child: Text(
               ((s.fullData.one.attempts +
-                  s.fullData.two.attempts * 2 +
-                  s.fullData.three.attempts * 3) ==
-                  0
+                          s.fullData.two.attempts * 2 +
+                          s.fullData.three.attempts * 3) ==
+                      0
                   ? "0%"
                   : ((s.fullData.one.made +
-                  s.fullData.two.made * 2 +
-                  s.fullData.three.made * 3) /
-                  (s.fullData.one.attempts +
-                      s.fullData.two.attempts * 2 +
-                      s.fullData.three.attempts * 3) *
-                  100)
-                  .toStringAsFixed(0) +
-                  "%"),
+                                  s.fullData.two.made * 2 +
+                                  s.fullData.three.made * 3) /
+                              (s.fullData.one.attempts +
+                                  s.fullData.two.attempts * 2 +
+                                  s.fullData.three.attempts * 3) *
+                              100)
+                          .toStringAsFixed(0) +
+                      "%"),
               textScaleFactor: scale,
             ),
           ),
