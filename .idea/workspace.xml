@@ -2,51 +2,136 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/kotlin/io/github/ponnamkarthik/flutterrtmppublisher/FlutterRtmpPublisherPlugin.kt" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/kotlin/io/github/ponnamkarthik/flutterrtmppublisher/FlutterRtmpPublisherPlugin.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/kotlin/io/github/ponnamkarthik/flutterrtmppublisher/RTMPActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/kotlin/io/github/ponnamkarthik/flutterrtmppublisher/RTMPActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/example/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/example/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterRtmpPlublisher/pubspec.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/conf/nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/dash.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/hls.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/hls_hlsjs.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/rtmp.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/rtmp_hls.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/public/cast/cast_app.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/storage.rules" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/storage.rules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamevideo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_29" />
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/FlutterRtmpPlublisher" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
   </component>
-  <component name="IgnoredFileRootStore">
-    <option name="generatedRoots">
-      <set>
-        <option value="$PROJECT_DIR$/.idea" />
-      </set>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1azx4kumuA7tGoDXuBsXK8o2i3k" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Flutter.main.dart">
+    <configuration name="FlutterRtmpPlublisher" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="FlutterRtmpPlublisher" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="DEBUGGER_TYPE" value="Java" />
+      <Java />
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ux" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="ux" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="DEBUGGER_TYPE" value="Java" />
+      <Java />
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
-      <option name="filePath" value="$PROJECT_DIR$/../development/charts/charts_flutter/example/lib/main.dart" />
+      <option name="filePath" value="$PROJECT_DIR$/ux/lib/main.dart" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Android App.FlutterRtmpPlublisher" />
+      <item itemvalue="Android App.ux" />
+      <item itemvalue="Flutter.main.dart" />
+    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -62,14 +147,46 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="104" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588617147100">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="104" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.924@0.23.1280.924" timestamp="1588617147100" />
+    <state x="377" y="280" key="#com.intellij.ide.util.TreeFileChooserDialog" timestamp="1588617143757">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="377" y="280" key="#com.intellij.ide.util.TreeFileChooserDialog/0.23.1280.924@0.23.1280.924" timestamp="1588617143757" />
+    <state x="315" y="226" key="#main.dart" timestamp="1588617119182">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="315" y="226" key="#main.dart/0.23.1280.924@0.23.1280.924" timestamp="1588617119182" />
+    <state x="346" y="186" key="#ux" timestamp="1588617098963">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="346" y="186" key="#ux/0.23.1280.924@0.23.1280.924" timestamp="1588617098963" />
+    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1588726927991">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1588726927991" />
+    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1588726927989">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1588726927989" />
+    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1588726927989">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1588726927989" />
+    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1588726927990">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1588726927990" />
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1587752886189">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752886189" />
-    <state x="128" y="66" key="SettingsEditor" timestamp="1587752975298">
+    <state x="128" y="66" key="SettingsEditor" timestamp="1587753818610">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
-    <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1587752975298" />
+    <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1587753818610" />
     <state x="48" y="211" key="new project wizard" timestamp="1587752586158">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
