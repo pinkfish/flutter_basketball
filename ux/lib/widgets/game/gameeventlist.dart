@@ -9,9 +9,16 @@ import 'gameeventwidget.dart';
 /// The list of game eevents associated with the single game bloc.
 ///
 class GameEventList extends StatelessWidget {
-  final String playerUid;
+  final bool Function(GameEvent) eventCheck;
+  final bool showName;
+  final bool showTimestamp;
+  final bool showPeriod;
 
-  GameEventList({this.playerUid});
+  GameEventList(
+      {this.eventCheck,
+      this.showName = false,
+      this.showPeriod = true,
+      this.showTimestamp = true});
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +39,13 @@ class GameEventList extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: state.gameEvents
-                .where((e) => e.playerUid == playerUid)
+                .where(eventCheck)
                 .map(
                   (GameEvent e) => GameEventWidget(
                     gameEvent: e,
-                    showTimestamp: true,
-                    showPeriod: true,
-                    showName: false,
+                    showTimestamp: showTimestamp,
+                    showPeriod: showPeriod,
+                    showName: showName,
                   ),
                 )
                 .toList(),

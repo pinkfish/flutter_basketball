@@ -35,9 +35,7 @@ dependencies:
   uuid: ^2.0.4
   tuple: ^1.0.3
   flutter_svg: ^0.17.4
-  camera_with_rtmp: ^0.1.1
   flutter_vector_icons: any
-  flutter_ffmpeg: ^0.2.10
   charts_flutter:
     #path: /Users/david/development/charts/charts_flutter
     git:
@@ -45,8 +43,8 @@ dependencies:
       path: charts_flutter
 
   # For doing things with video
-  flutter_rtmp_publisher:
-    path: ../FlutterRtmpPlublisher
+  camera_with_rtmp: ^0.1.2
+  flutter_ffmpeg: ^0.2.10
   video_player: 0.10.9
 
 dev_dependencies:

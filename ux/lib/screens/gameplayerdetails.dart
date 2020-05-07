@@ -65,7 +65,7 @@ class _GameDetailsStateScreen extends State<GamePlayerDetailsScreen> {
               }
               if (_currentIndex == 1) {
                 return GameEventList(
-                  playerUid: widget.playerUid,
+                  eventCheck: (e) => e.playerUid == widget.playerUid,
                 );
               }
               return Text("frog $_currentIndex");

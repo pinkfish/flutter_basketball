@@ -258,6 +258,9 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 6.5)
     - PromisesObjC (~> 1.2)
   - Flutter (1.0.0)
+  - flutter_ffmpeg/min-gpl-lts (0.2.10):
+    - Flutter
+    - mobile-ffmpeg-min-gpl (= 4.3.1.LTS)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -326,6 +329,7 @@ PODS:
     - Logboard (~> 2.1.2)
   - leveldb-library (1.22)
   - Logboard (2.1.2)
+  - mobile-ffmpeg-min-gpl (4.3.1.LTS)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -350,6 +354,7 @@ DEPENDENCIES:
   - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
   - firebase_crashlytics (from `.symlinks/plugins/firebase_crashlytics/ios`)
   - Flutter (from `Flutter`)
+  - flutter_ffmpeg/min-gpl-lts (from `.symlinks/plugins/flutter_ffmpeg/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - google_sign_in_web (from `.symlinks/plugins/google_sign_in_web/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
@@ -385,6 +390,7 @@ SPEC REPOS:
     - HaishinKit
     - leveldb-library
     - Logboard
+    - mobile-ffmpeg-min-gpl
     - nanopb
     - PromisesObjC
 
@@ -407,6 +413,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_crashlytics/ios"
   Flutter:
     :path: Flutter
+  flutter_ffmpeg:
+    :path: ".symlinks/plugins/flutter_ffmpeg/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
   google_sign_in_web:
@@ -442,6 +450,7 @@ SPEC CHECKSUMS:
   FirebaseFirestore: a23d596ae3a8c13d3b8353b565d2adfb690f9032
   FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_ffmpeg: cf0a6941ef67e88248c998cc3e34f8acb0b4e454
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
   google_sign_in_web: 52deb24929ac0992baff65c57956031c44ed44c3
@@ -457,12 +466,13 @@ SPEC CHECKSUMS:
   HaishinKit: c620b58d2b5e4d7032b6447cd57f127f25c074df
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   Logboard: e3342fa111e26268bb89577e6a40a0660a423ddd
+  mobile-ffmpeg-min-gpl: 873aefca7f7de141d16907413fb2b505a7e5cdb4
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
 
-PODFILE CHECKSUM: e45c292f618eeca3034958d33b444b6e1249b55f
+PODFILE CHECKSUM: e4e002e40488f07bae3477664f66f0ed8ccc334c
 
 COCOAPODS: 1.9.1

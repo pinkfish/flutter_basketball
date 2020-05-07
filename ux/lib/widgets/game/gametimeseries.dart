@@ -7,6 +7,7 @@ import '../../messages.dart';
 import '../chart/durationtimeaxisspec.dart';
 import '../chart/stuff/durationserieschart.dart';
 import '../loading.dart';
+import 'gameeventlist.dart';
 
 ///
 /// Shows a nice graph of information about the game as a timeseries.
@@ -33,6 +34,7 @@ enum _GameTimeseriesType {
 
 class _GameTimeseriesData extends State<GameTimeseries> {
   _GameTimeseriesType type;
+  bool _showTimeSeries = false;
 
   charts.Series<_CumulativeScore, Duration> _getEventSeries(
       GameEventType eventType, Color color, bool opponent) {
@@ -153,31 +155,12 @@ class _GameTimeseriesData extends State<GameTimeseries> {
     if (!widget.state.loadedGameEvents) {
       return LoadingWidget();
     }
-    var periods =
-        widget.state.gameEvents.where((e) => e.type == GameEventType.PeriodEnd);
-
-    var behaviours = <charts.ChartBehavior<dynamic>>[
-      charts.SlidingViewport(),
-      charts.PanAndZoomBehavior(),
-      charts.LinePointHighlighter()
-    ];
-
-    if (periods.length > 0) {
-      behaviours.add(charts.RangeAnnotation(periods
-          .map(
-            (p) => charts.LineAnnotationSegment(
-              p.eventTimeline,
-              charts.RangeAnnotationAxisType.domain,
-              startLabel: Messages.of(context).getPeriodName(p.period),
-            ),
-          )
-          .toList()));
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             DropdownButton<_GameTimeseriesType>(
               icon: Icon(Icons.arrow_downward),
@@ -238,36 +221,72 @@ class _GameTimeseriesData extends State<GameTimeseries> {
                 ),
               ],
             ),
+            SizedBox(width: 20, height: 0),
+            Checkbox(
+              value: _showTimeSeries,
+              onChanged: (v) => setState(() => _showTimeSeries = v),
+            ),
+            Text("Show Events"),
           ],
         ),
         Expanded(
-          child: DurationSeriesChart(
-            _getSeries(),
-            animate: true,
-            animationDuration: Duration(milliseconds: 500),
-            primaryMeasureAxis: charts.NumericAxisSpec(
-              tickProviderSpec: charts.BasicNumericTickProviderSpec(),
-              renderSpec: charts.SmallTickRendererSpec(
-                labelStyle: charts.TextStyleSpec(
-                  fontSize: 18,
-                  color: charts.Color.white,
-                ),
-              ),
-            ),
-            domainAxis: DurationAxisSpec(
-              tickFormatterSpec: AutoDurationTickFormatterSpec(),
-              renderSpec: charts.SmallTickRendererSpec<Duration>(
-                labelStyle: charts.TextStyleSpec(
-                  fontSize: 18,
-                  color: charts.Color.white,
-                ),
-              ),
-            ),
-            behaviors: behaviours,
-            // behaviors: _getAnnotations(),
-          ),
+          child: _middleSectionWidget(),
         ),
       ],
+    );
+  }
+
+  Widget _middleSectionWidget() {
+    if (_showTimeSeries) {
+      return GameEventList(
+        eventCheck: (e) => true,
+        showName: true,
+      );
+    }
+    var periods =
+        widget.state.gameEvents.where((e) => e.type == GameEventType.PeriodEnd);
+    var behaviours = <charts.ChartBehavior<dynamic>>[
+      charts.SlidingViewport(),
+      charts.PanAndZoomBehavior(),
+      charts.LinePointHighlighter()
+    ];
+
+    if (periods.length > 0) {
+      behaviours.add(charts.RangeAnnotation(periods
+          .map(
+            (p) => charts.LineAnnotationSegment(
+              p.eventTimeline,
+              charts.RangeAnnotationAxisType.domain,
+              startLabel: Messages.of(context).getPeriodName(p.period),
+            ),
+          )
+          .toList()));
+    }
+
+    return DurationSeriesChart(
+      _getSeries(),
+      animate: true,
+      animationDuration: Duration(milliseconds: 500),
+      primaryMeasureAxis: charts.NumericAxisSpec(
+        tickProviderSpec: charts.BasicNumericTickProviderSpec(),
+        renderSpec: charts.SmallTickRendererSpec(
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 18,
+            color: charts.Color.white,
+          ),
+        ),
+      ),
+      domainAxis: DurationAxisSpec(
+        tickFormatterSpec: AutoDurationTickFormatterSpec(),
+        renderSpec: charts.SmallTickRendererSpec<Duration>(
+          labelStyle: charts.TextStyleSpec(
+            fontSize: 18,
+            color: charts.Color.white,
+          ),
+        ),
+      ),
+      behaviors: behaviours,
+      // behaviors: _getAnnotations(),
     );
   }
 

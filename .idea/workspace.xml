@@ -2,31 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/conf/nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/dash.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/hls.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/hls_hlsjs.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/rtmp.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/cloud_build/nginx_rtmp/players/rtmp_hls.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/public/cast/cast_app.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterRtmpPlublisher" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/storage.rules" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/storage.rules" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/android/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamevideo.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -144,7 +130,19 @@
       <option name="presentableId" value="Default" />
       <updated>1587752034664</updated>
     </task>
+    <task id="LOCAL-00001" summary="Add in cloud build rules to build nginx from data.">
+      <created>1588783601516</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1588783601516</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add in cloud build rules to build nginx from data." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add in cloud build rules to build nginx from data." />
   </component>
   <component name="WindowStateProjectService">
     <state x="104" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588617147100">
@@ -163,22 +161,26 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="346" y="186" key="#ux/0.23.1280.924@0.23.1280.924" timestamp="1588617098963" />
-    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1588726927991">
+    <state x="252" y="59" key="CommitChangelistDialog2" timestamp="1588783595167">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1588726927991" />
-    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1588726927989">
+    <state x="252" y="59" key="CommitChangelistDialog2/0.23.1280.924@0.23.1280.924" timestamp="1588783595166" />
+    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1588797287282">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1588726927989" />
-    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1588726927989">
+    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1588797287282" />
+    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1588797287281">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1588726927989" />
-    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1588726927990">
+    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1588797287281" />
+    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1588797287281">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1588726927990" />
+    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1588797287281" />
+    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1588797287282">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1588797287282" />
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1587752886189">
       <screen x="0" y="23" width="1280" height="921" />
     </state>

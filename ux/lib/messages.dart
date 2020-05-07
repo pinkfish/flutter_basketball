@@ -362,6 +362,9 @@ class Messages {
   String get pointsGameSummary =>
       Intl.message("Pts", desc: "Points summary in game", locale: locale);
 
+  String get percentageGameSummary => Intl.message("%age",
+      desc: "Percentage made in game summary title", locale: locale);
+
   String get stealsGameSummary =>
       Intl.message("Steals", desc: "Steals summary in game", locale: locale);
 
@@ -376,6 +379,9 @@ class Messages {
 
   String get defensiveReboundTitle => Intl.message("D/RB",
       desc: "Defensive rebound abbreviation", locale: locale);
+
+  String get reboundsGameSummary =>
+      Intl.message("RBs", desc: "Rebounds in game summary", locale: locale);
 
   String getUnverified(String name, bool unverified) {
     if (unverified) {
@@ -439,11 +445,10 @@ class Messages {
   String getGameEventType(GameEvent p) {
     switch (p.type) {
       case GameEventType.Made:
-        return Intl.message("+${p.points}",
-            desc: "+num points", locale: locale);
+        return Intl.message("${p.points}", desc: "+num points", locale: locale);
         break;
       case GameEventType.Missed:
-        return Intl.message("-${p.points}",
+        return Intl.message("Miss ${p.points}",
             desc: "+num points", locale: locale);
         break;
       case GameEventType.Foul:
