@@ -1,13 +1,14 @@
-import 'package:basketballdata/data/user.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
 
 import '../data/game.dart';
 import '../data/gameevent.dart';
+import '../data/mediainfo.dart';
 import '../data/player.dart';
 import '../data/playergamesummary.dart';
 import '../data/season.dart';
 import '../data/team.dart';
+import '../data/user.dart';
 
 ///
 /// Interface to load all the data from the database.
@@ -37,6 +38,9 @@ abstract class BasketballDatabase {
   /// Loads all the game events for this game.
   Stream<BuiltList<GameEvent>> getGameEvents({@required String gameUid});
 
+  /// Loads all the media for this game.
+  Stream<BuiltList<MediaInfo>> getMediaForGame({@required String gameUid});
+
   /// Loads all the game events for this game.
   Stream<BuiltList<Game>> getGamesForPlayer({@required String playerUid});
 
@@ -45,6 +49,9 @@ abstract class BasketballDatabase {
 
   /// Adds the game event into the database
   Future<void> addGameEvent({@required GameEvent event});
+
+  /// Adds the game event into the database
+  Future<String> addMedia({@required MediaInfo media});
 
   /// Adds a new team into the database
   Future<String> addTeam({@required Team team, @required Season season});
@@ -89,6 +96,8 @@ abstract class BasketballDatabase {
   Future<void> deleteSeason({@required String seasonUid});
 
   Future<void> deleteGameEvent({@required String gameEventUid});
+
+  Future<void> deleteMedia({@required String mediaInfoUid});
 
   Future<void> deleteGamePlayer(
       {@required String gameUid,

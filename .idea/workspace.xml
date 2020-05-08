@@ -2,17 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addmediabloc.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/mediainfo.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/mediatype.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/timestampserializer.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/android/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/screens/addmedia.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamestatusoverlay.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/mediaedit.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/mediatypeicon.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/videoplayer.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamevideo.dart" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +49,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="stateless_widget" />
+        <option value="stateful_widget" />
         <option value="Dart File" />
       </list>
     </option>
@@ -51,6 +74,11 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ux/android/app/src/main/res/xml" />
+    </key>
   </component>
   <component name="RunManager" selected="Flutter.main.dart">
     <configuration name="FlutterRtmpPlublisher" type="AndroidRunConfigurationType" factoryName="Android App">
@@ -137,22 +165,46 @@
       <option name="project" value="LOCAL" />
       <updated>1588783601516</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Fix up the event details list in the game display.">
+      <created>1588810085525</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1588810085525</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add in cloud build rules to build nginx from data." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add in cloud build rules to build nginx from data." />
+    <MESSAGE value="Fix up the event details list in the game display." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix up the event details list in the game display." />
   </component>
   <component name="WindowStateProjectService">
     <state x="104" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588617147100">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="104" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.924@0.23.1280.924" timestamp="1588617147100" />
+    <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588914247135">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.924@0.23.1280.924" timestamp="1588914247135" />
+    <state x="453" y="208" key="#com.intellij.ide.util.MemberChooser" timestamp="1588923085320">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="453" y="208" key="#com.intellij.ide.util.MemberChooser/0.23.1280.924@0.23.1280.924" timestamp="1588923085320" />
     <state x="377" y="280" key="#com.intellij.ide.util.TreeFileChooserDialog" timestamp="1588617143757">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="377" y="280" key="#com.intellij.ide.util.TreeFileChooserDialog/0.23.1280.924@0.23.1280.924" timestamp="1588617143757" />
+    <state x="330" y="226" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1588867408331">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="330" y="226" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.924@0.23.1280.924" timestamp="1588867408331" />
+    <state x="336" y="416" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1588897399666">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="336" y="416" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1280.924@0.23.1280.924" timestamp="1588897399666" />
     <state x="315" y="226" key="#main.dart" timestamp="1588617119182">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
@@ -161,26 +213,30 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="346" y="186" key="#ux/0.23.1280.924@0.23.1280.924" timestamp="1588617098963" />
-    <state x="252" y="59" key="CommitChangelistDialog2" timestamp="1588783595167">
+    <state x="252" y="59" key="CommitChangelistDialog2" timestamp="1588810083113">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state x="252" y="59" key="CommitChangelistDialog2/0.23.1280.924@0.23.1280.924" timestamp="1588783595166" />
-    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1588797287282">
+    <state x="252" y="59" key="CommitChangelistDialog2/0.23.1280.924@0.23.1280.924" timestamp="1588810083113" />
+    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1588921044712">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1588797287282" />
-    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1588797287281">
+    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1588813934600" />
+    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1588921044712" />
+    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1588921044710">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1588797287281" />
-    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1588797287281">
+    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1588813934598" />
+    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1588921044710" />
+    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1588921044695">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1588797287281" />
-    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1588797287282">
+    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1588813934596" />
+    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1588921044695" />
+    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1588921044711">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1588797287282" />
+    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1588813934599" />
+    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1588921044711" />
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1587752886189">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
@@ -189,6 +245,10 @@
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1587753818610" />
+    <state x="347" y="240" width="586" height="490" key="find.popup" timestamp="1588925668297">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="347" y="240" width="586" height="490" key="find.popup/0.23.1280.924@0.23.1280.924" timestamp="1588925668297" />
     <state x="48" y="211" key="new project wizard" timestamp="1587752586158">
       <screen x="0" y="23" width="1280" height="921" />
     </state>

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/game/gameduration.dart';
 import 'package:basketballstats/widgets/game/playerdatatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +14,6 @@ import '../widgets/deleted.dart';
 import '../widgets/game/gameshotlocations.dart';
 import '../widgets/game/gametimeseries.dart';
 import '../widgets/loading.dart';
-import '../widgets/player/playername.dart';
 import '../widgets/savingoverlay.dart';
 import 'addplayergame.dart';
 
@@ -65,6 +65,8 @@ class _GameDetailsScaffold extends StatefulWidget {
   }
 }
 
+enum _OverflowAction { Video }
+
 class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
   int _currentIndex = 0;
 
@@ -76,6 +78,19 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
             ? Text(Messages.of(context).title)
             : Text("vs " + widget.state.game.opponentName,
                 style: Theme.of(context).textTheme.headline4),
+        actions: <Widget>[
+          PopupMenuButton<_OverflowAction>(
+            onSelected: _selectedPopup,
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<_OverflowAction>(
+                  value: _OverflowAction.Video,
+                  child: Text(Messages.of(context).video),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: SavingOverlay(
         saving: widget.state is SingleGameSaving,
@@ -111,7 +126,8 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       floatingActionButton: (widget.state is SingleGameUninitialized ||
                   widget.state is SingleGameDeleted) ||
               _currentIndex == 2 ||
-              _currentIndex == 3
+              _currentIndex == 3 ||
+              widget.state?.game?.currentPeriod == GamePeriod.Finished
           ? null
           : AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -132,10 +148,20 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                           "/Game/Stats/" +
                               widget.state.game.uid +
                               "/" +
-                              widget.state.game.seasonUid),
+                              widget.state.game.seasonUid +
+                              "/" +
+                              widget.state.game.teamUid),
                     ),
             ),
     );
+  }
+
+  void _selectedPopup(_OverflowAction action) {
+    switch (action) {
+      case _OverflowAction.Video:
+        Navigator.pushNamed(context, 'Game/Video/${widget.state.game.uid}');
+        break;
+    }
   }
 
   String _madeSummary(MadeAttempt attempt) {
@@ -154,83 +180,10 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return LoadingWidget();
     }
     if (_currentIndex == 0) {
-      TextStyle minDataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
-          fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25);
       TextStyle dataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
           fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25);
       TextStyle pointsStyle = Theme.of(context).textTheme.subtitle1.copyWith(
           fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 4.0);
-
-      if (widget.orientation == Orientation.landscape) {
-        Widget stuff = Column(
-          children: [
-            Divider(),
-            LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                double width = constraints.maxWidth / 6;
-                if (widget.orientation == Orientation.landscape) {
-                  return SizedBox(
-                    height: 0.0,
-                  );
-                }
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    SizedBox(
-                      width: width * 2,
-                      child: Text("",
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text(Messages.of(context).pointsGameSummary,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text(Messages.of(context).foulsGameSummary,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text(Messages.of(context).turnoversGameSummary,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    SizedBox(
-                      width: width,
-                      child: Text(Messages.of(context).stealsGameSummary,
-                          style: minDataStyle.copyWith(
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
-        );
-
-        Expanded(
-          child: SingleChildScrollView(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return Column(
-                  children: state.game.players.keys
-                      .map((String s) => _playerSummary(
-                          s,
-                          state.game.players[s],
-                          constraints,
-                          widget.orientation))
-                      .toList(),
-                );
-              },
-            ),
-          ),
-        );
-      }
 
       return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) =>
@@ -271,6 +224,29 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                           " at " +
                           state.game.location,
                       style: Theme.of(context).textTheme.headline5),
+                  ((state.game.currentPeriod != GamePeriod.NotStarted &&
+                          state.game.currentPeriod != GamePeriod.Finished)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              Messages.of(context)
+                                  .getPeriodName(state.game.currentPeriod),
+                              style: Theme.of(context).textTheme.bodyText2,
+                              textScaleFactor: 1.5,
+                            ),
+                            GameDuration(
+                              state: state,
+                              style: Theme.of(context).textTheme.bodyText2,
+                              textScaleFactor: 1.5,
+                            ),
+                          ],
+                        )
+                      : Center(
+                          child: Text(
+                          "Game Over",
+                          textScaleFactor: 1.2,
+                        ))),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -427,54 +403,6 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         state: state,
       );
     }
-  }
-
-  Widget _playerSummary(String uid, PlayerGameSummary s,
-      BoxConstraints constraints, Orientation orientation) {
-    double width = constraints.maxWidth / 6;
-    double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
-    return Row(
-      children: <Widget>[
-        SizedBox(
-          width: width * 2,
-          child: PlayerName(
-            playerUid: uid,
-            textScaleFactor: scale,
-          ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.one.made +
-                    s.fullData.two.made * 2 +
-                    s.fullData.three.made * 3)
-                .toString(),
-            textScaleFactor: scale,
-          ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.fouls).toString(),
-            textScaleFactor: scale,
-          ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.turnovers).toString(),
-            textScaleFactor: scale,
-          ),
-        ),
-        SizedBox(
-          width: width,
-          child: Text(
-            (s.fullData.steals).toString(),
-            textScaleFactor: scale,
-          ),
-        ),
-      ],
-    );
   }
 
   void _addPlayer(BuildContext context) {

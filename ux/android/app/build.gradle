@@ -64,6 +64,10 @@ android {
             signingConfig signingConfigs.release
          }
     }
+
+    packagingOptions {
+        exclude 'project.clj'
+    }
 }
 
 flutter {

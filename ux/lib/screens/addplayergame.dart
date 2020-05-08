@@ -1,12 +1,12 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:basketballstats/widgets/player/playeredit.dart';
-import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
+import '../widgets/player/playeredit.dart';
+import '../widgets/savingoverlay.dart';
 
 ///
 /// Adds a player to the game worl.

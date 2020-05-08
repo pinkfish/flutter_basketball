@@ -16,6 +16,7 @@ class FirestoreDatabase extends BasketballDatabase {
   static const String playersTable = "Players";
   static const String gamesTable = "Games";
   static const String gameEventsTable = "GameEvents";
+  static const String mediaTable = "Media";
 
   static const String userUidField = "userUid";
   static const String usersField = "users";
@@ -456,6 +457,42 @@ class FirestoreDatabase extends BasketballDatabase {
     await for (QuerySnapshot snap in q.snapshots()) {
       yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
           Game.fromMap(_addUid(snap.documentID, snap.data))));
+    }
+  }
+
+  @override
+  Future<String> addMedia({MediaInfo media}) async {
+    var ref = Firestore.instance.collection(mediaTable).document();
+    var p = media.rebuild((b) => b..uid = ref.documentID);
+    var data = p.toMap();
+    data["uploadTime"] = FieldValue.serverTimestamp();
+    await ref.setData(data);
+    analytics.logEvent(name: "AddMedia");
+    return ref.documentID;
+  }
+
+  Future<void> deleteMedia({String mediaInfoUid}) {
+    analytics.logEvent(name: "DeleteMedia");
+    return Firestore.instance
+        .collection(mediaTable)
+        .document(mediaInfoUid)
+        .delete();
+  }
+
+  @override
+  Stream<BuiltList<MediaInfo>> getMediaForGame({String gameUid}) async* {
+    Query q = Firestore.instance
+        .collection(mediaTable)
+        .where("gameUid", isEqualTo: gameUid);
+    QuerySnapshot snap = await q.getDocuments();
+    snap.documents.forEach((e) {
+      print(e.data);
+    });
+    yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+        MediaInfo.fromMap(_addUid(snap.documentID, snap.data))));
+    await for (QuerySnapshot snap in q.snapshots()) {
+      yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
+          MediaInfo.fromMap(_addUid(snap.documentID, snap.data))));
     }
   }
 }

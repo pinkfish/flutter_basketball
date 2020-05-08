@@ -1,3 +1,5 @@
+import 'package:basketballstats/screens/addmedia.dart';
+import 'package:basketballstats/screens/gamevideoplayer.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +9,7 @@ import 'screens/editplayer.dart';
 import 'screens/gamedetails.dart';
 import 'screens/gameplayerdetails.dart';
 import 'screens/gamestats.dart';
+import 'screens/gamevideo.dart';
 import 'screens/login/forgotpassword.dart';
 import 'screens/login/loginform.dart';
 import 'screens/login/signup.dart';
@@ -60,6 +63,10 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GameDetailsScreen(vals["id"][0].toString())));
+    router.define("/Game/Video/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                GameVideoListScreen(vals["id"][0].toString())));
     router.define("/Player/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
@@ -78,6 +85,15 @@ class AppRouter {
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 GamePlayerDetailsScreen(
                     vals["game"][0].toString(), vals["player"][0].toString())));
+    router.define("/Media/Add/:game",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                AddMediaGameScreen(vals["game"][0].toString())));
+    router.define("/Game/Media/:game/:media",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                GameVideoPlayerScreen(
+                    vals["game"][0].toString(), vals["media"][0].toString())));
     router.define("/Login/Home",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

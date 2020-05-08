@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basketballdata/data/mediainfo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
@@ -24,14 +25,19 @@ abstract class SingleGameState extends Equatable {
   final Game game;
   final bool loadedGameEvents;
   final BuiltList<GameEvent> gameEvents;
+  final bool loadedMedia;
+  final BuiltList<MediaInfo> media;
 
   SingleGameState(
       {@required this.game,
       @required this.loadedGameEvents,
-      @required this.gameEvents});
+      @required this.gameEvents,
+      @required this.loadedMedia,
+      @required this.media});
 
   @override
-  List<Object> get props => [game, loadedGameEvents, gameEvents];
+  List<Object> get props =>
+      [game, loadedGameEvents, gameEvents, loadedMedia, media];
 }
 
 ///
@@ -42,11 +48,15 @@ class SingleGameLoaded extends SingleGameState {
       {Game game,
       bool loadedGameEvents,
       BuiltList<GameEvent> gameEvents,
-      SingleGameState state})
+      SingleGameState state,
+      bool loadedMedia,
+      BuiltList<MediaInfo> media})
       : super(
             game: game ?? state.game,
             loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
-            gameEvents: gameEvents ?? state.gameEvents);
+            gameEvents: gameEvents ?? state.gameEvents,
+            loadedMedia: loadedMedia ?? state.loadedMedia,
+            media: media ?? state.media);
 
   @override
   String toString() {
@@ -71,7 +81,9 @@ class SingleGameChangeEvents extends SingleGameState {
   }) : super(
             game: game ?? state.game,
             loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
-            gameEvents: gameEvents ?? state.gameEvents);
+            gameEvents: gameEvents ?? state.gameEvents,
+            loadedMedia: state.loadedMedia,
+            media: state.media);
 
   @override
   String toString() {
@@ -91,7 +103,9 @@ class SingleGameSaving extends SingleGameState {
       : super(
             game: singleGameState.game,
             loadedGameEvents: singleGameState.loadedGameEvents,
-            gameEvents: singleGameState.gameEvents);
+            gameEvents: singleGameState.gameEvents,
+            loadedMedia: singleGameState.loadedMedia,
+            media: singleGameState.media);
 
   @override
   String toString() {
@@ -109,7 +123,9 @@ class SingleGameSaveFailed extends SingleGameState {
       : super(
             game: singleGameState.game,
             loadedGameEvents: singleGameState.loadedGameEvents,
-            gameEvents: singleGameState.gameEvents);
+            gameEvents: singleGameState.gameEvents,
+            loadedMedia: singleGameState.loadedMedia,
+            media: singleGameState.media);
 
   @override
   String toString() {
@@ -123,7 +139,11 @@ class SingleGameSaveFailed extends SingleGameState {
 class SingleGameDeleted extends SingleGameState {
   SingleGameDeleted()
       : super(
-            game: null, loadedGameEvents: false, gameEvents: BuiltList.of([]));
+            game: null,
+            loadedGameEvents: false,
+            gameEvents: BuiltList.of([]),
+            loadedMedia: false,
+            media: BuiltList.of([]));
 
   @override
   String toString() {
@@ -137,7 +157,11 @@ class SingleGameDeleted extends SingleGameState {
 class SingleGameUninitialized extends SingleGameState {
   SingleGameUninitialized()
       : super(
-            game: null, loadedGameEvents: false, gameEvents: BuiltList.of([]));
+            game: null,
+            loadedGameEvents: false,
+            gameEvents: BuiltList.of([]),
+            loadedMedia: false,
+            media: BuiltList.of([]));
 }
 
 abstract class SingleGameEvent extends Equatable {}
@@ -248,6 +272,16 @@ class SingleGameLoadEvents extends SingleGameEvent {
   List<Object> get props => [];
 }
 
+///
+/// Load the game media
+///
+class SingleGameLoadMedia extends SingleGameEvent {
+  SingleGameLoadMedia();
+
+  @override
+  List<Object> get props => [];
+}
+
 class _SingleGameNewGame extends SingleGameEvent {
   final Game newGame;
 
@@ -269,6 +303,15 @@ class _SingleGameNewEvents extends SingleGameEvent {
   List<Object> get props => [events, newEvents, removedEvents];
 }
 
+class _SingleGameNewMedia extends SingleGameEvent {
+  final BuiltList<MediaInfo> newMedia;
+
+  _SingleGameNewMedia({@required this.newMedia});
+
+  @override
+  List<Object> get props => [newMedia];
+}
+
 class _SingleGameDeleted extends SingleGameEvent {
   _SingleGameDeleted();
 
@@ -286,6 +329,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
   StreamSubscription<Game> _gameSub;
   StreamSubscription<BuiltList<GameEvent>> _gameEventSub;
+
+  StreamSubscription<BuiltList<MediaInfo>> _mediaInfoSub;
 
   SingleGameBloc({@required this.db, @required this.gameUid}) {
     _gameSub = db.getGame(gameUid: gameUid).listen(_onGameUpdate);
@@ -397,6 +442,23 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
               .listen((BuiltList<GameEvent> ev) => _newGameEvents(ev));
         }
       });
+    }
+
+    if (event is SingleGameLoadMedia) {
+      print(" events $event");
+
+      _lock.synchronized(() {
+        if (_mediaInfoSub == null) {
+          _mediaInfoSub = db.getMediaForGame(gameUid: gameUid).listen(
+              (BuiltList<MediaInfo> ev) =>
+                  add(_SingleGameNewMedia(newMedia: ev)));
+        }
+      });
+    }
+
+    if (event is _SingleGameNewMedia) {
+      yield SingleGameLoaded(
+          state: state, loadedMedia: true, media: event.newMedia);
     }
 
     // Adds a player to the game

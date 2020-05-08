@@ -328,4 +328,28 @@ class MultiplexDatabase extends BasketballDatabase {
     else
       return _fs.updateUser(user: user);
   }
+
+  @override
+  Future<String> addMedia({MediaInfo media}) {
+    if (useSql)
+      return _sql.addMedia(media: media);
+    else
+      return _fs.addMedia(media: media);
+  }
+
+  @override
+  Future<void> deleteMedia({String mediaInfoUid}) {
+    if (useSql)
+      return _sql.deleteMedia(mediaInfoUid: mediaInfoUid);
+    else
+      return _fs.deleteMedia(mediaInfoUid: mediaInfoUid);
+  }
+
+  @override
+  Stream<BuiltList<MediaInfo>> getMediaForGame({String gameUid}) {
+    if (useSql)
+      return _sql.getMediaForGame(gameUid: gameUid);
+    else
+      return _fs.getMediaForGame(gameUid: gameUid);
+  }
 }

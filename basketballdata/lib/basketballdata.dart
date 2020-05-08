@@ -2,6 +2,7 @@ library basketballdata;
 
 export 'bloc/add/addgamebloc.dart';
 export 'bloc/add/additemstate.dart';
+export 'bloc/add/addmediabloc.dart';
 export 'bloc/add/addplayerbloc.dart';
 export 'bloc/add/addseasonbloc.dart';
 export 'bloc/add/addteambloc.dart';
@@ -16,6 +17,8 @@ export 'data/gameevent.dart';
 export 'data/gameeventtype.dart';
 export 'data/gameperiod.dart';
 export 'data/gamesummary.dart';
+export 'data/mediainfo.dart';
+export 'data/mediatype.dart';
 export 'data/player.dart';
 export 'data/playergamesummary.dart';
 export 'data/playerseasonsummary.dart';

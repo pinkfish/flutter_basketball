@@ -172,8 +172,8 @@ class Messages {
   String get video =>
       Intl.message("Video", desc: "Shows video for the game", locale: locale);
 
-  String get noVideo =>
-      Intl.message("No Video", desc: "No video to display", locale: locale);
+  String get noMedia =>
+      Intl.message("No Media", desc: "No media to display", locale: locale);
 
   String get streamButton => Intl.message("STREAM",
       desc: "Button to display a stream", locale: locale);
@@ -303,8 +303,14 @@ class Messages {
         name: 'Button to resend the email to verify their email address',
       );
 
+  String get invalidUrl => Intl.message('Invalid URL',
+      desc: 'Error in a form when the url is invalid');
+
   String get errorcreatinguser => Intl.message(
       "Error creating user, maybe the email address is already used");
+
+  String get playVideoTitle =>
+      Intl.message("View", desc: "Title for the tab to show the playing video");
 
   String get createnew => Intl.message(
         'Create new',
@@ -382,6 +388,15 @@ class Messages {
 
   String get reboundsGameSummary =>
       Intl.message("RBs", desc: "Rebounds in game summary", locale: locale);
+
+  String get videoTitle => Intl.message("Video",
+      desc: "Button to open up the video section", locale: locale);
+
+  String get urlTitle => Intl.message("URL",
+      desc: "Title for the form field to set the url for media");
+
+  String get descriptionTitle => Intl.message("Description",
+      desc: "Title for the description of the media");
 
   String getUnverified(String name, bool unverified) {
     if (unverified) {

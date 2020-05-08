@@ -230,7 +230,10 @@ class _GameTimeseriesData extends State<GameTimeseries> {
           ],
         ),
         Expanded(
-          child: _middleSectionWidget(),
+          child: AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: _middleSectionWidget(),
+          ),
         ),
       ],
     );

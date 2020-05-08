@@ -641,6 +641,24 @@ class SqlfliteDatabase extends BasketballDatabase {
   Future<void> updateUser({User user}) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<String> addMedia({MediaInfo media}) {
+    // TODO: implement addMedia
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteMedia({String mediaInfoUid}) {
+    // TODO: implement deleteMedia
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<BuiltList<MediaInfo>> getMediaForGame({String gameUid}) {
+    // TODO: implement getMediaForGame
+    throw UnimplementedError();
+  }
 }
 
 ///

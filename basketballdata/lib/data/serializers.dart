@@ -13,6 +13,8 @@ import 'gameevent.dart';
 import 'gameeventtype.dart';
 import 'gameperiod.dart';
 import 'gamesummary.dart';
+import 'mediainfo.dart';
+import 'mediatype.dart';
 import 'player.dart';
 import 'playergamesummary.dart';
 import 'playerseasonsummary.dart';
@@ -21,6 +23,7 @@ import 'season.dart';
 import 'seasonsummary.dart';
 import 'team.dart';
 import 'teamuser.dart';
+import 'timestampserializer.dart';
 import 'user.dart';
 
 part 'serializers.g.dart';
@@ -34,6 +37,8 @@ part 'serializers.g.dart';
   GamePeriod,
   GameSummary,
   MadeAttempt,
+  MediaInfo,
+  MediaType,
   PlayerGameSummary,
   PlayerSummaryData,
   PlayerSeasonSummary,
@@ -44,5 +49,7 @@ part 'serializers.g.dart';
   TeamUser,
   User,
 ])
-final Serializers serializers =
-    (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
+final Serializers serializers = (_$serializers.toBuilder()
+      ..add(TimestampSerializer())
+      ..addPlugin(StandardJsonPlugin()))
+    .build();
