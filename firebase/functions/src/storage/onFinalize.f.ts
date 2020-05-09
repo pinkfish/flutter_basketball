@@ -25,7 +25,7 @@ export default functions.storage.object().onFinalize(async object => {
     return false;
   }
 
-  if (fileName.includes("thumb@") || !object.contentType.includes("video")) {
+  if (fileName.includes("thumb") || !object.contentType.includes("video")) {
     console.log("exiting function " + object.contentType);
     return false;
   }
@@ -36,7 +36,7 @@ export default functions.storage.object().onFinalize(async object => {
 
   await generateThumbnailFromPath(tempFilePath, tempFilePath).then(files => {
     return bucket.upload(tempFilePath, {
-      destination: path.join(bucketDir, files[0])
+      destination: path.join(bucketDir, filePath + files[0])
     });
   });
 
