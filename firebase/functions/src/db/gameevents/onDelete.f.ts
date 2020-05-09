@@ -1,17 +1,17 @@
 import * as functions from "firebase-functions";
 
-export  default functions.firestore
+export default functions.firestore
   .document("GameEvents/{gameUid}")
-  .onDelete((snapshot) => {
-  const eventType = snapshot.data()?.type;
+  .onDelete(snapshot => {
+    const eventType = snapshot.data()?.type;
 
-  switch (eventType) {
-    case 'Made':
-    case 'Missed': {
-      return snapshot;
+    switch (eventType) {
+      case "Made":
+      case "Missed": {
+        return snapshot;
+      }
+      default: {
+        return snapshot;
+      }
     }
-    default: {
-      return snapshot;
-    }
-  }
-});
+  });

@@ -1,10 +1,10 @@
 import * as functions from "firebase-functions";
 
-export  default functions.firestore
+export default functions.firestore
   .document("GameEvents/{gameUid}")
-  .onDelete((snapshot) => {
-  return snapshot;
-  /*
+  .onDelete(snapshot => {
+    return snapshot;
+    /*
   const eventType = snapshot.data()?.type;
   const opponent = snapshot.data()?.opponent;
   const gameRef = db.collection('Games').doc(snapshot.data()?.gameUid);
@@ -62,4 +62,4 @@ export  default functions.firestore
     }
   }
   */
-});
+  });
