@@ -40,8 +40,8 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.10.0",
     "husky": "^4.2.3",
-    "lint-staged": "^10.0.8",
-    "prettier": "^1.19.1",
+    "lint-staged": "10.2.2",
+    "prettier": "1.19.1",
     "tslint": "^5.12.0",
     "typescript": "^3.2.2"
   },

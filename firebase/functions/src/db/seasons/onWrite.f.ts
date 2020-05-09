@@ -1,13 +1,15 @@
 import * as functions from "firebase-functions";
 import admin from "firebase-admin";
-try { admin.initializeApp(); } catch(e) {
-console.log(e);
+try {
+  admin.initializeApp();
+} catch (e) {
+  console.log(e);
 }
 const db = admin.firestore();
 
 export default functions.firestore
   .document("Games/{gameUid}")
-  .onWrite((change) => {
+  .onWrite(change => {
     // If it didn't exist or still exists then we update.
     const beforeSummary = change.before.exists
       ? change.before.data()?.summary
@@ -20,10 +22,20 @@ export default functions.firestore
       : change.after.exists
       ? change.after.data()?.teamUid
       : "";
+    const seasonUid = change.before.exists
+      ? change.before.data()?.seasonUid
+      : change.after.exists
+      ? change.after.data()?.seasonUid
+      : "";
 
     // Both finished so we don't do anything.
-    if (afterSummary.finished == beforeSummary.finished) {
-      return;
+    if (
+      afterSummary.finished == beforeSummary.finished &&
+      afterSummary.ptsAgainst == beforeSummary.ptsAgainst &&
+      afterSummary.ptsFor == beforeSummary.ptsFor
+    ) {
+      console.log("Both states are finished");
+      return false;
     }
 
     // Get all the games for the season and add it all up.
@@ -57,15 +69,46 @@ export default functions.firestore
         }
       }
 
-      // Update the season with the result.
-      db.collection("Seasons")
-        .doc(teamUid)
-        .update({
-          ptsFor: ptsFor,
-          ptsAgainst: ptsAgainst,
-          wins: win,
-          losses: loss,
-          ties: tie
+      return db
+        .collection("Seasons")
+        .doc(seasonUid)
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("Not able to find season ", seasonUid);
+            return Promise.resolve(false);
+          }
+
+          const seasonSummary = doc.exists
+            ? doc.data()?.summary
+            : { ptsFor: 0, ptsAgainst: 0, wins: 0, losses: 0, ties: 0 };
+
+          if (
+            seasonSummary.ptsFor != ptsFor ||
+            seasonSummary.ptsAgainst != ptsAgainst ||
+            seasonSummary.wins != win ||
+            seasonSummary.losses != loss ||
+            seasonSummary.ties != tie
+          ) {
+            // Update the season with the result.
+            return db
+              .collection("Seasons")
+              .doc(seasonUid)
+              .update({
+                summary: {
+                  ptsFor: ptsFor,
+                  ptsAgainst: ptsAgainst,
+                  wins: win,
+                  losses: loss,
+                  ties: tie
+                }
+              })
+              .then(() => {
+                return Promise.resolve(true);
+              });
+          }
+          console.log("No change for season ", seasonUid);
+          return Promise.resolve(false);
         });
     });
   });

@@ -17,9 +17,11 @@ export default functions.firestore
     const beforeUrl = change.before.exists ? change.before.data()?.url : "";
     const afterUrl = change.after.exists ? change.after.data()?.url : "";
 
+    console.log("Doing wombles ", afterUrl);
     // Both finished so we don't do anything.
-    if (afterUrl == beforeUrl && afterUrl.contains("35.186.244.82")) {
-      return;
+    if (afterUrl == beforeUrl && afterUrl.includes("35.186.244.82")) {
+      console.log("Not the right url ", afterUrl);
+      return false;
     }
 
     // Download from this url and upload to storage.
@@ -30,7 +32,8 @@ export default functions.firestore
     const file = bucket.file(path);
     const writeStream = file.createWriteStream();
 
-    return nodeFetch("image.jpg").then(res => {
+    console.log("Fetch ", path);
+    return nodeFetch(path).then(res => {
       return new Promise((resolve, reject) => {
         res.body.on("end", () => {
           resolve();

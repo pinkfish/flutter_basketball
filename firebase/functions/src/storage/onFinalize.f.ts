@@ -34,12 +34,16 @@ export default functions.storage.object().onFinalize(async object => {
   await bucket.file(filePath).download({ destination: tempFilePath });
   console.log("Video downloaded locally to", tempFilePath);
 
-  await generateThumbnailFromPath(tempFilePath, tempFilePath).then(files => {
-    return bucket.upload(tempFilePath, {
-      destination: path.join(bucketDir, filePath + files[0])
+  return generateThumbnailFromPath(tempFilePath, tempFilePath)
+    .then(files => {
+      console.log("Generatedtheumbail ", files[0]);
+      return bucket.upload(tempFilePath, {
+        destination: path.join(bucketDir, filePath + files[0])
+      });
+    })
+    .then(() => {
+      console.log("Deleting directory ", bucketDir);
+      // 5. Cleanup remove the tmp/thumbs from the filesystem
+      return fs.rmdir(bucketDir, { recursive: true });
     });
-  });
-
-  // 5. Cleanup remove the tmp/thumbs from the filesystem
-  return fs.rmdir(bucketDir, { recursive: true });
 });
