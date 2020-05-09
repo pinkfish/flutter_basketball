@@ -2,38 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addmediabloc.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/mediainfo.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/mediatype.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/timestampserializer.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/android/app/src/main/res/xml/network_security_config.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/screens/addmedia.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamestatusoverlay.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/mediaedit.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/mediatypeicon.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/videoplayer.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/src/db/media/onWrite.f.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/src/storage/onFinalize.f.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/src/util/media.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/routes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamevideo.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmedia.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmedia.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -172,8 +149,18 @@
       <option name="project" value="LOCAL" />
       <updated>1588810085525</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix up the event details list in the game display.">
+      <created>1588925904123</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1588925904123</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add in cloud build rules to build nginx from data." />
@@ -213,30 +200,30 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="346" y="186" key="#ux/0.23.1280.924@0.23.1280.924" timestamp="1588617098963" />
-    <state x="252" y="59" key="CommitChangelistDialog2" timestamp="1588810083113">
+    <state x="253" y="59" key="CommitChangelistDialog2" timestamp="1588925858701">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state x="252" y="59" key="CommitChangelistDialog2/0.23.1280.924@0.23.1280.924" timestamp="1588810083113" />
-    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1588921044712">
+    <state x="253" y="59" key="CommitChangelistDialog2/0.23.1280.924@0.23.1280.924" timestamp="1588925858701" />
+    <state width="619" height="245" key="GridCell.Tab.0.bottom" timestamp="1589009625157">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1588813934600" />
-    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1588921044712" />
-    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1588921044710">
+    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1589009625157" />
+    <state width="619" height="245" key="GridCell.Tab.0.center" timestamp="1589009625155">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1588813934598" />
-    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1588921044710" />
-    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1588921044695">
+    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1589009625155" />
+    <state width="619" height="245" key="GridCell.Tab.0.left" timestamp="1589009625154">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1588813934596" />
-    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1588921044695" />
-    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1588921044711">
+    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1589009625154" />
+    <state width="619" height="245" key="GridCell.Tab.0.right" timestamp="1589009625156">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1588813934599" />
-    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1588921044711" />
+    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1589009625156" />
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1587752886189">
       <screen x="0" y="23" width="1280" height="921" />
     </state>

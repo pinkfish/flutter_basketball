@@ -57,7 +57,8 @@ class _AddMediaGameInside extends StatefulWidget {
 
 class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
   void _saveForm(
-      AddMediaBloc bloc, Uri url, String description, DateTime time) {
+      AddMediaBloc bloc, Uri url, String description, DateTime time) async {
+    // Download the url and them upload to storage, then do the update.
     bloc.add(AddMediaEventCommit(
         newMedia: MediaInfo(
       (b) => b

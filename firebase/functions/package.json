@@ -14,19 +14,26 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "@google-cloud/storage": "^4.7.0",
     "@types/camelcase": "^5.2.0",
+    "@types/fluent-ffmpeg": "^2.1.14",
     "@types/glob": "^7.1.1",
     "@types/lodash.set": "^4.3.6",
+    "@types/node-fetch": "^2.5.7",
     "camelcase": "^5.3.1",
+    "child-process-promise": "^2.2.1",
     "firebase-admin": "^8.10.0",
     "firebase-function-tools": "^1.1.4",
     "firebase-functions": "^3.5.0",
+    "fluent-ffmpeg": "^2.1.2",
     "glob": "^7.1.6",
     "lodash": "^4.17.15",
-    "lodash.set": "^4.3.2"
+    "lodash.set": "^4.3.2",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@types/node": "^13.9.2",
+    "@types/node": "^13.13.5",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "eslint": "^6.8.0",
