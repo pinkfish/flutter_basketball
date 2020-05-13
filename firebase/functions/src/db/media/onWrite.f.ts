@@ -22,7 +22,8 @@ export default functions.firestore
     console.log("Doing wombles ", afterUrl);
     // Both finished so we don't do anything.
     if (
-      (afterUrl == beforeUrl && afterUrl.includes("35.186.244.82")) ||
+      afterUrl == beforeUrl ||
+      !afterUrl.includes("35.186.244.82") ||
       change.after.data()?.type !== "VideoOnDemand"
     ) {
       console.log(
@@ -39,11 +40,11 @@ export default functions.firestore
 
     // Create a WritableStream from the File
     const path = change.after.data()?.gameUid + "/" + change.after.data()?.uid;
-    const file = bucket.file(path);
+    const file = bucket.file(path + "_thumb.png");
     const writeStream = file.createWriteStream();
 
     console.log("Fetch ", path);
-    return nodeFetch(path).then(res => {
+    return nodeFetch(afterUrl).then(res => {
       return new Promise((resolve, reject) => {
         res.body.on("end", () => {
           resolve();

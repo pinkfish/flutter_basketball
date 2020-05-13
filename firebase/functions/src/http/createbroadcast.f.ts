@@ -1,4 +1,3 @@
-import cors from "cors";
 import * as functions from "firebase-functions";
 import axios from "axios";
 import admin from "firebase-admin";
@@ -16,7 +15,7 @@ const db = admin.firestore();
 const CREATE_ANT_URL = "http://34.70.40.166:5080/LiveApp/rest/broadcast/create";
 const BASE_BROADCAST_ANT_URL =
   "http://34.70.40.166:5080/LiveApp/rest/broadcast/";
-const RTMP_URL_BASE = "rtmp://34.70.40.166:5080/LiveApp/";
+const RTMP_URL_BASE = "rtmp://34.70.40.166:1935/LiveApp/";
 const STREAM_URL_BASE = "http://34.70.40.166:5080/LiveApp/streams/";
 
 const api = axios.create({
@@ -31,20 +30,20 @@ api.interceptors.request.use(request => {
   console.log("Starting Request", request);
   return request;
 });
+api.interceptors.response.use(response => {
+  console.log("Response", response);
+  return response;
+});
 
-async function startBroadcast(
-  req: functions.Request,
-  res: functions.Response<string>,
-  decoded: admin.auth.DecodedIdToken
-): Promise<boolean> {
+interface RequestData {
+  gameUid: string;
+  teamUid: string;
+  seasonUid: string;
+}
+
+async function startBroadcast(data: RequestData): Promise<object> {
   let streamId = null;
   try {
-    const data = req.body.data;
-    if (data === null || data === undefined) {
-      console.log("No json data");
-      res.status(412).send("no json data");
-      return false;
-    }
     const gameUid = data["gameUid"];
     const teamUid = data["teamUid"];
     const seasonUid = data["seasonUid"];
@@ -57,7 +56,10 @@ async function startBroadcast(
       seasonUid === undefined
     ) {
       console.log("Invalid data ", data);
-      return false;
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "Invalid input args"
+      );
     }
     const dbMediaDoc: firestore.DocumentReference = db
       .collection("Media")
@@ -70,7 +72,7 @@ async function startBroadcast(
       data: {
         name: dbMediaDoc.id,
         expireDurationMS: 20000,
-        desscription: "Live stream for " + dbMediaDoc.id,
+        description: "Live stream for " + dbMediaDoc.id,
         category: "game",
         listenerHookURL:
           "https://us-central1-basketballstats-8ed93.cloudfunctions.net/"
@@ -79,8 +81,7 @@ async function startBroadcast(
     streamId = response.data["streamId"];
     if (streamId === null || streamId === undefined) {
       console.log("Invalid response from ant ", response.data);
-      res.status(412).send(response.data);
-      return false;
+      throw new functions.https.HttpsError("aborted", "Bad response from ant");
     }
 
     // Success, send stuff back! and update the database.
@@ -93,21 +94,25 @@ async function startBroadcast(
         teamUid: teamUid,
         type: "VideoStreaming",
         length: 0,
+        streamId: streamId,
         uid: dbMediaDoc.id,
         expireDurationMS: 20000,
         uploadTime: firestore.FieldValue.serverTimestamp(),
-        startDate: Date.now(),
+        startAt: Date.now(),
         url: STREAM_URL_BASE + streamId,
         rtmpUrl: RTMP_URL_BASE + streamId
       });
 
       //const data = JSON.parse(response.statusText);
-      res.status(200).send(response.statusText);
+      console.log(response.data);
+      response.data["rtmpURL"] = RTMP_URL_BASE + streamId;
+      return response.data;
+    } else {
+      throw new functions.https.HttpsError("aborted", "Not 200 status");
     }
   } catch (exception) {
     console.log("Error starting broadcast");
     console.log(exception);
-    res.status(412).send('{"error": "Error from media server"}');
 
     // Delete the broadcast if stuff goes wrong
     if (streamId !== null && streamId != undefined) {
@@ -115,9 +120,8 @@ async function startBroadcast(
         data: { streamId: streamId, name: streamId }
       });
     }
-    return false;
+    throw new functions.https.HttpsError("internal", exception);
   }
-  return true;
 }
 
 ///
@@ -125,35 +129,20 @@ async function startBroadcast(
 /// Talks to the media server to setup the system and then parses the results
 /// back via the api to the frontend.
 ///
-export default functions.https.onRequest((req, res) => {
-  console.log("Doing stuff");
-  console.log(req.body);
-  console.log(req.params);
-  const func = cors();
-  return func(req, res, () => {
-    const headerToken = req.get("Authorization");
-    if (headerToken === null || headerToken === undefined) {
-      console.log("missing auth token header");
-      res.status(401).send('{"error": "no token"}');
-      return;
+export default functions.https.onCall(
+  (data, context): Promise<object> => {
+    console.log("Doing stuff");
+    console.log(data);
+    if (context.auth === null || context.auth === undefined) {
+      console.log("No auth ");
+      throw new functions.https.HttpsError("unauthenticated", "No anything");
     }
-    const bits = headerToken.split("Bearer ");
-    if (bits.length < 2) {
-      console.log("Invalid auth token");
-      res.status(401).send("invalid token");
-      return;
-    }
-    const tokenId = bits[1];
+    const tokenId = context.auth.token;
     if (tokenId === null || tokenId === undefined) {
       console.log("No auth token");
-      res.status(401).send("no token");
-      return;
+      throw new functions.https.HttpsError("unauthenticated", "No token");
     }
 
-    return admin
-      .auth()
-      .verifyIdToken(tokenId)
-      .then(decoded => startBroadcast(req, res, decoded))
-      .catch(err => res.status(401).send(err));
-  });
-});
+    return startBroadcast(data);
+  }
+);

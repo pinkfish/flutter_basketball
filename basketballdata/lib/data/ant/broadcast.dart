@@ -2,12 +2,10 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import '../serializers.dart';
+import 'broadcaststatus.dart';
+import 'broadcasttype.dart';
 
 part 'broadcast.g.dart';
-
-enum BroadcastStatus { finished, broadcasting, created }
-
-enum BroadcastType { liveStream, ipCamera, streamSource, VoD }
 
 ///
 /// Data about the broadcast itself.

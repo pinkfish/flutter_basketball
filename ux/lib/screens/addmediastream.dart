@@ -92,9 +92,10 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     });
   }
 
-  void dispose() {
+  Future<void> dispose() async {
     super.dispose();
-    _bloc.close();
+    await _bloc.close();
+    return _controller.dispose();
   }
 
   void _startStreaming() async {
@@ -113,6 +114,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
           mediaInfoUid: broadcast.name);
       // Now we get the media details and subscribe to updates.
       _streaming = true;
+      _startVideoStreaming(broadcast.rtmpURL);
     } catch (e, stack) {
       print(e);
       print(stack);
@@ -150,11 +152,19 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
 
   @override
   Widget build(BuildContext context) {
+    print("Media stuff ${_bloc.state}");
+    if (_bloc.state is SingleMediaInfoLoaded &&
+        !_controller.value.isStreamingVideoRtmp) {
+      print("Starting the stream");
+      _startVideoStreaming(_bloc.state.mediaInfo.rtmpUrl.toString());
+    }
     return BlocConsumer(
       bloc: _bloc,
       listener: (BuildContext context, SingleMediaInfoState state) {
-        if (state is SingleMediaInfoLoaded && !_streaming) {
-          startVideoStreaming(state.mediaInfo.rtmpUrl);
+        if (state is SingleMediaInfoLoaded &&
+            !_controller.value.isStreamingVideoRtmp) {
+          print("Starting the stream");
+          _startVideoStreaming(state.mediaInfo.rtmpUrl.toString());
         }
       },
       builder: (BuildContext context, SingleMediaInfoState state) {
@@ -175,12 +185,14 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
                           GestureDetector(
                             onTap: _startStreaming,
                             child: Center(
-                              child: FlatButton(
-                                  child: Text(
-                                    "START",
-                                    textScaleFactor: 2.0,
-                                  ),
-                                  onPressed: _startStreaming),
+                              child: _streaming
+                                  ? SizedBox(height: 0, width: 0)
+                                  : FlatButton(
+                                      child: Text(
+                                        "START",
+                                        textScaleFactor: 2.0,
+                                      ),
+                                      onPressed: _startStreaming),
                             ),
                           ),
                         ],
@@ -277,7 +289,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
   }
 
   void onVideoRecordButtonPressed(MediaInfo info) {
-    startVideoStreaming(info.rtmpUrl).then((bool started) {
+    _startVideoStreaming(info.rtmpUrl.toString()).then((bool started) {
       if (mounted) setState(() {});
     });
   }
@@ -303,7 +315,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     });
   }
 
-  Future<bool> startVideoStreaming(Uri uri) async {
+  Future<bool> _startVideoStreaming(String uri) async {
     if (!_controller.value.isInitialized) {
       showInSnackBar('Error: select a camera first.');
       return null;

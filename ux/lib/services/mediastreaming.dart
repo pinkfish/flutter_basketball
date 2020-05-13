@@ -19,10 +19,7 @@ class MediaStreaming {
       'seasonUid': g.seasonUid,
     });
     print(result.data);
-    var data = Broadcast.fromMap(result.data);
-    if (data.streamId != g.uid) {
-      throw FormatException("streamId $data must match $g");
-    }
+    var data = Broadcast.fromMap(Map<String, dynamic>.from(result.data));
     return data;
   }
 
