@@ -36,6 +36,9 @@ abstract class MediaInfo implements Built<MediaInfo, MediaInfoBuilder> {
   @nullable
   Uri get thumbnailUrl;
 
+  @nullable
+  Uri get rtmpUrl;
+
   MediaType get type;
 
   Uri get url;

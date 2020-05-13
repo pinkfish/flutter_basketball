@@ -659,6 +659,12 @@ class SqlfliteDatabase extends BasketballDatabase {
     // TODO: implement getMediaForGame
     throw UnimplementedError();
   }
+
+  @override
+  Stream<MediaInfo> getMediaInfo({String mediaInfoUid}) {
+    // TODO: implement getMediaForGame
+    throw UnimplementedError();
+  }
 }
 
 ///

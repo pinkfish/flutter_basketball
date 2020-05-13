@@ -3,7 +3,9 @@ import admin from "firebase-admin";
 try {
   admin.initializeApp();
 } catch (e) {
-  console.log(e);
+  if (e.errorInfo.code !== "app/duplicate-app") {
+    console.log(e);
+  }
 }
 const db = admin.firestore();
 

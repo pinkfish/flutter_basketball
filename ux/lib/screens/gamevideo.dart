@@ -92,7 +92,40 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
     return GameMediaList();
   }
 
-  void _addMedia() {
-    Navigator.pushNamed(context, "Media/Add/${widget.state.game.uid}");
+  void _addMedia() async {
+    switch (await showDialog<MediaType>(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              title: Text(Messages.of(context).selectMediaType),
+              children: [
+                SimpleDialogOption(
+                  onPressed: () => Navigator.pop(context, MediaType.Image),
+                  child: Text(Messages.of(context).imageMediaType),
+                ),
+                SimpleDialogOption(
+                  onPressed: () =>
+                      Navigator.pop(context, MediaType.VideoStreaming),
+                  child: Text(Messages.of(context).streamMediaType),
+                ),
+                SimpleDialogOption(
+                  onPressed: () =>
+                      Navigator.pop(context, MediaType.VideoOnDemand),
+                  child: Text(Messages.of(context).videoMediaType),
+                ),
+              ]);
+        })) {
+      case MediaType.Image:
+        Navigator.pushNamed(
+            context, "Media/Add/Photo/${widget.state.game.uid}");
+        break;
+      case MediaType.VideoOnDemand:
+        Navigator.pushNamed(context, "Media/Add/Url/${widget.state.game.uid}");
+        break;
+      case MediaType.VideoStreaming:
+        Navigator.pushNamed(
+            context, "Media/Add/Stream/${widget.state.game.uid}");
+        break;
+    }
   }
 }

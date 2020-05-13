@@ -13,6 +13,7 @@ import 'messages.dart';
 import 'routes.dart';
 import 'screens/splashscreen.dart';
 import 'services/loginbloc.dart';
+import 'services/mediastreaming.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -40,8 +41,16 @@ class MyApp extends StatelessWidget {
     // Log an error if the db fails to open.
     //_db.waitTillOpen();
 
-    return RepositoryProvider<BasketballDatabase>(
-      create: (BuildContext context) => MultiplexDatabase(forceSql, analytics),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<BasketballDatabase>(
+          create: (BuildContext context) =>
+              MultiplexDatabase(forceSql, analytics),
+        ),
+        RepositoryProvider<MediaStreaming>(
+          create: (BuildContext context) => MediaStreaming(),
+        ),
+      ],
       child: MultiBlocProvider(
         providers: <BlocProvider>[
           BlocProvider<TeamsBloc>(

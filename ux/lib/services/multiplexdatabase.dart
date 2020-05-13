@@ -352,4 +352,12 @@ class MultiplexDatabase extends BasketballDatabase {
     else
       return _fs.getMediaForGame(gameUid: gameUid);
   }
+
+  @override
+  Stream<MediaInfo> getMediaInfo({String mediaInfoUid}) {
+    if (useSql)
+      return _sql.getMediaInfo(mediaInfoUid: mediaInfoUid);
+    else
+      return _fs.getMediaInfo(mediaInfoUid: mediaInfoUid);
+  }
 }

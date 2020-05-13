@@ -11,10 +11,10 @@ import '../widgets/savingoverlay.dart';
 ///
 /// Adds a media to the game worl.
 ///
-class AddMediaGameScreen extends StatelessWidget {
+class AddMediaFromUrlGameScreen extends StatelessWidget {
   final String gameUid;
 
-  AddMediaGameScreen(this.gameUid);
+  AddMediaFromUrlGameScreen(this.gameUid);
 
   @override
   Widget build(BuildContext context) {

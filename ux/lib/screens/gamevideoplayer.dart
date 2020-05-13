@@ -108,8 +108,4 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
       video: myInfo,
     );
   }
-
-  void _addMedia() {
-    Navigator.pushNamed(context, "Media/Add/${widget.state.game.uid}");
-  }
 }

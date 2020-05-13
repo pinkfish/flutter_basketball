@@ -35,6 +35,9 @@ abstract class BasketballDatabase {
   /// Gets all the updates for this speific user.
   Stream<User> getUser({@required String userUid});
 
+  /// Gets all the updates for this speific media info blob.
+  Stream<MediaInfo> getMediaInfo({@required String mediaInfoUid});
+
   /// Loads all the game events for this game.
   Stream<BuiltList<GameEvent>> getGameEvents({@required String gameUid});
 

@@ -8,6 +8,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
+import 'ant/broadcast.dart';
 import 'game.dart';
 import 'gameevent.dart';
 import 'gameeventtype.dart';
@@ -30,6 +31,7 @@ part 'serializers.g.dart';
 
 /// Collection of generated serializers for the built_value chat example.
 @SerializersFor([
+  Broadcast,
   Game,
   GameEvent,
   GameEventType,

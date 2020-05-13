@@ -172,6 +172,23 @@ class Messages {
   String get video =>
       Intl.message("Video", desc: "Shows video for the game", locale: locale);
 
+  String get selectMediaType => Intl.message("Select Media",
+      desc: "Title for the dialog to select a video", locale: locale);
+
+  String get videoMediaType =>
+      Intl.message("Upload Video", desc: "Upload a video", locale: locale);
+
+  String get imageMediaType =>
+      Intl.message("Photo", desc: "Upload a photo", locale: locale);
+
+  String get streamMediaType =>
+      Intl.message("Stream Live", desc: "Live video streaming", locale: locale);
+  String get takePhotoButton =>
+      Intl.message("CAMERA", desc: "Live video streaming", locale: locale);
+
+  String get selectImageButton =>
+      Intl.message("GALLERY", desc: "Live video streaming", locale: locale);
+
   String get noMedia =>
       Intl.message("No Media", desc: "No media to display", locale: locale);
 

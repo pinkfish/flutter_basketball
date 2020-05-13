@@ -495,4 +495,22 @@ class FirestoreDatabase extends BasketballDatabase {
           MediaInfo.fromMap(_addUid(snap.documentID, snap.data))));
     }
   }
+
+  @override
+  Stream<MediaInfo> getMediaInfo({String mediaInfoUid}) async* {
+    var ref = Firestore.instance.collection(mediaTable).document(mediaInfoUid);
+    var doc = await ref.get();
+    if (doc.exists) {
+      yield MediaInfo.fromMap(doc.data);
+    } else {
+      yield null;
+    }
+    await for (var snap in ref.snapshots()) {
+      if (snap.exists) {
+        yield MediaInfo.fromMap(snap.data);
+      } else {
+        yield null;
+      }
+    }
+  }
 }

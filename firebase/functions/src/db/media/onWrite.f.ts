@@ -5,7 +5,9 @@ import nodeFetch from "node-fetch";
 try {
   admin.initializeApp();
 } catch (e) {
-  console.log(e);
+  if (e.errorInfo.code !== "app/duplicate-app") {
+    console.log(e);
+  }
 }
 
 const storage = new Storage();
@@ -19,8 +21,16 @@ export default functions.firestore
 
     console.log("Doing wombles ", afterUrl);
     // Both finished so we don't do anything.
-    if (afterUrl == beforeUrl && afterUrl.includes("35.186.244.82")) {
-      console.log("Not the right url ", afterUrl);
+    if (
+      (afterUrl == beforeUrl && afterUrl.includes("35.186.244.82")) ||
+      change.after.data()?.type !== "VideoOnDemand"
+    ) {
+      console.log(
+        "Not the right url or type",
+        afterUrl,
+        " ",
+        change.after.data()?.type
+      );
       return false;
     }
 
