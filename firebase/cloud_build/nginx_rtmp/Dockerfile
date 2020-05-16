@@ -9,6 +9,8 @@ ARG  NGINX_VERSION=1.17.5
 ARG  NGINX_RTMP_MODULE_VERSION=1.2.1
 ARG  FFMPEG_VERSION=4.2.1
 
+
+
 # Install dependencies
 RUN apt-get update && \
 	apt-get install -y \
