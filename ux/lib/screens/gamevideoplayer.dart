@@ -1,5 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/widgets/game/videoplayer.dart';
+import 'package:basketballstats/widgets/media/videoplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';

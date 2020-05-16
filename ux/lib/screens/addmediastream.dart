@@ -4,6 +4,7 @@ import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/mediastreaming.dart';
 import 'package:camera_with_rtmp/camera.dart';
+import 'package:camera_with_rtmp/new/src/common/camera_interface.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,8 +137,6 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
   }
 
   void _cameraToggleCamera() {
-    final List<Widget> toggles = <Widget>[];
-
     if (_controller == null ||
         !_controller.value.isInitialized ||
         _cameras.isEmpty) {
@@ -246,8 +245,8 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
       return ButtonBar(
         children: <Widget>[
           IconButton(
-            icon:
-                Icon(_getCameraLensIcon(_controller.description.lensDirection)),
+            icon: Icon(_getCameraLensIcon(
+                _controller.description?.lensDirection ?? LensDirection.back)),
             color: Colors.blue,
             onPressed: _controller != null && _controller.value.isInitialized
                 ? _cameraToggleCamera
@@ -327,7 +326,11 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
 
     try {
       _controller.startVideoStreaming(uri.toString());
-    } catch (e, stack) {}
+    } catch (e, stack) {
+      Crashlytics.instance.recordError(e, stack);
+      return false;
+    }
+    return true;
 
     /*
     final Directory extDir = await getApplicationDocumentsDirectory();

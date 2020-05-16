@@ -1,11 +1,18 @@
 import {
   FfmpegCommand,
   FfmpegCommandOptions,
-  ScreenshotsConfig
+  ScreenshotsConfig,
+  setFfmpegPath,
+  setFfprobePath
 } from "fluent-ffmpeg";
+import Ffmpeg from "fluent-ffmpeg";
+import pathToFfmpeg from "ffmpeg-static";
+import * as os from "os";
+import * as pathToFfprobe from "ffprobe-static";
+
 import "node-fetch";
 
-const THUMB_MAX_WIDTH = "100";
+const THUMB_MAX_WIDTH = "200x200";
 
 function getFfmpegInstance(source: ReadableStream<Uint8Array>): FfmpegCommand {
   const options: FfmpegCommandOptions = {};
@@ -49,22 +56,36 @@ export function generateThumbnailFromUrl(
   });
 }
 
+//
+// Generates a thumbnail from the specified path into the folder
+//
 export function generateThumbnailFromPath(
   path: string,
-  outputFolder: string
-): Promise<string[]> {
+  testFfmpeg?: (n: string) => FfmpegCommand
+): Promise<string> {
   const settings: ScreenshotsConfig = {
-    folder: outputFolder,
+    folder: os.tmpdir(),
     count: 1,
     size: THUMB_MAX_WIDTH,
-    filename: "_thumb.png"
+    timemarks: [1], // 1 second in
+    filename: "%ibits.png"
   };
 
   let filenameArray: string[] = [];
 
-  const ffmpeg = new FfmpegCommand(path);
+  setFfmpegPath(pathToFfmpeg);
+  setFfprobePath(pathToFfprobe.path);
 
-  return new Promise((resolve, reject) => {
+  console.log("testffmpeg", testFfmpeg);
+  const ffmpeg =
+    testFfmpeg !== null && testFfmpeg !== undefined
+      ? testFfmpeg(path)
+      : Ffmpeg(path);
+  ffmpeg.on("start", (commandLine: string) => {
+    console.log("Ffmpeg command line: " + commandLine);
+  });
+
+  return new Promise<string[]>((resolve, reject) => {
     function complete(): void {
       resolve(filenameArray);
     }
@@ -78,5 +99,7 @@ export function generateThumbnailFromPath(
       .on("end", complete)
       .on("error", reject)
       .screenshots(settings);
+  }).then((fnames: string[]) => {
+    return Promise.resolve(settings.folder + "/" + fnames[0]);
   });
 }

@@ -3,8 +3,9 @@ import camelCase from "camelcase";
 import glob from "glob";
 import admin from "firebase-admin";
 import { resolve } from "path";
+import * as c from "./util/constants";
 
-admin.initializeApp();
+admin.initializeApp(c.FIREBASE_APP_OPTIONS);
 
 const files = glob.sync("./**/*.f.js", {
   cwd: __dirname,

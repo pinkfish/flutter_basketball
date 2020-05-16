@@ -26,24 +26,32 @@ export default functions.storage.object().onFinalize(async object => {
   }
 
   if (fileName.includes("thumb") || !object.contentType.includes("video")) {
-    console.log("exiting function " + object.contentType);
+    console.log("not a video or already a thumbnail " + object.contentType);
     return false;
   }
 
+  const thumbnailPath = filePath.replace(".mp4", "_thumb.png");
+
   const tempFilePath = path.join(os.tmpdir(), fileName);
+  if (await bucket.file(thumbnailPath).exists()) {
+    console.log("Thumb already exists");
+    return false;
+  }
   await bucket.file(filePath).download({ destination: tempFilePath });
   console.log("Video downloaded locally to", tempFilePath);
 
-  return generateThumbnailFromPath(tempFilePath, tempFilePath)
-    .then(files => {
-      console.log("Generatedtheumbail ", files[0]);
-      return bucket.upload(tempFilePath, {
-        destination: path.join(bucketDir, filePath + files[0])
-      });
-    })
-    .then(() => {
-      console.log("Deleting directory ", bucketDir);
-      // 5. Cleanup remove the tmp/thumbs from the filesystem
-      return fs.rmdir(bucketDir, { recursive: true });
+  try {
+    const files = await generateThumbnailFromPath(tempFilePath);
+    console.log("Generatedtheumbail ", files[0]);
+    await bucket.upload(tempFilePath, {
+      destination: path.join(bucketDir, filePath + files[0])
     });
+    console.log("Deleting directory ", bucketDir);
+    // 5. Cleanup remove the tmp/thumbs from the filesystem
+    await fs.rmdir(bucketDir, { recursive: true });
+    return true;
+  } catch (error) {
+    console.log("Errors in stuff ", error);
+    return false;
+  }
 });

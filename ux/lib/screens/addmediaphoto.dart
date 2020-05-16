@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:basketballdata/basketballdata.dart';
@@ -12,7 +13,7 @@ import 'package:uuid/uuid.dart';
 
 import '../messages.dart';
 import '../widgets/loading.dart';
-import '../widgets/savingoverlay.dart';
+import '../widgets/savingprogressoverlay.dart';
 
 ///
 /// Adds a media to the game worl.
@@ -68,6 +69,7 @@ class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
   bool _uploading = false;
   Uuid uuid = Uuid();
   String _description;
+  num _percentage = 0;
 
   void _saveForm(AddMediaBloc bloc) async {
     // Upload the media to storage and use that url.
@@ -77,7 +79,16 @@ class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
     var ref = FirebaseStorage.instance
         .ref()
         .child("image/${widget.state.game.uid}/$id");
-    await ref.putFile(_image);
+    var task = ref.putFile(_image);
+    var timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+      setState(() {
+        _percentage = task.lastSnapshot.bytesTransferred /
+            task.lastSnapshot.totalByteCount *
+            100;
+      });
+    });
+    await task.onComplete;
+    timer.cancel();
     var url = await ref.getDownloadURL();
     var img = im.decodeImage(_image.readAsBytesSync());
     var dateTime = img.exif.data[0x0132];
@@ -122,8 +133,9 @@ class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
           if (widget.state is SingleGameUninitialized) {
             return LoadingWidget();
           }
-          return SavingOverlay(
+          return SavingProgressOverlay(
             saving: state is AddItemSaving || _uploading,
+            percentage: _percentage,
             child: Form(
               key: _formKey,
               child: Column(

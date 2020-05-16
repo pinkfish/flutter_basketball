@@ -1,11 +1,10 @@
 import 'package:basketballdata/bloc/singlegamebloc.dart';
 import 'package:basketballstats/messages.dart';
-import 'package:basketballstats/widgets/game/mediatypeicon.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'mediatypeicon.dart';
+import '../media/mediatypelisttile.dart';
 
 ///
 /// Shows the controls around the video.  Buttons for uploading/streaming if
@@ -65,8 +64,4 @@ class GameMediaList extends StatelessWidget {
       },
     );
   }
-
-  void _startStreaming() {}
-
-  void _startUploading() {}
 }

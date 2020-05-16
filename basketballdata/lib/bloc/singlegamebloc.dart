@@ -352,6 +352,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     _gameSub = null;
     _gameEventSub?.cancel();
     _gameEventSub = null;
+    _mediaInfoSub?.cancel();
+    _mediaInfoSub = null;
     await super.close();
   }
 

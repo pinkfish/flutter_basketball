@@ -93,6 +93,7 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
   }
 
   void _addMedia() async {
+    var style = Theme.of(context).textTheme.bodyText2;
     switch (await showDialog<MediaType>(
         context: context,
         builder: (BuildContext context) {
@@ -101,17 +102,20 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
               children: [
                 SimpleDialogOption(
                   onPressed: () => Navigator.pop(context, MediaType.Image),
-                  child: Text(Messages.of(context).imageMediaType),
+                  child:
+                      Text(Messages.of(context).imageMediaType, style: style),
                 ),
                 SimpleDialogOption(
                   onPressed: () =>
                       Navigator.pop(context, MediaType.VideoStreaming),
-                  child: Text(Messages.of(context).streamMediaType),
+                  child:
+                      Text(Messages.of(context).streamMediaType, style: style),
                 ),
                 SimpleDialogOption(
                   onPressed: () =>
                       Navigator.pop(context, MediaType.VideoOnDemand),
-                  child: Text(Messages.of(context).videoMediaType),
+                  child:
+                      Text(Messages.of(context).videoMediaType, style: style),
                 ),
               ]);
         })) {

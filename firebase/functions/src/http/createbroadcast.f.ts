@@ -1,9 +1,10 @@
 import * as functions from "firebase-functions";
 import axios from "axios";
 import admin from "firebase-admin";
+import * as c from "../util/constants";
 import { firestore } from "firebase-admin";
 try {
-  admin.initializeApp();
+  admin.initializeApp(c.FIREBASE_APP_OPTIONS);
 } catch (e) {
   if (e.errorInfo.code !== "app/duplicate-app") {
     console.log(e);
@@ -11,12 +12,6 @@ try {
 }
 
 const db = admin.firestore();
-
-const CREATE_ANT_URL = "http://34.70.40.166:5080/LiveApp/rest/broadcast/create";
-const BASE_BROADCAST_ANT_URL =
-  "http://34.70.40.166:5080/LiveApp/rest/broadcast/";
-const RTMP_URL_BASE = "rtmp://34.70.40.166:1935/LiveApp/";
-const STREAM_URL_BASE = "http://34.70.40.166:5080/LiveApp/streams/";
 
 const api = axios.create({
   timeout: 3000,
@@ -68,7 +63,7 @@ async function startBroadcast(data: RequestData): Promise<object> {
     // Create the broadcast.
     const response = await api({
       method: "post",
-      url: CREATE_ANT_URL,
+      url: c.CREATE_ANT_URL,
       data: {
         name: dbMediaDoc.id,
         expireDurationMS: 20000,
@@ -99,13 +94,14 @@ async function startBroadcast(data: RequestData): Promise<object> {
         expireDurationMS: 20000,
         uploadTime: firestore.FieldValue.serverTimestamp(),
         startAt: Date.now(),
-        url: STREAM_URL_BASE + streamId,
-        rtmpUrl: RTMP_URL_BASE + streamId
+        url: c.STREAM_URL_BASE + streamId + ".m3u8",
+        rtmpUrl: c.RTMP_URL_BASE + streamId
       });
 
       //const data = JSON.parse(response.statusText);
       console.log(response.data);
-      response.data["rtmpURL"] = RTMP_URL_BASE + streamId;
+      response.data["rtmpURL"] = c.RTMP_URL_BASE + streamId;
+      response.data["streamURL"] = c.STREAM_URL_BASE + streamId + ".m3u8";
       return response.data;
     } else {
       throw new functions.https.HttpsError("aborted", "Not 200 status");
@@ -116,7 +112,7 @@ async function startBroadcast(data: RequestData): Promise<object> {
 
     // Delete the broadcast if stuff goes wrong
     if (streamId !== null && streamId != undefined) {
-      await axios.delete(BASE_BROADCAST_ANT_URL + streamId, {
+      await axios.delete(c.BASE_BROADCAST_ANT_URL + streamId, {
         data: { streamId: streamId, name: streamId }
       });
     }

@@ -2,19 +2,38 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/ant/broadcaststatus.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/ant/broadcasttype.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/firebase/functions/src/db/media/onDelete.f.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/.mocharc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/mocha.opts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/src/http/get.f.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/src/util/constants.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/test/db/media/index.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/test/media/data/rabbit-2020-05-04_07-11.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/test/media/data/rabbit_1s_clip.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/media/mediatypeicon.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/savingprogressoverlay.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/util/firebasestorageimage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/util/switchedimage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/ant/broadcast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/ant/broadcast.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/media/onDelete.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/media/onDelete.f.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/media/onWrite.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/media/onWrite.f.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/seasons/onWrite.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/seasons/onWrite.f.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/src/http/createbroadcast.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/http/createbroadcast.f.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/functions/src/live/streamEnded.f.js" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/live/streamEnded.f.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/functions/src/live/streamStarted.f.js" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/live/streamStarted.f.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/functions/src/vod/ready.f.js" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/vod/ready.f.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/storage/onFinalize.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/storage/onFinalize.f.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/util/media.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/util/media.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/storage.rules" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/storage.rules" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediaphoto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmediaphoto.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/mediastreaming.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/mediastreaming.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/mediatypeicon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/media/mediatypelisttile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/videoplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/media/videoplayer.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,16 +66,19 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/firebase/functions" />
+      <recent name="$PROJECT_DIR$/firebase/functions/src" />
+      <recent name="$PROJECT_DIR$/ux/lib/widgets/media" />
       <recent name="$PROJECT_DIR$/ux/android/app/src/main/res/xml" />
     </key>
   </component>
@@ -215,34 +237,38 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="1238" height="303" key="GridCell.Tab.0.bottom" timestamp="1589387180804">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state width="1238" height="244" key="GridCell.Tab.0.bottom" timestamp="1589666144855">
+      <screen x="0" y="23" width="1280" height="921" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589068918274" />
-    <state width="1238" height="303" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1589387180804" />
-    <state width="1238" height="303" key="GridCell.Tab.0.center" timestamp="1589387180802">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
+    <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1589661662528" />
+    <state width="1238" height="244" key="GridCell.Tab.0.center" timestamp="1589666144854">
+      <screen x="0" y="23" width="1280" height="921" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589068918273" />
-    <state width="1238" height="303" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1589387180802" />
-    <state width="1238" height="303" key="GridCell.Tab.0.left" timestamp="1589387180800">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
+    <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1589661662527" />
+    <state width="1238" height="244" key="GridCell.Tab.0.left" timestamp="1589666144853">
+      <screen x="0" y="23" width="1280" height="921" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589068918272" />
-    <state width="1238" height="303" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1589387180800" />
-    <state width="1238" height="303" key="GridCell.Tab.0.right" timestamp="1589387180803">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
+    <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1589661662526" />
+    <state width="1238" height="244" key="GridCell.Tab.0.right" timestamp="1589666144854">
+      <screen x="0" y="23" width="1280" height="921" />
     </state>
-    <state width="619" height="245" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589068918274" />
-    <state width="1238" height="303" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1589387180803" />
+    <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
+    <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1589661662527" />
+    <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
+      <screen x="0" y="23" width="1280" height="921" />
+    </state>
+    <state x="228" y="233" key="IDE.errors.dialog/0.23.1280.921@0.23.1280.921" timestamp="1589666141398" />
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1587752886189">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752886189" />
-    <state x="128" y="66" key="SettingsEditor" timestamp="1587753818610">
+    <state x="128" y="66" key="SettingsEditor" timestamp="1589662500782">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
-    <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1587753818610" />
+    <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
     <state x="347" y="240" width="586" height="490" key="find.popup" timestamp="1588925668297">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
@@ -251,10 +277,10 @@
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="48" y="211" key="new project wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752586158" />
-    <state x="305" y="224" width="670" height="676" key="search.everywhere.popup" timestamp="1589228940899">
+    <state x="305" y="224" width="670" height="676" key="search.everywhere.popup" timestamp="1589651695906">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state x="305" y="224" width="670" height="676" key="search.everywhere.popup/0.23.1280.924@0.23.1280.924" timestamp="1589228940899" />
+    <state x="305" y="224" width="670" height="676" key="search.everywhere.popup/0.23.1280.924@0.23.1280.924" timestamp="1589651695906" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
