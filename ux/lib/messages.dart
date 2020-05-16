@@ -65,6 +65,13 @@ class Messages {
   String get about => Intl.message("About",
       desc: "Menu item to open information about the app", locale: locale);
 
+  String get finishStreamingVideo =>
+      Intl.message("Do you want to finish streaming the game?",
+          desc: "Menu item to open information about the app", locale: locale);
+
+  String get videoStreaming => Intl.message("Video Steaming",
+      desc: "Menu item to open information about the app", locale: locale);
+
   String get settings => Intl.message("Settings",
       desc: "Menu item to open information settings of the app",
       locale: locale);

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/mediastreaming.dart';
+import 'package:basketballstats/widgets/media/gamestatusoverlay.dart';
 import 'package:camera_with_rtmp/camera.dart';
 import 'package:camera_with_rtmp/new/src/common/camera_interface.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -172,7 +173,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
               _saving ||
               _controller == null ||
               !_controller.value.isInitialized,
-          child: Column(
+          child: Stack(
             children: [
               _controller == null || !_controller.value.isInitialized
                   ? CircularProgressIndicator()
@@ -197,7 +198,19 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
                         ],
                       ),
                     ),
-              _getButtonBar(state),
+              Container(
+                alignment: Alignment.bottomRight,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GameStatusPositionOverlay(
+                      state: widget.state,
+                      position: Duration(days: 5),
+                    ),
+                    _getButtonBar(state),
+                  ],
+                ),
+              ),
             ],
           ),
         );
@@ -293,11 +306,36 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     });
   }
 
-  void onStopButtonPressed() {
-    stopVideoStreaming().then((_) {
-      if (mounted) setState(() {});
-//      showInSnackBar('Video recorded to: $videoPath');
-    });
+  void onStopButtonPressed() async {
+    var res = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(Messages.of(context).videoStreaming),
+        content: Text(
+          Messages.of(context).finishStreamingVideo,
+          softWrap: true,
+        ),
+        actions: <Widget>[
+          FlatButton(
+            child: Text(MaterialLocalizations.of(context).okButtonLabel),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+          ),
+          FlatButton(
+            child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+          ),
+        ],
+      ),
+    );
+    if (res == true) {
+      stopVideoStreaming().then((_) {
+        if (mounted) Navigator.pop(context);
+      });
+    }
   }
 
   void onPauseButtonPressed() {
@@ -326,6 +364,8 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
 
     try {
       _controller.startVideoStreaming(uri.toString());
+      // Load the events when we start playing.
+      BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
     } catch (e, stack) {
       Crashlytics.instance.recordError(e, stack);
       return false;

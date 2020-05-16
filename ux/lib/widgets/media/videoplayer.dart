@@ -3,7 +3,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../game/gamestatusoverlay.dart';
+import 'gamestatusoverlay.dart';
 
 ///
 /// Shows video for the specific game.
@@ -73,7 +73,7 @@ class _GameVideoPlayer extends State<GameVideoPlayer> {
                         aspectRatio: _controller.value.aspectRatio,
                         child: VideoPlayer(_controller),
                       ),
-                      GameStatusOverlay(
+                      GameStatusVideoPlayerOverlay(
                           controller: _controller, state: widget.state),
                     ],
                   )

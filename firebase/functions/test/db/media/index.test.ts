@@ -4,8 +4,6 @@ import admin from "firebase-admin";
 //import * as chai from "chai";
 import firebaseFunctionsTest from "firebase-functions-test";
 import { assert } from "chai";
-import nodeFetch from "node-fetch";
-import proxyquire from "proxyquire";
 import { FfmpegCommand } from "fluent-ffmpeg";
 
 import { internalOnWrite } from "../../../src/db/media/onWrite.f";
@@ -31,12 +29,10 @@ function fakeDefaultExport(
 
 describe("Media Util Tests", () => {
   let adminInitStub: sinon.SinonStub;
-  let fetchStub: sinon.SinonStub;
 
   before(() => {
     test = firebaseFunctionsTest();
     adminInitStub = sinon.stub(admin, "initializeApp");
-    fetchStub = proxyquire("../../util/media");
   });
 
   after(() => {
