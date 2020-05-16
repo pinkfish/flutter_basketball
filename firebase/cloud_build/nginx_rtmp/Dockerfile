@@ -1,5 +1,6 @@
 ARG DEBIAN_VERSION=stretch-slim 
 
+
 ##### Building stage #####
 FROM debian:${DEBIAN_VERSION} as builder
 MAINTAINER David Bennett <pinkfishfrog@gmail.com>
