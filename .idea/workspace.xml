@@ -4,6 +4,7 @@
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/ux/lib/widgets/media/gamestatus.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/live/streamStarted.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/live/streamStarted.f.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/test/db/media/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/test/db/media/index.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" afterDir="false" />
