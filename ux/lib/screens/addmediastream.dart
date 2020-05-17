@@ -332,6 +332,10 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
       ),
     );
     if (res == true) {
+      var streaming = RepositoryProvider.of<MediaStreaming>(context);
+      assert(streaming != null);
+      streaming.endBroadcast(this._bloc.state.mediaInfo);
+
       stopVideoStreaming().then((_) {
         if (mounted) Navigator.pop(context);
       });
