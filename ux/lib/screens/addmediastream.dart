@@ -1,15 +1,19 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/mediastreaming.dart';
+import 'package:basketballstats/services/uploadfilesbackground.dart';
 import 'package:basketballstats/widgets/media/gamestatusoverlay.dart';
 import 'package:camera_with_rtmp/camera.dart';
 import 'package:camera_with_rtmp/new/src/common/camera_interface.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../messages.dart';
 import '../widgets/savingoverlay.dart';
@@ -63,6 +67,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
   CameraController _controller;
   SingleMediaInfoBloc _bloc;
   List<CameraDescription> _cameras = [];
+  String _filePath;
 
   void initState() {
     super.initState();
@@ -114,9 +119,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
       _bloc = SingleMediaInfoBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
           mediaInfoUid: broadcast.name);
-      // Now we get the media details and subscribe to updates.
       _streaming = true;
-      _startVideoStreaming(broadcast.rtmpURL);
     } catch (e, stack) {
       print(e);
       print(stack);
@@ -156,7 +159,8 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     if (_bloc.state is SingleMediaInfoLoaded &&
         !_controller.value.isStreamingVideoRtmp) {
       print("Starting the stream");
-      _startVideoStreaming(_bloc.state.mediaInfo.rtmpUrl.toString());
+      _startVideoStreaming(
+          _bloc.state.mediaInfo.rtmpUrl.toString(), _bloc.state.mediaInfo);
     }
     return BlocConsumer(
       bloc: _bloc,
@@ -164,7 +168,8 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
         if (state is SingleMediaInfoLoaded &&
             !_controller.value.isStreamingVideoRtmp) {
           print("Starting the stream");
-          _startVideoStreaming(state.mediaInfo.rtmpUrl.toString());
+          _startVideoStreaming(
+              state.mediaInfo.rtmpUrl.toString(), _bloc.state.mediaInfo);
         }
       },
       builder: (BuildContext context, SingleMediaInfoState state) {
@@ -301,7 +306,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
   }
 
   void onVideoRecordButtonPressed(MediaInfo info) {
-    _startVideoStreaming(info.rtmpUrl.toString()).then((bool started) {
+    _startVideoStreaming(info.rtmpUrl.toString(), info).then((bool started) {
       if (mounted) setState(() {});
     });
   }
@@ -334,10 +339,26 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     if (res == true) {
       var streaming = RepositoryProvider.of<MediaStreaming>(context);
       assert(streaming != null);
+
+      // Show the page as saving.
+      _saving = true;
+
       streaming.endBroadcast(this._bloc.state.mediaInfo);
 
       stopVideoStreaming().then((_) {
-        if (mounted) Navigator.pop(context);
+        // Start the background upload.
+        var upload = RepositoryProvider.of<UploadFilesBackground>(context);
+        // Upload groovy stuff,
+        upload
+            .addUploadTask(_filePath, widget.state.game.uid,
+                this._bloc.state.mediaInfo.uid)
+            .then((d) {
+          if (mounted) Navigator.pop(context);
+        }).catchError((e, stack) {
+          Crashlytics.instance.recordError(e, stack);
+        });
+      }).catchError((e, stack) {
+        Crashlytics.instance.recordError(e, stack);
       });
     }
   }
@@ -356,7 +377,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     });
   }
 
-  Future<bool> _startVideoStreaming(String uri) async {
+  Future<bool> _startVideoStreaming(String uri, MediaInfo info) async {
     if (!_controller.value.isInitialized) {
       showInSnackBar('Error: select a camera first.');
       return null;
@@ -366,10 +387,44 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
       return true;
     }
 
+    final Directory extDir = await getApplicationDocumentsDirectory();
+    final String dirPath = '${extDir.path}/Movies/flutter_test';
+    await Directory(dirPath).create(recursive: true);
+    _filePath = '$dirPath/${DateTime.now().millisecondsSinceEpoch}.mp4';
+
     try {
-      _controller.startVideoStreaming(uri.toString());
+      await _controller.startVideoStreaming(uri.toString());
+      await _controller.startVideoRecording(_filePath);
       // Load the events when we start playing.
       BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
+      // 10 seconts after started take a screen shot as the thumbnail.
+      Timer(Duration(seconds: 10), () async {
+        if (_controller != null && _controller.value.isStreamingVideoRtmp) {
+          final Directory extDir = await getApplicationDocumentsDirectory();
+          final String dirPath = '${extDir.path}/Pictures/flutter_test';
+          await Directory(dirPath).create(recursive: true);
+          String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+          final String filePath = '$dirPath/$timestamp.jpg';
+
+          try {
+            await _controller.takePicture(filePath);
+            var ref = FirebaseStorage.instance
+                .ref()
+                .child(info.gameUid + "/" + info.uid + "_thumb.jpg");
+            var task = ref.putFile(File(filePath));
+            await task.onComplete;
+            BlocProvider.of<SingleMediaInfoBloc>(context).add(
+                SingleMediaInfoUpdateThumbnail(
+                    thumbnailUrl: "gs://" +
+                        await ref.getBucket() +
+                        "/" +
+                        await ref.getPath()));
+          } catch (e) {
+            showInSnackBar(Messages.of(context).failedToTakeThumbnail);
+          }
+        }
+      });
     } catch (e, stack) {
       Crashlytics.instance.recordError(e, stack);
       return false;
@@ -377,10 +432,6 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     return true;
 
     /*
-    final Directory extDir = await getApplicationDocumentsDirectory();
-    final String dirPath = '${extDir.path}/Movies/flutter_test';
-    await Directory(dirPath).create(recursive: true);
-    final String filePath = '$dirPath/${timestamp()}.mp4';
 
     if (controller.value.isStreamingVideo) {
       // A recording is already started, do nothing.
@@ -405,7 +456,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
     }
 
     try {
-      await _controller.stopVideoStreaming();
+      await _controller.stopEverything();
     } on CameraException catch (e, stack) {
       _showCameraException(e, stack);
       return null;

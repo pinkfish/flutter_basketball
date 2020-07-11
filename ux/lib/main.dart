@@ -2,6 +2,8 @@ import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:basketballstats/services/multiplexdatabase.dart';
+import 'package:basketballstats/services/sqldbraw.dart';
+import 'package:basketballstats/services/uploadfilesbackground.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -40,15 +42,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Log an error if the db fails to open.
     //_db.waitTillOpen();
+    var db = SQLDBRaw();
 
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<BasketballDatabase>(
           create: (BuildContext context) =>
-              MultiplexDatabase(forceSql, analytics),
+              MultiplexDatabase(forceSql, analytics, db),
         ),
         RepositoryProvider<MediaStreaming>(
           create: (BuildContext context) => MediaStreaming(),
+        ),
+        RepositoryProvider<UploadFilesBackground>(
+          create: (BuildContext context) => UploadFilesBackground(db),
         ),
       ],
       child: MultiBlocProvider(

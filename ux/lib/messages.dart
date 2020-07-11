@@ -69,6 +69,9 @@ class Messages {
       Intl.message("Do you want to finish streaming the game?",
           desc: "Menu item to open information about the app", locale: locale);
 
+  String get failedToTakeThumbnail =>
+      Intl.message("Failed to create thumbnail for the stream", locale: locale);
+
   String get videoStreaming => Intl.message("Video Steaming",
       desc: "Menu item to open information about the app", locale: locale);
 

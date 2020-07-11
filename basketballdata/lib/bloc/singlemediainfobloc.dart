@@ -112,6 +112,18 @@ class _SingleMediaInfoDeleted extends SingleMediaInfoEvent {
 }
 
 ///
+/// Updates the url for this media info event.
+///
+class SingleMediaInfoUpdateThumbnail extends SingleMediaInfoEvent {
+  final String thumbnailUrl;
+
+  SingleMediaInfoUpdateThumbnail({@required this.thumbnailUrl});
+
+  @override
+  List<Object> get props => [thumbnailUrl];
+}
+
+///
 /// Bloc to handle updates and state of a specific mediaInfo.
 ///
 class SingleMediaInfoBloc

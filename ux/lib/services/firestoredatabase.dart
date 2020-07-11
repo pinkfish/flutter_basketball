@@ -513,4 +513,10 @@ class FirestoreDatabase extends BasketballDatabase {
       }
     }
   }
+
+  Future<void> updateMediaInfoThumbnail(
+      {MediaInfo mediaInfo, String thumbnailUrl}) async {
+    var ref = Firestore.instance.collection(mediaTable).document(mediaInfo.uid);
+    await ref.updateData({thumbnailUrl: thumbnailUrl});
+  }
 }

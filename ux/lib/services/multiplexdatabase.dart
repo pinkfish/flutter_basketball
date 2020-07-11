@@ -10,17 +10,21 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+import 'sqldbraw.dart';
+
 class MultiplexDatabase extends BasketballDatabase {
   final FirestoreDatabase _fs;
-  final SqlfliteDatabase _sql = SqlfliteDatabase();
+  final SqlfliteDatabase _sql;
   final StreamController<bool> _controller = StreamController<bool>();
-  final FirebaseAnalytics analyticsSubsystem;
+  final FirebaseAnalytics _analyticsSubsystem;
+  final SQLDBRaw _sqldbRaw;
 
   Stream<bool> _stream;
   bool useSql = true;
 
-  MultiplexDatabase(bool forceSql, this.analyticsSubsystem)
-      : _fs = FirestoreDatabase(analyticsSubsystem) {
+  MultiplexDatabase(bool forceSql, this._analyticsSubsystem, this._sqldbRaw)
+      : _fs = FirestoreDatabase(_analyticsSubsystem),
+        _sql = SqlfliteDatabase(_sqldbRaw) {
     _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
       bool oldSql = useSql;
@@ -31,7 +35,7 @@ class MultiplexDatabase extends BasketballDatabase {
         useSql = true;
       }
       if (oldSql != useSql) {
-        analyticsSubsystem
+        _analyticsSubsystem
             .logEvent(name: "FirestoreDB", parameters: {"enabled": useSql});
         _controller.add(useSql);
       }
@@ -45,18 +49,19 @@ class MultiplexDatabase extends BasketballDatabase {
         useSql = true;
       }
       if (oldSql != useSql) {
-        analyticsSubsystem
+        _analyticsSubsystem
             .logEvent(name: "FirestoreDB", parameters: {"enabled": useSql});
         _controller.add(useSql);
       }
     });
-    _sql.open().catchError((e, trace) {
+    _sqldbRaw.open().catchError((e, trace) {
       Crashlytics.instance.recordError(e, trace);
     });
   }
 
-  Future<void> waitTillOpen() {
-    return _sql.waitTillOpen();
+  Future<void> waitTillOpen() async {
+    await _sqldbRaw.getDatabase();
+    return;
   }
 
   @override
@@ -359,5 +364,16 @@ class MultiplexDatabase extends BasketballDatabase {
       return _sql.getMediaInfo(mediaInfoUid: mediaInfoUid);
     else
       return _fs.getMediaInfo(mediaInfoUid: mediaInfoUid);
+  }
+
+  @override
+  Future<void> updateMediaInfoThumbnail(
+      {MediaInfo mediaInfo, String thumbnailUrl}) {
+    if (useSql)
+      return _sql.updateMediaInfoThumbnail(
+          mediaInfo: mediaInfo, thumbnailUrl: thumbnailUrl);
+    else
+      return _fs.updateMediaInfoThumbnail(
+          mediaInfo: mediaInfo, thumbnailUrl: thumbnailUrl);
   }
 }

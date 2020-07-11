@@ -80,6 +80,10 @@ abstract class BasketballDatabase {
   /// Updates the season in the database.
   Future<void> updateUser({@required User user});
 
+  /// Updates the season in the database.
+  Future<void> updateMediaInfoThumbnail(
+      {@required MediaInfo mediaInfo, @required String thumbnailUrl});
+
   /// Updates the game in the database.
   Future<void> updateGamePlayerData(
       {@required String gameUid,

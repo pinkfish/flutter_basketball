@@ -27,4 +27,5 @@ export 'data/playerseasonsummary.dart';
 export 'data/playersummarydata.dart';
 export 'data/season.dart';
 export 'data/team.dart';
+export 'data/uploaddata.dart';
 export 'data/user.dart';
