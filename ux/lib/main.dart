@@ -49,12 +49,15 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<BasketballDatabase>(
           create: (BuildContext context) =>
               MultiplexDatabase(forceSql, analytics, db),
+          lazy: false,
         ),
         RepositoryProvider<MediaStreaming>(
           create: (BuildContext context) => MediaStreaming(),
+          lazy: true,
         ),
         RepositoryProvider<UploadFilesBackground>(
           create: (BuildContext context) => UploadFilesBackground(db),
+          lazy: false,
         ),
       ],
       child: MultiBlocProvider(

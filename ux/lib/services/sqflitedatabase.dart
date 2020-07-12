@@ -5,7 +5,7 @@ import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/sqldbraw.dart';
 import 'package:built_collection/built_collection.dart';
-import 'package:equatable/equatable.dart';
+import 'package:event/event.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
@@ -14,15 +14,11 @@ import 'package:uuid/uuid_util.dart';
 /// Interface to get all the data from the local sql database.
 ///
 class SqlfliteDatabase extends BasketballDatabase {
-  StreamController<_TableChange> _controller =
-      StreamController<_TableChange>(sync: false);
-  Stream<_TableChange> _tableChange;
   final Uuid uuid = new Uuid(options: {'grng': UuidUtil.cryptoRNG});
   final SQLDBRaw _sqldbRaw;
+  final Map<String, _TableChanger> _changers = {};
 
-  SqlfliteDatabase(this._sqldbRaw) {
-    _tableChange = _controller.stream.asBroadcastStream();
-  }
+  SqlfliteDatabase(this._sqldbRaw);
 
   @override
   Future<String> addGame({Game game}) async {
@@ -35,8 +31,8 @@ class SqlfliteDatabase extends BasketballDatabase {
       SQLDBRaw.secondaryIndexColumn: game.seasonUid,
       SQLDBRaw.dataColumn: json.encode(newG.toMap()),
     });
-    _controller.add(_TableChange(
-        table: SQLDBRaw.gamesTable, uid: uid, secondaryUid: game.seasonUid));
+    _changeTableNotification(SQLDBRaw.gamesTable,
+        uid: uid, secondaryUid: game.seasonUid);
     return uid;
   }
 
@@ -52,10 +48,8 @@ class SqlfliteDatabase extends BasketballDatabase {
       SQLDBRaw.secondaryIndexColumn: event.gameUid,
       SQLDBRaw.dataColumn: json.encode(newEv.toMap())
     });
-    _controller.add(_TableChange(
-        table: SQLDBRaw.gameEventsTable,
-        uid: uid,
-        secondaryUid: event.gameUid));
+    _changeTableNotification(SQLDBRaw.gameEventsTable,
+        uid: uid, secondaryUid: event.gameUid);
     return uid;
   }
 
@@ -71,8 +65,8 @@ class SqlfliteDatabase extends BasketballDatabase {
           (b) => b..players.putIfAbsent(playerUid, () => PlayerGameSummary()));
     }
     await updateGame(game: t);
-    _controller.add(_TableChange(
-        table: SQLDBRaw.gamesTable, uid: gameUid, secondaryUid: t.seasonUid));
+    _changeTableNotification(SQLDBRaw.gamesTable,
+        uid: gameUid, secondaryUid: t.seasonUid);
     return playerUid;
   }
 
@@ -96,7 +90,7 @@ class SqlfliteDatabase extends BasketballDatabase {
       SQLDBRaw.secondaryIndexColumn: uid,
       SQLDBRaw.dataColumn: json.encode(newS.toMap()),
     });
-    _controller.add(_TableChange(table: SQLDBRaw.teamsTable, uid: uid));
+    _changeTableNotification(SQLDBRaw.teamsTable, uid: uid);
     return uid;
   }
 
@@ -106,7 +100,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     await updateSeason(
         season: t.rebuild((b) =>
             b..playerUids.putIfAbsent(playerUid, () => PlayerSeasonSummary())));
-    _controller.add(_TableChange(table: SQLDBRaw.seasonsTable, uid: seasonUid));
+    _changeTableNotification(SQLDBRaw.seasonsTable, uid: seasonUid);
     return playerUid;
   }
 
@@ -116,8 +110,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Game g = await _getGame(gameUid: gameUid);
     await db
         .delete(SQLDBRaw.gamesTable, where: "uid = ?", whereArgs: [gameUid]);
-    _controller.add(_TableChange(
-        table: SQLDBRaw.gamesTable, uid: gameUid, secondaryUid: g.seasonUid));
+    _changeTableNotification(SQLDBRaw.gamesTable, uid: gameUid);
     return null;
   }
 
@@ -127,10 +120,8 @@ class SqlfliteDatabase extends BasketballDatabase {
     GameEvent ev = await _getGameEvent(gameEventUid: gameEventUid);
     await db.delete(SQLDBRaw.gameEventsTable,
         where: "uid = ?", whereArgs: [gameEventUid]);
-    _controller.add(_TableChange(
-        table: SQLDBRaw.gameEventsTable,
-        uid: gameEventUid,
-        secondaryUid: ev.gameUid));
+    _changeTableNotification(SQLDBRaw.gameEventsTable,
+        uid: gameEventUid, secondaryUid: ev.gameUid);
     return null;
   }
 
@@ -166,7 +157,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _sqldbRaw.getDatabase();
     await db
         .delete(SQLDBRaw.teamsTable, where: "uid = ?", whereArgs: [teamUid]);
-    _controller.add(_TableChange(table: SQLDBRaw.teamsTable, uid: teamUid));
+    _changeTableNotification(SQLDBRaw.teamsTable, uid: teamUid);
     return null;
   }
 
@@ -175,7 +166,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _sqldbRaw.getDatabase();
     await db.delete(SQLDBRaw.playersTable,
         where: "uid = ?", whereArgs: [playerUid]);
-    _controller.add(_TableChange(table: SQLDBRaw.playersTable, uid: playerUid));
+    _changeTableNotification(SQLDBRaw.playersTable, uid: playerUid);
     // TODO: Delete from the other places it is referenced too.
     return null;
   }
@@ -185,7 +176,7 @@ class SqlfliteDatabase extends BasketballDatabase {
     Database db = await _sqldbRaw.getDatabase();
     await db.delete(SQLDBRaw.seasonsTable,
         where: "uid = ?", whereArgs: [seasonUid]);
-    _controller.add(_TableChange(table: SQLDBRaw.seasonsTable, uid: seasonUid));
+    _changeTableNotification(SQLDBRaw.seasonsTable, uid: seasonUid);
     // TODO: Delete from the other places it is referenced too.
     return null;
   }
@@ -235,22 +226,28 @@ class SqlfliteDatabase extends BasketballDatabase {
         .map((Map<String, dynamic> e) =>
             Player.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
         .first;
-    await for (_TableChange table in _tableChange) {
-      print("Table change getPlayer $table");
-      if (!db.isOpen) {
-        // Exit out of here.
-        return;
+
+    var controller = _setupController(SQLDBRaw.playersTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change getPlayer $table");
+        if (!db.isOpen) {
+          // Exit out of here.
+          return;
+        }
+        if (table.uid == playerUid) {
+          final List<Map<String, dynamic>> maps = await db.query(
+              SQLDBRaw.playersTable,
+              where: "uid = ?",
+              whereArgs: [playerUid]);
+          yield maps
+              .map((Map<String, dynamic> e) =>
+                  Player.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
+              .first;
+        }
       }
-      if (table.uid == playerUid) {
-        final List<Map<String, dynamic>> maps = await db.query(
-            SQLDBRaw.playersTable,
-            where: "uid = ?",
-            whereArgs: [playerUid]);
-        yield maps
-            .map((Map<String, dynamic> e) =>
-                Player.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
-            .first;
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -288,15 +285,20 @@ class SqlfliteDatabase extends BasketballDatabase {
   Stream<Game> getGame({String gameUid}) async* {
     yield await _getGame(gameUid: gameUid);
     Database db = await _sqldbRaw.getDatabase();
-    await for (_TableChange table in _tableChange) {
-      print("Table change getGame $table");
-      if (!db.isOpen) {
-        // Exit out of here.
-        return;
+    var controller = _setupController(SQLDBRaw.gamesTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change getGame $table");
+        if (!db.isOpen) {
+          // Exit out of here.
+          return;
+        }
+        if (table.secondaryUid == gameUid || table.uid == gameUid) {
+          yield await _getGame(gameUid: gameUid);
+        }
       }
-      if (table.secondaryUid == gameUid || table.uid == gameUid) {
-        yield await _getGame(gameUid: gameUid);
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -304,19 +306,24 @@ class SqlfliteDatabase extends BasketballDatabase {
   Stream<Team> getTeam({String teamUid}) async* {
     yield await _getTeam(teamUid: teamUid);
     Database db = await _sqldbRaw.getDatabase();
-    await for (_TableChange table in _tableChange) {
-      print("Table change getTeam $table");
-      if (!db.isOpen) {
-        print("db is not open");
-        // Exit out of here.
-        return;
+    var controller = _setupController(SQLDBRaw.teamsTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change getTeam $table");
+        if (!db.isOpen) {
+          print("db is not open");
+          // Exit out of here.
+          return;
+        }
+        if (table.uid == teamUid || table.secondaryUid == teamUid) {
+          print("yay us");
+          yield await _getTeam(teamUid: teamUid);
+        } else {
+          print("no us $teamUid ${table.uid}");
+        }
       }
-      if (table.uid == teamUid || table.secondaryUid == teamUid) {
-        print("yay us");
-        yield await _getTeam(teamUid: teamUid);
-      } else {
-        print("no us $teamUid ${table.uid}");
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -324,19 +331,24 @@ class SqlfliteDatabase extends BasketballDatabase {
   Stream<Season> getSeason({String seasonUid}) async* {
     yield await _getSeason(seasonUid: seasonUid);
     Database db = await _sqldbRaw.getDatabase();
-    await for (_TableChange table in _tableChange) {
-      print("Table change getTeam $table");
-      if (!db.isOpen) {
-        print("db is not open");
-        // Exit out of here.
-        return;
+    var controller = _setupController(SQLDBRaw.seasonsTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change getTeam $table");
+        if (!db.isOpen) {
+          print("db is not open");
+          // Exit out of here.
+          return;
+        }
+        if (table.uid == seasonUid || table.secondaryUid == seasonUid) {
+          print("yay us");
+          yield await _getSeason(seasonUid: seasonUid);
+        } else {
+          print("no us $seasonUid ${table.uid}");
+        }
       }
-      if (table.uid == seasonUid || table.secondaryUid == seasonUid) {
-        print("yay us");
-        yield await _getSeason(seasonUid: seasonUid);
-      } else {
-        print("no us $seasonUid ${table.uid}");
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -350,14 +362,15 @@ class SqlfliteDatabase extends BasketballDatabase {
             Team.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
         .toList());
     print("getTeams waiting for change");
-    await for (_TableChange table in _tableChange) {
-      print("Table change getTeams $table");
-      if (!db.isOpen) {
-        print("db is not open");
-        // Exit out of here.
-        return;
-      }
-      if (table.table == SQLDBRaw.teamsTable) {
+    var controller = _setupController(SQLDBRaw.teamsTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change getTeams $table");
+        if (!db.isOpen) {
+          print("db is not open");
+          // Exit out of here.
+          return;
+        }
         final List<Map<String, dynamic>> maps =
             await db.query(SQLDBRaw.teamsTable);
         yield BuiltList.from(maps
@@ -366,6 +379,8 @@ class SqlfliteDatabase extends BasketballDatabase {
             .where((Team t) => t.uid != null)
             .toList());
       }
+    } finally {
+      controller.close();
     }
     print("Exit getTeams");
   }
@@ -381,10 +396,8 @@ class SqlfliteDatabase extends BasketballDatabase {
         },
         where: 'uid = ?',
         whereArgs: [game.uid]);
-    _controller.add(_TableChange(
-        table: SQLDBRaw.gamesTable,
-        uid: game.uid,
-        secondaryUid: game.seasonUid));
+    _changeTableNotification(SQLDBRaw.gamesTable,
+        uid: game.uid, secondaryUid: game.seasonUid);
     return null;
   }
 
@@ -399,7 +412,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         },
         where: "uid = ?",
         whereArgs: [team.uid]);
-    _controller.add(_TableChange(table: SQLDBRaw.teamsTable, uid: team.uid));
+    _changeTableNotification(SQLDBRaw.teamsTable, uid: team.uid);
     return null;
   }
 
@@ -415,8 +428,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         where: "uid = ?",
         whereArgs: [player.uid]);
 
-    _controller
-        .add(_TableChange(table: SQLDBRaw.playersTable, uid: player.uid));
+    _changeTableNotification(SQLDBRaw.playersTable, uid: player.uid);
     return null;
   }
 
@@ -432,8 +444,7 @@ class SqlfliteDatabase extends BasketballDatabase {
         where: "uid = ?",
         whereArgs: [season.uid]);
 
-    _controller
-        .add(_TableChange(table: SQLDBRaw.seasonsTable, uid: season.uid));
+    _changeTableNotification(SQLDBRaw.seasonsTable, uid: season.uid);
     return null;
   }
 
@@ -449,23 +460,28 @@ class SqlfliteDatabase extends BasketballDatabase {
         .map((Map<String, dynamic> e) =>
             Game.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
         .toList());
-    await for (_TableChange table in _tableChange) {
-      print("Table change $table");
-      if (!db.isOpen) {
-        // Exit out of here.
-        return;
+    var controller = _setupController(SQLDBRaw.gamesTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change $table");
+        if (!db.isOpen) {
+          // Exit out of here.
+          return;
+        }
+        if (table.secondaryUid == seasonUid) {
+          final List<Map<String, dynamic>> maps = await db.query(
+              SQLDBRaw.gamesTable,
+              where: SQLDBRaw.indexColumn + " = ?",
+              whereArgs: [seasonUid]);
+          yield BuiltList.from(maps
+              .map((Map<String, dynamic> e) =>
+                  Game.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
+              .where((Game t) => t.uid != null)
+              .toList());
+        }
       }
-      if (table.secondaryUid == seasonUid) {
-        final List<Map<String, dynamic>> maps = await db.query(
-            SQLDBRaw.gamesTable,
-            where: SQLDBRaw.indexColumn + " = ?",
-            whereArgs: [seasonUid]);
-        yield BuiltList.from(maps
-            .map((Map<String, dynamic> e) =>
-                Game.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
-            .where((Game t) => t.uid != null)
-            .toList());
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -488,23 +504,28 @@ class SqlfliteDatabase extends BasketballDatabase {
         .map((Map<String, dynamic> e) =>
             Season.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
         .toList());
-    await for (_TableChange table in _tableChange) {
-      print("Table change $table");
-      if (!db.isOpen) {
-        // Exit out of here.
-        return;
+    var controller = _setupController(SQLDBRaw.seasonsTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change $table");
+        if (!db.isOpen) {
+          // Exit out of here.
+          return;
+        }
+        if (table.secondaryUid == teamUid) {
+          final List<Map<String, dynamic>> maps = await db.query(
+              SQLDBRaw.seasonsTable,
+              where: SQLDBRaw.indexColumn + " = ?",
+              whereArgs: [teamUid]);
+          yield BuiltList.from(maps
+              .map((Map<String, dynamic> e) =>
+                  Season.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
+              .where((Season t) => t.uid != null)
+              .toList());
+        }
       }
-      if (table.secondaryUid == teamUid) {
-        final List<Map<String, dynamic>> maps = await db.query(
-            SQLDBRaw.seasonsTable,
-            where: SQLDBRaw.indexColumn + " = ?",
-            whereArgs: [teamUid]);
-        yield BuiltList.from(maps
-            .map((Map<String, dynamic> e) =>
-                Season.fromMap(json.decode(e[SQLDBRaw.dataColumn])))
-            .where((Season t) => t.uid != null)
-            .toList());
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -520,7 +541,7 @@ class SqlfliteDatabase extends BasketballDatabase {
       SQLDBRaw.dataColumn: json.encode(newP.toMap()),
     });
     print("Adding table to stream");
-    _controller.add(_TableChange(table: SQLDBRaw.playersTable, uid: uid));
+    _changeTableNotification(SQLDBRaw.playersTable, uid: uid);
     print("Done...");
     return uid;
   }
@@ -540,8 +561,8 @@ class SqlfliteDatabase extends BasketballDatabase {
       SQLDBRaw.dataColumn: json.encode(newS.toMap()),
     });
     print("Adding table to stream");
-    _controller.add(_TableChange(
-        table: SQLDBRaw.seasonsTable, uid: uid, secondaryUid: teamUid));
+    _changeTableNotification(SQLDBRaw.seasonsTable,
+        uid: uid, secondaryUid: teamUid);
     print("Done...");
     return uid;
   }
@@ -566,19 +587,24 @@ class SqlfliteDatabase extends BasketballDatabase {
         whereArgs: [gameUid]);
     print("Query $maps");
     yield _getGameEvents(maps);
-    await for (_TableChange table in _tableChange) {
-      print("Table change $table");
-      if (!db.isOpen) {
-        // Exit out of here.
-        return;
+    var controller = _setupController(SQLDBRaw.gameEventsTable);
+    try {
+      await for (_TableChange table in controller.stream) {
+        print("Table change $table");
+        if (!db.isOpen) {
+          // Exit out of here.
+          return;
+        }
+        if (table.secondaryUid == gameUid) {
+          final List<Map<String, dynamic>> maps = await db.query(
+              SQLDBRaw.gameEventsTable,
+              where: SQLDBRaw.indexColumn + " = ?",
+              whereArgs: [gameUid]);
+          yield _getGameEvents(maps);
+        }
       }
-      if (table.secondaryUid == gameUid) {
-        final List<Map<String, dynamic>> maps = await db.query(
-            SQLDBRaw.gameEventsTable,
-            where: SQLDBRaw.indexColumn + " = ?",
-            whereArgs: [gameUid]);
-        yield _getGameEvents(maps);
-      }
+    } finally {
+      controller.close();
     }
   }
 
@@ -633,23 +659,52 @@ class SqlfliteDatabase extends BasketballDatabase {
     // TODO: implement updateMediaInfoThumbnail
     throw UnimplementedError();
   }
+
+  void _changeTableNotification(String table,
+      {String uid, String secondaryUid}) {
+    if (!_changers.containsKey(table)) {
+      _changers[table] = _TableChanger();
+    }
+    _changers[table].changeTable(uid, secondaryUid);
+  }
+
+  StreamController<_TableChange> _setupController(String table) {
+    if (!_changers.containsKey(table)) {
+      _changers[table] = _TableChanger();
+    }
+    var ctl = StreamController<_TableChange>();
+    _changers[table].subscribeStram(ctl.sink);
+    return ctl;
+  }
 }
 
 ///
 /// Used to track changes to the table
 ///
-class _TableChange extends Equatable {
-  final String table;
+class _TableChange extends EventArgs {
   final String uid;
   final String secondaryUid;
 
-  _TableChange({this.table, this.uid, this.secondaryUid});
+  _TableChange({this.uid, this.secondaryUid});
 
   @override
-  List<Object> get props => [table, uid, secondaryUid];
+  List<Object> get props => [uid, secondaryUid];
 
   @override
   String toString() {
-    return '_TableChange{table: $table, uid: $uid, secondaryUid: $secondaryUid}';
+    return '_TableChange{uid: $uid, secondaryUid: $secondaryUid}';
+  }
+}
+
+class _TableChanger {
+  final _tableChangeEvent = Event<_TableChange>();
+
+  void changeTable(String uid, String secondaryUid) {
+    _tableChangeEvent
+        .broadcast(_TableChange(uid: uid, secondaryUid: secondaryUid));
+  }
+
+  void subscribeStram(StreamSink<_TableChange> str) {
+    _tableChangeEvent.subscribeStream(str);
   }
 }

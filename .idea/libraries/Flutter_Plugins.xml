@@ -12,7 +12,6 @@
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-0.1.1+2" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+2" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.7" />
-      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.6+1" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.7" />
       <root url="file://$PROJECT_DIR$/../packages/rtmppublisher" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_analytics_web-0.1.1" />
@@ -22,6 +21,7 @@
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_functions-0.5.0" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-4.5.1" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-3.1.6" />
+      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+4" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -5,22 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addgamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addgamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addmediabloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addmediabloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addplayerbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addplayerbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addseasonbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addseasonbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addteambloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addteambloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlemediainfobloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlemediainfobloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleseasonbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleseasonbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleuserbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleuserbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/teamsbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/teamsbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/pubspec.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/loginbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/loginbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -238,26 +224,26 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="657" height="242" key="GridCell.Tab.0.bottom" timestamp="1594516150934">
+    <state width="656" height="242" key="GridCell.Tab.0.bottom" timestamp="1594518053940">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="657" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1594516150934" />
-    <state width="657" height="242" key="GridCell.Tab.0.center" timestamp="1594516150933">
+    <state width="656" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1594518053940" />
+    <state width="656" height="242" key="GridCell.Tab.0.center" timestamp="1594518053938">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="657" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1594516150933" />
-    <state width="657" height="242" key="GridCell.Tab.0.left" timestamp="1594516150932">
+    <state width="656" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1594518053938" />
+    <state width="656" height="242" key="GridCell.Tab.0.left" timestamp="1594518053937">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="657" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1594516150932" />
-    <state width="657" height="242" key="GridCell.Tab.0.right" timestamp="1594516150934">
+    <state width="656" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1594518053937" />
+    <state width="656" height="242" key="GridCell.Tab.0.right" timestamp="1594518053939">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="657" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1594516150934" />
+    <state width="656" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1594518053939" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
     </state>

@@ -37,9 +37,10 @@ dependencies:
   undo: ^1.1.0+1
   uuid: ^2.2.0
   tuple: ^1.0.3
-  image: ^2.1.14
-  flutter_svg: ^0.18.0
+  image: ^2.1.12
+  flutter_svg: ^0.17.4
   flutter_vector_icons: any
+  event: ^1.1.4
   charts_flutter:
     #path: /Users/david/development/charts/charts_flutter
     git:
