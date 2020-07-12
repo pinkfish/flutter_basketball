@@ -332,7 +332,8 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
   StreamSubscription<BuiltList<MediaInfo>> _mediaInfoSub;
 
-  SingleGameBloc({@required this.db, @required this.gameUid}) {
+  SingleGameBloc({@required this.db, @required this.gameUid})
+      : super(SingleGameUninitialized()) {
     _gameSub = db.getGame(gameUid: gameUid).listen(_onGameUpdate);
   }
 
@@ -355,11 +356,6 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     _mediaInfoSub?.cancel();
     _mediaInfoSub = null;
     await super.close();
-  }
-
-  @override
-  SingleGameState get initialState {
-    return SingleGameUninitialized();
   }
 
   @override

@@ -20,7 +20,7 @@ import 'services/mediastreaming.dart';
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() {
-  BlocSupervisor.delegate = _SimpleBlocDelegate();
+  Bloc.observer = _SimpleBlocDelegate();
 
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -110,7 +110,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class _SimpleBlocDelegate extends BlocDelegate {
+class _SimpleBlocDelegate extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);

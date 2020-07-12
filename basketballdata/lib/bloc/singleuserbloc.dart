@@ -131,7 +131,7 @@ class SingleUserBloc extends Bloc<SingleUserEvent, SingleUserState> {
 
   StreamSubscription<User> _userSub;
 
-  SingleUserBloc({@required this.db, @required this.userUid}) {
+  SingleUserBloc({@required this.db, @required this.userUid}) : super(SingleUserUninitialized()) {
     _userSub = db.getUser(userUid: userUid).listen(_onUserUpdate);
   }
 
@@ -150,11 +150,6 @@ class SingleUserBloc extends Bloc<SingleUserEvent, SingleUserState> {
     _userSub?.cancel();
     _userSub = null;
     await super.close();
-  }
-
-  @override
-  SingleUserState get initialState {
-    return SingleUserUninitialized();
   }
 
   @override

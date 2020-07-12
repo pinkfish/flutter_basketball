@@ -33,10 +33,8 @@ class AddGameBloc extends Bloc<AddGameEvent, AddItemState> {
   final String teamUid;
 
   AddGameBloc(
-      {@required this.db, @required this.seasonUid, @required this.teamUid});
-
-  @override
-  AddItemState get initialState => new AddItemUninitialized();
+      {@required this.db, @required this.seasonUid, @required this.teamUid})
+      : super(AddItemUninitialized());
 
   @override
   Stream<AddItemState> mapEventToState(AddGameEvent event) async* {

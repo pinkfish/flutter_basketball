@@ -32,10 +32,7 @@ class AddTeamEventCommit extends AddTeamEvent {
 class AddTeamBloc extends Bloc<AddTeamEvent, AddItemState> {
   final BasketballDatabase db;
 
-  AddTeamBloc({@required this.db});
-
-  @override
-  AddItemState get initialState => new AddItemUninitialized();
+  AddTeamBloc({@required this.db}) : super(AddItemUninitialized());
 
   @override
   Stream<AddItemState> mapEventToState(AddTeamEvent event) async* {

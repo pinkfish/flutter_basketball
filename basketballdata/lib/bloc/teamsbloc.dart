@@ -60,7 +60,7 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   StreamSubscription<BuiltList<Team>> _sub;
   StreamSubscription<bool> _dbChange;
 
-  TeamsBloc({this.db}) {
+  TeamsBloc({this.db}) : super(TeamsBlocUninitialized()) {
     _sub = db.getAllTeams().listen(
         (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
     _dbChange = db.onDatabaseChange.listen((bool b) {
@@ -69,9 +69,6 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
           (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
     });
   }
-
-  @override
-  TeamsBlocState get initialState => TeamsBlocUninitialized();
 
   @override
   Stream<TeamsBlocState> mapEventToState(TeamsBlocEvent event) async* {

@@ -30,10 +30,7 @@ class AddSeasonEventCommit extends AddSeasonEvent {
 class AddSeasonBloc extends Bloc<AddSeasonEvent, AddItemState> {
   final BasketballDatabase db;
 
-  AddSeasonBloc({@required this.db});
-
-  @override
-  AddItemState get initialState => new AddItemUninitialized();
+  AddSeasonBloc({@required this.db}) : super(AddItemUninitialized());
 
   @override
   Stream<AddItemState> mapEventToState(AddSeasonEvent event) async* {

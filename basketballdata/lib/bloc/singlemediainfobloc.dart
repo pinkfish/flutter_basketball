@@ -133,7 +133,8 @@ class SingleMediaInfoBloc
 
   StreamSubscription<MediaInfo> _mediaInfoSub;
 
-  SingleMediaInfoBloc({@required this.db, @required this.mediaInfoUid}) {
+  SingleMediaInfoBloc({@required this.db, @required this.mediaInfoUid})
+      : super(SingleMediaInfoUninitialized()) {
     _mediaInfoSub =
         db.getMediaInfo(mediaInfoUid: mediaInfoUid).listen(_onMediaInfoUpdate);
   }
@@ -153,11 +154,6 @@ class SingleMediaInfoBloc
     _mediaInfoSub?.cancel();
     _mediaInfoSub = null;
     await super.close();
-  }
-
-  @override
-  SingleMediaInfoState get initialState {
-    return SingleMediaInfoUninitialized();
   }
 
   @override

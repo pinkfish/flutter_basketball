@@ -204,7 +204,8 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   StreamSubscription<Team> _teamSub;
   StreamSubscription<BuiltList<Season>> _seasonSub;
 
-  SingleTeamBloc({@required this.db, @required this.teamUid}) {
+  SingleTeamBloc({@required this.db, @required this.teamUid})
+      : super(SingleTeamUninitialized()) {
     _teamSub = db.getTeam(teamUid: teamUid).listen((Team t) {
       if (t != null) {
         // Only send this if the team is not the same.
@@ -222,11 +223,6 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
     _teamSub?.cancel();
     _seasonSub?.cancel();
     await super.close();
-  }
-
-  @override
-  SingleTeamBlocState get initialState {
-    return SingleTeamUninitialized();
   }
 
   @override

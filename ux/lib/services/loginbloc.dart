@@ -357,12 +357,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ],
   );
 
-  LoginBloc({@required this.analyticsSubsystem, @required this.db});
-
-  @override
-  LoginState get initialState {
-    return new LoginInitial();
-  }
+  LoginBloc({@required this.analyticsSubsystem, @required this.db})
+      : super(LoginInitial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {

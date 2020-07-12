@@ -97,12 +97,8 @@ class AuthenticationBloc
 
   StreamSubscription<FirebaseUser> _listener;
 
-  @override
-  AuthenticationState get initialState {
-    return AuthenticationUninitialized();
-  }
-
-  AuthenticationBloc({@required this.analyticsSubsystem}) {
+  AuthenticationBloc({@required this.analyticsSubsystem})
+      : super(AuthenticationUninitialized()) {
     FirebaseAuth.instance
         .currentUser()
         .then((FirebaseUser user) => _authChanged(user));

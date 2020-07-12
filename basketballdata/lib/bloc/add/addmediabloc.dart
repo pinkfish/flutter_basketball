@@ -30,10 +30,7 @@ class AddMediaEventCommit extends AddMediaEvent {
 class AddMediaBloc extends Bloc<AddMediaEvent, AddItemState> {
   final BasketballDatabase db;
 
-  AddMediaBloc({@required this.db});
-
-  @override
-  AddItemState get initialState => new AddItemUninitialized();
+  AddMediaBloc({@required this.db}) : super(AddItemUninitialized());
 
   @override
   Stream<AddItemState> mapEventToState(AddMediaEvent event) async* {

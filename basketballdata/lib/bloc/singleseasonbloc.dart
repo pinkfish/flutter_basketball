@@ -200,7 +200,8 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
   StreamSubscription<Season> _seasonSub;
   StreamSubscription<BuiltList<Game>> _gameSub;
 
-  SingleSeasonBloc({@required this.db, @required this.seasonUid}) {
+  SingleSeasonBloc({@required this.db, @required this.seasonUid})
+      : super(SingleSeasonUninitialized()) {
     _seasonSub = db.getSeason(seasonUid: seasonUid).listen((Season t) {
       if (t != null) {
         // Only send this if the season is not the same.
@@ -218,11 +219,6 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
     _seasonSub?.cancel();
     _gameSub?.cancel();
     await super.close();
-  }
-
-  @override
-  SingleSeasonBlocState get initialState {
-    return SingleSeasonUninitialized();
   }
 
   @override

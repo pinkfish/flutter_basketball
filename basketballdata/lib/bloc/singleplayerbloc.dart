@@ -189,7 +189,8 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
   StreamSubscription<Player> _playerSub;
   StreamSubscription<BuiltList<Game>> _gameEventSub;
 
-  SinglePlayerBloc({@required this.db, @required this.playerUid}) {
+  SinglePlayerBloc({@required this.db, @required this.playerUid})
+      : super(SinglePlayerUninitialized()) {
     _playerSub = db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdate);
   }
 
@@ -210,11 +211,6 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
     _gameEventSub?.cancel();
     _gameEventSub = null;
     await super.close();
-  }
-
-  @override
-  SinglePlayerState get initialState {
-    return SinglePlayerUninitialized();
   }
 
   @override
