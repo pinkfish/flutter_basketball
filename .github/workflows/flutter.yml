@@ -99,6 +99,7 @@ jobs:
         options: '{"version": "${SOURCE_TAG}"}'
       env:
         FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
     - uses: matheusalbino/git-commit@v1.0.1
       with:
         user-name: pinkfishfrog
