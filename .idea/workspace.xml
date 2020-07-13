@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/ios/Classes/FlutterRTMPStreaming.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/ios/Classes/FlutterRTMPStreaming.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +58,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -224,26 +224,26 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="656" height="242" key="GridCell.Tab.0.bottom" timestamp="1594518053940">
+    <state width="655" height="242" key="GridCell.Tab.0.bottom" timestamp="1594591536477">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="656" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1594518053940" />
-    <state width="656" height="242" key="GridCell.Tab.0.center" timestamp="1594518053938">
+    <state width="655" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1594591536477" />
+    <state width="655" height="242" key="GridCell.Tab.0.center" timestamp="1594591536475">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="656" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1594518053938" />
-    <state width="656" height="242" key="GridCell.Tab.0.left" timestamp="1594518053937">
+    <state width="655" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1594591536475" />
+    <state width="655" height="242" key="GridCell.Tab.0.left" timestamp="1594591536474">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="656" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1594518053937" />
-    <state width="656" height="242" key="GridCell.Tab.0.right" timestamp="1594518053939">
+    <state width="655" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1594591536474" />
+    <state width="655" height="242" key="GridCell.Tab.0.right" timestamp="1594591536476">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="656" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1594518053939" />
+    <state width="655" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1594591536476" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
@@ -252,10 +252,11 @@
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752886189" />
-    <state x="128" y="66" key="SettingsEditor" timestamp="1589662500782">
-      <screen x="0" y="23" width="1280" height="921" />
+    <state x="128" y="66" key="SettingsEditor" timestamp="1594591528835">
+      <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
+    <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1594591528835" />
     <state x="347" y="240" width="586" height="490" key="find.popup" timestamp="1589672183725">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
