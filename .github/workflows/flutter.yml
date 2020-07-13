@@ -31,6 +31,7 @@ jobs:
           echo ${SOURCE_TAG} 
           echo ${SOURCE_BRANCH}
           echo ${SOURCE_TAG}
+          echo ${{ GITHUB.ref }}
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
