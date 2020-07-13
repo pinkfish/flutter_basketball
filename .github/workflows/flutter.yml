@@ -32,6 +32,10 @@ jobs:
           echo ${SOURCE_BRANCH}
           echo ${SOURCE_TAG}
           echo ${{ GITHUB.ref }}
+      env:
+          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
