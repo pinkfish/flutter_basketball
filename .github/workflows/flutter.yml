@@ -3,6 +3,10 @@ name: Flutter - android
 on: 
   release:
     types: [created,edited]
+  push:
+    branches: [ master ]
+    paths: 
+      - ".github/workflows/flutter.yml"
 
 #  push:
 #    branches: [master]
