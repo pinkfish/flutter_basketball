@@ -62,7 +62,7 @@ platform :android do
 
       begin
         add_git_tag(
-          tag: version,
+          tag: options[:version],
           force: true,
         )
         push_to_git_remote(tags: true, force: true)
@@ -77,6 +77,7 @@ platform :android do
         track: options[:track],
         aab: '../build/app/outputs/bundle/release/app-release.aab',
         json_key_data: ENV['GOOGLE_DEVELOPER_SERVICE_ACCOUNT_ACTOR_FASTLANE'],
+        version_code: options[:version],
         #skip_upload_screenshots: false,
         #skip_upload_images: false
       )
