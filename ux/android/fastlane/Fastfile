@@ -68,9 +68,10 @@ platform :android do
          puts error
          puts "File already added"
       end
+
       begin
         git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "metadata/buildnumber"],
-                 message: "#{version} release notes update")
+                 message: "#{@build_name} release notes update")
       rescue => error
          puts error
          puts "Failed to commit stuff"
