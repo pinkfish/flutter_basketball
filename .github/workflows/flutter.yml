@@ -57,9 +57,3 @@ jobs:
       env:
         FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
-    - uses: matheusalbino/git-commit@v1.0.1
-      with:
-        user-name: pinkfishfrog
-        user-email: pinkfishfrog@gmail.com
-        message: Change notes for the new release.
-        github-token: ${{ secrets.GITHUB_TOKEN }}
