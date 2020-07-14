@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/fastlane/Fastfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/fastlane/Fastfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/android/fastlane/metadata/buildnumber" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,10 +179,10 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="104" y="145" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1280.924@0.23.1280.924" timestamp="1588617147100" />
-    <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1588914247135">
+    <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594759742361">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
-    <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.924@0.23.1280.924" timestamp="1588914247135" />
+    <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.924@0.23.1280.924" timestamp="1594759742361" />
     <state x="453" y="208" key="#com.intellij.ide.util.MemberChooser" timestamp="1588923085320">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
