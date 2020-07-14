@@ -44,6 +44,7 @@ jobs:
         options: '{"version": "${{ github.ref }}"}'
       env:
         FASTLANE_SESSION: ${{ secrets.appleFastlaneSession }}
+        FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - uses: matheusalbino/git-commit@v1.0.1
       with:
         user-name: pinkfishfrog
