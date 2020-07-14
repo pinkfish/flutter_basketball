@@ -64,11 +64,16 @@ platform :android do
       puts body
       begin
        git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
-       git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "metadata/buildnumber"],
-                 message: "#{version} release notes update")
       rescue => error
          puts error
          puts "File already added"
+      end
+      begin
+        git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "metadata/buildnumber"],
+                 message: "#{version} release notes update")
+      rescue => error
+         puts error
+         puts "Failed to commit stuff"
       end
 
       begin
@@ -88,7 +93,6 @@ platform :android do
         track: options[:track],
         aab: '../build/app/outputs/bundle/release/app-release.aab',
         json_key_data: ENV['GOOGLE_DEVELOPER_SERVICE_ACCOUNT_ACTOR_FASTLANE'],
-        version_code: options[:version],
         #skip_upload_screenshots: false,
         #skip_upload_images: false
       )
