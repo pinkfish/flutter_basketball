@@ -49,7 +49,7 @@ platform :ios do
         tag: version,
         force: true,
       )
-      push_to_git_remove(tags: true, force: true)
+      push_to_git_remote(tags: true, force: true)
     rescue => error
       puts error
       puts "Error commiting version number"
