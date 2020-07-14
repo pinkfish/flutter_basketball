@@ -45,7 +45,7 @@ jobs:
       env:
         FASTLANE_SESSION: ${{ secrets.appleFastlaneSession }}
         FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_PASSWORD }}  
+        FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLEAPPSPECIFICPASSWORD }}  
     - uses: matheusalbino/git-commit@v1.0.1
       with:
         user-name: pinkfishfrog
