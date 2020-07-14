@@ -101,6 +101,7 @@ platform :android do
 
   desc "Submit a new Alpha Build to App store"
   lane :alpha do |options|
+      puts options[:version]
       build_and_push_to_play_store_track_github(track: "alpha", version: options[:version])
   end
 

@@ -2,12 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/android/fastlane/metadata/android/en-US/changelogs/229.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/ios/Classes/FlutterRTMPStreaming.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/.symlinks/plugins/camera_with_rtmp/ios/Classes/FlutterRTMPStreaming.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/app/src/profile/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/fastlane/Fastfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/fastlane/Fastfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/fastlane/report.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/fastlane/report.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Runner.app.dSYM.zip" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner.app.dSYM.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner/Info.plist" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -5,47 +5,37 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.124466">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.079399">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android build_and_push_to_play_store_track_github lane" time="0.003757">
+      <testcase classname="fastlane.lanes" name="1: Switch to android build_and_push_to_play_store_track_github lane" time="0.006642">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: number_of_commits" time="0.273144">
+      <testcase classname="fastlane.lanes" name="2: number_of_commits" time="0.12428">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: get_github_release" time="0.716657">
+      <testcase classname="fastlane.lanes" name="3: get_github_release" time="0.390935">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: git_add" time="0.013124">
+      <testcase classname="fastlane.lanes" name="4: git_add" time="0.129415">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: cd ../.. &amp;&amp; flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=0.3.0 --build-number=183" time="550.889038">
+      <testcase classname="fastlane.lanes" name="5: cd ../.. &amp;&amp; flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=0.3.2 --build-number=229" time="52.513207">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="152.05187">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="7: Switch to android tag_branch lane" time="0.056444">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="8: add_git_tag" time="3.062745">
+      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="108.947672">
         
       </testcase>
     
