@@ -43,7 +43,7 @@ jobs:
         bundle-install-path: ux/ios/packages
         options: '{"version": "${{ github.ref }}"}'
       env:
-        FASTLANE_SESSION: ${{ secrets.appleFastlaneSession }}
+        FASTLANE_SESSION: ${{ secrets.FASTLANE_APPLE_SESSION }}
         FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLEAPPSPECIFICPASSWORD }}  
     - uses: matheusalbino/git-commit@v1.0.1
