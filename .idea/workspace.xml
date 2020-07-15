@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.github/workflows/flutter.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/fastlane/Fastfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/fastlane/Fastfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/fastlane/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/fastlane/Fastfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/fastlane/Fastfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +58,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="flutter.settings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -247,11 +252,11 @@
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752886189" />
-    <state x="128" y="66" key="SettingsEditor" timestamp="1594591528835">
+    <state x="128" y="66" key="SettingsEditor" timestamp="1594771307135">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
-    <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1594591528835" />
+    <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1594771307135" />
     <state x="347" y="240" width="586" height="490" key="find.popup" timestamp="1589672183725">
       <screen x="0" y="23" width="1280" height="924" />
     </state>

@@ -50,17 +50,13 @@ platform :android do
       @build_number=number_of_commits()
 
       # Get the last build number and increment it.
-      @build_number = File.read("metadata/buildnumber").to_i
-      @build_number = @build_number +1
-
-      f = File.new("metadata/buildnumber", "w")
-      f.write(@build_number)
-      f.close
+      @build_number = ENV["GITHUB_RUN_NUMBER"]
+      puts @build_number
 
       @build_name=options[:version].delete("v")
       release=get_github_release(url: "pinkfish/flutter_basketball", version: options[:version], api_token: github_api_token)
       body = release["body"]
-      File.write("metadata/android/en-US/changelogs/#{@build_number}.txt", "#{body[0,500]}")
+      File.write("#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "#{body[0,500]}")
       puts body
       begin
        git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
@@ -70,7 +66,7 @@ platform :android do
       end
 
       begin
-        git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "metadata/buildnumber"],
+        git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt"],
                  message: "#{@build_name} release notes update")
       rescue => error
          puts error
