@@ -64,6 +64,7 @@ jobs:
         FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLEAPPSPECIFICPASSWORD }}
         SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
+        FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 10 # Longer timeout for the build settings.
     - uses: matheusalbino/git-commit@v1.0.1
       with:
         user-name: pinkfishfrog
