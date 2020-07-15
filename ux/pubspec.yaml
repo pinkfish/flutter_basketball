@@ -83,3 +83,5 @@ flutter:
     - assets/images/google_logo.png
     - assets/images/Basketball_Halfcourt.svg
     - assets/images/Basketball_Halfcourt_light.svg
+flutter_intl:
+  enabled: true

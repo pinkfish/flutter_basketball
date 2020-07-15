@@ -50,7 +50,7 @@ platform :android do
       @build_number=number_of_commits()
 
       # Get the last build number and increment it.
-      @build_number = ENV["GITHUB_RUN_NUMBER"]
+      # @build_number = ENV["GITHUB_RUN_NUMBER"]
       puts @build_number
 
       @build_name=options[:version].delete("v")
@@ -58,31 +58,31 @@ platform :android do
       body = release["body"]
       File.write("#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "#{body[0,500]}")
       puts body
-      begin
-       git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
-      rescue => error
-         puts error
-         puts "File already added"
-      end
+      #begin
+      # git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
+      #rescue => error
+      #   puts error
+      #   puts "File already added"
+      #end
 
-      begin
-        git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt"],
-                 message: "#{@build_name} release notes update")
-      rescue => error
-         puts error
-         puts "Failed to commit stuff"
-      end
+      #begin
+      #  git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt"],
+      #           message: "#{@build_name} release notes update")
+      #rescue => error
+      #   puts error
+      #   puts "Failed to commit stuff"
+      #end
 
-      begin
-        add_git_tag(
-          tag: options[:version],
-          force: true,
-        )
-        push_to_git_remote(tags: true, force: true)
-      rescue => error
-        puts error
-        puts "Failed to update git tag"
-      end
+      #begin
+      #  add_git_tag(
+      #    tag: options[:version],
+      #    force: true,
+      #  )
+      #  push_to_git_remote(tags: true, force: true)
+      #rescue => error
+      #  puts error
+      #  puts "Failed to update git tag"
+      #end
 
 
       sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
