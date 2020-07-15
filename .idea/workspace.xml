@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/flutter-ios.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter-ios.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,7 +51,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -244,23 +241,27 @@
       <screen x="0" y="23" width="1280" height="921" />
     </state>
     <state x="228" y="233" key="IDE.errors.dialog/0.23.1280.921@0.23.1280.921" timestamp="1589666141398" />
-    <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1587752886189">
-      <screen x="0" y="23" width="1280" height="921" />
+    <state x="290" y="189" width="704" height="592" key="NewModule_or_Project.wizard" timestamp="1594844432353">
+      <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state x="290" y="187" width="704" height="592" key="NewModule_or_Project.wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752886189" />
-    <state x="128" y="66" key="SettingsEditor" timestamp="1594771307135">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state x="290" y="188" key="NewModule_or_Project.wizard/0.23.1280.924@0.23.1280.924" timestamp="1594841890324" />
+    <state x="290" y="189" key="NewModule_or_Project.wizard/0.23.1280.927@0.23.1280.927" timestamp="1594844432353" />
+    <state x="128" y="66" key="SettingsEditor" timestamp="1594844441720">
+      <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
-    <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1594771307135" />
+    <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1594842060225" />
+    <state x="128" y="66" key="SettingsEditor/0.23.1280.927@0.23.1280.927" timestamp="1594844441720" />
     <state x="347" y="240" width="586" height="490" key="find.popup" timestamp="1589672183725">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="347" y="240" width="586" height="490" key="find.popup/0.23.1280.924@0.23.1280.924" timestamp="1589672183725" />
-    <state x="48" y="211" key="new project wizard" timestamp="1587752586158">
-      <screen x="0" y="23" width="1280" height="921" />
+    <state x="25" y="212" key="new project wizard" timestamp="1594841852376">
+      <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="48" y="211" key="new project wizard/0.23.1280.921@0.23.1280.921" timestamp="1587752586158" />
+    <state x="25" y="212" key="new project wizard/0.23.1280.924@0.23.1280.924" timestamp="1594841852376" />
     <state x="305" y="224" width="670" height="676" key="search.everywhere.popup" timestamp="1594432852481">
       <screen x="0" y="23" width="1280" height="924" />
     </state>

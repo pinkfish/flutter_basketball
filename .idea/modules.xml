@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.github/.github.iml" filepath="$PROJECT_DIR$/.github/.github.iml" />
       <module fileurl="file://$PROJECT_DIR$/basketballdata/basketballdata.iml" filepath="$PROJECT_DIR$/basketballdata/basketballdata.iml" />
-      <module fileurl="file://$PROJECT_DIR$/flutter_basketball.iml" filepath="$PROJECT_DIR$/flutter_basketball.iml" />
-      <module fileurl="file://$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/main.iml" filepath="$PROJECT_DIR$/FlutterRtmpPlublisher/android/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/firebase/firebase.iml" filepath="$PROJECT_DIR$/firebase/firebase.iml" />
       <module fileurl="file://$PROJECT_DIR$/ux/ux.iml" filepath="$PROJECT_DIR$/ux/ux.iml" />
     </modules>
   </component>
