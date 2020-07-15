@@ -9,7 +9,7 @@ import '../widgets/loading.dart';
 import '../widgets/savingoverlay.dart';
 
 ///
-/// Adds a media to the game worl.
+/// Adds a media to the game world.
 ///
 class AddMediaFromUrlGameScreen extends StatelessWidget {
   final String gameUid;
