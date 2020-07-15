@@ -50,7 +50,7 @@ platform :android do
       # @build_number=number_of_commits()
 
       # Use the github run number + 300 to be past the existing build numbers.
-      @build_number = ENV["GITHUB_RUN_NUMBER"] + 300
+      @build_number = ENV["GITHUB_RUN_NUMBER"].to_i + 300
       puts @build_number
 
       @build_name=options[:version].delete("v")
