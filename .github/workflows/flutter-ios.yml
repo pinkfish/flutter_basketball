@@ -65,30 +65,12 @@ jobs:
         FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLEAPPSPECIFICPASSWORD }}
         SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 10 # Longer timeout for the build settings.
-    - uses: matheusalbino/git-commit@v1.0.1
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Release notes for the ios ${{ steps.branch_name.outputs.SOURCE_TAG}} version" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
       with:
-        user-name: pinkfishfrog
-        user-email: pinkfishfrog@gmail.com
-        message: Change notes for the new release.
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        # Required
-        commit_message: Apply automatic changes
-
-        # Optional options appended to `git-commit`
-        commit_options: '--no-verify --signoff'
-
-        # Optional local file path to the repository
-        repository: .
-
-        # Optional commit user and author settings
-        commit_user_name: GitHub Actions Bot
-        commit_user_email: my-github-actions-bot@example.org
-        commit_author: Author <actions@github.com>
-
-        # Force update the tag to the new location.
-        tagging_message: ${{ steps.branch_name.outputs.SOURCE_TAG }}
-
-        # Optional options appended to `git-push`
-        push_options: '--force'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
