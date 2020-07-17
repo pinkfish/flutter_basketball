@@ -41,7 +41,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>7</string>
+=======
+	<string>6</string>
+>>>>>>> 31dc9548f6adb2ba1b76b3127984462d505a2a4d
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
