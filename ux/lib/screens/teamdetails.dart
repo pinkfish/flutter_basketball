@@ -16,6 +16,9 @@ import '../widgets/savingoverlay.dart';
 import '../widgets/seasons/seasonexpansionpanel.dart';
 import 'addplayerseason.dart';
 
+///
+/// Shows the details for the team, broken down by seasons.
+///
 class TeamDetailsScreen extends StatefulWidget {
   final String teamUid;
 

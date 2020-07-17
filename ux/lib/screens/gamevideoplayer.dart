@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/widgets/game/gameeventlist.dart';
 import 'package:basketballstats/widgets/media/videoplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,6 +65,10 @@ class _GameVideoScaffold extends StatefulWidget {
 }
 
 class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
+  int _navIndex = 0;
+  DateTime _currentStart;
+  GameVideoPlayer _player;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +88,8 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (int pos) => setState(() => _navIndex = pos),
+        currentIndex: _navIndex,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.play_arrow),
@@ -103,9 +110,33 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
       return LoadingWidget();
     }
     MediaInfo myInfo = state.media.firstWhere((e) => e.uid == widget.mediaUid);
-    return GameVideoPlayer(
-      state: state,
-      video: myInfo,
+    if (_navIndex == 0) {
+      _player = GameVideoPlayer(
+        state: state,
+        video: myInfo,
+        start: _currentStart,
+      );
+      return _player;
+    }
+    // Show a list of events.
+    return Column(
+      children: [
+        Expanded(
+          child: GameEventList(
+            eventCheck: (e) => true,
+            onTap: (e) => _onTapEvent(myInfo, e),
+            showName: true,
+          ),
+        ),
+      ],
     );
+  }
+
+  void _onTapEvent(MediaInfo info, GameEvent ev) {
+    setState(() {
+      _currentStart = ev.timestamp;
+      _navIndex = 0;
+    });
+    // We will seek to the specified time and then switch to the video view.
   }
 }

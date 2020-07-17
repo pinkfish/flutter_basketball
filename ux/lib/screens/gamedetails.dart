@@ -42,6 +42,10 @@ class GameDetailsScreen extends StatelessWidget {
                 BlocProvider.of<SingleGameBloc>(context)
                     .add(SingleGameLoadEvents());
               }
+              if (state is SingleGameLoaded && !state.loadedMedia) {
+                BlocProvider.of<SingleGameBloc>(context)
+                    .add(SingleGameLoadMedia());
+              }
             },
             builder: (BuildContext context, SingleGameState state) {
               return _GameDetailsScaffold(state, orientation);
@@ -96,7 +100,10 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         saving: widget.state is SingleGameSaving,
         child: Center(
           child: AnimatedSwitcher(
-            child: _getBody(context, widget.state),
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: _getBody(context, widget.state),
+            ),
             duration: const Duration(milliseconds: 500),
           ),
         ),
@@ -215,6 +222,14 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                       SizedBox(width: 30.0, child: Icon(Icons.add_circle)),
                       Text(state.game.summary.pointsAgainst.toString(),
                           style: pointsStyle),
+                      state.media.length > 0
+                          ? IconButton(
+                              color: Theme.of(context).accentColor,
+                              icon: Icon(Icons.videocam, size: 40.0),
+                              onPressed: () => Navigator.pushNamed(context,
+                                  'Game/Video/${widget.state.game.uid}'),
+                            )
+                          : SizedBox(width: 0.0),
                     ],
                   ),
                   Divider(),

@@ -89,8 +89,7 @@ class SeasonExpansionPanel extends ExpansionPanel {
                         BlocProvider.of<SingleSeasonBloc>(context)
                             .add(SingleSeasonLoadGames());
                       }
-                      if (state is SingleSeasonUninitialized &&
-                          !state.loadedGames) {
+                      if (state is SingleSeasonUninitialized) {
                         return Center(
                           child: LoadingWidget(),
                         );
@@ -103,7 +102,7 @@ class SeasonExpansionPanel extends ExpansionPanel {
                                   game: g,
                                   onTap: () => onGameTapped(g.uid),
                                 ),
-                          )
+                              )
                               .toList());
                     }),
               ),

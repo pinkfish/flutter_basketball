@@ -13,12 +13,14 @@ class GameEventList extends StatelessWidget {
   final bool showName;
   final bool showTimestamp;
   final bool showPeriod;
+  final GameEventTapCallback onTap;
 
   GameEventList(
       {this.eventCheck,
       this.showName = false,
       this.showPeriod = true,
-      this.showTimestamp = true});
+      this.showTimestamp = true,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class GameEventList extends StatelessWidget {
                     showTimestamp: showTimestamp,
                     showPeriod: showPeriod,
                     showName: showName,
+                    onTap: onTap,
                   ),
                 )
                 .toList(),
