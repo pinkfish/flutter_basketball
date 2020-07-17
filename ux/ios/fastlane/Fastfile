@@ -67,6 +67,7 @@ platform :ios do
        appicon_path: "Runner/Assets.xcassets",
        appicon_image_file: '../assets/icons/app_icon.png'
     )
+
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
     upload_to_testflight(changelog: body)
   end
