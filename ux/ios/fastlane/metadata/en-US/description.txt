@@ -1,1 +1,4 @@
-
+Basketball stats app that will track basketball statistics across a game/team
+over time.  Will also allow for a video to be uploaded/streamed and matched up
+with the events so you can seek through and find locations where athletes made
+shots or blocked a ball.

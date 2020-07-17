@@ -62,6 +62,11 @@ platform :ios do
     release=get_github_release(url: "pinkfish/flutter_basketball", version: options[:version], api_token: github_api_token)
     body = release["body"]
 
+    appicon(
+       appicon_devices: [:ipad, :iphone, :ios_marketing],
+       appicon_path: "Runner/Assets.xcassets",
+       appicon_image_file: '../assets/icons/app_icon.png'
+    )
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
     upload_to_testflight(changelog: body)
   end

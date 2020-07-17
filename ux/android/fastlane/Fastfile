@@ -58,32 +58,28 @@ platform :android do
       body = release["body"]
       File.write("#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt", "#{body[0,500]}")
       puts body
-      #begin
-      # git_add(path:"#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt")
-      #rescue => error
-      #   puts error
-      #   puts "File already added"
-      #end
 
-      #begin
-      #  git_commit(path: ["#{Dir.pwd}/metadata/android/en-US/changelogs/#{@build_number}.txt"],
-      #           message: "#{@build_name} release notes update")
-      #rescue => error
-      #   puts error
-      #   puts "Failed to commit stuff"
-      #end
+      # Icons
+      android_appicon(
+        appicon_icon_types: [:launcher],
+        appicon_image_file: '../assets/icons/app_icon.png',
+        appicon_path: 'app/src/main/res/mipmap',
+        appicon_filename: 'ic_launcher'
+      )
 
-      #begin
-      #  add_git_tag(
-      #    tag: options[:version],
-      #    force: true,
-      #  )
-      #  push_to_git_remote(tags: true, force: true)
-      #rescue => error
-      #  puts error
-      #  puts "Failed to update git tag"
-      #end
-
+      # Splash screens
+      android_appicon(
+        appicon_icon_types: [:splash_port],
+        appicon_image_file: '../assets/icons/screen.png',
+        appicon_path: 'app/src/main/res/drawable',
+        appicon_filename: 'screen'
+      )
+      android_appicon(
+        appicon_icon_types: [:splash_land],
+        appicon_image_file: '../assets/icons/screen_land.png',
+        appicon_path: 'app/src/main/res/drawable',
+        appicon_filename: 'screen'
+      )
 
       sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
       upload_to_play_store(
