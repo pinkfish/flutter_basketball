@@ -15,6 +15,9 @@ jobs:
         ref: ${{ github.head_ref }}
     - uses: actions/setup-java@v1
       with:
+        ruby-version: '2.6'
+    - uses: actions/setup-ruby@v1
+      with:
         java-version: '12.x'
     - name: Branch name
       id: branch_name
@@ -52,6 +55,7 @@ jobs:
         FASTLANE: ${{ secrets.fastlaneApp }}
     - run: pod install	
       working-directory: ux/ios
+    - run: brew install graphicsmagick
     - name: Fastlane Action
       uses: maierj/fastlane-action@v1.4.0
       with:
