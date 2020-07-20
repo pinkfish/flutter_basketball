@@ -12,6 +12,7 @@ import 'screens/gamedetails.dart';
 import 'screens/gameplayerdetails.dart';
 import 'screens/gamestats.dart';
 import 'screens/gamevideo.dart';
+import 'screens/invites/acceptinvitetoteam.dart';
 import 'screens/invites/invitelist.dart';
 import 'screens/login/forgotpassword.dart';
 import 'screens/login/loginform.dart';
@@ -109,6 +110,10 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 InviteListScreen()));
+    router.define("/Invite/AcceptInviteToTeam/:invite",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                AcceptInviteToTeamScreen(vals["invite"][0].toString())));
     router.define("/Login/Home",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../messages.dart';
+import '../widgets/invites/invitecountbox.dart';
 import '../widgets/statsdrawer.dart';
 import '../widgets/team/teamwidget.dart';
 
@@ -22,15 +23,15 @@ class TeamsScreen extends StatelessWidget {
           duration: const Duration(milliseconds: 500),
           child: BlocBuilder(
             bloc: BlocProvider.of<AuthenticationBloc>(context),
-            builder: (BuildContext context, AuthenticationState state) {
-              print("State $state");
-              if (state is AuthenticationLoggedInUnverified) {
+            builder: (BuildContext context, AuthenticationState authState) {
+              print("State $authState");
+              if (authState is AuthenticationLoggedInUnverified) {
                 // Say you need to verify first.
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(Messages.of(context)
-                        .verifyexplanation(state.user.email)),
+                        .verifyexplanation(authState.user.email)),
                     RaisedButton(
                         child:
                             new Text(Messages.of(context).resendverifyButton),
@@ -60,10 +61,23 @@ class TeamsScreen extends StatelessWidget {
                           child: Text(Messages.of(context).noTeams),
                         );
                       }
-                      return ListView(
-                        children:
-                            state.teams.map((t) => TeamWidget(t)).toList(),
-                      );
+                      if (authState is AuthenticationLoggedIn) {
+                        return ListView(
+                          children: [
+                            new GestureDetector(
+                              child: InviteCountBox(),
+                              onTap: () =>
+                                  Navigator.pushNamed(context, "/Invite/List"),
+                            ),
+                            ...state.teams.map((t) => TeamWidget(t)).toList(),
+                          ],
+                        );
+                      } else {
+                        return ListView(
+                          children:
+                              state.teams.map((t) => TeamWidget(t)).toList(),
+                        );
+                      }
                     }
                     return Text(Messages.of(context).unknown);
                   },
