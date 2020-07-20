@@ -112,6 +112,8 @@ class GameEventWidget extends StatelessWidget {
       case GameEventType.TimeoutStart:
       case GameEventType.TimeoutEnd:
         return c;
+      default:
+        throw ArgumentError(gameEvent.type.toString());
     }
   }
 }

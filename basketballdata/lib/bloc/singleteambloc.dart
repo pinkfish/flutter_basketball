@@ -8,8 +8,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
-import '../data/season.dart';
-import '../data/team.dart';
+import '../data/season/season.dart';
+import '../data/team/team.dart';
 
 abstract class SingleTeamBlocState extends Equatable {
   final Team team;

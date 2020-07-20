@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
-import '../../data/player.dart';
+import '../../data/player/player.dart';
 import '../../db/basketballdatabase.dart';
 import 'additemstate.dart';
 
@@ -31,7 +31,7 @@ class AddPlayerBloc extends Bloc<AddPlayerEvent, AddItemState> {
   final BasketballDatabase db;
 
   AddPlayerBloc({@required this.db}) : super(AddItemUninitialized());
-  
+
   @override
   Stream<AddItemState> mapEventToState(AddPlayerEvent event) async* {
     // Create a new Player.

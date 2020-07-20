@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:basketballdata/data/mediainfo.dart';
+import 'package:basketballdata/data/media/mediainfo.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';

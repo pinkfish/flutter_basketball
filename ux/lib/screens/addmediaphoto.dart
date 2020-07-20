@@ -64,6 +64,7 @@ class _AddMediaGameInside extends StatefulWidget {
 
 class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final picker = ImagePicker();
 
   File _image;
   bool _uploading = false;
@@ -187,10 +188,10 @@ class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
   }
 
   void _getImage(ImageSource source) async {
-    var image = await ImagePicker.pickImage(source: source);
+    var image = await picker.getImage(source: source);
 
     setState(() {
-      _image = image;
+      _image = File(image.path);
     });
   }
 }

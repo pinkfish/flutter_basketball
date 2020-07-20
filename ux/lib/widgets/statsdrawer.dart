@@ -2,6 +2,7 @@ import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:basketballstats/services/loginbloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
@@ -22,8 +23,7 @@ class StatsDrawer extends StatelessWidget {
           children: <TextSpan>[
             TextSpan(
                 style: textStyle,
-                text: 'Basketball stats is an exciting sapp to show stats'
-                    'about basketball games.  It shows nifty graphs and fun stuff'),
+                text: Messages.of(context).aboutstatsappdescription),
             TextSpan(
                 style: textStyle.copyWith(color: Theme.of(context).accentColor),
                 text: 'https://flutter.dev'),
@@ -98,13 +98,18 @@ class StatsDrawer extends StatelessWidget {
               }
               return ListTile(
                 leading: Icon(MdiIcons.login),
-                title: Text(Messages
-                    .of(context)
-                    .loginButton),
+                title: Text(Messages.of(context).loginButton),
                 onTap: () {
                   Navigator.pushNamed(context, "/Login/Home");
                 },
               );
+            },
+          ),
+          ListTile(
+            leading: Icon(MaterialIcons.insert_invitation),
+            title: Text(Messages.of(context).invite),
+            onTap: () {
+              Navigator.pushNamed(context, "/Invite/List");
             },
           ),
           ListTile(
@@ -118,7 +123,7 @@ class StatsDrawer extends StatelessWidget {
             icon: Icon(Icons.info),
             applicationIcon: FlutterLogo(),
             applicationName: Messages.of(context).title,
-            applicationVersion: 'August 2019',
+            applicationVersion: 'July 2020',
             applicationLegalese: '© 2020 The Whelksoft Authors',
             aboutBoxChildren: aboutBoxChildren,
           ),

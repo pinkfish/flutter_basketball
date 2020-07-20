@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
-import '../../data/game.dart';
+import '../../data/game/game.dart';
 import '../../db/basketballdatabase.dart';
 import 'additemstate.dart';
 

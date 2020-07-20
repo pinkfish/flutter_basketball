@@ -1,13 +1,14 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/foundation.dart';
 
-import '../data/game.dart';
-import '../data/gameevent.dart';
-import '../data/mediainfo.dart';
-import '../data/player.dart';
-import '../data/playergamesummary.dart';
-import '../data/season.dart';
-import '../data/team.dart';
+import '../data/game/game.dart';
+import '../data/game/gameevent.dart';
+import '../data/invites/invite.dart';
+import '../data/media/mediainfo.dart';
+import '../data/player/player.dart';
+import '../data/player/playergamesummary.dart';
+import '../data/season/season.dart';
+import '../data/team/team.dart';
 import '../data/user.dart';
 
 ///
@@ -22,6 +23,9 @@ abstract class BasketballDatabase {
 
   /// Gets all the currently known seasons for this team.
   Stream<BuiltList<Season>> getTeamSeasons({@required String teamUid});
+
+  /// Gets all the current invites for us.
+  Stream<BuiltList<Invite>> getAllInvites(String email);
 
   /// Gets all the updates for this specific team.
   Stream<Team> getTeam({@required String teamUid});
@@ -49,6 +53,9 @@ abstract class BasketballDatabase {
 
   /// Gets the stream associated with this specific player.
   Stream<Player> getPlayer({@required String playerUid});
+
+  /// Gets the stream associated with this specific invite.
+  Stream<Invite> getInvite({@required String inviteUid});
 
   /// Adds the game event into the database
   Future<void> addGameEvent({@required GameEvent event});
@@ -106,6 +113,8 @@ abstract class BasketballDatabase {
 
   Future<void> deleteMedia({@required String mediaInfoUid});
 
+  Future<void> deleteInvite({@required String inviteUid});
+
   Future<void> deleteGamePlayer(
       {@required String gameUid,
       @required String playerUid,
@@ -129,4 +138,7 @@ abstract class BasketballDatabase {
   /// changed for some reason.
   ///
   Stream<bool> get onDatabaseChange;
+
+  /// The current user Uid.
+  String get userUid;
 }

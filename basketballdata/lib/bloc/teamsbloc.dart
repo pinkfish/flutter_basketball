@@ -6,7 +6,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import '../data/team.dart';
+import '../data/team/team.dart';
 
 ///
 /// The base state for the teams bloc.  It tracks all the

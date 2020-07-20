@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/data/invites/invite.dart';
 import 'package:basketballdata/data/user.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/firestoredatabase.dart';
@@ -173,6 +174,14 @@ class MultiplexDatabase extends BasketballDatabase {
       return _sql.getAllTeams();
     else
       return _fs.getAllTeams();
+  }
+
+  @override
+  Stream<BuiltList<Invite>> getAllInvites(String email) {
+    if (useSql)
+      return _sql.getAllInvites(email);
+    else
+      return _fs.getAllInvites(email);
   }
 
   @override
@@ -375,5 +384,29 @@ class MultiplexDatabase extends BasketballDatabase {
     else
       return _fs.updateMediaInfoThumbnail(
           mediaInfo: mediaInfo, thumbnailUrl: thumbnailUrl);
+  }
+
+  @override
+  Future<void> deleteInvite({String inviteUid}) {
+    if (useSql)
+      return _sql.deleteInvite(inviteUid: inviteUid);
+    else
+      return _fs.deleteInvite(inviteUid: inviteUid);
+  }
+
+  @override
+  Stream<Invite> getInvite({String inviteUid}) {
+    if (useSql)
+      return _sql.getInvite(inviteUid: inviteUid);
+    else
+      return _fs.getInvite(inviteUid: inviteUid);
+  }
+
+  @override
+  String get userUid {
+    if (useSql)
+      return _sql.userUid;
+    else
+      return _fs.userUid;
   }
 }

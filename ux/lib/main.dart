@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => LoginBloc(
                 analyticsSubsystem: analytics,
                 db: RepositoryProvider.of<BasketballDatabase>(context)),
-          )
+          ),
         ],
         child: MaterialApp(
           localizationsDelegates: const <LocalizationsDelegate<dynamic>>[

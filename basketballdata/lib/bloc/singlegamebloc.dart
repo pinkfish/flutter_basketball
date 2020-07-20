@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:basketballdata/data/mediainfo.dart';
+import 'package:basketballdata/data/media/mediainfo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
@@ -8,14 +8,14 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
-import '../data/game.dart';
-import '../data/gameevent.dart';
-import '../data/gameeventtype.dart';
-import '../data/gameperiod.dart';
-import '../data/gamesummary.dart';
-import '../data/player.dart';
-import '../data/playergamesummary.dart';
-import '../data/playersummarydata.dart';
+import '../data/game/game.dart';
+import '../data/game/gameevent.dart';
+import '../data/game/gameeventtype.dart';
+import '../data/game/gameperiod.dart';
+import '../data/game/gamesummary.dart';
+import '../data/player/player.dart';
+import '../data/player/playergamesummary.dart';
+import '../data/player/playersummarydata.dart';
 import '../db/basketballdatabase.dart';
 
 ///

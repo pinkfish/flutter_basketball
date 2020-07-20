@@ -10,23 +10,31 @@ import 'package:sqflite/sqflite.dart';
 class SQLDBRaw {
   final Completer<Database> _complete = Completer();
 
-   static const  String teamsTable = "Teams";
-   static const  String playersTable = "Players";
-   static const  String gamesTable = "Games";
-   static const  String gameEventsTable = "GameEvents";
-   static const  String seasonsTable = "Seasons";
-   static const  String uploadTable = "Uploads";
+  static const String mediaTable = "Media";
+  static const String invitesTable = "Invites";
+  static const String teamsTable = "Teams";
+  static const String playersTable = "Players";
+  static const String gamesTable = "Games";
+  static const String gameEventsTable = "GameEvents";
+  static const String seasonsTable = "Seasons";
+  static const String uploadTable = "Uploads";
+  static const String usersTable = "Users";
 
-   static const  String indexColumn = "uid";
-   static const  String secondaryIndexColumn = "otherUid";
-   static const  String dataColumn = "data";
+  static const String indexColumn = "uid";
+  static const String secondaryIndexColumn = "otherUid";
+  static const String dataColumn = "data";
 
-  static const  List<String> _tables = const <String>[
+  static const String emailField = "email";
+  static const String userUidField = "userUid";
+  static const String usersField = "users";
+  static const String enabledField = "enabled";
+
+  static const List<String> _tables = const <String>[
     teamsTable,
     playersTable,
     uploadTable,
   ];
-  static const  List<String> _tablesSecondaryIndex = const <String>[
+  static const List<String> _tablesSecondaryIndex = const <String>[
     gamesTable,
     gameEventsTable,
     seasonsTable,

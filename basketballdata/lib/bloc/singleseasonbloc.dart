@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballdata/data/seasonsummary.dart';
+import 'package:basketballdata/data/season/seasonsummary.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
@@ -10,8 +10,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
-import '../data/game.dart';
-import '../data/season.dart';
+import '../data/game/game.dart';
+import '../data/season/season.dart';
 
 abstract class SingleSeasonBlocState extends Equatable {
   final Season season;

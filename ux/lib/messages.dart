@@ -420,10 +420,27 @@ class Messages {
       desc: "Button to open up the video section", locale: locale);
 
   String get urlTitle => Intl.message("URL",
-      desc: "Title for the form field to set the url for media");
+      desc: "Title for the form field to set the url for media",
+      locale: locale);
 
   String get descriptionTitle => Intl.message("Description",
-      desc: "Title for the description of the media");
+      desc: "Title for the description of the media", locale: locale);
+
+  String get deleteInvite => Intl.message('Delete invite',
+      desc: 'Title for the dialog to delete an invite', locale: locale);
+
+  String get invite => Intl.message('Invites',
+      desc: 'Title for the screen with the list of current invites',
+      locale: locale);
+
+  String get noinvites => Intl.message('No invites', locale: locale);
+
+  String get saveButtonText => Intl.message('SAVE', locale: locale);
+
+  String get aboutstatsappdescription => Intl.message(
+      'Basketball stats is an exciting app to show stats'
+      'about basketball games.  It shows nifty graphs and fun stuff',
+      locale: locale);
 
   String getUnverified(String name, bool unverified) {
     if (unverified) {
@@ -455,6 +472,11 @@ class Messages {
     return Intl.message("vs $opponent at $place",
         desc: "Heading for a game showing the opponent and the place",
         locale: locale);
+  }
+
+  String invitedpeople(int num) {
+    return Intl.message("Invited: $num",
+        desc: "Heading showing the number of pending invites", locale: locale);
   }
 
   String getPeriodName(GamePeriod p) {
@@ -553,6 +575,19 @@ class Messages {
             author: Intl.message("Douglas Adams", locale: locale));
     }
   }
+
+  String confirmdelete(Invite invite) {
+    if (invite is InviteToTeam) {
+      InviteToTeam inviteTeam = invite;
+      return Intl.message(
+          'Do you want to delete the invite to ${inviteTeam.teamName}?',
+          name: 'Text to delete the invite to the team in the alert dialog.');
+    }
+    return unknown;
+  }
+
+  String teamForInvite(String teamMame) =>
+      Intl.message("Team $teamMame", locale: locale);
 }
 
 class QuoteAndAuthor {

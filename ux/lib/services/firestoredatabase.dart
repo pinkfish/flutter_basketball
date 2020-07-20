@@ -1,27 +1,18 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballdata/data/game.dart';
-import 'package:basketballdata/data/gameevent.dart';
-import 'package:basketballdata/data/player.dart';
-import 'package:basketballdata/data/team.dart';
+import 'package:basketballdata/data/game/game.dart';
+import 'package:basketballdata/data/game/gameevent.dart';
+import 'package:basketballdata/data/invites/invite.dart';
+import 'package:basketballdata/data/invites/invitefactory.dart';
+import 'package:basketballdata/data/player/player.dart';
+import 'package:basketballdata/data/team/team.dart';
 import 'package:basketballdata/data/teamuser.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
+import 'package:basketballstats/services/sqldbraw.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FirestoreDatabase extends BasketballDatabase {
-  static const String teamsTable = "Teams";
-  static const String seasonsTable = "Seasons";
-  static const String usersTable = "Users";
-  static const String playersTable = "Players";
-  static const String gamesTable = "Games";
-  static const String gameEventsTable = "GameEvents";
-  static const String mediaTable = "Media";
-
-  static const String userUidField = "userUid";
-  static const String usersField = "users";
-  static const String enabledField = "enabled";
-
   final FirebaseAnalytics analytics;
 
   FirestoreDatabase(this.analytics);
@@ -33,10 +24,11 @@ class FirestoreDatabase extends BasketballDatabase {
     var player = Player((b) => b
       ..name = game.opponentName.isEmpty ? "default" : game.opponentName
       ..jerseyNumber = "xx");
-    var playerRef = Firestore.instance.collection(playersTable).document();
+    var playerRef =
+        Firestore.instance.collection(SQLDBRaw.playersTable).document();
     player = player.rebuild((b) => b..uid = playerRef.documentID);
     await playerRef.updateData(player.toMap());
-    var ref = Firestore.instance.collection(gamesTable).document();
+    var ref = Firestore.instance.collection(SQLDBRaw.gamesTable).document();
     game = game.rebuild((b) => b
       ..uid = ref.documentID
       ..opponents[playerRef.documentID] =
@@ -49,7 +41,8 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> addGameEvent({GameEvent event}) async {
     if (event.uid == null || event.uid.isEmpty) {
-      var ref = Firestore.instance.collection(gameEventsTable).document();
+      var ref =
+          Firestore.instance.collection(SQLDBRaw.gameEventsTable).document();
       event.rebuild((b) => b..uid = ref.documentID);
       analytics.logEvent(name: "AddGameEvent", parameters: {
         "type": event.type.toString(),
@@ -59,7 +52,7 @@ class FirestoreDatabase extends BasketballDatabase {
     }
     analytics.logEvent(name: "UpdateGameEvent");
     return Firestore.instance
-        .collection(gameEventsTable)
+        .collection(SQLDBRaw.gameEventsTable)
         .document(event.uid)
         .updateData(event.toMap());
   }
@@ -67,7 +60,8 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> addGamePlayer(
       {String gameUid, String playerUid, bool opponent}) {
-    var ref = Firestore.instance.collection(gamesTable).document(gameUid);
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.gamesTable).document(gameUid);
     analytics.logEvent(name: "AddGamePlayer");
     return ref.updateData(
         {(opponent ? "opponents." : "players.") + playerUid + ".player": true});
@@ -79,15 +73,17 @@ class FirestoreDatabase extends BasketballDatabase {
       String playerUid,
       PlayerGameSummary summary,
       bool opponent}) {
-    var ref = Firestore.instance.collection(gamesTable).document(gameUid);
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.gamesTable).document(gameUid);
     analytics.logEvent(name: "UpdateGamePlayer");
     return ref.updateData({"players." + playerUid: summary.toMap()});
   }
 
   @override
   Future<String> addTeam({Team team, Season season}) async {
-    var ref = Firestore.instance.collection(teamsTable).document();
-    var seasonRef = Firestore.instance.collection(seasonsTable).document();
+    var ref = Firestore.instance.collection(SQLDBRaw.teamsTable).document();
+    var seasonRef =
+        Firestore.instance.collection(SQLDBRaw.seasonsTable).document();
 
     team = team.rebuild((b) => b..users[userUid] = TeamUser());
     var map = team
@@ -113,7 +109,8 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addSeason({String teamUid, Season season}) async {
-    var seasonRef = Firestore.instance.collection(seasonsTable).document();
+    var seasonRef =
+        Firestore.instance.collection(SQLDBRaw.seasonsTable).document();
 
     var seasonMap = season
         .rebuild((b) => b
@@ -127,7 +124,8 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addUser({User user}) async {
-    var userRef = Firestore.instance.collection(usersTable).document(user.uid);
+    var userRef =
+        Firestore.instance.collection(SQLDBRaw.usersTable).document(user.uid);
     var data = await userRef.get();
 
     if (!data.exists) {
@@ -139,7 +137,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<void> addSeasonPlayer({String seasonUid, String playerUid}) {
-    var ref = Firestore.instance.collection(seasonsTable).document(seasonUid);
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.seasonsTable)
+        .document(seasonUid);
     analytics.logEvent(name: "AddSeasonPlayer");
     return ref.updateData({
       "playerUids." + playerUid: PlayerSeasonSummary().toMap(),
@@ -149,7 +149,10 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> deleteGame({String gameUid}) {
     analytics.logEvent(name: "DeleteGame");
-    return Firestore.instance.collection(gamesTable).document(gameUid).delete();
+    return Firestore.instance
+        .collection(SQLDBRaw.gamesTable)
+        .document(gameUid)
+        .delete();
   }
 
   @override
@@ -157,7 +160,7 @@ class FirestoreDatabase extends BasketballDatabase {
     print("Deleting event $gameEventUid");
     analytics.logEvent(name: "DeleteGameEvent");
     return Firestore.instance
-        .collection(gameEventsTable)
+        .collection(SQLDBRaw.gameEventsTable)
         .document(gameEventUid)
         .delete();
   }
@@ -165,7 +168,8 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> deleteGamePlayer(
       {String gameUid, String playerUid, bool opponent}) {
-    var ref = Firestore.instance.collection(gamesTable).document(gameUid);
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.gamesTable).document(gameUid);
     analytics.logEvent(name: "DeleteGamePlayer");
     return ref.updateData({
       (opponent ? "opponents." : "players.") + playerUid: FieldValue.delete()
@@ -175,19 +179,25 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<void> deleteTeam({String teamUid}) {
     analytics.logEvent(name: "DeleteTeam");
-    return Firestore.instance.collection(teamsTable).document(teamUid).delete();
+    return Firestore.instance
+        .collection(SQLDBRaw.teamsTable)
+        .document(teamUid)
+        .delete();
   }
 
   @override
   Future<void> deleteSeasonPlayer({String seasonUid, String playerUid}) {
-    var ref = Firestore.instance.collection(seasonsTable).document(seasonUid);
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.seasonsTable)
+        .document(seasonUid);
     analytics.logEvent(name: "DeleteSeasonPlayer");
     return ref.updateData({"playerUids." + playerUid: FieldValue.delete()});
   }
 
   @override
   Stream<Game> getGame({String gameUid}) async* {
-    var ref = Firestore.instance.collection(gamesTable).document(gameUid);
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.gamesTable).document(gameUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Game.fromMap(_addUid(doc.documentID, doc.data));
@@ -205,7 +215,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<Player> getPlayer({String playerUid}) async* {
-    var ref = Firestore.instance.collection(playersTable).document(playerUid);
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.playersTable)
+        .document(playerUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Player.fromMap(_addUid(doc.documentID, doc.data));
@@ -215,6 +227,26 @@ class FirestoreDatabase extends BasketballDatabase {
     await for (var snap in ref.snapshots()) {
       if (snap.exists) {
         yield Player.fromMap(_addUid(snap.documentID, snap.data));
+      } else {
+        yield null;
+      }
+    }
+  }
+
+  @override
+  Stream<Invite> getInvite({String inviteUid}) async* {
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.invitesTable)
+        .document(inviteUid);
+    var doc = await ref.get();
+    if (doc.exists) {
+      yield InviteFactory.makeInviteFromJSON(doc.documentID, doc.data);
+    } else {
+      yield null;
+    }
+    await for (var snap in ref.snapshots()) {
+      if (snap.exists) {
+        yield InviteFactory.makeInviteFromJSON(snap.documentID, snap.data);
       } else {
         yield null;
       }
@@ -237,9 +269,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<BuiltList<Team>> getAllTeams() async* {
-    Query q = Firestore.instance
-        .collection(teamsTable)
-        .where("$usersField.$userUid.$enabledField", isEqualTo: true);
+    Query q = Firestore.instance.collection(SQLDBRaw.teamsTable).where(
+        "${SQLDBRaw.usersField}.$userUid.${SQLDBRaw.enabledField}",
+        isEqualTo: true);
     QuerySnapshot snap = await q.getDocuments();
     print(snap.documents);
     yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>
@@ -252,17 +284,33 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
+  Stream<BuiltList<Invite>> getAllInvites(String email) async* {
+    Query q = Firestore.instance
+        .collection(SQLDBRaw.invitesTable)
+        .where("${SQLDBRaw.emailField}", isEqualTo: email);
+    QuerySnapshot snap = await q.getDocuments();
+    print(snap.documents);
+    yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>
+        InviteFactory.makeInviteFromJSON(snap.documentID, snap.data)));
+
+    await for (QuerySnapshot snap in q.snapshots()) {
+      yield BuiltList.from(snap.documents.map((DocumentSnapshot snap) =>
+          InviteFactory.makeInviteFromJSON(snap.documentID, snap.data)));
+    }
+  }
+
+  @override
   Future<void> updateGame({Game game}) async {
     if (game.runningFrom == null) {
       // Delete this field.
       await Firestore.instance
-          .collection(gamesTable)
+          .collection(SQLDBRaw.gamesTable)
           .document(game.uid)
           .updateData({"runningFrom": FieldValue.delete()});
     }
     analytics.logEvent(name: "UpdateGame");
     return Firestore.instance
-        .collection(gamesTable)
+        .collection(SQLDBRaw.gamesTable)
         .document(game.uid)
         .updateData(game.toMap());
   }
@@ -271,7 +319,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> updateTeam({Team team}) {
     analytics.logEvent(name: "UpdateTeam");
     return Firestore.instance
-        .collection(teamsTable)
+        .collection(SQLDBRaw.teamsTable)
         .document(team.uid)
         .updateData(team.toMap());
   }
@@ -280,7 +328,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> updateUser({User user}) async {
     analytics.logEvent(name: "UpdateUser");
     return Firestore.instance
-        .collection(usersTable)
+        .collection(SQLDBRaw.usersTable)
         .document(user.uid)
         .updateData(user.toMap());
   }
@@ -289,7 +337,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> updatePlayer({Player player}) {
     analytics.logEvent(name: "UpdatePlayer");
     return Firestore.instance
-        .collection(playersTable)
+        .collection(SQLDBRaw.playersTable)
         .document(player.uid)
         .updateData(player.toMap());
   }
@@ -298,7 +346,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> updateSeason({Season season}) {
     analytics.logEvent(name: "UpdateSeason");
     return Firestore.instance
-        .collection(seasonsTable)
+        .collection(SQLDBRaw.seasonsTable)
         .document(season.uid)
         .updateData(season.toMap());
   }
@@ -306,7 +354,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Stream<BuiltList<Game>> getSeasonGames({String seasonUid}) async* {
     Query q = Firestore.instance
-        .collection(gamesTable)
+        .collection(SQLDBRaw.gamesTable)
         .where("seasonUid", isEqualTo: seasonUid);
     QuerySnapshot snap = await q.getDocuments();
     yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
@@ -324,7 +372,7 @@ class FirestoreDatabase extends BasketballDatabase {
     //Team t = Team.fromMap(tq.data);
 
     Query q = Firestore.instance
-        .collection(seasonsTable)
+        .collection(SQLDBRaw.seasonsTable)
         .where("teamUid", isEqualTo: teamUid);
     QuerySnapshot snap = await q.getDocuments();
     yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) {
@@ -341,7 +389,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addPlayer({Player player}) async {
-    var ref = Firestore.instance.collection(playersTable).document();
+    var ref = Firestore.instance.collection(SQLDBRaw.playersTable).document();
     var p = player.rebuild((b) => b..uid = ref.documentID);
     await ref.setData(p.toMap());
     analytics.logEvent(name: "AddPlayer");
@@ -350,7 +398,8 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<Team> getTeam({String teamUid}) async* {
-    var ref = Firestore.instance.collection(teamsTable).document(teamUid);
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.teamsTable).document(teamUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Team.fromMap(_fixTeamSnapshot(_addUid(doc.documentID, doc.data)));
@@ -369,7 +418,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<Season> getSeason({String seasonUid}) async* {
-    var ref = Firestore.instance.collection(seasonsTable).document(seasonUid);
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.seasonsTable)
+        .document(seasonUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield Season.fromMap(_addUid(doc.documentID, doc.data));
@@ -387,7 +438,8 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<User> getUser({String userUid}) async* {
-    var ref = Firestore.instance.collection(usersTable).document(userUid);
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.usersTable).document(userUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield User.fromMap(doc.data);
@@ -407,7 +459,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> deletePlayer({String playerUid}) {
     analytics.logEvent(name: "DeletePlayer");
     return Firestore.instance
-        .collection(playersTable)
+        .collection(SQLDBRaw.playersTable)
         .document(playerUid)
         .delete();
   }
@@ -416,7 +468,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> deleteSeason({String seasonUid}) {
     analytics.logEvent(name: "DeleteSeason");
     return Firestore.instance
-        .collection(seasonsTable)
+        .collection(SQLDBRaw.seasonsTable)
         .document(seasonUid)
         .delete();
   }
@@ -424,7 +476,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Stream<BuiltList<GameEvent>> getGameEvents({String gameUid}) async* {
     Query q = Firestore.instance
-        .collection(gameEventsTable)
+        .collection(SQLDBRaw.gameEventsTable)
         .where("gameUid", isEqualTo: gameUid)
         .orderBy("timestamp");
     QuerySnapshot snap = await q.getDocuments();
@@ -449,7 +501,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Stream<BuiltList<Game>> getGamesForPlayer({String playerUid}) async* {
     Query q = Firestore.instance
-        .collection(gamesTable)
+        .collection(SQLDBRaw.gamesTable)
         .where("players." + playerUid + ".playing", isEqualTo: true);
     QuerySnapshot snap = await q.getDocuments();
     yield BuiltList.of(snap.documents.map((DocumentSnapshot snap) =>
@@ -462,7 +514,7 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addMedia({MediaInfo media}) async {
-    var ref = Firestore.instance.collection(mediaTable).document();
+    var ref = Firestore.instance.collection(SQLDBRaw.mediaTable).document();
     var p = media.rebuild((b) => b..uid = ref.documentID);
     var data = p.toMap();
     data["uploadTime"] = FieldValue.serverTimestamp();
@@ -474,15 +526,24 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> deleteMedia({String mediaInfoUid}) {
     analytics.logEvent(name: "DeleteMedia");
     return Firestore.instance
-        .collection(mediaTable)
+        .collection(SQLDBRaw.mediaTable)
         .document(mediaInfoUid)
+        .delete();
+  }
+
+  @override
+  Future<void> deleteInvite({String inviteUid}) {
+    analytics.logEvent(name: "DeleteInvite");
+    return Firestore.instance
+        .collection(SQLDBRaw.mediaTable)
+        .document(inviteUid)
         .delete();
   }
 
   @override
   Stream<BuiltList<MediaInfo>> getMediaForGame({String gameUid}) async* {
     Query q = Firestore.instance
-        .collection(mediaTable)
+        .collection(SQLDBRaw.mediaTable)
         .where("gameUid", isEqualTo: gameUid);
     QuerySnapshot snap = await q.getDocuments();
     snap.documents.forEach((e) {
@@ -498,7 +559,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Stream<MediaInfo> getMediaInfo({String mediaInfoUid}) async* {
-    var ref = Firestore.instance.collection(mediaTable).document(mediaInfoUid);
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.mediaTable)
+        .document(mediaInfoUid);
     var doc = await ref.get();
     if (doc.exists) {
       yield MediaInfo.fromMap(doc.data);
@@ -516,7 +579,9 @@ class FirestoreDatabase extends BasketballDatabase {
 
   Future<void> updateMediaInfoThumbnail(
       {MediaInfo mediaInfo, String thumbnailUrl}) async {
-    var ref = Firestore.instance.collection(mediaTable).document(mediaInfo.uid);
+    var ref = Firestore.instance
+        .collection(SQLDBRaw.mediaTable)
+        .document(mediaInfo.uid);
     await ref.updateData({thumbnailUrl: thumbnailUrl});
   }
 }

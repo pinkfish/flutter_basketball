@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/data/invites/invite.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/sqldbraw.dart';
 import 'package:built_collection/built_collection.dart';
@@ -107,7 +108,6 @@ class SqlfliteDatabase extends BasketballDatabase {
   @override
   Future<void> deleteGame({String gameUid}) async {
     Database db = await _sqldbRaw.getDatabase();
-    Game g = await _getGame(gameUid: gameUid);
     await db
         .delete(SQLDBRaw.gamesTable, where: "uid = ?", whereArgs: [gameUid]);
     _changeTableNotification(SQLDBRaw.gamesTable, uid: gameUid);
@@ -135,6 +135,15 @@ class SqlfliteDatabase extends BasketballDatabase {
       t = t.rebuild((b) => b..players.remove(playerUid));
     }
     return updateGame(game: t);
+  }
+
+  @override
+  Future<void> deleteInvite({String inviteUid}) async {
+    Database db = await _sqldbRaw.getDatabase();
+    await db.delete(SQLDBRaw.invitesTable,
+        where: "uid = ?", whereArgs: [inviteUid]);
+    _changeTableNotification(SQLDBRaw.gamesTable, uid: inviteUid);
+    return null;
   }
 
   @override
@@ -654,6 +663,12 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
+  Stream<Invite> getInvite({String inviteUid}) {
+    // TODO: implement getMediaForGame
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> updateMediaInfoThumbnail(
       {MediaInfo mediaInfo, String thumbnailUrl}) {
     // TODO: implement updateMediaInfoThumbnail
@@ -676,6 +691,13 @@ class SqlfliteDatabase extends BasketballDatabase {
     _changers[table].subscribeStram(ctl.sink);
     return ctl;
   }
+
+  @override
+  Stream<BuiltList<Invite>> getAllInvites(String email) async* {
+    yield BuiltList<Invite>();
+  }
+
+  String get userUid => "local";
 }
 
 ///
@@ -686,9 +708,6 @@ class _TableChange extends EventArgs {
   final String secondaryUid;
 
   _TableChange({this.uid, this.secondaryUid});
-
-  @override
-  List<Object> get props => [uid, secondaryUid];
 
   @override
   String toString() {

@@ -4,6 +4,8 @@
 
 library serializers;
 
+import 'package:basketballdata/data/leagueortournament/leagueortournamentdivision.dart';
+import 'package:basketballdata/data/leagueortournament/leagueortournamentseason.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
@@ -11,20 +13,27 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'ant/broadcast.dart';
 import 'ant/broadcaststatus.dart';
 import 'ant/broadcasttype.dart';
-import 'game.dart';
-import 'gameevent.dart';
-import 'gameeventtype.dart';
-import 'gameperiod.dart';
-import 'gamesummary.dart';
-import 'mediainfo.dart';
-import 'mediatype.dart';
-import 'player.dart';
-import 'playergamesummary.dart';
-import 'playerseasonsummary.dart';
-import 'playersummarydata.dart';
-import 'season.dart';
-import 'seasonsummary.dart';
-import 'team.dart';
+import 'game/game.dart';
+import 'game/gameevent.dart';
+import 'game/gameeventtype.dart';
+import 'game/gameofficalresults.dart';
+import 'game/gameperiod.dart';
+import 'game/gameplace.dart';
+import 'game/gameshareddata.dart';
+import 'game/gamesummary.dart';
+import 'invites/invitetoteam.dart';
+import 'leagueortournament/leagueortournament.dart';
+import 'media/mediainfo.dart';
+import 'media/mediatype.dart';
+import 'player/player.dart';
+import 'player/playergamesummary.dart';
+import 'player/playerseasonsummary.dart';
+import 'player/playersummarydata.dart';
+import 'season/season.dart';
+import 'season/seasonsummary.dart';
+import 'team/opponent.dart';
+import 'team/team.dart';
+import 'team/winrecord.dart';
 import 'teamuser.dart';
 import 'timestampserializer.dart';
 import 'uploaddata.dart';
@@ -41,11 +50,19 @@ part 'serializers.g.dart';
   GameEvent,
   GameEventType,
   GameEventLocation,
+  GameOfficalResults,
   GamePeriod,
+  GamePlace,
+  GameSharedData,
   GameSummary,
+  InviteToTeam,
+  LeagueOrTournament,
+  LeagueOrTournamentDivison,
+  LeagueOrTournamentSeason,
   MadeAttempt,
   MediaInfo,
   MediaType,
+  Opponent,
   PlayerGameSummary,
   PlayerSummaryData,
   PlayerSeasonSummary,
@@ -56,6 +73,7 @@ part 'serializers.g.dart';
   TeamUser,
   UploadData,
   User,
+  WinRecord,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(TimestampSerializer())
