@@ -248,7 +248,6 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                               SpeedDialChild(
                                 child: Icon(Icons.edit),
                                 label: Messages.of(context).editTeamTooltip,
-                                backgroundColor: Colors.blue,
                                 labelStyle: Theme.of(context)
                                     .textTheme
                                     .headline6
@@ -266,6 +265,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                               ),
                               SpeedDialChild(
                                 child: Icon(MdiIcons.basketball),
+                                backgroundColor: Colors.orange,
                                 label: Messages.of(context).addGameTooltip,
                                 labelStyle: Theme.of(context)
                                     .textTheme
