@@ -21,24 +21,18 @@ class _InputDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: labelText,
-        ),
-        baseStyle: valueStyle,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(valueText, style: valueStyle),
-            Icon(
-              Icons.arrow_drop_down,
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Colors.grey.shade700
-                  : Colors.white70,
-            ),
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(valueText, style: valueStyle),
+          Icon(
+            Icons.arrow_drop_down,
+            color: Theme.of(context).brightness == Brightness.light
+                ? Colors.grey.shade700
+                : Colors.white70,
+          ),
+        ],
       ),
     );
   }
@@ -84,33 +78,44 @@ class DateTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.headline5;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Expanded(
-          flex: 4,
-          child: _InputDropdown(
-            labelText: labelText,
-            valueText: DateFormat.yMMMd().format(selectedDate),
-            valueStyle: valueStyle,
-            onPressed: () {
-              _selectDate(context);
-            },
-          ),
+    final TextStyle valueStyle = Theme.of(context).textTheme.headline6;
+    return InputDecorator(
+      decoration: InputDecoration(
+        labelText: labelText,
+        isDense: true,
+        border: InputBorder.none,
+        labelStyle: TextStyle(height: 2.0),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: 5.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Expanded(
+              flex: 4,
+              child: _InputDropdown(
+                labelText: labelText,
+                valueText: DateFormat.yMMMd().format(selectedDate),
+                valueStyle: valueStyle,
+                onPressed: () {
+                  _selectDate(context);
+                },
+              ),
+            ),
+            const SizedBox(width: 12.0),
+            Expanded(
+              flex: 3,
+              child: _InputDropdown(
+                valueText: selectedTime.format(context),
+                valueStyle: valueStyle,
+                onPressed: () {
+                  _selectTime(context);
+                },
+              ),
+            ),
+          ],
         ),
-        const SizedBox(width: 12.0),
-        Expanded(
-          flex: 3,
-          child: _InputDropdown(
-            valueText: selectedTime.format(context),
-            valueStyle: valueStyle,
-            onPressed: () {
-              _selectTime(context);
-            },
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

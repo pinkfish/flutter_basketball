@@ -87,7 +87,8 @@ class MyApp extends StatelessWidget {
             const Locale('en', 'UK'),
             const Locale('en', 'AU'),
           ],
-          onGenerateTitle: (BuildContext context) => Messages.of(context).title,
+          onGenerateTitle: (BuildContext context) =>
+              Messages.of(context).titleOfApp,
           theme: ThemeData(
             brightness: Brightness.dark,
             primarySwatch: Colors.green,

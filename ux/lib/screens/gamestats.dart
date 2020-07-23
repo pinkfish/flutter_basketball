@@ -722,7 +722,7 @@ class _GameStateSection extends StatelessWidget {
                                         teamState is SingleTeamDeleted) {
                                       return Text(Messages
                                           .of(context)
-                                          .loading,
+                                          .loadingText,
                                           overflow: TextOverflow.fade,
                                           style: style);
                                     }

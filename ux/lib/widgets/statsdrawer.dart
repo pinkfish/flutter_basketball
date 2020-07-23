@@ -57,7 +57,7 @@ class StatsDrawer extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).backgroundColor,
                 ),
-                child: Text(Messages.of(context).title),
+                child: Text(Messages.of(context).titleOfApp),
               );
             },
           ),
@@ -122,7 +122,7 @@ class StatsDrawer extends StatelessWidget {
           AboutListTile(
             icon: Icon(Icons.info),
             applicationIcon: FlutterLogo(),
-            applicationName: Messages.of(context).title,
+            applicationName: Messages.of(context).titleOfApp,
             applicationVersion: 'July 2020',
             applicationLegalese: '© 2020 The Whelksoft Authors',
             aboutBoxChildren: aboutBoxChildren,

@@ -18,7 +18,7 @@ class EditPlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Messages.of(context).title),
+        title: Text(Messages.of(context).editPlayerTitle),
       ),
       body: BlocProvider(
         create: (BuildContext context) => SinglePlayerBloc(

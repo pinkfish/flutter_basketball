@@ -16,7 +16,7 @@ class AddPlayerGameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Messages.of(context).title),
+        title: Text(Messages.of(context).addPlayerTooltip),
       ),
       body: BlocProvider(
         create: (BuildContext context) => AddPlayerBloc(

@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
 
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(Messages.of(context).title),
+        title: new Text(Messages.of(context).titleOfApp),
       ),
       body: BlocListener(
         bloc: BlocProvider.of<TeamsBloc>(context),
@@ -51,7 +51,7 @@ class SplashScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new CircularProgressIndicator(),
-                    new Text(Messages.of(context).loading),
+                    new Text(Messages.of(context).loadingText),
                   ],
                 ),
               )

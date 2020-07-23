@@ -27,15 +27,23 @@ class Messages {
 
   final String locale;
 
-  String get title => Intl.message("Basketball stats",
+  String get titleOfApp => Intl.message("Basketball stats",
       desc: "Title of the app", locale: locale);
-  String get loading => Intl.message("Loading...",
+  String get loadingText => Intl.message("Loading...",
       desc: "Message to show while loading data", locale: locale);
   String get addTeamTooltip => Intl.message("Add Team",
       desc: "Message to on the tooltip to add a team", locale: locale);
 
   String get addUserButton => Intl.message("Add User",
       desc: "Button to add a user to a team", locale: locale);
+
+  String get addSeasonTooltip => Intl.message("Add Season", locale: locale);
+
+  String get addSeasonButton => Intl.message("SEASON", locale: locale);
+
+  String get editTeamTooltip => Intl.message("Edit Team", locale: locale);
+
+  String get editPlayerTitle => Intl.message("Edit Player", locale: locale);
 
   String get usersTitle => Intl.message("Users",
       desc: "Title of the users section in the team details", locale: locale);

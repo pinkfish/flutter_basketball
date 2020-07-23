@@ -68,7 +68,7 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
         child: Scaffold(
           key: _scaffoldKey,
           appBar: new AppBar(
-            title: new Text(Messages.of(context).title),
+            title: new Text(Messages.of(context).titleOfApp),
             actions: <Widget>[
               new FlatButton(
                 onPressed: () {

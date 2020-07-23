@@ -6,6 +6,7 @@ import 'package:basketballstats/widgets/player/playertile.dart';
 import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:tuple/tuple.dart';
 
@@ -41,7 +42,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     if (!state.loadedSeasons) {
       inner = Center(
         child: Text(
-          Messages.of(context).loading,
+          Messages.of(context).loadingText,
           textScaleFactor: 2.0,
         ),
       );
@@ -87,18 +88,6 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             state.team.name,
             textScaleFactor: 1.5,
           ),
-          trailing: IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () =>
-                Navigator.pushNamed(context, "/Team/Edit/" + widget.teamUid),
-          ),
-        ),
-        SizedBox(height: 5.0),
-        Text(
-          Messages.of(context).seasons,
-          style: Theme.of(context).textTheme.subtitle1,
-          textScaleFactor: 1.5,
-          textAlign: TextAlign.start,
         ),
         SizedBox(height: 5.0),
         inner,
@@ -167,7 +156,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
               builder: (BuildContext context, SingleTeamBlocState state) {
                 if (state is SingleTeamUninitialized ||
                     state is SingleTeamDeleted) {
-                  return Text(Messages.of(context).title);
+                  return Text(Messages.of(context).titleOfApp);
                 }
                 return Text(state.team.name);
               },
@@ -208,7 +197,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                     duration: Duration(milliseconds: 500),
                     child: _currentIndex == 0
                         ? _innerTeamData(state)
-                        : _innerPlayerData(state),
+                        : _currentIndex == 1
+                            ? _innerStatsData(state)
+                            : _innerPlayerData(state),
                   ),
                 ),
               );
@@ -222,6 +213,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             items: [
               BottomNavigationBarItem(
                 icon: Icon(MdiIcons.tshirtCrew),
+                title: Text(Messages.of(context).seasons),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(MdiIcons.chartLine),
                 title: Text(Messages.of(context).stats),
               ),
               BottomNavigationBarItem(
@@ -238,20 +233,49 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 transitionBuilder: (Widget child, Animation<double> animation) {
                   return ScaleTransition(child: child, scale: animation);
                 },
-                child: FloatingActionButton.extended(
-                  onPressed: _currentIndex == 0
-                      ? () =>
-                          _addGame(context, state.team.currentSeasonUid, state)
-                      : () => _addPlayer(
-                          context, BlocProvider.of<SingleTeamBloc>(context)),
-                  tooltip: _currentIndex == 0
-                      ? Messages.of(context).addGameTooltip
-                      : Messages.of(context).addPlayerTooltip,
-                  icon: Icon(Icons.add),
-                  label: _currentIndex == 0
-                      ? Text(Messages.of(context).addGameButton)
-                      : Text(Messages.of(context).addPlayerButton),
-                ),
+                child: _currentIndex == 2
+                    ? FloatingActionButton.extended(
+                        onPressed: () => _addPlayer(
+                            context, BlocProvider.of<SingleTeamBloc>(context)),
+                        tooltip: Messages.of(context).addPlayerTooltip,
+                        icon: Icon(Icons.add),
+                        label: Text(Messages.of(context).addPlayerButton),
+                      )
+                    : _currentIndex == 0
+                        ? SpeedDial(
+                            animatedIcon: AnimatedIcons.menu_close,
+                            children: [
+                              SpeedDialChild(
+                                child: Icon(Icons.edit),
+                                label: Messages.of(context).editTeamTooltip,
+                                backgroundColor: Colors.blue,
+                                labelStyle: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    .copyWith(color: Colors.black),
+                                onTap: () => _addSeason(context, state),
+                              ),
+                              SpeedDialChild(
+                                child: Icon(Icons.add),
+                                label: Messages.of(context).addSeasonTooltip,
+                                labelStyle: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    .copyWith(color: Colors.black),
+                                onTap: () => _addSeason(context, state),
+                              ),
+                              SpeedDialChild(
+                                child: Icon(MdiIcons.basketball),
+                                label: Messages.of(context).addGameTooltip,
+                                labelStyle: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    .copyWith(color: Colors.black),
+                                onTap: () => _addGame(context, state),
+                              ),
+                            ],
+                          )
+                        : SizedBox(height: 0),
               );
             },
           ),
@@ -260,32 +284,16 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     );
   }
 
-  void _addGame(
-      BuildContext context, String seasonUid, SingleTeamBlocState state) {
-    Season s = state.seasons
-        .firstWhere((Season s) => s.uid == seasonUid, orElse: () => null);
-    if (s.playerUids.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(Messages.of(context).noPlayers),
-          content: Text(
-            Messages.of(context).noPlayersForSeasonDialog,
-            softWrap: true,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
-      );
-    } else {
-      Navigator.pushNamed(context, "/Game/Add/" + seasonUid);
-    }
+  void _addSeason(BuildContext context, SingleTeamBlocState state) {
+    Navigator.pushNamed(context, "/Season/Add/" + state.team.uid);
+  }
+
+  void _addGame(BuildContext context, SingleTeamBlocState state) {
+    Navigator.pushNamed(context, "/Game/Add/" + state.team.uid);
+  }
+
+  Widget _innerStatsData(SingleTeamBlocState state) {
+    return SizedBox(height: 0);
   }
 
   void _addPlayer(BuildContext context, SingleTeamBloc bloc) {

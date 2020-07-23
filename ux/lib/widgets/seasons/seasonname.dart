@@ -51,7 +51,7 @@ class SeasonName extends StatelessWidget {
               }
               if (state is SingleSeasonUninitialized) {
                 return Text(
-                  Messages.of(context).loading,
+                  Messages.of(context).loadingText,
                   textScaleFactor: textScaleFactor,
                   overflow: TextOverflow.fade,
                   softWrap: false,

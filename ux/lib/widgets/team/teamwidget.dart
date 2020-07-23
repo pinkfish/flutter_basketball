@@ -75,7 +75,7 @@ class _TeamSummary extends StatelessWidget {
         builder: (BuildContext context, SingleTeamBlocState state) {
           if (state is SingleTeamLoaded && !state.loadedSeasons ||
               state is SingleTeamUninitialized) {
-            return Text(Messages.of(context).loading,
+            return Text(Messages.of(context).loadingText,
                 style: Theme.of(context).textTheme.subtitle1);
           }
           return Column(

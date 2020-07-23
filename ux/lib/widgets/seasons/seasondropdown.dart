@@ -32,7 +32,7 @@ class SeasonDropDown extends StatelessWidget {
             items: [
               DropdownMenuItem(
                 value: value,
-                child: Text(Messages.of(context).loading),
+                child: Text(Messages.of(context).loadingText),
               ),
             ],
             onChanged: onChanged,

@@ -28,7 +28,7 @@ class GameMediaList extends StatelessWidget {
         Widget stuff;
 
         if (state is SingleGameUninitialized || !state.loadedMedia) {
-          stuff = Text(Messages.of(context).loading);
+          stuff = Text(Messages.of(context).loadingText);
         } else if (state is SingleGameDeleted) {
           stuff = Text(Messages.of(context).unknown);
         } else {

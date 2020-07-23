@@ -92,7 +92,12 @@ abstract class Game implements Built<Game, GameBuilder> {
     ..opponentName = "unknown"
     ..seasonUid = ""
     ..currentPeriod = GamePeriod.NotStarted
-    ..gameTime = Duration(milliseconds: 0);
+    ..gameTime = Duration(milliseconds: 0)
+    ..arriveTime = 0
+    ..notes = ""
+    ..trackAttendance = false
+    ..uniform = ""
+    ..seriesId = "";
 
   Game._();
   factory Game([updates(GameBuilder b)]) = _$Game;

@@ -55,7 +55,7 @@ class UserTile extends StatelessWidget {
                 return ListTile(
                   leading: Icon(Icons.verified_user),
                   title: Text(
-                    Messages.of(context).loading,
+                    Messages.of(context).loadingText,
                     overflow: TextOverflow.fade,
                     softWrap: false,
                     textAlign: TextAlign.start,

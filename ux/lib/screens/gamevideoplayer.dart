@@ -74,7 +74,7 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
     return Scaffold(
       appBar: AppBar(
         title: widget.state.game == null
-            ? Text(Messages.of(context).title)
+            ? Text(Messages.of(context).titleOfApp)
             : Text("vs " + widget.state.game.opponentName,
                 style: Theme.of(context).textTheme.headline4),
       ),

@@ -60,7 +60,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
         if (state is SinglePlayerUninitialized) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(Messages.of(context).title),
+              title: Text(Messages.of(context).titleOfApp),
             ),
             body: LoadingWidget(),
           );
@@ -68,7 +68,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
         if (state is SinglePlayerDeleted) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(Messages.of(context).title),
+              title: Text(Messages.of(context).titleOfApp),
             ),
             body: DeletedWidget(),
           );
@@ -76,7 +76,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(Messages.of(context).title),
+            title: Text(Messages.of(context).titleOfApp),
           ),
           body: Container(
             child: OrientationBuilder(

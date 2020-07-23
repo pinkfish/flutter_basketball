@@ -21,45 +21,52 @@ class SeasonExpansionPanel extends ExpansionPanel {
   final bool loadGames;
   final bool isExpanded;
   final String currentSeason;
+  final Widget buttonBar;
 
   SeasonExpansionPanel(
       {@required this.season,
       this.onGameTapped,
       this.currentSeason,
+      this.buttonBar,
       this.loadGames = false,
       this.isExpanded = false,
       this.initiallyExpanded = false})
       : super(
           headerBuilder: (BuildContext context, bool expanded) {
-            return ListTile(
-              leading: Icon(MdiIcons.calendar),
-              title: season.uid == currentSeason
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
+            return Column(
+              children: [
+                ListTile(
+                  leading: Icon(MdiIcons.calendar),
+                  title: season.uid == currentSeason
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              season.name,
+                              textScaleFactor: 1.2,
+                              textAlign: TextAlign.start,
+                            ),
+                            Text(
+                              Messages.of(context).currentSeason,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        )
+                      : Text(
                           season.name,
                           textScaleFactor: 1.2,
-                          textAlign: TextAlign.start,
+                          textAlign: TextAlign.end,
                         ),
-                        Text(
-                          Messages.of(context).currentSeason,
-                          style: Theme.of(context)
-                              .textTheme
-                              .caption
-                              .copyWith(fontStyle: FontStyle.italic),
-                        ),
-                      ],
-                    )
-                  : Text(
-                      season.name,
-                      textScaleFactor: 1.2,
-                      textAlign: TextAlign.end,
-                    ),
-              subtitle: Text(
-                Messages.of(context)
-                    .winLoss(season.summary.wins, season.summary.losses, 0),
-              ),
+                  subtitle: Text(
+                    Messages.of(context)
+                        .winLoss(season.summary.wins, season.summary.losses, 0),
+                  ),
+                ),
+                buttonBar ?? SizedBox(height: 0),
+              ],
             );
           },
           isExpanded: isExpanded,
@@ -92,6 +99,13 @@ class SeasonExpansionPanel extends ExpansionPanel {
                       if (state is SingleSeasonUninitialized) {
                         return Center(
                           child: LoadingWidget(),
+                        );
+                      }
+
+                      if (!state.loadedGames) {
+                        return ListTile(
+                          leading: Icon(MdiIcons.loading),
+                          title: Text(Messages.of(context).loadingText),
                         );
                       }
 

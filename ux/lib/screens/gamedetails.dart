@@ -79,7 +79,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
     return Scaffold(
       appBar: AppBar(
         title: widget.state.game == null
-            ? Text(Messages.of(context).title)
+            ? Text(Messages.of(context).titleOfApp)
             : Text("vs " + widget.state.game.opponentName,
                 style: Theme.of(context).textTheme.headline4),
         actions: <Widget>[

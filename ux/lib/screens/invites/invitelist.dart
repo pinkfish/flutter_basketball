@@ -2,6 +2,7 @@ import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:basketballstats/widgets/invites/deleteinvitedialog.dart';
+import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
@@ -196,7 +197,8 @@ class InviteListScreenState extends State<InviteListScreen> {
               return SavingOverlay(
                 saving: state is SingleInviteSaving,
                 child: Column(
-                  children: _buildInviteList(state.invites),
+                  children:
+                  state is SingleInviteLoaded ? _buildInviteList(state.invites) : LoadingWidget(),
                 ),
               );
             },

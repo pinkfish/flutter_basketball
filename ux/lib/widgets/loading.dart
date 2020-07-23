@@ -19,13 +19,13 @@ class LoadingWidget extends StatelessWidget {
       showAppBar
           ? AppBar(
               title: Text(game == null
-                  ? Messages.of(context).loading
+                  ? Messages.of(context).loadingText
                   : "vs ${game.opponentName}"),
             )
           : SizedBox(
               height: 0,
             ),
-      Text(Messages.of(context).loading,
+      Text(Messages.of(context).loadingText,
           style: Theme.of(context).textTheme.headline4),
       CircularProgressIndicator(),
     ]);

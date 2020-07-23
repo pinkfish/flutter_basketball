@@ -33,7 +33,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
       if (!state.loadedGames) {
         inner = Center(
           child: Text(
-            Messages.of(context).loading,
+            Messages.of(context).loadingText,
             textScaleFactor: 2.0,
           ),
         );
@@ -119,7 +119,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
               builder: (BuildContext context, SingleSeasonBlocState state) {
                 if (state is SingleSeasonUninitialized ||
                     state is SingleSeasonDeleted) {
-                  return Text(Messages.of(context).title);
+                  return Text(Messages.of(context).titleOfApp);
                 }
                 return Text(state.season.name);
               },

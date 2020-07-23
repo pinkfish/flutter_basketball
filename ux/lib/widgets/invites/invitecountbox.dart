@@ -21,6 +21,9 @@ class InviteCountBox extends StatelessWidget {
         builder: (BuildContext context) => BlocBuilder(
           bloc: BlocProvider.of<InvitesBloc>(context),
           builder: (BuildContext context, InvitesBlocState state) {
+            if (state is InvitesBlocUninitialized) {
+              return SizedBox(height: 0, width: 0);
+            }
             if (state.invites.length > 0) {
               Widget card = new Card(
                 color: Colors.limeAccent,

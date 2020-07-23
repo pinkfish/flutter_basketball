@@ -6,6 +6,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/addgame.dart';
+import 'screens/addseason.dart';
 import 'screens/addteam.dart';
 import 'screens/editplayer.dart';
 import 'screens/gamedetails.dart';
@@ -54,7 +55,7 @@ class AppRouter {
     router.define("/Game/Add/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
-                AddGameScreen(seasonUid: vals["id"][0].toString())));
+                AddGameScreen(teamUid: vals["id"][0].toString())));
     router.define("/Team/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
@@ -63,6 +64,10 @@ class AppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 TeamEditScreen(teamUid: vals["id"][0].toString())));
+    router.define("/Season/Add/:teamUid",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                AddSeasonScreen(vals["teamUid"][0].toString())));
     router.define("/Game/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

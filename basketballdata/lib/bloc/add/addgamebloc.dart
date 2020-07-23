@@ -29,11 +29,9 @@ class AddGameEventCommit extends AddGameEvent {
 ///
 class AddGameBloc extends Bloc<AddGameEvent, AddItemState> {
   final BasketballDatabase db;
-  final String seasonUid;
   final String teamUid;
 
-  AddGameBloc(
-      {@required this.db, @required this.seasonUid, @required this.teamUid})
+  AddGameBloc({@required this.db, @required this.teamUid})
       : super(AddItemUninitialized());
 
   @override
@@ -44,7 +42,7 @@ class AddGameBloc extends Bloc<AddGameEvent, AddItemState> {
 
       try {
         String uid = await db.addGame(
-            game: event.newGame.rebuild((b) => b.seasonUid = this.seasonUid));
+            game: event.newGame.rebuild((b) => b.teamUid = this.teamUid));
         yield AddItemDone(uid: uid);
       } catch (e, s) {
         Crashlytics.instance.recordError(e, s);

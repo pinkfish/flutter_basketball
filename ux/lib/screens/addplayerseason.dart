@@ -10,7 +10,7 @@ import 'package:tuple/tuple.dart';
 import '../messages.dart';
 
 ///
-/// Adds a player to the world.
+/// Adds a player to the season.
 ///
 class AddPlayerSeasonScreen extends StatelessWidget {
   final String defaultSeasonUid;
@@ -21,7 +21,7 @@ class AddPlayerSeasonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Messages.of(context).title),
+        title: Text(Messages.of(context).titleOfApp),
       ),
       body: BlocProvider(
         create: (BuildContext context) => AddPlayerBloc(

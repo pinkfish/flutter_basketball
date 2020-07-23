@@ -87,7 +87,7 @@ class _EditTeamFormState extends State<_EditTeamForm> {
         if (state is SingleTeamUninitialized) {
           return SavingOverlay(
             saving: true,
-            child: Text(Messages.of(context).loading),
+            child: Text(Messages.of(context).loadingText),
           );
         }
         return SavingOverlay(

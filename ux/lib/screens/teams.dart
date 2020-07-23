@@ -15,7 +15,7 @@ class TeamsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Messages.of(context).title),
+        title: Text(Messages.of(context).titleOfApp),
       ),
       drawer: StatsDrawer(),
       body: Center(
@@ -53,7 +53,7 @@ class TeamsScreen extends StatelessWidget {
                   bloc: BlocProvider.of<TeamsBloc>(context),
                   builder: (BuildContext context, TeamsBlocState state) {
                     if (state is TeamsBlocUninitialized) {
-                      return Text(Messages.of(context).loading);
+                      return Text(Messages.of(context).loadingText);
                     }
                     if (state is TeamsBlocLoaded) {
                       if (state.teams.isEmpty) {

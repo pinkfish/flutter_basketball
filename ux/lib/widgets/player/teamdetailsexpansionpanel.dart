@@ -143,10 +143,10 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                 bloc: teamBlocs[teamUid],
                 builder: (BuildContext context, SingleTeamBlocState state) {
                   if (state is SingleTeamUninitialized) {
-                    return Text(Messages.of(context).loading);
+                    return Text(Messages.of(context).loadingText);
                   }
                   if (state is SingleTeamDeleted) {
-                    return Text(Messages.of(context).loading);
+                    return Text(Messages.of(context).loadingText);
                   }
                   return ListTile(
                     title: Text(

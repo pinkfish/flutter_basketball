@@ -72,13 +72,13 @@ class PlayerTile extends StatelessWidget {
                 }
                 if (state is SinglePlayerUninitialized) {
                   if (compactDisplay) {
-                    return Text(Messages.of(context).loading);
+                    return Text(Messages.of(context).loadingText);
                   }
                   return Card(
                     color: color,
                     shape: shape,
                     child: ListTile(
-                      title: Text(Messages.of(context).loading,
+                      title: Text(Messages.of(context).loadingText,
                           style: Theme.of(context).textTheme.caption),
                       leading: Stack(
                         children: <Widget>[

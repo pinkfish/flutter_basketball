@@ -69,7 +69,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: new AppBar(
-        title: new Text(Messages.of(context).title),
+        title: new Text(Messages.of(context).titleOfApp),
       ),
       body: new SingleChildScrollView(
         controller: scrollController,
@@ -116,13 +116,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                             child: new CircleAvatar(
                               radius: width / 2,
                               child: new Text((state is LoginEmailNotValidated
-                                  ? state.userData.displayName
-                                  : state is LoginSignupSucceeded
-                                  ? state.userData.displayName
-                                  : null) ??
-                                  Messages
-                                      .of(context)
-                                      .unknown),
+                                      ? state.userData.displayName
+                                      : state is LoginSignupSucceeded
+                                          ? state.userData.displayName
+                                          : null) ??
+                                  Messages.of(context).unknown),
                             ),
                           ),
                         ],
@@ -135,23 +133,19 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         children: <Widget>[
                           new Text(messages.verifyexplanation(
                               (state is LoginEmailNotValidated
-                                  ? state.userData.email
-                                  : state is LoginSignupSucceeded
-                                  ? state.userData.email
-                                  : null) ??
-                                  Messages
-                                      .of(context)
-                                      .unknown)),
+                                      ? state.userData.email
+                                      : state is LoginSignupSucceeded
+                                          ? state.userData.email
+                                          : null) ??
+                                  Messages.of(context).unknown)),
                           new Container(
                             child: RaisedButton(
                                 child: new Text(messages.resendverifyButton),
-                                color: Theme
-                                    .of(context)
-                                    .primaryColor,
+                                color: Theme.of(context).primaryColor,
                                 textColor: Colors.white,
                                 onPressed: _handleSubmitted),
                             margin:
-                            new EdgeInsets.only(top: 20.0, bottom: 20.0),
+                                new EdgeInsets.only(top: 20.0, bottom: 20.0),
                           ),
                         ],
                       ),
@@ -161,16 +155,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                       children: <Widget>[
                         new FlatButton(
                           child: new Text(messages.createaccountButton),
-                          textColor: Theme
-                              .of(context)
-                              .accentColor,
+                          textColor: Theme.of(context).accentColor,
                           onPressed: () => _onSignup(context),
                         ),
                         new FlatButton(
                           child: new Text(messages.logoutButton),
-                          textColor: Theme
-                              .of(context)
-                              .accentColor,
+                          textColor: Theme.of(context).accentColor,
                           onPressed: () => _onLogout(context),
                         ),
                       ],
@@ -179,9 +169,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                 ),
               );
             } else {
-              return Text(Messages
-                  .of(context)
-                  .loading);
+              return Text(Messages.of(context).loadingText);
             }
           },
         ),
