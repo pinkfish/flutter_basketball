@@ -2,28 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playerdropdown.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamseasonstats.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/flutter-ios.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter-ios.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/flutter.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/game.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/player/player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/playergamesummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/playergamesummary.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/playerseasonsummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/playerseasonsummary.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/season/season.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/season.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playermultiselect.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playermultiselect.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/startperiod.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/startperiod.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/Gemfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/android/fastlane/Pluginfile" beforeDir="false" afterPath="$PROJECT_DIR$/ux/android/fastlane/Pluginfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,29 +241,29 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1595644919667">
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1595644956207">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1595644919667" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1595644956207" />
     <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1595644919666">
+    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1595644956205">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1595644919666" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1595644956205" />
     <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1595644919665">
+    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1595644956203">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1595644919665" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1595644956203" />
     <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1595644919667">
+    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1595644956206">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1595644919667" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1595644956206" />
     <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
