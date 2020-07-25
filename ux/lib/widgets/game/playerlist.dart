@@ -8,9 +8,15 @@ import 'package:flutter/material.dart';
 ///
 class PlayerList extends StatefulWidget {
   final Orientation orientation;
+  final Season season;
   final Game game;
+  final Map<String, Player> additonalPlayers;
 
-  PlayerList({this.orientation, this.game});
+  PlayerList(
+      {this.orientation = Orientation.portrait,
+      @required this.game,
+      @required this.season,
+      this.additonalPlayers});
 
   @override
   State<StatefulWidget> createState() {
@@ -42,8 +48,24 @@ class _PlayerListState extends State<PlayerList> {
         double width = constraints.maxWidth / 8;
         double scale = widget.orientation == Orientation.portrait ? 1.0 : 1.2;
         List<String> sortedList = widget.game.players.keys.toList();
-        sortedList.sort((String u1, String u2) =>
-            _sortFunction(widget.game.players[u1], widget.game.players[u2]));
+        if (widget.season != null) {
+          List<String> seasonList = widget.season.playerUids.keys.toList();
+          // Only track things not in the current list and not ignored.
+          seasonList.removeWhere((e) =>
+              widget.game.ignoreFromSeason.contains(e) ||
+              sortedList.contains(e));
+          sortedList.addAll(seasonList);
+        }
+        if (widget.additonalPlayers != null) {
+          sortedList.addAll(widget.additonalPlayers.keys);
+        }
+        sortedList.sort((String u1, String u2) => _sortFunction(
+            widget.game.players[u1] ??
+                widget.season?.playerUids[u1] ??
+                widget.additonalPlayers[u1],
+            widget.game.players[u2] ??
+                widget.season?.playerUids[u2] ??
+                widget.additonalPlayers[u2]));
         return AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
           child: Column(

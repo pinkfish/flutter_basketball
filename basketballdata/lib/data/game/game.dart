@@ -2,10 +2,10 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import '../player/playergamesummary.dart';
 import '../serializers.dart';
 import 'gameperiod.dart';
 import 'gamesummary.dart';
+import 'playergamesummary.dart';
 
 part 'game.g.dart';
 
@@ -43,6 +43,9 @@ abstract class Game implements Built<Game, GameBuilder> {
 
   /// Summary for this specific player.
   BuiltMap<String, PlayerGameSummary> get players;
+
+  /// List of players to ignore from the season set.
+  BuiltList<String> get ignoreFromSeason;
 
   /// Summary for this specific opponent.
   BuiltMap<String, PlayerGameSummary> get opponents;

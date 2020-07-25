@@ -1,23 +1,17 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import '../player/playersummarydata.dart';
 import '../serializers.dart';
-import 'playersummarydata.dart';
 
 part 'playerseasonsummary.g.dart';
 
 ///
-/// This is the player summary for the game.  Tracks per period
-/// details about the game.
+/// This is the player summary for the season.
 ///
 abstract class PlayerSeasonSummary
     implements Built<PlayerSeasonSummary, PlayerSeasonSummaryBuilder> {
   PlayerSummaryData get summary;
-
-  bool get playing;
-
-  static void _initializeBuilder(PlayerSeasonSummaryBuilder b) =>
-      b..playing = true;
 
   PlayerSeasonSummary._();
 

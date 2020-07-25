@@ -37,6 +37,22 @@ class Messages {
   String get addUserButton => Intl.message("Add User",
       desc: "Button to add a user to a team", locale: locale);
 
+  String get addGuestPlayerButton => Intl.message("GUEST",
+      desc: "Button text for adding a guest player", locale: locale);
+
+  String get gameDetails => Intl.message("Details",
+      desc: "Description of the form flow that has the game details",
+      locale: locale);
+
+  String get allSeasons => Intl.message("All Seasons",
+      desc: "Tag on the dropdown to show all the seasons", locale: locale);
+
+  String get allPlayers => Intl.message("All Players",
+      desc: "Tag on the dropdown to show all the players", locale: locale);
+
+  String get addGameSummary => Intl.message("Summary",
+      desc: "Title for the page showing the add game summary", locale: locale);
+
   String get addSeasonTooltip => Intl.message("Add Season", locale: locale);
 
   String get addSeasonButton => Intl.message("SEASON", locale: locale);

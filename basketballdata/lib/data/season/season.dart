@@ -2,8 +2,8 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-import '../player/playerseasonsummary.dart';
 import '../serializers.dart';
+import 'playerseasonsummary.dart';
 import 'seasonsummary.dart';
 
 part 'season.g.dart';

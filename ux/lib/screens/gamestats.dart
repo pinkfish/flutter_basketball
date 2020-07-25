@@ -318,9 +318,7 @@ class GameStatsScreen extends StatelessWidget {
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
-          Messages
-              .of(context)
-              .assistButton,
+          Messages.of(context).assistButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.Assist),
       ),
@@ -376,13 +374,8 @@ class GameStatsScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  Messages
-                      .of(context)
-                      .subButton,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .button,
+                  Messages.of(context).subButton,
+                  style: Theme.of(context).textTheme.button,
                   textScaleFactor: 1.5,
                 ),
               ),
@@ -396,14 +389,9 @@ class GameStatsScreen extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text(
-                  Messages
-                      .of(context)
-                      .foulButton,
+                  Messages.of(context).foulButton,
                   textScaleFactor: 1.5,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .button,
+                  style: Theme.of(context).textTheme.button,
                 ),
               ),
               onPressed: () => _doBasicEvent(context, GameEventType.Foul),
@@ -444,109 +432,126 @@ class GameStatsScreen extends StatelessWidget {
     return Material(
       child: Padding(
         padding: EdgeInsets.only(top: 20.0, right: 5.0, left: 5.0),
-        child: BlocProvider(
-          create: (BuildContext context) => SingleTeamBloc(
-              teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
-          child: BlocProvider(
-            create: (BuildContext context) => SingleGameBloc(
-                gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
-            child: OrientationBuilder(
-              builder: (BuildContext context, Orientation orientation) =>
-                  AnimatedSwitcher(
-                    duration: Duration(milliseconds: 500),
-                    child: BlocConsumer(
-                      bloc: BlocProvider.of<SingleGameBloc>(context),
-                      listener: (BuildContext context, SingleGameState state) {
-                        if (!state.loadedGameEvents) {
-                          BlocProvider.of<SingleGameBloc>(context)
-                              .add(SingleGameLoadEvents());
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (BuildContext context) => SingleTeamBloc(
+                  teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
+            ),
+            BlocProvider(
+              create: (BuildContext context) => SingleGameBloc(
+                  gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
+            ),
+            BlocProvider(
+              create: (BuildContext context) => SingleSeasonBloc(
+                  seasonUid: seasonUid,
+                  db: BlocProvider.of<TeamsBloc>(context).db),
+            ),
+          ],
+          child: OrientationBuilder(
+            builder: (BuildContext context, Orientation orientation) =>
+                AnimatedSwitcher(
+              duration: Duration(milliseconds: 500),
+              child: BlocConsumer(
+                bloc: BlocProvider.of<SingleGameBloc>(context),
+                listener: (BuildContext context, SingleGameState state) {
+                  if (!state.loadedGameEvents) {
+                    BlocProvider.of<SingleGameBloc>(context)
+                        .add(SingleGameLoadEvents());
+                  }
+                  if (state is SingleGameChangeEvents) {
+                    // Only worry about added events.
+                    for (GameEvent ev in state.newEvents) {
+                      stack.add(_GameEventChange(
+                          BlocProvider.of<SingleGameBloc>(context), ev));
+                    }
+                  }
+                },
+                builder: (BuildContext context, SingleGameState state) {
+                  if (state is SingleGameUninitialized ||
+                      (state is SingleGameLoaded && !state.loadedGameEvents)) {
+                    return LoadingWidget(
+                      showAppBar: true,
+                      game: state.game,
+                    );
+                  }
+                  if ((state.loadedGameEvents &&
+                          (state.gameEvents.length == 0 ||
+                              state.gameEvents.last.type ==
+                                  GameEventType.PeriodEnd)) ||
+                      state.game?.currentPeriod == GamePeriod.NotStarted) {
+                    return BlocBuilder(
+                      bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                      builder: (BuildContext context,
+                          SingleSeasonBlocState seasonState) {
+                        if (seasonState is SingleSeasonUninitialized) {
+                          return LoadingWidget();
                         }
-                        if (state is SingleGameChangeEvents) {
-                          // Only worry about added events.
-                          for (GameEvent ev in state.newEvents) {
-                            stack.add(_GameEventChange(
-                                BlocProvider.of<SingleGameBloc>(context), ev));
-                          }
-                        }
+                        return StartPeriod(
+                          game: state.game,
+                          season: seasonState.season,
+                          orientation: orientation,
+                        );
                       },
-                      builder: (BuildContext context, SingleGameState state) {
-                        if (state is SingleGameUninitialized ||
-                            (state is SingleGameLoaded &&
-                                !state.loadedGameEvents)) {
-                          return LoadingWidget(
-                            showAppBar: true,
-                            game: state.game,
-                          );
-                        }
-                        if ((state.loadedGameEvents &&
-                            (state.gameEvents.length == 0 ||
-                                state.gameEvents.last.type ==
-                                    GameEventType.PeriodEnd)) ||
-                            state.game?.currentPeriod ==
-                                GamePeriod.NotStarted) {
-                          return StartPeriod(
-                            game: state.game,
-                            orientation: orientation,
-                          );
-                        }
-                        if (state.loadedGameEvents &&
-                            (state.gameEvents.length == 0 ||
-                                state.gameEvents.last.type ==
-                                    GameEventType.TimeoutStart)) {
-                          return TimeoutEnd(game: state.game);
-                        }
-                        if (orientation == Orientation.landscape) {
-                          return Row(
-                            children: <Widget>[
-                              LayoutBuilder(
-                                builder: (BuildContext context,
-                                    BoxConstraints boxConstraint) =>
-                                    _buildPointSection(
-                                        context, boxConstraint, orientation),
-                              ),
-                              Expanded(
-                                child: _GameStateSection(
-                                    stack, orientation, _selectPeriod),
-                              ),
-                              LayoutBuilder(
-                                builder: (BuildContext context,
-                                    BoxConstraints boxConstraint) =>
-                                    _buildDefenceSection(
-                                        context, boxConstraint, orientation),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return Column(
-                            children: <Widget>[
-                              LayoutBuilder(
-                                builder: (BuildContext context,
-                                    BoxConstraints boxConstraint) =>
-                                    _buildPointSection(
-                                        context, boxConstraint, orientation),
-                              ),
-                              Divider(),
-                              Expanded(
-                                child: _GameStateSection(
-                                    stack, orientation, _selectPeriod),
-                              ),
-                              Divider(),
-                              LayoutBuilder(
-                                builder: (BuildContext context,
-                                    BoxConstraints boxConstraint) =>
-                                    _buildDefenceSection(
-                                        context, boxConstraint, orientation),
-                              ),
-                              Builder(
-                                builder: (BuildContext context) =>
-                                    _buildSubButtons(context, orientation),
-                              ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ),
+                    );
+                  }
+                  if (state.loadedGameEvents &&
+                      (state.gameEvents.length == 0 ||
+                          state.gameEvents.last.type ==
+                              GameEventType.TimeoutStart)) {
+                    return TimeoutEnd(game: state.game);
+                  }
+                  if (orientation == Orientation.landscape) {
+                    return Row(
+                      children: <Widget>[
+                        LayoutBuilder(
+                          builder: (BuildContext context,
+                                  BoxConstraints boxConstraint) =>
+                              _buildPointSection(
+                                  context, boxConstraint, orientation),
+                        ),
+                        Expanded(
+                          child: _GameStateSection(
+                              stack, orientation, _selectPeriod),
+                        ),
+                        LayoutBuilder(
+                          builder: (BuildContext context,
+                                  BoxConstraints boxConstraint) =>
+                              _buildDefenceSection(
+                                  context, boxConstraint, orientation),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Column(
+                      children: <Widget>[
+                        LayoutBuilder(
+                          builder: (BuildContext context,
+                                  BoxConstraints boxConstraint) =>
+                              _buildPointSection(
+                                  context, boxConstraint, orientation),
+                        ),
+                        Divider(),
+                        Expanded(
+                          child: _GameStateSection(
+                              stack, orientation, _selectPeriod),
+                        ),
+                        Divider(),
+                        LayoutBuilder(
+                          builder: (BuildContext context,
+                                  BoxConstraints boxConstraint) =>
+                              _buildDefenceSection(
+                                  context, boxConstraint, orientation),
+                        ),
+                        Builder(
+                          builder: (BuildContext context) =>
+                              _buildSubButtons(context, orientation),
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ),
@@ -561,8 +566,7 @@ class GameStatsScreen extends StatelessWidget {
     // Write out the event to start the new period.
     bloc.add(
       SingleGameAddEvent(
-          event: GameEvent((b) =>
-          b
+          event: GameEvent((b) => b
             ..playerUid = ""
             ..points = 0
             ..timestamp = (DateTime.now().toUtc())
@@ -575,14 +579,10 @@ class GameStatsScreen extends StatelessWidget {
     // Update the game to stop the clock.
     if (bloc.state.game.runningFrom != null) {
       int newSeconds = bloc.state.game.gameTime.inSeconds +
-          DateTime
-              .now()
-              .difference(bloc.state.game.runningFrom)
-              .inSeconds;
+          DateTime.now().difference(bloc.state.game.runningFrom).inSeconds;
       bloc.add(
         SingleGameUpdate(
-          game: bloc.state.game.rebuild((b) =>
-          b
+          game: bloc.state.game.rebuild((b) => b
             ..gameTime = Duration(seconds: newSeconds)
             ..runningFrom = null),
         ),
@@ -636,77 +636,65 @@ class _GameStateSection extends StatelessWidget {
                   children: <Widget>[
                     orientation == Orientation.portrait
                         ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          Messages.of(context)
-                              .getPeriodName(state.game.currentPeriod),
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2,
-                          textScaleFactor: 1.5,
-                        ),
-                        IconButton(
-                          icon: state.game.runningFrom != null
-                              ? Icon(
-                            Icons.pause,
-                            size: 40.0,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                Messages.of(context)
+                                    .getPeriodName(state.game.currentPeriod),
+                                style: Theme.of(context).textTheme.bodyText2,
+                                textScaleFactor: 1.5,
+                              ),
+                              IconButton(
+                                icon: state.game.runningFrom != null
+                                    ? Icon(
+                                        Icons.pause,
+                                        size: 40.0,
+                                      )
+                                    : Icon(
+                                        Icons.play_arrow,
+                                        size: 40.0,
+                                      ),
+                                onPressed: () =>
+                                    _updateRunning(context, state.game),
+                              ),
+                              GameDuration(
+                                state: state,
+                                style: Theme.of(context).textTheme.bodyText2,
+                                textScaleFactor: 1.5,
+                              ),
+                            ],
                           )
-                              : Icon(
-                            Icons.play_arrow,
-                            size: 40.0,
-                          ),
-                          onPressed: () =>
-                              _updateRunning(context, state.game),
-                        ),
-                        GameDuration(
-                          state: state,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2,
-                          textScaleFactor: 1.5,
-                        ),
-                      ],
-                    )
                         : ButtonBar(
-                      alignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FlatButton(
-                          color: Theme
-                              .of(context)
-                              .buttonTheme
-                              .colorScheme
-                              .background,
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              Messages
-                                  .of(context)
-                                  .periodButton,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .button,
-                              textScaleFactor: 1.5,
-                            ),
+                            alignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              FlatButton(
+                                color: Theme.of(context)
+                                    .buttonTheme
+                                    .colorScheme
+                                    .background,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    Messages.of(context).periodButton,
+                                    style: Theme.of(context).textTheme.button,
+                                    textScaleFactor: 1.5,
+                                  ),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  side: BorderSide(color: Colors.blue),
+                                ),
+                                onPressed: () => selectCallback(context),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  size: 40.0,
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ],
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: BorderSide(color: Colors.blue),
-                          ),
-                          onPressed: () => selectCallback(context),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 40.0,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
                     Row(
                       children: [
                         Expanded(
@@ -715,14 +703,13 @@ class _GameStateSection extends StatelessWidget {
                             children: [
                               BlocBuilder(
                                   bloc:
-                                  BlocProvider.of<SingleTeamBloc>(context),
+                                      BlocProvider.of<SingleTeamBloc>(context),
                                   builder: (BuildContext context,
                                       SingleTeamBlocState teamState) {
                                     if (teamState is SingleTeamUninitialized ||
                                         teamState is SingleTeamDeleted) {
-                                      return Text(Messages
-                                          .of(context)
-                                          .loadingText,
+                                      return Text(
+                                          Messages.of(context).loadingText,
                                           overflow: TextOverflow.fade,
                                           style: style);
                                     }
@@ -745,54 +732,48 @@ class _GameStateSection extends StatelessWidget {
                         ),
                         orientation == Orientation.portrait
                             ? IconButton(
-                          icon: Icon(
-                            Icons.arrow_back,
-                            size: 40.0,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        )
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  size: 40.0,
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                              )
                             : SizedBox(width: 0.0),
                       ],
                     ),
                     orientation == Orientation.landscape
                         ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          Messages.of(context)
-                              .getPeriodName(state.game.currentPeriod),
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2,
-                          textScaleFactor: 1.5,
-                        ),
-                        IconButton(
-                          icon: state.game.runningFrom != null
-                              ? Icon(
-                            Icons.pause,
-                            size: 40.0,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                Messages.of(context)
+                                    .getPeriodName(state.game.currentPeriod),
+                                style: Theme.of(context).textTheme.bodyText2,
+                                textScaleFactor: 1.5,
+                              ),
+                              IconButton(
+                                icon: state.game.runningFrom != null
+                                    ? Icon(
+                                        Icons.pause,
+                                        size: 40.0,
+                                      )
+                                    : Icon(
+                                        Icons.play_arrow,
+                                        size: 40.0,
+                                      ),
+                                onPressed: () =>
+                                    _updateRunning(context, state.game),
+                              ),
+                              GameDuration(
+                                state: state,
+                                style: Theme.of(context).textTheme.bodyText2,
+                                textScaleFactor: 1.5,
+                              ),
+                            ],
                           )
-                              : Icon(
-                            Icons.play_arrow,
-                            size: 40.0,
-                          ),
-                          onPressed: () =>
-                              _updateRunning(context, state.game),
-                        ),
-                        GameDuration(
-                          state: state,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText2,
-                          textScaleFactor: 1.5,
-                        ),
-                      ],
-                    )
                         : SizedBox(
-                      height: 0.0,
-                    ),
+                            height: 0.0,
+                          ),
                     Divider(),
                     Expanded(
                       child: AnimatedList(
@@ -800,7 +781,7 @@ class _GameStateSection extends StatelessWidget {
                         itemBuilder: (BuildContext context, int itexmIndex,
                             Animation<double> a) {
                           var item = state.gameEvents[
-                          state.gameEvents.length - 1 - itexmIndex];
+                              state.gameEvents.length - 1 - itexmIndex];
                           return GameEventWidget(gameEvent: item);
                         },
                       ),
@@ -819,12 +800,8 @@ class _GameStateSection extends StatelessWidget {
   void _updateRunning(BuildContext context, Game g) {
     if (g.runningFrom != null) {
       int newSeconds = g.gameTime.inSeconds +
-          DateTime
-              .now()
-              .difference(g.runningFrom)
-              .inSeconds;
-      Game newGame = g.rebuild((b) =>
-      b
+          DateTime.now().difference(g.runningFrom).inSeconds;
+      Game newGame = g.rebuild((b) => b
         ..gameTime = Duration(seconds: newSeconds)
         ..runningFrom = null);
       BlocProvider.of<SingleGameBloc>(context)

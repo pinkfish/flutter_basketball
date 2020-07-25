@@ -14,7 +14,7 @@ import '../data/game/gameeventtype.dart';
 import '../data/game/gameperiod.dart';
 import '../data/game/gamesummary.dart';
 import '../data/player/player.dart';
-import '../data/player/playergamesummary.dart';
+import '../data/game/playergamesummary.dart';
 import '../data/player/playersummarydata.dart';
 import '../db/basketballdatabase.dart';
 

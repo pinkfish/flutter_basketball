@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 
 import '../data/game/game.dart';
 import '../data/game/gameevent.dart';
+import '../data/game/playergamesummary.dart';
 import '../data/invites/invite.dart';
 import '../data/media/mediainfo.dart';
 import '../data/player/player.dart';
-import '../data/player/playergamesummary.dart';
 import '../data/season/season.dart';
 import '../data/team/team.dart';
 import '../data/user.dart';

@@ -11,16 +11,27 @@ typedef void PlayerSelectFunction(String uid, bool selected);
 ///
 class PlayerMultiselect extends StatelessWidget {
   final Game game;
+  final Season season;
   final List<String> selectedUids;
   final PlayerSelectFunction selectPlayer;
   final Orientation orientation;
+  final Map<String, Player> additionalPlayers;
 
   List<Widget> _populateList(BuildContext context, Orientation o) {
-    List<String> players = game.players.keys.toList();
+    Set<String> players = game.players.keys.toSet();
+    List<String> seasonPlayers =
+        season != null ? season.playerUids.keys.toList() : [];
+    seasonPlayers
+        .removeWhere((element) => (game.ignoreFromSeason.contains(element)));
     players.addAll(game.opponents.keys);
-    players.sort((String a, String b) {
-      PlayerGameSummary asum = game.players[a] ?? game.opponents[a];
-      PlayerGameSummary bsum = game.players[b] ?? game.opponents[b];
+    players.addAll(seasonPlayers);
+    if (additionalPlayers != null) {
+      players.addAll(additionalPlayers.keys);
+    }
+    var ordered = players.toList();
+    ordered.sort((String a, String b) {
+      PlayerGameSummary asum = game.players[a] ?? game.opponents[a] ?? additionalPlayers[a];
+      PlayerGameSummary bsum = game.players[b] ?? game.opponents[b] ?? additionalPlayers[b];
       if (asum.currentlyPlaying) {
         return -1;
       }
@@ -29,7 +40,7 @@ class PlayerMultiselect extends StatelessWidget {
       }
       return 0;
     });
-    return players
+    return ordered
         .map(
           (String playerUid) => Padding(
             padding: EdgeInsets.all(2.0),
@@ -58,8 +69,10 @@ class PlayerMultiselect extends StatelessWidget {
 
   PlayerMultiselect(
       {@required this.game,
+      @required this.season,
       @required this.selectedUids,
       @required this.selectPlayer,
+      this.additionalPlayers,
       this.orientation = Orientation.portrait});
 
   @override

@@ -2,8 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playerdropdown.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamseasonstats.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/game.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/player/player.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/playergamesummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/playergamesummary.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/playerseasonsummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/playerseasonsummary.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/season/season.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/season.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playermultiselect.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playermultiselect.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/startperiod.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/startperiod.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +61,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1azx4kumuA7tGoDXuBsXK8o2i3k" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -59,15 +81,15 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/basketballdata/lib/data/game" />
+      <recent name="$PROJECT_DIR$/basketballdata/lib/data/season" />
+      <recent name="$PROJECT_DIR$/basketballdata/lib/data/team" />
+      <recent name="$PROJECT_DIR$/basketballdata/lib/data/player" />
+      <recent name="$PROJECT_DIR$/basketballdata/lib/data/media" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ux/ios/fastlane/metadata" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/basketballdata/lib/data/team" />
-      <recent name="$PROJECT_DIR$/basketballdata/lib/data/season" />
-      <recent name="$PROJECT_DIR$/basketballdata/lib/data/player" />
-      <recent name="$PROJECT_DIR$/basketballdata/lib/data/game" />
-      <recent name="$PROJECT_DIR$/basketballdata/lib/data/media" />
     </key>
   </component>
   <component name="RunManager" selected="Flutter.main.dart">
@@ -206,10 +228,11 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="377" y="280" key="#com.intellij.ide.util.TreeFileChooserDialog/0.23.1280.924@0.23.1280.924" timestamp="1588617143757" />
-    <state x="330" y="226" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1594502301302">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state x="330" y="227" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1595564955515">
+      <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state x="330" y="226" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.924@0.23.1280.924" timestamp="1594502301302" />
+    <state x="330" y="227" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.927@0.23.1280.927" timestamp="1595564955515" />
     <state x="336" y="416" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1588897399666">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
@@ -235,30 +258,30 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1595373046091">
-      <screen x="0" y="23" width="1280" height="927" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1595644919667">
+      <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="654" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1594840288921" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1595373046091" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1595373046090">
-      <screen x="0" y="23" width="1280" height="927" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1595644919667" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1595644919666">
+      <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="654" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1594840288920" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1595373046090" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1595373046089">
-      <screen x="0" y="23" width="1280" height="927" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1595644919666" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1595644919665">
+      <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="654" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1594840288920" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1595373046089" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1595373046090">
-      <screen x="0" y="23" width="1280" height="927" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1595644919665" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1595644919667">
+      <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="654" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1594840288921" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1595373046090" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1595644919667" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
     </state>

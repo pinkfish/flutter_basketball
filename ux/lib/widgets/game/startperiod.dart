@@ -6,11 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../messages.dart';
 
+///
+/// Pulls up some data to start the period.
+///
 class StartPeriod extends StatefulWidget {
   final Game game;
+  final Season season;
   final Orientation orientation;
 
-  StartPeriod({@required this.game, @required this.orientation});
+  StartPeriod(
+      {@required this.game, @required this.season, @required this.orientation});
 
   @override
   State<StatefulWidget> createState() {
@@ -118,6 +123,7 @@ class _StartPeriodState extends State<StartPeriod> {
             child: SingleChildScrollView(
               child: PlayerMultiselect(
                 game: widget.game,
+                season: widget.season,
                 selectedUids: selectedPlayers,
                 selectPlayer: _selectPlayer,
                 orientation: widget.orientation,

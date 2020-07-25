@@ -4,6 +4,7 @@ import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/player/playertile.dart';
 import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
+import 'package:basketballstats/widgets/team/teamstats.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -190,19 +191,24 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
               if (state is SingleTeamUninitialized) {
                 return LoadingWidget();
               }
-              return SavingOverlay(
-                saving: state is SingleTeamSaving,
-                child: SingleChildScrollView(
-                  child: AnimatedSwitcher(
-                    duration: Duration(milliseconds: 500),
-                    child: _currentIndex == 0
-                        ? _innerTeamData(state)
-                        : _currentIndex == 1
-                            ? _innerStatsData(state)
-                            : _innerPlayerData(state),
+              if (_currentIndex != 1) {
+                return SavingOverlay(
+                  saving: state is SingleTeamSaving,
+                  child: SingleChildScrollView(
+                    child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      child: _currentIndex == 0
+                          ? _innerTeamData(state)
+                          : _currentIndex == 1
+                              ? _innerStatsData(state)
+                              : _innerPlayerData(state),
+                    ),
                   ),
-                ),
-              );
+                );
+              }
+              return SavingOverlay(
+                  saving: state is SingleTeamSaving,
+                  child: _innerStatsData(state));
             },
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -293,7 +299,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   }
 
   Widget _innerStatsData(SingleTeamBlocState state) {
-    return SizedBox(height: 0);
+    return TeamStatsWidget(
+      teamUid: state.team.uid,
+    );
   }
 
   void _addPlayer(BuildContext context, SingleTeamBloc bloc) {
