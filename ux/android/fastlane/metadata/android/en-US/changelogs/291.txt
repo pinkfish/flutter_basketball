@@ -1,0 +1,15 @@
+Fix typo
+Fix up the workflow with the android actions, install graphicsmagik
+Update and add in the player graph view for the team.
+Update the button colors.
+UPdate the add game/add season buttons.
+Reorganize the data files.
+First pass at invites.
+First pass on invite flow.
+Fix up the Info.plist
+Add in the brew install imagemagick in the flow.
+Update pods
+New icon images.
+Merge conflict resolved.
+Update changes to the system.
+Release notes for the ios 0.3.5 version

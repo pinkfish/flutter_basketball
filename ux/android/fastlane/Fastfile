@@ -32,6 +32,10 @@ platform :android do
    desc "Build and push to play store track"
     private_lane :build_and_push_to_play_store_track do |options|
       release_notes(OS: 'android')
+
+      # Icons
+      create_icons()
+
       sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
       upload_to_play_store(
         track: options[:track],
@@ -41,6 +45,31 @@ platform :android do
         #skip_upload_images: false
       )
       tag_branch(OS: "android")
+    end
+
+   desc "Create the various icons and screenshots"
+    private_lane :create_icons do |options|
+      # Icons
+      android_appicon(
+        appicon_icon_types: [:launcher],
+        appicon_image_file: '../assets/icons/app_icon.png',
+        appicon_path: 'app/src/main/res/mipmap',
+        appicon_filename: 'ic_launcher'
+      )
+
+      # Splash screens
+      #android_appicon(
+      #  appicon_icon_types: [:splash_port],
+      #  appicon_image_file: '../assets/icons/screen.png',
+      #  appicon_path: 'app/src/main/res/drawable',
+      #  appicon_filename: 'screen'
+      #)
+      #android_appicon(
+      #  appicon_icon_types: [:splash_land],
+      #  appicon_image_file: '../assets/icons/screen_land.png',
+      #  appicon_path: 'app/src/main/res/drawable',
+      #  appicon_filename: 'screen'
+      #)
     end
 
    desc "Build and push to play store track"
@@ -60,26 +89,7 @@ platform :android do
       puts body
 
       # Icons
-      android_appicon(
-        appicon_icon_types: [:launcher],
-        appicon_image_file: '../assets/icons/app_icon.png',
-        appicon_path: 'app/src/main/res/mipmap',
-        appicon_filename: 'ic_launcher'
-      )
-
-      # Splash screens
-      android_appicon(
-        appicon_icon_types: [:splash_port],
-        appicon_image_file: '../assets/icons/screen.png',
-        appicon_path: 'app/src/main/res/drawable',
-        appicon_filename: 'screen'
-      )
-      android_appicon(
-        appicon_icon_types: [:splash_land],
-        appicon_image_file: '../assets/icons/screen_land.png',
-        appicon_path: 'app/src/main/res/drawable',
-        appicon_filename: 'screen'
-      )
+      create_icons()
 
       sh ("cd ../.. && flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=#{@build_name} --build-number=#{@build_number}")
       upload_to_play_store(
@@ -104,7 +114,7 @@ platform :android do
   #end
 
   desc "Submit a new Beta Build to App store"
-  lane :beta do
+  lane :beta_local do
       build_and_push_to_play_store_track(track: "beta")
   end
 
@@ -112,11 +122,5 @@ platform :android do
   lane :alpha do |options|
       puts options[:version]
       build_and_push_to_play_store_track_github(track: "alpha", version: options[:version])
-  end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
   end
 end
