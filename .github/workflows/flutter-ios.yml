@@ -13,9 +13,6 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         ref: ${{ github.head_ref }}
-    - uses: actions/setup-ruby@v1
-      with:
-        ruby-version: '2.6.x'
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
