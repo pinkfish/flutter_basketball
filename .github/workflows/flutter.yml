@@ -42,7 +42,7 @@ jobs:
     - run: flutter packages get
       working-directory: ux
     - run: sudo apt-get install -y graphicsmagick
-      working-direcxtory: ux
+      working-directory: ux
     - run: echo ${GOOGLESERVICES} > android/app/google-services.json	
       working-directory: ux	
       env: 	
