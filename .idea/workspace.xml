@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playersimplelist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addgamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addgamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Runner.app.dSYM.zip" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner.app.dSYM.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerlist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playermultiselect.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playermultiselect.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/startperiod.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/startperiod.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playerdropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playerdropdown.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playername.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playername.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playertile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playertile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonname.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonname.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/ios/fastlane/Pluginfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
