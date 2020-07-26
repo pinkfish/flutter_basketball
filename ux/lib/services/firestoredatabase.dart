@@ -21,13 +21,22 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addGame({Game game, BuiltList<Player> guestPlayers}) async {
+    String ret;
+    await Firestore.instance.runTransaction((transaction) async {
+      ret = await _addGame(transaction, game, guestPlayers);
+    });
+    return ret;
+  }
+
+  Future<String> _addGame(Transaction transaction, Game game,
+      BuiltList<Player> guestPlayers) async {
     var player = Player((b) => b
       ..name = game.opponentName.isEmpty ? "default" : game.opponentName
       ..jerseyNumber = "xx");
     var playerRef =
         Firestore.instance.collection(SQLDBRaw.playersTable).document();
     player = player.rebuild((b) => b..uid = playerRef.documentID);
-    await playerRef.setData(player.toMap());
+    await transaction.set(playerRef, player.toMap());
     // Add all the guest players and put them into the players list.
     MapBuilder<String, PlayerGameSummary> players = MapBuilder();
     await Future.wait(guestPlayers.map((p) async {
@@ -42,7 +51,7 @@ class FirestoreDatabase extends BasketballDatabase {
       ..players = players
       ..opponents[playerRef.documentID] =
           PlayerGameSummary((b2) => b2..currentlyPlaying = true));
-    await ref.setData(game.toMap());
+    await transaction.set(ref, game.toMap());
     analytics.logEvent(name: "AddGame");
     return ref.documentID;
   }
@@ -106,8 +115,6 @@ class FirestoreDatabase extends BasketballDatabase {
           ..uid = seasonRef.documentID)
         .toMap();
     await Firestore.instance.runTransaction((transaction) async {
-      print(map);
-      print(seasonMap);
       await Future.wait(
           [transaction.set(ref, map), transaction.set(seasonRef, seasonMap)]);
       return map;
@@ -398,9 +405,17 @@ class FirestoreDatabase extends BasketballDatabase {
 
   @override
   Future<String> addPlayer({Player player}) async {
+    String ret;
+    await Firestore.instance.runTransaction((transaction) async {
+      ret = await _addPlayer(transaction, player);
+    });
+    return ret;
+  }
+
+  Future<String> _addPlayer(Transaction t, Player player) async {
     var ref = Firestore.instance.collection(SQLDBRaw.playersTable).document();
     var p = player.rebuild((b) => b..uid = ref.documentID);
-    await ref.setData(p.toMap());
+    await t.set(ref, p.toMap());
     analytics.logEvent(name: "AddPlayer");
     return ref.documentID;
   }
