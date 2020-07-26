@@ -55,17 +55,32 @@ class _TeamStatsWidgetState extends State<TeamStatsWidget> {
             builder: (BuildContext context) => Column(
               children: [
                 Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Season drop down.
-                    SeasonDropDown(
-                      value: _currentSeasonUid,
-                      onChanged: (v) => setState(() => _currentSeasonUid = v),
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10.0),
+                        child: SeasonDropDown(
+                          value: _currentSeasonUid,
+                          isExpanded: true,
+                          onChanged: (v) =>
+                              setState(() => _currentSeasonUid = v),
+                        ),
+                      ),
                     ),
                     // Player-multi-select button.
-                    PlayerDropDown(
-                      value: _playerUid,
-                      onChanged: (s) => setState(() => _playerUid = s),
-                      includeAll: true,
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 10.0),
+                        child: PlayerDropDown(
+                          value: _playerUid,
+                          isExpanded: true,
+                          onChanged: (s) => setState(() => _playerUid = s),
+                          includeAll: true,
+                        ),
+                      ),
                     ),
                   ],
                 ),

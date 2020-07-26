@@ -59,13 +59,8 @@ class _PlayerListState extends State<PlayerList> {
         if (widget.additonalPlayers != null) {
           sortedList.addAll(widget.additonalPlayers.keys);
         }
-        sortedList.sort((String u1, String u2) => _sortFunction(
-            widget.game.players[u1] ??
-                widget.season?.playerUids[u1] ??
-                widget.additonalPlayers[u1],
-            widget.game.players[u2] ??
-                widget.season?.playerUids[u2] ??
-                widget.additonalPlayers[u2]));
+        sortedList.sort((String u1, String u2) =>
+            _sortFunction(_getData(u1), _getData(u2)));
         return AnimatedSwitcher(
           duration: Duration(milliseconds: 500),
           child: Column(
@@ -198,8 +193,8 @@ class _PlayerListState extends State<PlayerList> {
                 ],
               ),
               ...sortedList
-                  .map((String s) => _playerSummary(s, widget.game.players[s],
-                      constraints, widget.orientation))
+                  .map((String s) => _playerSummary(
+                      s, _getData(s), constraints, widget.orientation))
                   .toList(),
             ],
           ),
@@ -208,44 +203,34 @@ class _PlayerListState extends State<PlayerList> {
     );
   }
 
-  int _sortFunction(PlayerGameSummary s1, PlayerGameSummary s2) {
+  PlayerSummaryData _getData(String playerUid) {
+    return widget.game.players[playerUid]?.fullData ??
+        widget.season?.playerUids[playerUid]?.summary ??
+        PlayerSummaryData();
+  }
+
+  int _sortFunction(PlayerSummaryData s1, PlayerSummaryData s2) {
     switch (_sortBy) {
       case SortPlayerBy.Points:
-        return s2.fullData.points - s1.fullData.points;
+        return s2.points - s1.points;
       case SortPlayerBy.Fouls:
-        return s2.fullData.fouls - s1.fullData.fouls;
+        return s2.fouls - s1.fouls;
       case SortPlayerBy.Turnovers:
-        return s2.fullData.turnovers - s1.fullData.turnovers;
+        return s2.turnovers - s1.turnovers;
       case SortPlayerBy.Steals:
-        return s2.fullData.steals - s1.fullData.steals;
+        return s2.steals - s1.steals;
       case SortPlayerBy.Blocks:
-        return s2.fullData.blocks - s1.fullData.blocks;
+        return s2.blocks - s1.blocks;
       case SortPlayerBy.MadePerentage:
-        if ((s2.fullData.one.attempts +
-                s2.fullData.two.attempts +
-                s2.fullData.three.attempts) >
-            0) {
-          if ((s1.fullData.one.attempts +
-                  s1.fullData.two.attempts +
-                  s1.fullData.three.attempts) >
-              0) {
-            return ((s2.fullData.one.made +
-                        s2.fullData.two.made +
-                        s2.fullData.three.made) ~/
-                    (s2.fullData.one.attempts +
-                        s2.fullData.two.attempts +
-                        s2.fullData.three.attempts)) -
-                ((s1.fullData.one.made +
-                        s1.fullData.two.made +
-                        s1.fullData.three.made) ~/
-                    (s1.fullData.one.attempts +
-                        s1.fullData.two.attempts +
-                        s1.fullData.three.attempts));
+        if ((s2.one.attempts + s2.two.attempts + s2.three.attempts) > 0) {
+          if ((s1.one.attempts + s1.two.attempts + s1.three.attempts) > 0) {
+            return ((s2.one.made + s2.two.made + s2.three.made) ~/
+                    (s2.one.attempts + s2.two.attempts + s2.three.attempts)) -
+                ((s1.one.made + s1.two.made + s1.three.made) ~/
+                    (s1.one.attempts + s1.two.attempts + s1.three.attempts));
           }
           return 1;
-        } else if ((s1.fullData.one.attempts +
-                s1.fullData.two.attempts +
-                s1.fullData.three.attempts) >
+        } else if ((s1.one.attempts + s1.two.attempts + s1.three.attempts) >
             0) {
           return -1;
         }
@@ -253,7 +238,7 @@ class _PlayerListState extends State<PlayerList> {
     return 0;
   }
 
-  Widget _playerSummary(String uid, PlayerGameSummary s,
+  Widget _playerSummary(String uid, PlayerSummaryData s,
       BoxConstraints constraints, Orientation orientation) {
     double width = constraints.maxWidth / 8;
     double scale = orientation == Orientation.portrait ? 1.0 : 1.5;
@@ -272,27 +257,19 @@ class _PlayerListState extends State<PlayerList> {
           SizedBox(
             width: width,
             child: Text(
-              (s.fullData.one.made +
-                      s.fullData.two.made * 2 +
-                      s.fullData.three.made * 3)
-                  .toString(),
+              (s.one.made + s.two.made * 2 + s.three.made * 3).toString(),
               textScaleFactor: scale,
             ),
           ),
           SizedBox(
             width: width,
             child: Text(
-              ((s.fullData.one.attempts +
-                          s.fullData.two.attempts * 2 +
-                          s.fullData.three.attempts * 3) ==
-                      0
+              ((s.one.attempts + s.two.attempts * 2 + s.three.attempts * 3) == 0
                   ? "0%"
-                  : ((s.fullData.one.made +
-                                  s.fullData.two.made * 2 +
-                                  s.fullData.three.made * 3) /
-                              (s.fullData.one.attempts +
-                                  s.fullData.two.attempts * 2 +
-                                  s.fullData.three.attempts * 3) *
+                  : ((s.one.made + s.two.made * 2 + s.three.made * 3) /
+                              (s.one.attempts +
+                                  s.two.attempts * 2 +
+                                  s.three.attempts * 3) *
                               100)
                           .toStringAsFixed(0) +
                       "%"),
@@ -302,28 +279,28 @@ class _PlayerListState extends State<PlayerList> {
           SizedBox(
             width: width,
             child: Text(
-              (s.fullData.fouls).toString(),
+              (s.fouls).toString(),
               textScaleFactor: scale,
             ),
           ),
           SizedBox(
             width: width,
             child: Text(
-              (s.fullData.turnovers).toString(),
+              (s.turnovers).toString(),
               textScaleFactor: scale,
             ),
           ),
           SizedBox(
             width: width,
             child: Text(
-              (s.fullData.steals).toString(),
+              (s.steals).toString(),
               textScaleFactor: scale,
             ),
           ),
           SizedBox(
             width: width,
             child: Text(
-              (s.fullData.blocks).toString(),
+              (s.blocks).toString(),
               textScaleFactor: scale,
             ),
           ),

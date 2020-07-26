@@ -67,7 +67,7 @@ abstract class BasketballDatabase {
   Future<String> addTeam({@required Team team, @required Season season});
 
   /// Adds a new game into the database
-  Future<String> addGame({@required Game game});
+  Future<String> addGame({@required Game game, BuiltList<Player> guestPlayers});
 
   /// Adds a new season into the database
   Future<String> addSeason({@required String teamUid, @required Season season});

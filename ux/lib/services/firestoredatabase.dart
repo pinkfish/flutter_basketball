@@ -20,17 +20,26 @@ class FirestoreDatabase extends BasketballDatabase {
   String userUid;
 
   @override
-  Future<String> addGame({Game game}) async {
+  Future<String> addGame({Game game, BuiltList<Player> guestPlayers}) async {
     var player = Player((b) => b
       ..name = game.opponentName.isEmpty ? "default" : game.opponentName
       ..jerseyNumber = "xx");
     var playerRef =
         Firestore.instance.collection(SQLDBRaw.playersTable).document();
     player = player.rebuild((b) => b..uid = playerRef.documentID);
-    await playerRef.updateData(player.toMap());
+    await playerRef.setData(player.toMap());
+    // Add all the guest players and put them into the players list.
+    MapBuilder<String, PlayerGameSummary> players = MapBuilder();
+    await Future.wait(guestPlayers.map((p) async {
+      var uid = await addPlayer(player: p);
+      players[uid] = PlayerGameSummary((b) => b
+        ..currentlyPlaying = false
+        ..playing = true);
+    }));
     var ref = Firestore.instance.collection(SQLDBRaw.gamesTable).document();
     game = game.rebuild((b) => b
       ..uid = ref.documentID
+      ..players = players
       ..opponents[playerRef.documentID] =
           PlayerGameSummary((b2) => b2..currentlyPlaying = true));
     await ref.setData(game.toMap());

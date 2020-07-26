@@ -66,11 +66,11 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<String> addGame({Game game}) {
+  Future<String> addGame({Game game, BuiltList<Player> guestPlayers}) {
     if (useSql)
-      return _sql.addGame(game: game);
+      return _sql.addGame(game: game, guestPlayers: guestPlayers);
     else
-      return _fs.addGame(game: game);
+      return _fs.addGame(game: game, guestPlayers: guestPlayers);
   }
 
   @override

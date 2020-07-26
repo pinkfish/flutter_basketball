@@ -12,10 +12,12 @@ import '../../messages.dart';
 class PlayerName extends StatelessWidget {
   final String playerUid;
   final double textScaleFactor;
+  final TextStyle style;
 
   static Map<String, String> _nameCache = {};
 
-  PlayerName({@required this.playerUid, this.textScaleFactor = 1.0});
+  PlayerName(
+      {@required this.playerUid, this.textScaleFactor = 1.0, this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class PlayerName extends StatelessWidget {
                   !(state is SinglePlayerLoaded)) {
                 return Text(
                   _nameCache[playerUid],
-                  style: Theme.of(context).textTheme.headline6,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,
@@ -43,6 +45,7 @@ class PlayerName extends StatelessWidget {
               if (state is SinglePlayerDeleted) {
                 return Text(
                   Messages.of(context).unknown,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   textScaleFactor: textScaleFactor,
                   overflow: TextOverflow.fade,
                   softWrap: false,
@@ -52,6 +55,7 @@ class PlayerName extends StatelessWidget {
               if (state is SinglePlayerUninitialized) {
                 return Text(
                   Messages.of(context).loadingText,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   textScaleFactor: textScaleFactor,
                   overflow: TextOverflow.fade,
                   softWrap: false,
@@ -62,7 +66,7 @@ class PlayerName extends StatelessWidget {
                 _nameCache[playerUid] = state.player.name;
                 return Text(
                   state.player.name,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,
@@ -71,6 +75,7 @@ class PlayerName extends StatelessWidget {
               }
               return Text(
                 Messages.of(context).unknown,
+                style: style ?? Theme.of(context).textTheme.headline6,
                 overflow: TextOverflow.fade,
                 softWrap: false,
                 textAlign: TextAlign.start,

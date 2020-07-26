@@ -16,6 +16,7 @@ class PlayerDropDown extends StatelessWidget {
   final bool includeAll;
   final bool isExpanded;
   final bool includeDecorator;
+  final TextStyle style;
 
   static String noneValue = "none";
   static String allValue = "all";
@@ -26,7 +27,8 @@ class PlayerDropDown extends StatelessWidget {
       this.includeNone = false,
       this.includeDecorator = false,
       this.includeAll = false,
-      this.isExpanded = false});
+      this.isExpanded = false,
+      this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,10 @@ class PlayerDropDown extends StatelessWidget {
               items: [
                 DropdownMenuItem(
                   value: value,
-                  child: Text(Messages.of(context).loadingText),
+                  child: Text(
+                    Messages.of(context).loadingText,
+                    style: style ?? Theme.of(context).textTheme.headline6,
+                  ),
                 ),
               ],
               onChanged: onChanged,
@@ -67,13 +72,19 @@ class PlayerDropDown extends StatelessWidget {
           if (includeNone) {
             items.add(DropdownMenuItem(
               value: noneValue,
-              child: Text(Messages.of(context).emptyText),
+              child: Text(
+                Messages.of(context).emptyText,
+                style: style ?? Theme.of(context).textTheme.headline6,
+              ),
             ));
           }
           if (includeAll) {
             items.add(DropdownMenuItem(
               value: allValue,
-              child: Text(Messages.of(context).allPlayers),
+              child: Text(
+                Messages.of(context).allPlayers,
+                style: style ?? Theme.of(context).textTheme.headline6,
+              ),
             ));
           }
           return DropdownButton(

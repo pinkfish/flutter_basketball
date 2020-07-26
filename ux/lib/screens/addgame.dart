@@ -1,13 +1,12 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:basketballstats/widgets/game/playerlist.dart';
-import 'package:basketballstats/widgets/game/playermultiselect.dart';
 import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:basketballstats/widgets/seasons/seasonname.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
 import '../widgets/deleted.dart';
@@ -79,6 +78,7 @@ class _AddGameForm extends StatefulWidget {
 
 class _AddGameFormState extends State<_AddGameForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _guestPlayersFormKey = GlobalKey<FormState>();
   String _opponent;
   String _location;
   String _seasonUid;
@@ -87,13 +87,13 @@ class _AddGameFormState extends State<_AddGameForm> {
   DateTime _eventTime;
   TimeOfDay _time = TimeOfDay.now();
   int _stepIndex = 0;
-  List<String> _toIgnorePlayers = [];
-  Map<String, Player> _guestPlayers = {};
+  List<PlayerBuilder> _guestPlayers = [];
 
   @override
   void initState() {
     super.initState();
     _seasonUid = widget.currentSeasonUid;
+    _eventTime = DateTime.now();
   }
 
   void _saveForm(AddGameBloc bloc) async {
@@ -142,22 +142,25 @@ class _AddGameFormState extends State<_AddGameForm> {
         }
       }
 
-      var map = MapBuilder<String, PlayerGameSummary>();
-      map.addEntries(season.playerUids.keys
-          .map((var e) => MapEntry(e, PlayerGameSummary())));
+      // Go throught he players list and make a builtlist of the ones with
+      // names
+      var players = BuiltList.of(
+          _guestPlayers.where((e) => e.name != "").map((e) => e.build()));
+
       bloc.add(AddGameEventCommit(
-          newGame: Game((b) => b
-            ..opponentName = _opponent
-            ..seasonUid = season.uid
-            ..teamUid = season.teamUid
-            ..players = map
-            ..location = _location ?? ""
-            ..summary = (GameSummaryBuilder()
-              ..pointsAgainst = 0
-              ..pointsFor = 0)
-            ..eventTime = DateTime(_dateTime.year, _dateTime.month,
-                    _dateTime.day, _time.hour, _time.minute)
-                .toUtc())));
+        newGame: Game((b) => b
+          ..opponentName = _opponent
+          ..seasonUid = season.uid
+          ..teamUid = season.teamUid
+          ..location = _location ?? ""
+          ..summary = (GameSummaryBuilder()
+            ..pointsAgainst = 0
+            ..pointsFor = 0)
+          ..eventTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
+                  _time.hour, _time.minute)
+              .toUtc()),
+        guestPlayers: players,
+      ));
     } finally {
       setState(() => _saving = false);
     }
@@ -165,6 +168,15 @@ class _AddGameFormState extends State<_AddGameForm> {
 
   void _onStepCancel() {
     Navigator.pop(context);
+  }
+
+  void _onStepTapped(int index, AddGameBloc bloc) {
+    if (index < _stepIndex) {
+      setState(() => _stepIndex = index);
+    }
+    if (index == _stepIndex + 1) {
+      _onStepContinue(bloc);
+    }
   }
 
   void _onStepContinue(AddGameBloc bloc) {
@@ -175,18 +187,28 @@ class _AddGameFormState extends State<_AddGameForm> {
             SnackBar(content: Text(Messages.of(context).errorForm)));
         return;
       }
+      _formKey.currentState.save();
       _eventTime = DateTime(_dateTime.year, _dateTime.month, _dateTime.day,
           _time.hour, _time.minute);
+    }
+    if (_stepIndex == 2) {
+      _guestPlayersFormKey.currentState.save();
+      // Filter all the empty guest players out
+      _guestPlayers = _guestPlayers.where((p) => p.name.isNotEmpty).toList();
     }
     if (_stepIndex == 3) {
       // Save!
       _saveForm(bloc);
     } else {
-      _stepIndex++;
+      setState(() => _stepIndex++);
     }
   }
 
-  void _onAddGuestPlayerButtonTapped() {}
+  void _onAddGuestPlayerButtonTapped() async {
+    setState(() => _guestPlayers.add(PlayerBuilder()
+      ..name = ""
+      ..uid = ""));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,9 +232,12 @@ class _AddGameFormState extends State<_AddGameForm> {
             child: Padding(
               padding: EdgeInsets.all(5.0),
               child: Stepper(
+                controlsBuilder: _stepperButtons,
                 onStepContinue: () =>
                     _onStepContinue(BlocProvider.of<AddGameBloc>(context)),
                 onStepCancel: _onStepCancel,
+                onStepTapped: (i) =>
+                    _onStepTapped(i, BlocProvider.of<AddGameBloc>(context)),
                 currentStep: _stepIndex,
                 steps: <Step>[
                   Step(
@@ -279,57 +304,61 @@ class _AddGameFormState extends State<_AddGameForm> {
                   ),
                   Step(
                     title: Text(Messages.of(context).players),
-                    content: BlocProvider(
-                      create: (BuildContext context) => SingleSeasonBloc(
-                          db: RepositoryProvider.of<BasketballDatabase>(
-                              context),
-                          seasonUid: _seasonUid),
-                      child: Builder(
-                        builder: (BuildContext context) => BlocBuilder(
-                          bloc: BlocProvider.of<SingleSeasonBloc>(context),
-                          builder: (BuildContext context,
-                              SingleSeasonBlocState seasonState) {
-                            if (seasonState is SingleSeasonUninitialized) {
-                              return LoadingWidget();
-                            }
-                            if (seasonState is SingleSeasonDeleted) {
-                              return DeletedWidget();
-                            }
-                            // Show a multi-select widget, yayness.
-                            return Column(
-                              children: [
-                                ButtonBar(
-                                  children: <Widget>[
-                                    FlatButton.icon(
-                                      label: Text(Messages.of(context)
-                                          .addGuestPlayerButton),
-                                      icon: Icon(Icons.add),
-                                      onPressed: _onAddGuestPlayerButtonTapped,
-                                    )
-                                  ],
-                                ),
-                                PlayerMultiselect(
-                                  game: Game(),
-                                  season: seasonState.season,
-                                  orientation: Orientation.portrait,
-                                  selectPlayer: (String uid, bool selected) {
-                                    if (selected) {
-                                      setState(
-                                          () => _toIgnorePlayers.remove(uid));
-                                    } else {
-                                      setState(() => _toIgnorePlayers.add(uid));
-                                    }
-                                  },
-                                  selectedUids: seasonState
-                                      .season.playerUids.keys
-                                      .where((element) =>
-                                          !_toIgnorePlayers.contains(element)),
-                                ),
-                              ],
-                            );
-                          },
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          Messages.of(context).guestPlayersForGame,
+                          textAlign: TextAlign.justify,
+                          style: Theme.of(context).textTheme.headline6,
                         ),
-                      ),
+                        ButtonBar(
+                          children: <Widget>[
+                            FlatButton.icon(
+                              label: Text(
+                                  Messages.of(context).addGuestPlayerButton),
+                              icon: Icon(Icons.add),
+                              onPressed: _onAddGuestPlayerButtonTapped,
+                            )
+                          ],
+                        ),
+                        Form(
+                          key: _guestPlayersFormKey,
+                          child: Column(
+                            children: _guestPlayers
+                                .map(
+                                  (p) => Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          decoration: InputDecoration(
+                                            icon: Icon(Icons.text_fields),
+                                            hintText:
+                                                Messages.of(context).playerName,
+                                            labelText:
+                                                Messages.of(context).playerName,
+                                          ),
+                                          onSaved: (String str) {
+                                            p.name = str;
+                                          },
+                                          autovalidate: false,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () => setState(
+                                          () {
+                                            _guestPlayers.remove(p);
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Step(
@@ -351,35 +380,46 @@ class _AddGameFormState extends State<_AddGameForm> {
                               return DeletedWidget();
                             }
                             return Column(
-                              children: <Widget>[  
-                                SeasonName(seasonUid: _seasonUid),
-                                Text(Messages.of(context)
-                                    .getGameVs(_opponent, _location)),
-                                Text(DateFormat("dd MMM hh:mm")
-                                    .format(_eventTime.toLocal())),
-                                PlayerList(
-                                  game: Game(),
-                                  season: seasonState.season,
-                                  additonalPlayers: _guestPlayers,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                SeasonName(
+                                  seasonUid: _seasonUid,
+                                  style: Theme.of(context).textTheme.bodyText1,
                                 ),
-                                ButtonBar(
-                                  children: [
-                                    FlatButton(
-                                      child: Text(
-                                          MaterialLocalizations.of(context)
-                                              .okButtonLabel),
-                                      onPressed: () => _saveForm(
-                                          BlocProvider.of<AddGameBloc>(
-                                              context)),
-                                    ),
-                                    FlatButton(
-                                      child: Text(
-                                          MaterialLocalizations.of(context)
-                                              .cancelButtonLabel),
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                  ],
+                                ListTile(
+                                  leading: Icon(MdiIcons.basketball),
+                                  title: Text(
+                                    Messages.of(context)
+                                        .getGameVs(_opponent, _location),
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                    textScaleFactor: 1.2,
+                                  ),
+                                  subtitle: Text(
+                                    DateFormat("dd MMM hh:mm")
+                                        .format(_eventTime.toLocal()),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                          color: Theme.of(context).accentColor,
+                                        ),
+                                    textScaleFactor: 1.2,
+                                  ),
                                 ),
+                                _guestPlayers.length > 0
+                                    ? Column(
+                                        children: _guestPlayers
+                                            .map((p) => Text(p.name))
+                                            .toList(),
+                                      )
+                                    : Text(
+                                        Messages.of(context).noGuestPlayers,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1,
+                                      ),
                               ],
                             );
                           },
@@ -392,6 +432,61 @@ class _AddGameFormState extends State<_AddGameForm> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  bool _isDark() {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
+  Widget _stepperButtons(BuildContext context,
+      {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+    Color cancelColor;
+
+    switch (Theme.of(context).brightness) {
+      case Brightness.light:
+        cancelColor = Colors.black54;
+        break;
+      case Brightness.dark:
+        cancelColor = Colors.white70;
+        break;
+    }
+
+    assert(cancelColor != null);
+
+    final ThemeData themeData = Theme.of(context);
+    final MaterialLocalizations localizations =
+        MaterialLocalizations.of(context);
+
+    return Container(
+      margin: const EdgeInsets.only(top: 16.0),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints.tightFor(height: 48.0),
+        child: Row(
+          children: <Widget>[
+            FlatButton(
+              onPressed: onStepContinue,
+              color: _isDark()
+                  ? themeData.backgroundColor
+                  : themeData.primaryColor,
+              textColor: Colors.white,
+              textTheme: ButtonTextTheme.normal,
+              child: _stepIndex == 3
+                  ? Text(Messages.of(context).saveButton)
+                  : Text(localizations.continueButtonLabel),
+            ),
+            Container(
+              margin: const EdgeInsetsDirectional.only(start: 8.0),
+              child: FlatButton(
+                onPressed: onStepCancel,
+                textColor: cancelColor,
+                textTheme: ButtonTextTheme.normal,
+                child: Text(localizations.cancelButtonLabel),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -127,6 +127,7 @@ class PlayerTile extends StatelessWidget {
                             Text(
                               state.player.name,
                               style: Theme.of(context).textTheme.headline6,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             (this.extra != null
                                 ? extra(playerUid)
@@ -145,6 +146,7 @@ class PlayerTile extends StatelessWidget {
                       title: Text(
                         state.player.name,
                         style: Theme.of(context).textTheme.headline6,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       leading: ConstrainedBox(
                         constraints:

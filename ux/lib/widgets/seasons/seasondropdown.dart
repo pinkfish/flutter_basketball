@@ -16,6 +16,7 @@ class SeasonDropDown extends StatelessWidget {
   final bool includeAll;
   final bool isExpanded;
   final bool includeDecorator;
+  final TextStyle style;
 
   static String noneValue = "none";
   static String allValue = "all";
@@ -26,7 +27,8 @@ class SeasonDropDown extends StatelessWidget {
       this.includeNone = false,
       this.includeDecorator = false,
       this.includeAll = false,
-      this.isExpanded = false});
+      this.isExpanded = false,
+      this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,10 @@ class SeasonDropDown extends StatelessWidget {
               items: [
                 DropdownMenuItem(
                   value: value,
-                  child: Text(Messages.of(context).loadingText),
+                  child: Text(
+                    Messages.of(context).loadingText,
+                    style: style ?? Theme.of(context).textTheme.headline6,
+                  ),
                 ),
               ],
               onChanged: onChanged,
@@ -73,13 +78,19 @@ class SeasonDropDown extends StatelessWidget {
           if (includeNone) {
             items.add(DropdownMenuItem(
               value: noneValue,
-              child: Text(Messages.of(context).emptyText),
+              child: Text(
+                Messages.of(context).emptyText,
+                style: style ?? Theme.of(context).textTheme.headline6,
+              ),
             ));
           }
           if (includeAll) {
             items.add(DropdownMenuItem(
               value: allValue,
-              child: Text(Messages.of(context).allSeasons),
+              child: Text(
+                Messages.of(context).allSeasons,
+                style: style ?? Theme.of(context).textTheme.headline6,
+              ),
             ));
           }
           return DropdownButton(
@@ -90,7 +101,10 @@ class SeasonDropDown extends StatelessWidget {
               ...state.seasons
                   .map((Season s) => DropdownMenuItem(
                         value: s.uid,
-                        child: Text(s.name),
+                        child: Text(
+                          s.name,
+                          style: style ?? Theme.of(context).textTheme.headline6,
+                        ),
                       ))
                   .toList(),
             ],

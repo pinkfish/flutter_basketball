@@ -12,10 +12,12 @@ import '../../messages.dart';
 class SeasonName extends StatelessWidget {
   final String seasonUid;
   final double textScaleFactor;
+  final TextStyle style;
 
   static Map<String, String> _nameCache = {};
 
-  SeasonName({@required this.seasonUid, this.textScaleFactor = 1.0});
+  SeasonName(
+      {@required this.seasonUid, this.textScaleFactor = 1.0, this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class SeasonName extends StatelessWidget {
                   !(state is SingleSeasonLoaded)) {
                 return Text(
                   _nameCache[seasonUid],
-                  style: Theme.of(context).textTheme.headline6,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,
@@ -43,6 +45,7 @@ class SeasonName extends StatelessWidget {
               if (state is SingleSeasonDeleted) {
                 return Text(
                   Messages.of(context).unknown,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   textScaleFactor: textScaleFactor,
                   overflow: TextOverflow.fade,
                   softWrap: false,
@@ -52,6 +55,7 @@ class SeasonName extends StatelessWidget {
               if (state is SingleSeasonUninitialized) {
                 return Text(
                   Messages.of(context).loadingText,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   textScaleFactor: textScaleFactor,
                   overflow: TextOverflow.fade,
                   softWrap: false,
@@ -62,7 +66,7 @@ class SeasonName extends StatelessWidget {
                 _nameCache[seasonUid] = state.season.name;
                 return Text(
                   state.season.name,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: style ?? Theme.of(context).textTheme.headline6,
                   overflow: TextOverflow.fade,
                   softWrap: false,
                   textScaleFactor: textScaleFactor,
@@ -71,6 +75,7 @@ class SeasonName extends StatelessWidget {
               }
               return Text(
                 Messages.of(context).unknown,
+                style: style ?? Theme.of(context).textTheme.headline6,
                 overflow: TextOverflow.fade,
                 softWrap: false,
                 textAlign: TextAlign.start,

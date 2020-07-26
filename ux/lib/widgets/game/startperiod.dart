@@ -124,7 +124,7 @@ class _StartPeriodState extends State<StartPeriod> {
               child: PlayerMultiselect(
                 game: widget.game,
                 season: widget.season,
-                selectedUids: selectedPlayers,
+                isSelected: (s) => selectedPlayers.contains(s),
                 selectPlayer: _selectPlayer,
                 orientation: widget.orientation,
               ),

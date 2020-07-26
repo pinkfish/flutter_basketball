@@ -40,9 +40,15 @@ class Messages {
   String get addGuestPlayerButton => Intl.message("GUEST",
       desc: "Button text for adding a guest player", locale: locale);
 
+  String get guestPlayersForGame => Intl.message("Guest players",
+      desc: "Title to show the guest players in the game", locale: locale);
+
   String get gameDetails => Intl.message("Details",
       desc: "Description of the form flow that has the game details",
       locale: locale);
+
+  String get noGuestPlayers => Intl.message("No guest players",
+      desc: "No guest players for the game", locale: locale);
 
   String get allSeasons => Intl.message("All Seasons",
       desc: "Tag on the dropdown to show all the seasons", locale: locale);

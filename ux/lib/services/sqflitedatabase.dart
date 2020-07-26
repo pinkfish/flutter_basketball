@@ -22,10 +22,30 @@ class SqlfliteDatabase extends BasketballDatabase {
   SqlfliteDatabase(this._sqldbRaw);
 
   @override
-  Future<String> addGame({Game game}) async {
+  Future<String> addGame({Game game, BuiltList<Player> guestPlayers}) async {
+    var player = Player((b) => b
+      ..name = game.opponentName.isEmpty ? "default" : game.opponentName
+      ..jerseyNumber = "xx");
     Database db = await _sqldbRaw.getDatabase();
     String uid = uuid.v5(Uuid.NAMESPACE_OID, SQLDBRaw.gamesTable);
-    Game newG = game.rebuild((b) => b..uid = uid);
+    var playerRef = uuid.v5(Uuid.NAMESPACE_OID, SQLDBRaw.playersTable);
+    player = player.rebuild((b) => b..uid = playerRef);
+    await db.insert(SQLDBRaw.playersTable, {
+      SQLDBRaw.indexColumn: playerRef,
+      SQLDBRaw.dataColumn: json.encode(player.toMap()),
+    });
+    _changeTableNotification(SQLDBRaw.playersTable, uid: uid);
+
+    // Add all the guest players and put them into the players list.
+    MapBuilder<String, PlayerGameSummary> players = MapBuilder();
+    await Future.wait(guestPlayers.map((p) async {
+      var uid = await addPlayer(player: p);
+      players[uid] = PlayerGameSummary((b) => b
+        ..currentlyPlaying = false
+        ..playing = true);
+    }));
+
+    Game newG = game.rebuild((b) => b..uid = uid..players = players);
     print('Inserting ${json.encode(newG.toMap())}');
     await db.insert(SQLDBRaw.gamesTable, {
       SQLDBRaw.indexColumn: uid,

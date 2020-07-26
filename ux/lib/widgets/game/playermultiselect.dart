@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../player/playertile.dart';
 
 typedef void PlayerSelectFunction(String uid, bool selected);
+typedef bool PlayerIsSelected(String uid);
 
 ///
 /// Shows the players as a nice grid to be able to select from to setup who
@@ -12,7 +13,7 @@ typedef void PlayerSelectFunction(String uid, bool selected);
 class PlayerMultiselect extends StatelessWidget {
   final Game game;
   final Season season;
-  final List<String> selectedUids;
+  final PlayerIsSelected isSelected;
   final PlayerSelectFunction selectPlayer;
   final Orientation orientation;
   final Map<String, Player> additionalPlayers;
@@ -30,8 +31,11 @@ class PlayerMultiselect extends StatelessWidget {
     }
     var ordered = players.toList();
     ordered.sort((String a, String b) {
-      PlayerGameSummary asum = game.players[a] ?? game.opponents[a] ?? additionalPlayers[a];
-      PlayerGameSummary bsum = game.players[b] ?? game.opponents[b] ?? additionalPlayers[b];
+      PlayerGameSummary asum = game.players[a] ?? game.opponents[a];
+      PlayerGameSummary bsum = game.players[b] ?? game.opponents[b];
+      if (asum == null || bsum == null) {
+        return 0;
+      }
       if (asum.currentlyPlaying) {
         return -1;
       }
@@ -47,20 +51,20 @@ class PlayerMultiselect extends StatelessWidget {
             child: PlayerTile(
               playerUid: playerUid,
               editButton: false,
-              color: selectedUids.contains(playerUid)
+              color: isSelected(playerUid)
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).primaryColor,
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 side: BorderSide(
-                  color: selectedUids.contains(playerUid)
+                  color: isSelected(playerUid)
                       ? Theme.of(context).indicatorColor
                       : Theme.of(context).primaryColor,
                   width: 3.0,
                 ),
               ),
               onTap: (String playerUid) =>
-                  selectPlayer(playerUid, selectedUids.contains(playerUid)),
+                  selectPlayer(playerUid, isSelected(playerUid)),
             ),
           ),
         )
@@ -70,7 +74,7 @@ class PlayerMultiselect extends StatelessWidget {
   PlayerMultiselect(
       {@required this.game,
       @required this.season,
-      @required this.selectedUids,
+      @required this.isSelected,
       @required this.selectPlayer,
       this.additionalPlayers,
       this.orientation = Orientation.portrait});
