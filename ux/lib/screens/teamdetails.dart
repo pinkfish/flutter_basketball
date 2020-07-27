@@ -5,6 +5,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/player/playertile.dart';
 import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:basketballstats/widgets/team/teamstats.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -23,8 +24,11 @@ import 'addplayerseason.dart';
 ///
 class TeamDetailsScreen extends StatefulWidget {
   final String teamUid;
+  final Trace loadTrace;
 
-  TeamDetailsScreen({@required this.teamUid});
+  TeamDetailsScreen({@required this.teamUid, Trace loadTrace})
+      : this.loadTrace =
+            loadTrace ?? FirebasePerformance.instance.newTrace("loadTeam");
 
   @override
   State<StatefulWidget> createState() {
@@ -35,6 +39,7 @@ class TeamDetailsScreen extends StatefulWidget {
 class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   Set<String> _expandedPanels = Set();
   bool _loaded = false;
+  bool _allLoaded = false;
   int _currentIndex = 0;
   String _seasonPlayers;
 
@@ -48,6 +53,11 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         ),
       );
     } else if (state.seasons.isEmpty) {
+      if (!_allLoaded) {
+        widget.loadTrace.incrementMetric("seasons", 0);
+        widget.loadTrace.stop();
+        _allLoaded = true;
+      }
       inner = Center(
         child: Text(
           Messages.of(context).noSeasons,
@@ -55,6 +65,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         ),
       );
     } else {
+      if (!_allLoaded) {
+        widget.loadTrace.incrementMetric("seasons", state.seasons.length);
+        widget.loadTrace.stop();
+      }
       inner = ExpansionPanelList(
         expansionCallback: (int index, bool expanded) {
           setState(() {
@@ -119,14 +133,22 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                   if (state is SingleSeasonDeleted) {
                     return DeletedWidget();
                   }
+                  if (!state.loadedPlayers) {
+                    BlocProvider.of<SingleSeasonBloc>(context)
+                        .add(SingleSeasonLoadPlayers());
+                    return LoadingWidget();
+                  }
+                  // Create a sorted list of players.
+                  List<Player> sorted = state.players.values.toList();
+                  sorted.sort((p1, p2) => p1.name.compareTo(p2.name));
                   return Column(
-                    children: state.season.playerUids.keys
-                        .map((String str) => PlayerTile(
-                              playerUid: str,
+                    children: sorted
+                        .map((Player p) => PlayerTile(
+                              player: p,
                               editButton: true,
-                              summary: state.season.playerUids[str],
+                              summary: state.season.playerUids[p.uid],
                               onTap: (String playerUid) => Navigator.pushNamed(
-                                  context, "/Player/View/" + str),
+                                  context, "/Player/View/" + p.uid),
                             ))
                         .toList(),
                   );

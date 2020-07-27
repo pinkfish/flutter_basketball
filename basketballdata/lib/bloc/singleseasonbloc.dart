@@ -16,15 +16,20 @@ import '../data/season/season.dart';
 abstract class SingleSeasonBlocState extends Equatable {
   final Season season;
   final BuiltList<Game> games;
+  final BuiltMap<String, Player> players;
   final bool loadedGames;
+  final bool loadedPlayers;
 
   SingleSeasonBlocState(
       {@required this.season,
       @required this.games,
-      @required this.loadedGames});
+      @required this.loadedGames,
+      @required this.players,
+      @required this.loadedPlayers});
 
   @override
-  List<Object> get props => [season, games, loadedGames];
+  List<Object> get props =>
+      [season, games, loadedGames, players, loadedPlayers];
 }
 
 ///
@@ -35,11 +40,15 @@ class SingleSeasonLoaded extends SingleSeasonBlocState {
       {@required SingleSeasonBlocState state,
       Season season,
       BuiltList<Game> games,
-      bool loadedGames})
+      bool loadedGames,
+      BuiltMap<String, Player> players,
+      bool loadedPlayers})
       : super(
             season: season ?? state.season,
             games: games ?? state.games,
-            loadedGames: loadedGames ?? state.loadedGames);
+            loadedGames: loadedGames ?? state.loadedGames,
+            players: players ?? state.players,
+            loadedPlayers: loadedPlayers ?? state.loadedPlayers);
 
   @override
   String toString() {
@@ -55,7 +64,9 @@ class SingleSeasonSaving extends SingleSeasonBlocState {
       : super(
             season: singleSeasonState.season,
             games: singleSeasonState.games,
-            loadedGames: singleSeasonState.loadedGames);
+            loadedGames: singleSeasonState.loadedGames,
+            players: singleSeasonState.players,
+            loadedPlayers: singleSeasonState.loadedPlayers);
 
   @override
   String toString() {
@@ -74,7 +85,9 @@ class SingleSeasonSaveFailed extends SingleSeasonBlocState {
       : super(
             season: singleSeasonState.season,
             games: singleSeasonState.games,
-            loadedGames: singleSeasonState.loadedGames);
+            loadedGames: singleSeasonState.loadedGames,
+            players: singleSeasonState.players,
+            loadedPlayers: singleSeasonState.loadedPlayers);
 
   @override
   String toString() {
@@ -87,7 +100,12 @@ class SingleSeasonSaveFailed extends SingleSeasonBlocState {
 ///
 class SingleSeasonDeleted extends SingleSeasonBlocState {
   SingleSeasonDeleted()
-      : super(season: null, games: BuiltList.of([]), loadedGames: false);
+      : super(
+            season: null,
+            games: BuiltList.of([]),
+            loadedGames: false,
+            players: BuiltMap.of({}),
+            loadedPlayers: false);
 
   @override
   String toString() {
@@ -100,7 +118,12 @@ class SingleSeasonDeleted extends SingleSeasonBlocState {
 ///
 class SingleSeasonUninitialized extends SingleSeasonBlocState {
   SingleSeasonUninitialized()
-      : super(season: null, games: BuiltList.of([]), loadedGames: false);
+      : super(
+            season: null,
+            games: BuiltList.of([]),
+            loadedGames: false,
+            players: BuiltMap.of({}),
+            loadedPlayers: false);
 
   @override
   String toString() {
@@ -164,6 +187,14 @@ class SingleSeasonLoadGames extends SingleSeasonEvent {
   List<Object> get props => null;
 }
 
+///
+/// Loads the players associated with this season.
+///
+class SingleSeasonLoadPlayers extends SingleSeasonEvent {
+  @override
+  List<Object> get props => null;
+}
+
 class _SingleSeasonNewSeason extends SingleSeasonEvent {
   final Season newSeason;
 
@@ -180,6 +211,15 @@ class _SingleSeasonUpdateGames extends SingleSeasonEvent {
 
   @override
   List<Object> get props => [games];
+}
+
+class _SingleSeasonUpdatePlayers extends SingleSeasonEvent {
+  final BuiltMap<String, Player> players;
+
+  _SingleSeasonUpdatePlayers({@required this.players});
+
+  @override
+  List<Object> get props => [players];
 }
 
 class _SingleSeasonDeleted extends SingleSeasonEvent {
@@ -199,9 +239,13 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
 
   StreamSubscription<Season> _seasonSub;
   StreamSubscription<BuiltList<Game>> _gameSub;
+  Map<String, StreamSubscription<Player>> _players;
+  Map<String, Player> _loadedPlayers;
 
   SingleSeasonBloc({@required this.db, @required this.seasonUid})
       : super(SingleSeasonUninitialized()) {
+    _players = {};
+    _loadedPlayers = {};
     _seasonSub = db.getSeason(seasonUid: seasonUid).listen((Season t) {
       if (t != null) {
         // Only send this if the season is not the same.
@@ -293,14 +337,54 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
           state: state, games: event.games, loadedGames: true);
     }
 
+    if (event is _SingleSeasonUpdatePlayers) {
+      yield SingleSeasonLoaded(
+          state: state, players: event.players, loadedPlayers: true);
+    }
+
     if (event is SingleSeasonLoadGames) {
       _lock.synchronized(() {
         _gameSub = db
             .getSeasonGames(seasonUid: this.seasonUid)
             .listen((BuiltList<Game> games) {
           add(_SingleSeasonUpdateGames(games: games));
+          if (state.loadedPlayers) {
+            // See if we need to load any of the game players too.
+            for (Game g in state.games) {
+              for (String playerUid in g.players.keys) {
+                if (!_players.containsKey(playerUid)) {
+                  _players[playerUid] = db
+                      .getPlayer(playerUid: playerUid)
+                      .listen(_onPlayerUpdated);
+                }
+              }
+            }
+          }
           _updateSeasonStats(games);
         });
+      });
+    }
+
+    if (event is SingleSeasonLoadPlayers) {
+      // Load all the player details for this season.
+      _lock.synchronized(() {
+        for (String playerUid in state.season.playerUids.keys) {
+          if (!_players.containsKey(playerUid)) {
+            _players[playerUid] =
+                db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdated);
+          }
+        }
+        if (state.loadedGames) {
+          // See if we need to load any of the game players too.
+          for (Game g in state.games) {
+            for (String playerUid in g.players.keys) {
+              if (!_players.containsKey(playerUid)) {
+                _players[playerUid] =
+                    db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdated);
+              }
+            }
+          }
+        }
       });
     }
   }
@@ -347,6 +431,15 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
 
       // Do an update.
       add(SingleSeasonUpdate(season: season.build()));
+    }
+  }
+
+  void _onPlayerUpdated(Player event) {
+    _loadedPlayers[event.uid] = event;
+    // Do updates after we are loaded.
+    if (_loadedPlayers.length == _players.length || state.loadedPlayers) {
+      // Loaded them all.
+      add(_SingleSeasonUpdatePlayers(players: BuiltMap.of(_loadedPlayers)));
     }
   }
 }

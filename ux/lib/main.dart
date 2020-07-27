@@ -7,6 +7,8 @@ import 'package:basketballstats/services/uploadfilesbackground.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_performance/firebase_performance.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,6 +22,8 @@ import 'services/mediastreaming.dart';
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() {
+  var trace = FirebasePerformance.instance.newTrace("startup");
+  trace.start();
   Bloc.observer = _SimpleBlocDelegate();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,13 +33,15 @@ void main() {
   // Send error logs up to crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  runApp(MyApp(false));
+  runApp(MyApp(false, trace, BasketballAppRouter.createRouter(trace)));
 }
 
 class MyApp extends StatelessWidget {
   final bool forceSql;
+  final Trace startupTrace;
+  final Router router;
 
-  MyApp(this.forceSql);
+  MyApp(this.forceSql, this.startupTrace, this.router);
 
   // This widget is the root of your application.
   @override
@@ -110,7 +116,7 @@ class MyApp extends StatelessWidget {
 
   Route<dynamic> _buildRoute(RouteSettings routeSettings) {
     print("${routeSettings.name}");
-    return AppRouter.instance.generator(routeSettings);
+    return router.generator(routeSettings);
   }
 }
 

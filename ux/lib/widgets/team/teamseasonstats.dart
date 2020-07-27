@@ -3,6 +3,8 @@ import 'package:basketballstats/widgets/player/playerdropdown.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
+import '../../messages.dart';
+
 enum ShowGameData {
   Points,
   Fouls,
@@ -41,39 +43,27 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
 
     ret.add(
       charts.Series<_CumulativeScore, DateTime>(
-        id: eventType.toString() + opponent.toString(),
+        id: _nameOfSeries(eventType, opponent),
         colorFn: (_, __) =>
             charts.Color(r: color.red, g: color.green, b: color.blue),
         domainFn: (_CumulativeScore e, _) => e.timestamp,
         measureFn: (_CumulativeScore e, _) => e.score,
         data: games.map((e) {
           int val = 0;
-          for (var uid in e.players.keys) {
-            var data = e.players[uid];
-            if (widget.playerUid == PlayerDropDown.allValue ||
-                widget.playerUid == uid) {
-              switch (eventType) {
-                case ShowGameData.Points:
-                  val += data.fullData.points;
-                  break;
-                case ShowGameData.Blocks:
-                  val += data.fullData.blocks;
-                  break;
-                case ShowGameData.Rebounds:
-                  val += data.fullData.offensiveRebounds +
-                      data.fullData.defensiveRebounds;
-                  break;
-                case ShowGameData.Turnovers:
-                  val += data.fullData.turnovers;
-                  break;
-                case ShowGameData.Fouls:
-                  val += data.fullData.fouls;
-                  break;
-                case ShowGameData.Steals:
-                  val += data.fullData.steals;
-                  break;
-                default:
-                  break;
+          if (opponent) {
+            for (var uid in e.opponents.keys) {
+              var data = e.opponents[uid];
+              if (widget.playerUid == PlayerDropDown.allValue ||
+                  widget.playerUid == uid) {
+                val += _numByType(eventType, data);
+              }
+            }
+          } else {
+            for (var uid in e.players.keys) {
+              var data = e.players[uid];
+              if (widget.playerUid == PlayerDropDown.allValue ||
+                  widget.playerUid == uid) {
+                val += _numByType(eventType, data);
               }
             }
           }
@@ -83,6 +73,47 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
       ),
     );
     return ret;
+  }
+
+  int _numByType(ShowGameData eventType, PlayerGameSummary data) {
+    switch (eventType) {
+      case ShowGameData.Points:
+        return data.fullData.points;
+      case ShowGameData.Blocks:
+        return data.fullData.blocks;
+      case ShowGameData.Rebounds:
+        return data.fullData.offensiveRebounds +
+            data.fullData.defensiveRebounds;
+      case ShowGameData.Turnovers:
+        return data.fullData.turnovers;
+      case ShowGameData.Fouls:
+        return data.fullData.fouls;
+      case ShowGameData.Steals:
+        return data.fullData.steals;
+      default:
+        return 0;
+    }
+  }
+
+  String _nameOfSeries(ShowGameData type, bool opponent) {
+    switch (type) {
+      case ShowGameData.Points:
+        return Messages.of(context).points;
+      case ShowGameData.Fouls:
+        return Messages.of(context).fouls;
+      case ShowGameData.Turnovers:
+        return Messages.of(context).turnovers;
+      case ShowGameData.Steals:
+        return Messages.of(context).steals;
+      case ShowGameData.Blocks:
+        return Messages.of(context).blocks;
+      case ShowGameData.MadePerentage:
+        return Messages.of(context).points;
+      case ShowGameData.Rebounds:
+        return Messages.of(context).rebounds;
+      case ShowGameData.All:
+        return Messages.of(context).unknown;
+    }
   }
 
   List<charts.Series<_CumulativeScore, DateTime>> _getSeries() {
@@ -122,10 +153,13 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
     var behaviours = <charts.ChartBehavior<dynamic>>[
       charts.SlidingViewport(),
       charts.PanAndZoomBehavior(),
-      charts.LinePointHighlighter()
+      charts.LinePointHighlighter(),
+      charts.SeriesLegend(
+        desiredMaxRows: 2,
+        desiredMaxColumns: 3,
+      ),
     ];
 
-    /*
     if (widget.state.games.length > 0) {
       behaviours.add(charts.RangeAnnotation(widget.state.games
           .map(
@@ -137,8 +171,6 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
           )
           .toList()));
     }
-
-     */
 
     return charts.TimeSeriesChart(
       _getSeries(),
@@ -162,6 +194,7 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
           ),
         ),
       ),
+
       behaviors: behaviours,
       // behaviors: _getAnnotations(),
     );

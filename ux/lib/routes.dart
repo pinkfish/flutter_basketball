@@ -2,6 +2,7 @@ import 'package:basketballstats/screens/addmediafromurl.dart';
 import 'package:basketballstats/screens/addmediaphoto.dart';
 import 'package:basketballstats/screens/addmediastream.dart';
 import 'package:basketballstats/screens/gamevideoplayer.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -28,17 +29,8 @@ import 'screens/teams.dart';
 ///
 /// Router for all the exciting routers in the app.
 ///
-class AppRouter {
-  static Router myRouter;
-
-  static Router get instance {
-    if (myRouter == null) {
-      myRouter = _setupRoutes();
-    }
-    return myRouter;
-  }
-
-  static Router _setupRoutes() {
+class BasketballAppRouter {
+  static Router createRouter(Trace startTrace) {
     Router router = Router();
     router.define("/Home/Splash",
         handler: Handler(
@@ -47,7 +39,7 @@ class AppRouter {
     router.define("/Team/List",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
-                TeamsScreen()));
+                TeamsScreen(startTrace)));
     router.define("/Team/Add",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

@@ -16,6 +16,7 @@ typedef Widget PlayerExtraFunc(String playerUid);
 ///
 class PlayerTile extends StatelessWidget {
   final String playerUid;
+  final Player player;
   final PlayerCallbackFunc onTap;
   final bool editButton;
   final Color color;
@@ -25,17 +26,22 @@ class PlayerTile extends StatelessWidget {
   final PlayerSeasonSummary summary;
 
   PlayerTile(
-      {@required this.playerUid,
+      {this.playerUid,
+      this.player,
       this.onTap,
       this.editButton = true,
       this.color,
       this.summary,
       this.shape,
       this.extra,
-      this.compactDisplay = false});
+      this.compactDisplay = false})
+      : assert(player != null || playerUid != null);
 
   @override
   Widget build(BuildContext context) {
+    if (player != null) {
+      return _loadedData(context, player);
+    }
     return BlocProvider(
       create: (BuildContext context) => SinglePlayerBloc(
           playerUid: this.playerUid,
@@ -90,100 +96,7 @@ class PlayerTile extends StatelessWidget {
                   );
                 }
                 if (state is SinglePlayerLoaded) {
-                  if (compactDisplay) {
-                    return GestureDetector(
-                      onTap: () => onTap != null ? onTap(playerUid) : null,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: color,
-                          border: shape,
-                        ),
-                        child: Row(
-                          children: [
-                            ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  height: 40.0, width: 40.0),
-                              child: Container(
-                                child: Center(
-                                  child: Text(
-                                    state.player.jerseyNumber,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .caption
-                                        .copyWith(
-                                          color: Theme.of(context).accentColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                        ),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Theme.of(context).primaryColor),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              state.player.name,
-                              style: Theme.of(context).textTheme.headline6,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            (this.extra != null
-                                ? extra(playerUid)
-                                : SizedBox(width: 0)),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-
-                  return Card(
-                    color: color,
-                    shape: shape,
-                    child: ListTile(
-                      onTap: onTap != null ? () => onTap(playerUid) : null,
-                      title: Text(
-                        state.player.name,
-                        style: Theme.of(context).textTheme.headline6,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      leading: ConstrainedBox(
-                        constraints:
-                            BoxConstraints.tightFor(height: 40.0, width: 40.0),
-                        child: Container(
-                          child: Center(
-                            child: Text(
-                              state.player.jerseyNumber,
-                              style:
-                                  Theme.of(context).textTheme.caption.copyWith(
-                                        color: Theme.of(context).accentColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        ),
-                      ),
-                      subtitle: summary != null
-                          ? Text(
-                              Messages.of(context).seasonSummary(summary),
-                            )
-                          : null,
-                      trailing: editButton
-                          ? IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () => Navigator.pushNamed(
-                                  context, "/Player/Edit/" + state.player.uid),
-                            )
-                          : null,
-                    ),
-                  );
+                  return _loadedData(context, state.player);
                 }
                 return Card(
                   color: color,
@@ -202,6 +115,93 @@ class PlayerTile extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _loadedData(BuildContext context, Player player) {
+    if (compactDisplay) {
+      return GestureDetector(
+        onTap: () => onTap != null ? onTap(player.uid) : null,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            border: shape,
+          ),
+          child: Row(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints.tightFor(height: 40.0, width: 40.0),
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      player.jerseyNumber,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ),
+              Text(
+                player.name,
+                style: Theme.of(context).textTheme.headline6,
+                overflow: TextOverflow.ellipsis,
+              ),
+              (this.extra != null ? extra(player.uid) : SizedBox(width: 0)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Card(
+      color: color,
+      shape: shape,
+      child: ListTile(
+        onTap: onTap != null ? () => onTap(player.uid) : null,
+        title: Text(
+          player.name,
+          style: Theme.of(context).textTheme.headline6,
+          overflow: TextOverflow.ellipsis,
+        ),
+        leading: ConstrainedBox(
+          constraints: BoxConstraints.tightFor(height: 40.0, width: 40.0),
+          child: Container(
+            child: Center(
+              child: Text(
+                player.jerseyNumber,
+                style: Theme.of(context).textTheme.caption.copyWith(
+                      color: Theme.of(context).accentColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                    ),
+              ),
+            ),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Theme.of(context).primaryColor),
+            ),
+          ),
+        ),
+        subtitle: summary != null
+            ? Text(
+                Messages.of(context).seasonSummary(summary),
+              )
+            : null,
+        trailing: editButton
+            ? IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () =>
+                    Navigator.pushNamed(context, "/Player/Edit/" + player.uid),
+              )
+            : null,
       ),
     );
   }

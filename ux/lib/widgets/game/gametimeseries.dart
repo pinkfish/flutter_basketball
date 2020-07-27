@@ -41,7 +41,7 @@ class _GameTimeseriesData extends State<GameTimeseries> {
     int total = 0;
     bool first = false;
     return charts.Series<_CumulativeScore, Duration>(
-      id: eventType.toString() + opponent.toString(),
+      id: _nameOfSeries(eventType, opponent),
       colorFn: (_, __) =>
           charts.Color(r: color.red, g: color.green, b: color.blue),
       domainFn: (_CumulativeScore e, _) =>
@@ -239,6 +239,21 @@ class _GameTimeseriesData extends State<GameTimeseries> {
     );
   }
 
+  String _nameOfSeries(GameEventType type, bool opponent) {
+    switch (type) {
+      case GameEventType.Foul:
+        return Messages.of(context).fouls + (opponent ? " (op)" : "");
+      case GameEventType.Turnover:
+        return Messages.of(context).turnovers + (opponent ? " (op)" : "");
+      case GameEventType.Steal:
+        return Messages.of(context).steals + (opponent ? " (op)" : "");
+      case GameEventType.Block:
+        return Messages.of(context).blocks + (opponent ? " (op)" : "");
+      default:
+        return Messages.of(context).unknown + (opponent ? " (op)" : "");
+    }
+  }
+
   Widget _middleSectionWidget() {
     if (_showTimeSeries) {
       return GameEventList(
@@ -251,7 +266,11 @@ class _GameTimeseriesData extends State<GameTimeseries> {
     var behaviours = <charts.ChartBehavior<dynamic>>[
       charts.SlidingViewport(),
       charts.PanAndZoomBehavior(),
-      charts.LinePointHighlighter()
+      charts.LinePointHighlighter(),
+      charts.SeriesLegend(
+        desiredMaxColumns: 3,
+        desiredMaxRows: 3,
+      ),
     ];
 
     if (periods.length > 0) {

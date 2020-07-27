@@ -1,6 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:basketballstats/services/loginbloc.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,10 @@ import '../widgets/statsdrawer.dart';
 import '../widgets/team/teamwidget.dart';
 
 class TeamsScreen extends StatelessWidget {
+  final Trace startTrace;
+
+  TeamsScreen(this.startTrace);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +31,8 @@ class TeamsScreen extends StatelessWidget {
             builder: (BuildContext context, AuthenticationState authState) {
               print("State $authState");
               if (authState is AuthenticationLoggedInUnverified) {
+                startTrace.putAttribute("state", "unverified");
+                startTrace.stop();
                 // Say you need to verify first.
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -56,6 +63,13 @@ class TeamsScreen extends StatelessWidget {
                       return Text(Messages.of(context).loadingText);
                     }
                     if (state is TeamsBlocLoaded) {
+                      startTrace.putAttribute(
+                          "state",
+                          authState is AuthenticationLoggedIn
+                              ? "LoggedIn"
+                              : "Local");
+                      startTrace.incrementMetric("teams", state.teams.length);
+                      startTrace.stop();
                       if (state.teams.isEmpty) {
                         return Center(
                           child: Text(Messages.of(context).noTeams),
