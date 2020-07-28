@@ -27,9 +27,13 @@ class GameDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SingleGameBloc>(
-      create: (BuildContext context) => SingleGameBloc(
-          gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SingleGameBloc>(
+          create: (BuildContext context) => SingleGameBloc(
+              gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
+        ),
+      ],
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
           return BlocConsumer(
@@ -45,6 +49,10 @@ class GameDetailsScreen extends StatelessWidget {
               if (state is SingleGameLoaded && !state.loadedMedia) {
                 BlocProvider.of<SingleGameBloc>(context)
                     .add(SingleGameLoadMedia());
+              }
+              if (state is SingleGameLoaded && !state.loadedPlayers) {
+                BlocProvider.of<SingleGameBloc>(context)
+                    .add(SingleGameLoadPlayers());
               }
             },
             builder: (BuildContext context, SingleGameState state) {
@@ -403,7 +411,11 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       if (state.game.players.isEmpty) {
         return Text(Messages.of(context).noPlayers);
       }
-      return PlayerDataTable(game: state.game, orientation: widget.orientation);
+      if (!state.loadedPlayers) {
+        return LoadingWidget();
+      }
+      return PlayerDataTable(
+           game: state, orientation: widget.orientation);
       //return PlayerList(game: state.game, orientation: widget.orientation);
     } else if (_currentIndex == 2) {
       return Column(

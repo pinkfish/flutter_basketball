@@ -13,8 +13,8 @@ import '../data/game/gameevent.dart';
 import '../data/game/gameeventtype.dart';
 import '../data/game/gameperiod.dart';
 import '../data/game/gamesummary.dart';
-import '../data/player/player.dart';
 import '../data/game/playergamesummary.dart';
+import '../data/player/player.dart';
 import '../data/player/playersummarydata.dart';
 import '../db/basketballdatabase.dart';
 
@@ -27,17 +27,28 @@ abstract class SingleGameState extends Equatable {
   final BuiltList<GameEvent> gameEvents;
   final bool loadedMedia;
   final BuiltList<MediaInfo> media;
+  final bool loadedPlayers;
+  final BuiltMap<String, Player> players;
 
   SingleGameState(
       {@required this.game,
       @required this.loadedGameEvents,
       @required this.gameEvents,
       @required this.loadedMedia,
-      @required this.media});
+      @required this.media,
+      @required this.loadedPlayers,
+      @required this.players});
 
   @override
-  List<Object> get props =>
-      [game, loadedGameEvents, gameEvents, loadedMedia, media];
+  List<Object> get props => [
+        game,
+        loadedGameEvents,
+        gameEvents,
+        loadedMedia,
+        media,
+        loadedPlayers,
+        players
+      ];
 }
 
 ///
@@ -50,13 +61,17 @@ class SingleGameLoaded extends SingleGameState {
       BuiltList<GameEvent> gameEvents,
       SingleGameState state,
       bool loadedMedia,
-      BuiltList<MediaInfo> media})
+      BuiltList<MediaInfo> media,
+      bool loadedPlayers,
+      BuiltMap<String, Player> players})
       : super(
             game: game ?? state.game,
             loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
             gameEvents: gameEvents ?? state.gameEvents,
             loadedMedia: loadedMedia ?? state.loadedMedia,
-            media: media ?? state.media);
+            media: media ?? state.media,
+            loadedPlayers: loadedPlayers ?? state.loadedPlayers,
+            players: players ?? state.players);
 
   @override
   String toString() {
@@ -83,7 +98,9 @@ class SingleGameChangeEvents extends SingleGameState {
             loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
             gameEvents: gameEvents ?? state.gameEvents,
             loadedMedia: state.loadedMedia,
-            media: state.media);
+            media: state.media,
+            players: state.players,
+            loadedPlayers: state.loadedPlayers);
 
   @override
   String toString() {
@@ -101,11 +118,14 @@ class SingleGameChangeEvents extends SingleGameState {
 class SingleGameSaving extends SingleGameState {
   SingleGameSaving({@required SingleGameState singleGameState})
       : super(
-            game: singleGameState.game,
-            loadedGameEvents: singleGameState.loadedGameEvents,
-            gameEvents: singleGameState.gameEvents,
-            loadedMedia: singleGameState.loadedMedia,
-            media: singleGameState.media);
+          game: singleGameState.game,
+          loadedGameEvents: singleGameState.loadedGameEvents,
+          gameEvents: singleGameState.gameEvents,
+          loadedMedia: singleGameState.loadedMedia,
+          media: singleGameState.media,
+          loadedPlayers: singleGameState.loadedPlayers,
+          players: singleGameState.players,
+        );
 
   @override
   String toString() {
@@ -121,11 +141,14 @@ class SingleGameSaveFailed extends SingleGameState {
 
   SingleGameSaveFailed({@required SingleGameState singleGameState, this.error})
       : super(
-            game: singleGameState.game,
-            loadedGameEvents: singleGameState.loadedGameEvents,
-            gameEvents: singleGameState.gameEvents,
-            loadedMedia: singleGameState.loadedMedia,
-            media: singleGameState.media);
+          game: singleGameState.game,
+          loadedGameEvents: singleGameState.loadedGameEvents,
+          gameEvents: singleGameState.gameEvents,
+          loadedMedia: singleGameState.loadedMedia,
+          media: singleGameState.media,
+          loadedPlayers: singleGameState.loadedPlayers,
+          players: singleGameState.players,
+        );
 
   @override
   String toString() {
@@ -143,7 +166,9 @@ class SingleGameDeleted extends SingleGameState {
             loadedGameEvents: false,
             gameEvents: BuiltList.of([]),
             loadedMedia: false,
-            media: BuiltList.of([]));
+            media: BuiltList.of([]),
+            loadedPlayers: false,
+            players: BuiltMap.of({}));
 
   @override
   String toString() {
@@ -161,7 +186,9 @@ class SingleGameUninitialized extends SingleGameState {
             loadedGameEvents: false,
             gameEvents: BuiltList.of([]),
             loadedMedia: false,
-            media: BuiltList.of([]));
+            media: BuiltList.of([]),
+            loadedPlayers: false,
+            players: BuiltMap.of({}));
 }
 
 abstract class SingleGameEvent extends Equatable {}
@@ -282,6 +309,14 @@ class SingleGameLoadMedia extends SingleGameEvent {
   List<Object> get props => [];
 }
 
+///
+/// Loads the players associated with this game.
+///
+class SingleGameLoadPlayers extends SingleGameEvent {
+  @override
+  List<Object> get props => null;
+}
+
 class _SingleGameNewGame extends SingleGameEvent {
   final Game newGame;
 
@@ -319,6 +354,15 @@ class _SingleGameDeleted extends SingleGameEvent {
   List<Object> get props => [];
 }
 
+class _SingleGameUpdatePlayers extends SingleGameEvent {
+  final BuiltMap<String, Player> players;
+
+  _SingleGameUpdatePlayers({@required this.players});
+
+  @override
+  List<Object> get props => [players];
+}
+
 ///
 /// Bloc to handle updates and state of a specific game.
 ///
@@ -332,9 +376,14 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
   StreamSubscription<BuiltList<MediaInfo>> _mediaInfoSub;
 
+  Map<String, StreamSubscription<Player>> _players;
+  Map<String, Player> _loadedPlayers;
+
   SingleGameBloc({@required this.db, @required this.gameUid})
       : super(SingleGameUninitialized()) {
     _gameSub = db.getGame(gameUid: gameUid).listen(_onGameUpdate);
+    _players = {};
+    _loadedPlayers = {};
   }
 
   void _onGameUpdate(Game g) {
@@ -355,6 +404,11 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     _gameEventSub = null;
     _mediaInfoSub?.cancel();
     _mediaInfoSub = null;
+    for (var s in _players.values) {
+      s.cancel();
+    }
+    _players.clear();
+    _loadedPlayers.clear();
     await super.close();
   }
 
@@ -512,6 +566,32 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         Crashlytics.instance.recordError(error, stack);
         yield SingleGameSaveFailed(singleGameState: state, error: error);
       }
+    }
+
+    if (event is SingleGameLoadPlayers) {
+      // Load all the player details for this season.
+      _lock.synchronized(() {
+        for (String playerUid in state.game.players.keys) {
+          if (!_players.containsKey(playerUid)) {
+            _players[playerUid] =
+                db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdated);
+          }
+        }
+      });
+    }
+
+    if (event is _SingleGameUpdatePlayers) {
+      yield SingleGameLoaded(
+          state: state, players: event.players, loadedPlayers: true);
+    }
+  }
+
+  void _onPlayerUpdated(Player event) {
+    _loadedPlayers[event.uid] = event;
+    // Do updates after we are loaded.
+    if (_loadedPlayers.length == _players.length || state.loadedPlayers) {
+      // Loaded them all.
+      add(_SingleGameUpdatePlayers(players: BuiltMap.of(_loadedPlayers)));
     }
   }
 

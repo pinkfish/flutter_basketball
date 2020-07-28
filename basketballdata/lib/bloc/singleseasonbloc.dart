@@ -262,6 +262,11 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
   Future<void> close() async {
     _seasonSub?.cancel();
     _gameSub?.cancel();
+    for (var s in _players.values) {
+      s.cancel();
+    }
+    _players.clear();
+    _loadedPlayers.clear();
     await super.close();
   }
 

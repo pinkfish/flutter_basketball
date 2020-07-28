@@ -114,6 +114,7 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
       case ShowGameData.All:
         return Messages.of(context).unknown;
     }
+    return Messages.of(context).unknown;
   }
 
   List<charts.Series<_CumulativeScore, DateTime>> _getSeries() {

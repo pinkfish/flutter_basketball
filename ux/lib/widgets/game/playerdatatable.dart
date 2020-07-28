@@ -10,9 +10,9 @@ import '../../messages.dart';
 ///
 class PlayerDataTable extends StatefulWidget {
   final Orientation orientation;
-  final Game game;
+  final SingleGameState game;
 
-  PlayerDataTable({this.orientation, this.game});
+  PlayerDataTable({@required this.orientation, @required this.game});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,6 +21,7 @@ class PlayerDataTable extends StatefulWidget {
 }
 
 enum SortPlayerBy {
+  Name,
   Points,
   Fouls,
   Turnovers,
@@ -39,8 +40,18 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
   @override
   Widget build(BuildContext context) {
     List<String> sortedList = widget.game.players.keys.toList();
-    sortedList.sort((String u1, String u2) =>
-        _sortFunction(widget.game.players[u1], widget.game.players[u2]));
+    if (_sortBy == SortPlayerBy.Name) {
+      if (_ascending) {
+        sortedList.sort((String u1, String u2) => widget.game.players[u1].name
+            .compareTo(widget.game.players[u2].name));
+      } else {
+        sortedList.sort((String u1, String u2) => widget.game.players[u2].name
+            .compareTo(widget.game.players[u1].name));
+      }
+    } else {
+      sortedList.sort((String u1, String u2) => _sortFunction(
+          widget.game.game.players[u1], widget.game.game.players[u2]));
+    }
     double scale = widget.orientation == Orientation.portrait ? 1.0 : 1.5;
     var style = Theme.of(context)
         .textTheme
@@ -107,6 +118,11 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       textScaleFactor: scale,
                       style: style,
                     ),
+                    onSort: (int column, bool ascending) => setState(() {
+                      _sortBy = SortPlayerBy.Name;
+                      _sortColumnIndex = column;
+                      _ascending = ascending;
+                    }),
                   ),
                   DataColumn(
                     label: Text(
@@ -115,9 +131,9 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       style: style,
                     ),
                     numeric: true,
-                    onSort: (int colum, bool ascending) => setState(() {
+                    onSort: (int column, bool ascending) => setState(() {
                       _sortBy = SortPlayerBy.Points;
-                      _sortColumnIndex = colum;
+                      _sortColumnIndex = column;
                       _ascending = ascending;
                     }),
                   ),
@@ -128,9 +144,9 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       style: style,
                     ),
                     numeric: true,
-                    onSort: (int colum, bool ascending) => setState(() {
+                    onSort: (int column, bool ascending) => setState(() {
                       _sortBy = SortPlayerBy.MadePerentage;
-                      _sortColumnIndex = colum;
+                      _sortColumnIndex = column;
                       _ascending = ascending;
                     }),
                   ),
@@ -141,9 +157,9 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       style: style,
                     ),
                     numeric: true,
-                    onSort: (int colum, bool ascending) => setState(() {
+                    onSort: (int column, bool ascending) => setState(() {
                       _sortBy = SortPlayerBy.Fouls;
-                      _sortColumnIndex = colum;
+                      _sortColumnIndex = column;
                       _ascending = ascending;
                     }),
                   ),
@@ -154,9 +170,9 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       style: style,
                     ),
                     numeric: true,
-                    onSort: (int colum, bool ascending) => setState(() {
+                    onSort: (int column, bool ascending) => setState(() {
                       _sortBy = SortPlayerBy.Turnovers;
-                      _sortColumnIndex = colum;
+                      _sortColumnIndex = column;
                       _ascending = ascending;
                     }),
                   ),
@@ -167,9 +183,9 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       style: style,
                     ),
                     numeric: true,
-                    onSort: (int colum, bool ascending) => setState(() {
+                    onSort: (int column, bool ascending) => setState(() {
                       _sortBy = SortPlayerBy.Rebounds;
-                      _sortColumnIndex = colum;
+                      _sortColumnIndex = column;
                       _ascending = ascending;
                     }),
                   ),
@@ -180,16 +196,16 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                       style: style,
                     ),
                     numeric: true,
-                    onSort: (int colum, bool ascending) => setState(() {
+                    onSort: (int column, bool ascending) => setState(() {
                       _sortBy = SortPlayerBy.Blocks;
-                      _sortColumnIndex = colum;
+                      _sortColumnIndex = column;
                       _ascending = ascending;
                     }),
                   ),
                 ],
                 rows: sortedList
                     .expand((String s) => _playerSummary(
-                        s, widget.game.players[s], widget.orientation))
+                        s, widget.game.game.players[s], widget.orientation))
                     .toList(),
               ),
             ),
@@ -255,6 +271,9 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
             0) {
           return -1;
         }
+        break;
+      case SortPlayerBy.Name:
+        return 0;
     }
     return 0;
   }
@@ -301,7 +320,7 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
                   ),
                 )),
           onTap: () => Navigator.pushNamed(
-              context, "/Game/Player/" + widget.game.uid + "/" + uid),
+              context, "/Game/Player/" + widget.game.game.uid + "/" + uid),
         ),
         DataCell(
           Text(
