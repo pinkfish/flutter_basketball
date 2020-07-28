@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuple/tuple.dart';
-import 'package:undo/undo.dart';
+import 'package:undo/undo.dart' as undo;
 
 import '../messages.dart';
 
@@ -31,7 +31,7 @@ class GameStatsScreen extends StatelessWidget {
   final String gameUid;
   final String seasonUid;
   final String teamUid;
-  final ChangeStack stack = new ChangeStack();
+  final undo.ChangeStack stack = new undo.ChangeStack();
 
   GameStatsScreen(this.gameUid, this.seasonUid, this.teamUid);
 
@@ -361,7 +361,7 @@ class GameStatsScreen extends StatelessWidget {
 
   Widget _buildSubButtons(BuildContext context, Orientation orientation) {
     return BlocBuilder(
-        bloc: BlocProvider.of<SingleGameBloc>(context),
+        cubit: BlocProvider.of<SingleGameBloc>(context),
         builder: (BuildContext context, SingleGameState state) {
           if (state is SingleGameUninitialized) {
             return LoadingWidget();
@@ -453,7 +453,7 @@ class GameStatsScreen extends StatelessWidget {
                 AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
               child: BlocConsumer(
-                bloc: BlocProvider.of<SingleGameBloc>(context),
+                cubit: BlocProvider.of<SingleGameBloc>(context),
                 listener: (BuildContext context, SingleGameState state) {
                   if (!state.loadedGameEvents) {
                     BlocProvider.of<SingleGameBloc>(context)
@@ -481,7 +481,7 @@ class GameStatsScreen extends StatelessWidget {
                                   GameEventType.PeriodEnd)) ||
                       state.game?.currentPeriod == GamePeriod.NotStarted) {
                     return BlocBuilder(
-                      bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                      cubit: BlocProvider.of<SingleSeasonBloc>(context),
                       builder: (BuildContext context,
                           SingleSeasonBlocState seasonState) {
                         if (seasonState is SingleSeasonUninitialized) {
@@ -592,7 +592,7 @@ class GameStatsScreen extends StatelessWidget {
 }
 
 class _GameStateSection extends StatelessWidget {
-  final ChangeStack stack;
+  final undo.ChangeStack stack;
   final Orientation orientation;
   final SelectCallback selectCallback;
 
@@ -601,7 +601,7 @@ class _GameStateSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      bloc: BlocProvider.of<SingleGameBloc>(context),
+      cubit: BlocProvider.of<SingleGameBloc>(context),
       builder: (BuildContext context, SingleGameState state) {
         if (state is SingleGameUninitialized) {
           return LoadingWidget();
@@ -702,7 +702,7 @@ class _GameStateSection extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               BlocBuilder(
-                                  bloc:
+                                  cubit:
                                       BlocProvider.of<SingleTeamBloc>(context),
                                   builder: (BuildContext context,
                                       SingleTeamBlocState teamState) {
@@ -814,7 +814,7 @@ class _GameStateSection extends StatelessWidget {
   }
 }
 
-class _GameEventChange extends Change {
+class _GameEventChange extends undo.Change {
   final SingleGameBloc bloc;
   final GameEvent ev;
   bool ignored = false;

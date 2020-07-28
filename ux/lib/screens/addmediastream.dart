@@ -39,7 +39,7 @@ class AddMediaStreamGameScreen extends StatelessWidget {
         ),
         child: Builder(
           builder: (BuildContext context) => BlocBuilder(
-            bloc: BlocProvider.of<SingleGameBloc>(context),
+            cubit: BlocProvider.of<SingleGameBloc>(context),
             builder: (BuildContext context, SingleGameState state) =>
                 _AddMediaStreamGameInside(state),
           ),
@@ -163,7 +163,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
           _bloc.state.mediaInfo.rtmpUrl.toString(), _bloc.state.mediaInfo);
     }
     return BlocConsumer(
-      bloc: _bloc,
+      cubit: _bloc,
       listener: (BuildContext context, SingleMediaInfoState state) {
         if (state is SingleMediaInfoLoaded &&
             !_controller.value.isStreamingVideoRtmp) {

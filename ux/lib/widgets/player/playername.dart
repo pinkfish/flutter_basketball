@@ -29,7 +29,7 @@ class PlayerName extends StatelessWidget {
       child: Builder(
         builder: (BuildContext context) {
           return BlocBuilder(
-            bloc: BlocProvider.of<SinglePlayerBloc>(context),
+            cubit: BlocProvider.of<SinglePlayerBloc>(context),
             builder: (BuildContext context, SinglePlayerState state) {
               if (_nameCache.containsKey(playerUid) &&
                   !(state is SinglePlayerLoaded)) {

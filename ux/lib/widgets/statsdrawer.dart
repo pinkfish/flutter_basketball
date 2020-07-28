@@ -38,7 +38,7 @@ class StatsDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           BlocBuilder(
-            bloc: BlocProvider.of<AuthenticationBloc>(context),
+            cubit: BlocProvider.of<AuthenticationBloc>(context),
             builder: (BuildContext context, AuthenticationState state) {
               if (state is AuthenticationLoggedIn ||
                   state is AuthenticationLoggedInUnverified) {
@@ -62,7 +62,7 @@ class StatsDrawer extends StatelessWidget {
             },
           ),
           BlocBuilder(
-            bloc: BlocProvider.of<AuthenticationBloc>(context),
+            cubit: BlocProvider.of<AuthenticationBloc>(context),
             builder: (BuildContext context, AuthenticationState state) {
               if (state is AuthenticationLoggedInUnverified) {
                 return Column(

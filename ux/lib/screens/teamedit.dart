@@ -20,7 +20,7 @@ class TeamEditScreen extends StatelessWidget {
           db: RepositoryProvider.of<BasketballDatabase>(context)),
       child: Builder(
         builder: (BuildContext context) => BlocBuilder(
-          bloc: BlocProvider.of<SingleTeamBloc>(context),
+          cubit: BlocProvider.of<SingleTeamBloc>(context),
           builder: (BuildContext context, SingleTeamBlocState state) =>
               Scaffold(
             appBar: AppBar(
@@ -67,7 +67,7 @@ class _EditTeamFormState extends State<_EditTeamForm> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: BlocProvider.of<SingleTeamBloc>(context),
+      cubit: BlocProvider.of<SingleTeamBloc>(context),
       listener: (BuildContext context, SingleTeamBlocState state) {
         if (state is SingleTeamSaveSuccessful) {
           print("Pop add done");

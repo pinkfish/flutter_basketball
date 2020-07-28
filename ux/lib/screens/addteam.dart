@@ -52,7 +52,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: BlocProvider.of<AddTeamBloc>(context),
+      cubit: BlocProvider.of<AddTeamBloc>(context),
       listener: (BuildContext context, AddItemState state) {
         if (state is AddItemDone) {
           print("Pop add done");
@@ -64,7 +64,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
         }
       },
       child: BlocBuilder(
-        bloc: BlocProvider.of<AddTeamBloc>(context),
+        cubit: BlocProvider.of<AddTeamBloc>(context),
         builder: (BuildContext context, AddItemState state) {
           return SavingOverlay(
             saving: state is AddItemSaving,
@@ -77,12 +77,8 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                     key: Key("teamFormField"),
                     decoration: InputDecoration(
                       icon: Icon(Icons.people),
-                      hintText: Messages
-                          .of(context)
-                          .teamName,
-                      labelText: Messages
-                          .of(context)
-                          .teamName,
+                      hintText: Messages.of(context).teamName,
+                      labelText: Messages.of(context).teamName,
                     ),
                     onSaved: (String str) {
                       _name = str;
@@ -91,9 +87,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                     autovalidate: false,
                     validator: (String str) {
                       if (str == null || str == '') {
-                        return Messages
-                            .of(context)
-                            .emptyText;
+                        return Messages.of(context).emptyText;
                       }
                       return null;
                     },
@@ -102,12 +96,8 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                     key: Key("seasonFormField"),
                     decoration: InputDecoration(
                       icon: Icon(Icons.people),
-                      hintText: Messages
-                          .of(context)
-                          .seasonName,
-                      labelText: Messages
-                          .of(context)
-                          .seasonName,
+                      hintText: Messages.of(context).seasonName,
+                      labelText: Messages.of(context).seasonName,
                     ),
                     onSaved: (String str) {
                       _seasonName = str;
@@ -116,9 +106,7 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                     autovalidate: false,
                     validator: (String str) {
                       if (str == null || str == '') {
-                        return Messages
-                            .of(context)
-                            .emptyText;
+                        return Messages.of(context).emptyText;
                       }
                       return null;
                     },
@@ -130,13 +118,9 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                         FlatButton(
                           key: Key("cancelButtonTeam"),
                           child: Text(
-                              MaterialLocalizations
-                                  .of(context)
+                              MaterialLocalizations.of(context)
                                   .cancelButtonLabel,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .button),
+                              style: Theme.of(context).textTheme.button),
                           onPressed: () => Navigator.pop(context),
                         ),
                         RaisedButton.icon(
@@ -144,13 +128,8 @@ class _AddTeamFormState extends State<_AddTeamForm> {
                           textTheme: ButtonTextTheme.primary,
                           elevation: 2,
                           icon: Icon(Icons.save),
-                          label: Text(Messages
-                              .of(context)
-                              .saveButton,
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .button),
+                          label: Text(Messages.of(context).saveButton,
+                              style: Theme.of(context).textTheme.button),
                           onPressed: () =>
                               _saveForm(BlocProvider.of<AddTeamBloc>(context)),
                         ),

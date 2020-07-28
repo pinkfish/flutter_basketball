@@ -125,7 +125,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 seasonUid: _seasonPlayers),
             child: Builder(
               builder: (BuildContext context) => BlocBuilder(
-                bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                cubit: BlocProvider.of<SingleSeasonBloc>(context),
                 builder: (BuildContext context, SingleSeasonBlocState state) {
                   if (state is SingleSeasonUninitialized) {
                     return LoadingWidget();
@@ -175,7 +175,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
         return Scaffold(
           appBar: AppBar(
             title: BlocBuilder(
-              bloc: BlocProvider.of<SingleTeamBloc>(context),
+              cubit: BlocProvider.of<SingleTeamBloc>(context),
               builder: (BuildContext context, SingleTeamBlocState state) {
                 if (state is SingleTeamUninitialized ||
                     state is SingleTeamDeleted) {
@@ -186,7 +186,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             ),
           ),
           body: BlocConsumer(
-            bloc: BlocProvider.of<SingleTeamBloc>(context),
+            cubit: BlocProvider.of<SingleTeamBloc>(context),
             listener: (BuildContext context, SingleTeamBlocState state) {
               if (!state.loadedSeasons && !(state is SingleTeamUninitialized)) {
                 BlocProvider.of<SingleTeamBloc>(context)
@@ -254,7 +254,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             ],
           ),
           floatingActionButton: BlocBuilder(
-            bloc: BlocProvider.of<SingleTeamBloc>(context),
+            cubit: BlocProvider.of<SingleTeamBloc>(context),
             builder: (BuildContext context, SingleTeamBlocState state) {
               return AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),

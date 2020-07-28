@@ -82,7 +82,7 @@ class SeasonExpansionPanel extends ExpansionPanel {
                   return ScaleTransition(child: child, scale: animation);
                 },
                 child: BlocBuilder(
-                    bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                    cubit: BlocProvider.of<SingleSeasonBloc>(context),
                     builder:
                         (BuildContext context, SingleSeasonBlocState state) {
                       if (state is SingleSeasonDeleted) {

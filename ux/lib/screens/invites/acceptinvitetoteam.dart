@@ -57,7 +57,7 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: _singleInviteBloc,
+      cubit: _singleInviteBloc,
       listener: (BuildContext context, SingleInviteBlocState state) {
         if (state is SingleInviteDeleted) {
           Navigator.pop(context);
@@ -87,7 +87,7 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
           body: new Scrollbar(
             child: new SingleChildScrollView(
               child: BlocConsumer(
-                bloc: _singleInviteBloc,
+                cubit: _singleInviteBloc,
                 listener: (BuildContext context, SingleInviteBlocState state) {
                   if (state is SingleInviteDeleted) {
                     // go back!

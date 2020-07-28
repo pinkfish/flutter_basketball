@@ -27,7 +27,7 @@ class TeamsScreen extends StatelessWidget {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           child: BlocBuilder(
-            bloc: BlocProvider.of<AuthenticationBloc>(context),
+            cubit: BlocProvider.of<AuthenticationBloc>(context),
             builder: (BuildContext context, AuthenticationState authState) {
               print("State $authState");
               if (authState is AuthenticationLoggedInUnverified) {
@@ -57,7 +57,7 @@ class TeamsScreen extends StatelessWidget {
               } else {
                 return BlocBuilder(
                   key: Key('teamsContent'),
-                  bloc: BlocProvider.of<TeamsBloc>(context),
+                  cubit: BlocProvider.of<TeamsBloc>(context),
                   builder: (BuildContext context, TeamsBlocState state) {
                     if (state is TeamsBlocUninitialized) {
                       return Text(Messages.of(context).loadingText);

@@ -19,7 +19,7 @@ class InviteCountBox extends StatelessWidget {
           email: BlocProvider.of<AuthenticationBloc>(context).state.user.email),
       child: Builder(
         builder: (BuildContext context) => BlocBuilder(
-          bloc: BlocProvider.of<InvitesBloc>(context),
+          cubit: BlocProvider.of<InvitesBloc>(context),
           builder: (BuildContext context, InvitesBlocState state) {
             if (state is InvitesBlocUninitialized) {
               return SizedBox(height: 0, width: 0);

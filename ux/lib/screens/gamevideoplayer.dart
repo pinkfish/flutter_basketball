@@ -27,7 +27,7 @@ class GameVideoPlayerScreen extends StatelessWidget {
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
           return BlocConsumer(
-            bloc: BlocProvider.of<SingleGameBloc>(context),
+            cubit: BlocProvider.of<SingleGameBloc>(context),
             listener: (BuildContext context, SingleGameState state) {
               if (state is SingleGameDeleted) {
                 Navigator.pop(context);

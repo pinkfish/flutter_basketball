@@ -98,7 +98,7 @@ class InviteListScreenState extends State<InviteListScreen> {
           inviteUid: inviteData.uid),
       child: Builder(
         builder: (BuildContext context) => BlocBuilder(
-          bloc: BlocProvider.of<SingleInviteBloc>(context),
+          cubit: BlocProvider.of<SingleInviteBloc>(context),
           builder: (BuildContext context, SingleInviteBlocState state) {
             Widget child;
             // Deleted...
@@ -182,7 +182,7 @@ class InviteListScreenState extends State<InviteListScreen> {
       body: Scrollbar(
         child: SingleChildScrollView(
           child: BlocConsumer(
-            bloc: _invitesBloc,
+            cubit: _invitesBloc,
             listener: (BuildContext context, InvitesBlocState state) {
               if (state is SingleInviteDeleted) {
                 Navigator.pop(context);
@@ -197,8 +197,9 @@ class InviteListScreenState extends State<InviteListScreen> {
               return SavingOverlay(
                 saving: state is SingleInviteSaving,
                 child: Column(
-                  children:
-                  state is SingleInviteLoaded ? _buildInviteList(state.invites) : LoadingWidget(),
+                  children: state is SingleInviteLoaded
+                      ? _buildInviteList(state.invites)
+                      : LoadingWidget(),
                 ),
               );
             },

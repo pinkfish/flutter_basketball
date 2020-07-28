@@ -115,7 +115,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
         return Scaffold(
           appBar: AppBar(
             title: BlocBuilder(
-              bloc: BlocProvider.of<SingleSeasonBloc>(context),
+              cubit: BlocProvider.of<SingleSeasonBloc>(context),
               builder: (BuildContext context, SingleSeasonBlocState state) {
                 if (state is SingleSeasonUninitialized ||
                     state is SingleSeasonDeleted) {
@@ -126,7 +126,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
             ),
           ),
           body: BlocConsumer(
-            bloc: BlocProvider.of<SingleSeasonBloc>(context),
+            cubit: BlocProvider.of<SingleSeasonBloc>(context),
             listener: (BuildContext context, SingleSeasonBlocState state) {
               if (!state.loadedGames && !(state is SingleSeasonUninitialized)) {
                 BlocProvider.of<SingleSeasonBloc>(context)
@@ -168,7 +168,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
             ],
           ),
           floatingActionButton: BlocBuilder(
-            bloc: BlocProvider.of<SingleSeasonBloc>(context),
+            cubit: BlocProvider.of<SingleSeasonBloc>(context),
             builder: (BuildContext context, SingleSeasonBlocState state) {
               return AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),

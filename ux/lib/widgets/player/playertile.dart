@@ -51,7 +51,7 @@ class PlayerTile extends StatelessWidget {
           return AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
             child: BlocBuilder(
-              bloc: BlocProvider.of<SinglePlayerBloc>(context),
+              cubit: BlocProvider.of<SinglePlayerBloc>(context),
               builder: (BuildContext context, SinglePlayerState state) {
                 if (state is SinglePlayerDeleted) {
                   if (compactDisplay) {

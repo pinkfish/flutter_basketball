@@ -25,7 +25,7 @@ class UserName extends StatelessWidget {
       child: Builder(
         builder: (BuildContext context) {
           return BlocBuilder(
-            bloc: BlocProvider.of<SingleUserBloc>(context),
+            cubit: BlocProvider.of<SingleUserBloc>(context),
             builder: (BuildContext context, SingleUserState state) {
               if (_nameCache.containsKey(userUid) &&
                   !(state is SingleUserLoaded)) {

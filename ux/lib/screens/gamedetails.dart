@@ -37,7 +37,7 @@ class GameDetailsScreen extends StatelessWidget {
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
           return BlocConsumer(
-            bloc: BlocProvider.of<SingleGameBloc>(context),
+            cubit: BlocProvider.of<SingleGameBloc>(context),
             listener: (BuildContext context, SingleGameState state) {
               if (state is SingleGameDeleted) {
                 Navigator.pop(context);
@@ -409,13 +409,12 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       );
     } else if (_currentIndex == 1) {
       if (state.game.players.isEmpty) {
-        return Text(Messages.of(context).noPlayers);
+        return Text(Messages.of(context).noPlayersWithStats);
       }
       if (!state.loadedPlayers) {
         return LoadingWidget();
       }
-      return PlayerDataTable(
-           game: state, orientation: widget.orientation);
+      return PlayerDataTable(game: state, orientation: widget.orientation);
       //return PlayerList(game: state.game, orientation: widget.orientation);
     } else if (_currentIndex == 2) {
       return Column(

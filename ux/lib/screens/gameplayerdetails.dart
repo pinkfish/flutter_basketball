@@ -44,7 +44,7 @@ class _GameDetailsStateScreen extends State<GamePlayerDetailsScreen> {
               SizedBox(width: 30.0),
               Builder(
                 builder: (BuildContext context) => BlocBuilder(
-                  bloc: BlocProvider.of<SingleGameBloc>(context),
+                  cubit: BlocProvider.of<SingleGameBloc>(context),
                   builder: (BuildContext context, SingleGameState state) {
                     if (state.game != null) {
                       return Text("vs ${state.game.opponentName}");
@@ -108,7 +108,7 @@ class _PlayerDetailsBodyState extends State<_PlayerDetailBody> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: BlocProvider.of<SingleGameBloc>(context),
+      cubit: BlocProvider.of<SingleGameBloc>(context),
       listener: (BuildContext context, SingleGameState state) {},
       builder: (BuildContext context, SingleGameState state) {
         if (state is SingleGameUninitialized) {

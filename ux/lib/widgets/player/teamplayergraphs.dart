@@ -131,7 +131,7 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
             ),
             child: Builder(
               builder: (BuildContext context) => BlocConsumer(
-                  bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                  cubit: BlocProvider.of<SingleSeasonBloc>(context),
                   listener:
                       (BuildContext context, SingleSeasonBlocState state) {
                     if (state is SingleSeasonLoaded && !state.loadedGames) {

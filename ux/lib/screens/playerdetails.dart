@@ -46,7 +46,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: BlocProvider.of<SinglePlayerBloc>(context),
+      cubit: BlocProvider.of<SinglePlayerBloc>(context),
       listener: (BuildContext context, SinglePlayerState state) {
         if (state is SinglePlayerLoaded && !state.loadedGames) {
           BlocProvider.of<SinglePlayerBloc>(context)

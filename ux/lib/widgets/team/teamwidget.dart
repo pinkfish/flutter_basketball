@@ -65,7 +65,7 @@ class _TeamSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-        bloc: BlocProvider.of<SingleTeamBloc>(context),
+        cubit: BlocProvider.of<SingleTeamBloc>(context),
         listener: (BuildContext context, SingleTeamBlocState state) {
           if (state is SingleTeamLoaded && !state.loadedSeasons) {
             BlocProvider.of<SingleTeamBloc>(context)

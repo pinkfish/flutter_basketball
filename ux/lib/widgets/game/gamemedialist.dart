@@ -14,7 +14,7 @@ class GameMediaList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: BlocProvider.of<SingleGameBloc>(context),
+      cubit: BlocProvider.of<SingleGameBloc>(context),
       listener: (BuildContext context, SingleGameState state) {
         print("Got state $state");
         if (state is SingleGameLoaded && !state.loadedMedia) {

@@ -74,7 +74,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
       body: new SingleChildScrollView(
         controller: scrollController,
         child: BlocConsumer(
-          bloc: _loginBloc,
+          cubit: _loginBloc,
           listener: (BuildContext context, LoginState state) {
             if (state is LoginVerificationDone) {
               showDialog<bool>(

@@ -33,7 +33,7 @@ class AddGameScreen extends StatelessWidget {
             db: BlocProvider.of<TeamsBloc>(context).db, teamUid: teamUid),
         child: Builder(
           builder: (BuildContext context) => BlocBuilder(
-            bloc: BlocProvider.of<SingleTeamBloc>(context),
+            cubit: BlocProvider.of<SingleTeamBloc>(context),
             builder: (BuildContext context, SingleTeamBlocState state) {
               if (state is SingleTeamDeleted) {
                 return Center(child: DeletedWidget());
@@ -213,7 +213,7 @@ class _AddGameFormState extends State<_AddGameForm> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: BlocProvider.of<AddGameBloc>(context),
+      cubit: BlocProvider.of<AddGameBloc>(context),
       listener: (BuildContext context, AddItemState state) {
         if (state is AddItemDone) {
           Navigator.pop(context);
@@ -225,7 +225,7 @@ class _AddGameFormState extends State<_AddGameForm> {
         }
       },
       child: BlocBuilder(
-        bloc: BlocProvider.of<AddGameBloc>(context),
+        cubit: BlocProvider.of<AddGameBloc>(context),
         builder: (BuildContext context, AddItemState state) {
           return SavingOverlay(
             saving: state is AddItemSaving || _saving,
@@ -370,7 +370,7 @@ class _AddGameFormState extends State<_AddGameForm> {
                           seasonUid: _seasonUid),
                       child: Builder(
                         builder: (BuildContext context) => BlocBuilder(
-                          bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                          cubit: BlocProvider.of<SingleSeasonBloc>(context),
                           builder: (BuildContext context,
                               SingleSeasonBlocState seasonState) {
                             if (seasonState is SingleSeasonUninitialized) {

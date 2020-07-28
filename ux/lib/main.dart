@@ -12,6 +12,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'messages.dart';
 import 'routes.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
     // Log an error if the db fails to open.
     //_db.waitTillOpen();
     var db = SQLDBRaw();
+    var localStorage = LocalStorage("basketballstats");
 
     return MultiRepositoryProvider(
       providers: [
@@ -65,6 +67,10 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => UploadFilesBackground(db),
           lazy: false,
         ),
+        RepositoryProvider<LocalStorage>(
+          create: (BuildContext contxt) => localStorage,
+          lazy: false,
+        )
       ],
       child: MultiBlocProvider(
         providers: <BlocProvider>[
@@ -82,33 +88,44 @@ class MyApp extends StatelessWidget {
                 db: RepositoryProvider.of<BasketballDatabase>(context)),
           ),
         ],
-        child: MaterialApp(
-          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-            MessagesDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate
-          ],
-          supportedLocales: const <Locale>[
-            const Locale('en', 'US'),
-            const Locale('en', 'UK'),
-            const Locale('en', 'AU'),
-          ],
-          onGenerateTitle: (BuildContext context) =>
-              Messages.of(context).titleOfApp,
-          theme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: Colors.green,
-          ),
-          darkTheme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: Colors.green,
-          ),
-          home: SplashScreen(),
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: analytics),
-          ],
-          initialRoute: "Home",
-          onGenerateRoute: _buildRoute,
+        child: StreamBuilder(
+          stream: localStorage.stream,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            var str = localStorage.getItem("ThemeMode");
+            var mode = ThemeMode.values.firstWhere(
+                (element) => element.toString() == str,
+                orElse: () => ThemeMode.light);
+
+            return MaterialApp(
+              localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+                MessagesDelegate(),
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate
+              ],
+              supportedLocales: const <Locale>[
+                const Locale('en', 'US'),
+                const Locale('en', 'UK'),
+                const Locale('en', 'AU'),
+              ],
+              onGenerateTitle: (BuildContext context) =>
+                  Messages.of(context).titleOfApp,
+              theme: ThemeData(
+                brightness: Brightness.light,
+                primarySwatch: Colors.green,
+              ),
+              themeMode: mode,
+              darkTheme: ThemeData(
+                brightness: Brightness.dark,
+                primarySwatch: Colors.green,
+              ),
+              home: SplashScreen(),
+              navigatorObservers: [
+                FirebaseAnalyticsObserver(analytics: analytics),
+              ],
+              initialRoute: "Home",
+              onGenerateRoute: _buildRoute,
+            );
+          },
         ),
       ),
     );

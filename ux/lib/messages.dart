@@ -92,6 +92,10 @@ class Messages {
       desc: "Message to say there are no players currently setup",
       locale: locale);
 
+  String get noPlayersWithStats => Intl.message("No Players with state",
+      desc: "Message to say there are no players currently setup",
+      locale: locale);
+
   String get about => Intl.message("About",
       desc: "Menu item to open information about the app", locale: locale);
 

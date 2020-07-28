@@ -33,7 +33,7 @@ class AddMediaFromUrlGameScreen extends StatelessWidget {
               db: RepositoryProvider.of<BasketballDatabase>(context),
             ),
             child: BlocBuilder(
-              bloc: BlocProvider.of<SingleGameBloc>(context),
+              cubit: BlocProvider.of<SingleGameBloc>(context),
               builder: (BuildContext context, SingleGameState state) =>
                   _AddMediaGameInside(state),
             ),
@@ -76,7 +76,7 @@ class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: BlocProvider.of<AddMediaBloc>(context),
+      cubit: BlocProvider.of<AddMediaBloc>(context),
       listener: (BuildContext context, AddItemState state) {
         if (state is AddItemDone) {
           // Pass back the media uid.
@@ -91,7 +91,7 @@ class _AddMediaGameInsideState extends State<_AddMediaGameInside> {
         }
       },
       child: BlocBuilder(
-        bloc: BlocProvider.of<AddMediaBloc>(context),
+        cubit: BlocProvider.of<AddMediaBloc>(context),
         builder: (BuildContext context, AddItemState state) {
           if (widget.state is SingleGameUninitialized) {
             return LoadingWidget();

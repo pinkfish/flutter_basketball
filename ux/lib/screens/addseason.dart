@@ -75,7 +75,7 @@ class _AddSeasonFormState extends State<_AddSeasonForm> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: BlocProvider.of<SingleTeamBloc>(context),
+      cubit: BlocProvider.of<SingleTeamBloc>(context),
       listener: (BuildContext context, SingleTeamBlocState teamState) {
         if (teamState is SingleTeamLoaded && !teamState.loadedSeasons) {
           BlocProvider.of<SingleTeamBloc>(context).add(SingleTeamLoadSeasons());
@@ -83,7 +83,7 @@ class _AddSeasonFormState extends State<_AddSeasonForm> {
       },
       builder: (BuildContext context, SingleTeamBlocState teamState) =>
           BlocConsumer(
-        bloc: BlocProvider.of<AddSeasonBloc>(context),
+        cubit: BlocProvider.of<AddSeasonBloc>(context),
         listener: (BuildContext context, AddItemState state) {
           if (state is AddItemDone) {
             print("Pop add done");

@@ -105,7 +105,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     List<String> teams = teamSeason.keys.toList();
     if (widget.showGraphs) {
       return BlocBuilder(
-        bloc: seasonBlocs[graphSeasonUid],
+        cubit: seasonBlocs[graphSeasonUid],
         builder: (BuildContext context, SingleSeasonBlocState state) => Padding(
           padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
           child: TeamPlayerGraphs(
@@ -140,7 +140,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
             isExpanded: expandedPanels.contains(teamUid),
             headerBuilder: (BuildContext context, bool isExpanded) {
               return BlocBuilder(
-                bloc: teamBlocs[teamUid],
+                cubit: teamBlocs[teamUid],
                 builder: (BuildContext context, SingleTeamBlocState state) {
                   if (state is SingleTeamUninitialized) {
                     return Text(Messages.of(context).loadingText);
@@ -161,7 +161,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
             body: AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
               child: BlocConsumer(
-                bloc: teamBlocs[teamUid],
+                cubit: teamBlocs[teamUid],
                 builder: (BuildContext context, SingleTeamBlocState state) {
                   if (state is SingleTeamUninitialized ||
                       state is SingleTeamDeleted) {
@@ -172,7 +172,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                     listeners: seasons
                         .map((String s) =>
                         BlocListener(
-                          bloc: seasonBlocs[s],
+                          cubit: seasonBlocs[s],
                           listener: (BuildContext context,
                               SingleSeasonBlocState state) {
                             if (state is SingleSeasonLoaded &&

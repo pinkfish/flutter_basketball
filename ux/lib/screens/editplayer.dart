@@ -45,7 +45,7 @@ class _EditPlayerInside extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: BlocProvider.of<SinglePlayerBloc>(context),
+      cubit: BlocProvider.of<SinglePlayerBloc>(context),
       listener: (BuildContext context, SinglePlayerState state) {
         if (state is SinglePlayerSaveSuccessful) {
           // Pass back the player uid.
@@ -57,7 +57,7 @@ class _EditPlayerInside extends StatelessWidget {
         }
       },
       child: BlocBuilder(
-        bloc: BlocProvider.of<SinglePlayerBloc>(context),
+        cubit: BlocProvider.of<SinglePlayerBloc>(context),
         builder: (BuildContext context, SinglePlayerState state) {
           if (state is SinglePlayerUninitialized) {
             return SavingOverlay(saving: true, child: Text(""));

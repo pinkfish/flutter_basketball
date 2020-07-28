@@ -50,7 +50,7 @@ class _AddPlayerGameInsideState extends State<_AddPlayerGameInside> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: BlocProvider.of<AddPlayerBloc>(context),
+      cubit: BlocProvider.of<AddPlayerBloc>(context),
       listener: (BuildContext context, AddItemState state) {
         if (state is AddItemDone) {
           // Pass back the player uid.
@@ -65,7 +65,7 @@ class _AddPlayerGameInsideState extends State<_AddPlayerGameInside> {
         }
       },
       child: BlocBuilder(
-        bloc: BlocProvider.of<AddPlayerBloc>(context),
+        cubit: BlocProvider.of<AddPlayerBloc>(context),
         builder: (BuildContext context, AddItemState state) {
           return SavingOverlay(
             saving: state is AddItemSaving,

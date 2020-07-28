@@ -31,7 +31,7 @@ class _TeamStatsWidgetState extends State<TeamStatsWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: BlocProvider.of<SingleTeamBloc>(context),
+      cubit: BlocProvider.of<SingleTeamBloc>(context),
       listener: (BuildContext context, SingleTeamBlocState state) {
         if (state is SingleTeamLoaded && !state.loadedSeasons) {
           BlocProvider.of<SingleTeamBloc>(context).add(SingleTeamLoadSeasons());
@@ -86,7 +86,7 @@ class _TeamStatsWidgetState extends State<TeamStatsWidget> {
                 ),
                 Expanded(
                   child: BlocConsumer(
-                      bloc: BlocProvider.of<SingleSeasonBloc>(context),
+                      cubit: BlocProvider.of<SingleSeasonBloc>(context),
                       listener:
                           (BuildContext context, SingleSeasonBlocState state) {
                         if (state is SingleSeasonLoaded && !state.loadedGames) {

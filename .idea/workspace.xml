@@ -2,12 +2,55 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleseasonbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleseasonbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediafromurl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmediafromurl.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediaphoto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmediaphoto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addplayerseason.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addplayerseason.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addseason.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addseason.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/addteam.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/editplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/editplayer.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamseasonstats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamseasonstats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/invites/acceptinvitetoteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/invites/acceptinvitetoteam.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/invites/invitelist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/invites/invitelist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/login/forgotpassword.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/login/forgotpassword.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/login/loginform.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/login/loginform.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/login/signup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/login/signup.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/login/verifyemail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/login/verifyemail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasondetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasondetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/splashscreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/splashscreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamedit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamedit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teams.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teams.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/invites/invitecountbox.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/invites/invitecountbox.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playerdropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playerdropdown.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playername.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playername.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playertile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playertile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/teamdetailsexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/teamdetailsexpansionpanel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/teamplayergraphs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/teamplayergraphs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonname.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonname.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/statsdrawer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/statsdrawer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/username.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/username.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/usertile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/usertile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,29 +285,29 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1595894996132">
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1595977878526">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1595894996132" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1595977878526" />
     <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1595894996130">
+    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1595977878525">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1595894996130" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1595977878525" />
     <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1595894996129">
+    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1595977878524">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1595894996128" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1595977878524" />
     <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1595894996131">
+    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1595977878525">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1595894996131" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1595977878525" />
     <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />

@@ -183,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
         title: Text(Messages.of(context).loginButton),
       ),
       body: BlocListener(
-        bloc: _loginBloc,
+        cubit: _loginBloc,
         listener: (BuildContext context, LoginState state) {
           if (state is LoginFailed) {
             errorText = Messages.of(context).loginFailureReason(state.reason);
@@ -195,7 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         child: BlocBuilder(
-          bloc: _loginBloc,
+          cubit: _loginBloc,
           builder: (BuildContext context, LoginState state) {
             return SavingOverlay(
                 saving: state is LoginValidating, child: _buildLoginForm());
