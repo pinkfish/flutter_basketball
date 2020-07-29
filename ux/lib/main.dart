@@ -1,9 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:basketballstats/services/authenticationbloc.dart';
-import 'package:basketballstats/services/multiplexdatabase.dart';
-import 'package:basketballstats/services/sqldbraw.dart';
-import 'package:basketballstats/services/uploadfilesbackground.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -17,8 +13,13 @@ import 'package:localstorage/localstorage.dart';
 import 'messages.dart';
 import 'routes.dart';
 import 'screens/splashscreen.dart';
+import 'services/authenticationbloc.dart';
+import 'services/localstoragedata.dart';
 import 'services/loginbloc.dart';
 import 'services/mediastreaming.dart';
+import 'services/multiplexdatabase.dart';
+import 'services/sqldbraw.dart';
+import 'services/uploadfilesbackground.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
@@ -91,7 +92,7 @@ class MyApp extends StatelessWidget {
         child: StreamBuilder(
           stream: localStorage.stream,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            var str = localStorage.getItem("ThemeMode");
+            var str = localStorage.getItem(LocalStorageData.themeMode);
             var mode = ThemeMode.values.firstWhere(
                 (element) => element.toString() == str,
                 orElse: () => ThemeMode.light);

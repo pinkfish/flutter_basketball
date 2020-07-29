@@ -92,6 +92,12 @@ class Messages {
       desc: "Message to say there are no players currently setup",
       locale: locale);
 
+  String get uxSettingsSection => Intl.message("UI",
+      desc: "Settings header for the UI settings", locale: locale);
+
+  String get lightMode =>
+      Intl.message("Light mode", desc: "Light mode for the ux", locale: locale);
+
   String get noPlayersWithStats => Intl.message("No Players with state",
       desc: "Message to say there are no players currently setup",
       locale: locale);

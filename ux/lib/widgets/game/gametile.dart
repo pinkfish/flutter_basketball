@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -32,7 +33,9 @@ class GameTile extends StatelessWidget {
         break;
     }
     return Card(
-      color: Theme.of(context).primaryColor,
+      color: LocalStorageData.isDark(context)
+          ? Theme.of(context).primaryColor
+          : LocalStorageData.brighten(Theme.of(context).primaryColor, 80),
       child: ListTile(
         leading: Icon(MdiIcons.basketball),
         title: Text(

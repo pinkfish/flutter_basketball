@@ -312,6 +312,12 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     );
   }
 
+  bool _isDark() {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
+
+
   void _addSeason(BuildContext context, SingleTeamBlocState state) {
     Navigator.pushNamed(context, "/Season/Add/" + state.team.uid);
   }

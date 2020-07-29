@@ -2,6 +2,7 @@ import 'package:basketballstats/screens/addmediafromurl.dart';
 import 'package:basketballstats/screens/addmediaphoto.dart';
 import 'package:basketballstats/screens/addmediastream.dart';
 import 'package:basketballstats/screens/gamevideoplayer.dart';
+import 'package:basketballstats/screens/settings.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -127,6 +128,11 @@ class BasketballAppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 VerifyEmailScreen()));
+
+    router.define("/Settings",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                SettingsScreen()));
 
     return router;
   }

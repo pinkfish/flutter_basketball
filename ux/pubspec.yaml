@@ -44,6 +44,7 @@ dependencies:
   flutter_svg: ^0.17.4
   flutter_vector_icons: any
   event: ^1.1.4
+  settings_ui: ^0.3.0
   charts_flutter:
     #path: /Users/david/development/charts/charts_flutter
     git:
