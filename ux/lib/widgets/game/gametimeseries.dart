@@ -294,7 +294,9 @@ class _GameTimeseriesData extends State<GameTimeseries> {
         renderSpec: charts.SmallTickRendererSpec(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: charts.Color.white,
+            color: LocalStorageData.isDark(context)
+                ? charts.Color.white
+                : charts.Color.black,
           ),
         ),
       ),
@@ -303,7 +305,9 @@ class _GameTimeseriesData extends State<GameTimeseries> {
         renderSpec: charts.SmallTickRendererSpec<Duration>(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: charts.Color.white,
+            color: LocalStorageData.isDark(context)
+                ? charts.Color.white
+                : charts.Color.black,
           ),
         ),
       ),

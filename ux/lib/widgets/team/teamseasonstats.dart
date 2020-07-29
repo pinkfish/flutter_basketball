@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:basketballstats/widgets/player/playerdropdown.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
@@ -161,18 +162,6 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
       ),
     ];
 
-    if (widget.state.games.length > 0) {
-      behaviours.add(charts.RangeAnnotation(widget.state.games
-          .map(
-            (p) => charts.LineAnnotationSegment(
-              DateTime.now(),
-              charts.RangeAnnotationAxisType.domain,
-              startLabel: p.opponentName,
-            ),
-          )
-          .toList()));
-    }
-
     return charts.TimeSeriesChart(
       _getSeries(),
       animate: true,
@@ -182,7 +171,9 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
         renderSpec: charts.SmallTickRendererSpec(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: charts.Color.white,
+            color: LocalStorageData.isDark(context)
+                ? charts.Color.white
+                : charts.Color.black,
           ),
         ),
       ),
@@ -191,7 +182,9 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
         renderSpec: charts.SmallTickRendererSpec<DateTime>(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: charts.Color.white,
+            color: LocalStorageData.isDark(context)
+                ? charts.Color.white
+                : charts.Color.black,
           ),
         ),
       ),
