@@ -49,6 +49,7 @@ jobs:
         working-directory: ux
       - run: |
           cat lib/l10n/intl_messages.arb | awk '{ if (NR == 2) { print "  \"@@locale\": \"en\"," } print $0 }' > lib/l10n/intl_en.arb
+        working-directory: ux
       - run: flutter pub run intl_translation:generate_from_arb  --outpudir=lib/l10n --no-use-deferred-loading lib/messages.dart lib/l10n/intl_??.arb
         working-directory: ux
       - name: Commit files
