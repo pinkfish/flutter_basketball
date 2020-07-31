@@ -41,6 +41,8 @@ jobs:
       working-directory: basketballdata
     - run: flutter packages get
       working-directory: ux
+    - run: flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/messages.dart
+      working-directory: ux
     - run: sudo apt-get install -y graphicsmagick
       working-directory: ux
     - run: echo ${GOOGLESERVICES} > android/app/google-services.json	

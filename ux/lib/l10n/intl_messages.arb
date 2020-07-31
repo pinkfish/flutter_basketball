@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-07-31T13:10:23.684319",
+  "@@last_modified": "2020-07-31T14:52:12.147589",
   "Basketball stats": "Basketball stats",
   "@Basketball stats": {
     "description": "Title of the app",
@@ -522,6 +522,30 @@
     "type": "text",
     "placeholders": {}
   },
+  "The email to resend the password to": "The email to resend the password to",
+  "@The email to resend the password to": {
+    "description": "Forgot password happy button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "RESEND EMAIL": "RESEND EMAIL",
+  "@RESEND EMAIL": {
+    "description": "Button to resend the email to verify their email address",
+    "type": "text",
+    "placeholders": {}
+  },
+  "LOGIN": "LOGIN",
+  "@LOGIN": {
+    "description": "Login button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "LOGOUT": "LOGOUT",
+  "@LOGOUT": {
+    "description": "Logout button text",
+    "type": "text",
+    "placeholders": {}
+  },
   "CREATE": "CREATE",
   "@CREATE": {
     "description": "Create account button text",
@@ -552,6 +576,30 @@
     "type": "text",
     "placeholders": {}
   },
+  "Please fix the items outlined in red": "Please fix the items outlined in red",
+  "@Please fix the items outlined in red": {
+    "description": "Error when submitting a form",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email and/or password incorrect": "Email and/or password incorrect",
+  "@Email and/or password incorrect": {
+    "description": "Passwords or email is not correct, login failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Internal Error": "Internal Error",
+  "@Internal Error": {
+    "description": "Something happened inside the login system, not a bad password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Login Cancelled": "Login Cancelled",
+  "@Login Cancelled": {
+    "description": "Login was cancelled",
+    "type": "text",
+    "placeholders": {}
+  },
   "Passwords must match": "Passwords must match",
   "@Passwords must match": {
     "description": "Passwords must match signup form error",
@@ -561,6 +609,12 @@
   "Created an account, please look in your email for the verification code..": "Created an account, please look in your email for the verification code..",
   "@Created an account, please look in your email for the verification code..": {
     "description": "Confirmation message after requesting the email verification code",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Your email address": "Your email address",
+  "@Your email address": {
+    "description": "Your email input field hint",
     "type": "text",
     "placeholders": {}
   },
@@ -587,6 +641,14 @@
     "type": "text",
     "placeholders": {}
   },
+  "verifyexplanation": "Email address {email} needs to be verified, please check your email or resend the verification details.",
+  "@verifyexplanation": {
+    "description": "Button to resend the email to verify their email address",
+    "type": "text",
+    "placeholders": {
+      "email": {}
+    }
+  },
   "Invalid URL": "Invalid URL",
   "@Invalid URL": {
     "description": "Error in a form when the url is invalid",
@@ -603,6 +665,20 @@
     "description": "Title for the tab to show the playing video",
     "type": "text",
     "placeholders": {}
+  },
+  "Create new": "Create new",
+  "@Create new": {
+    "description": "Create new account button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePlayerAreYouSure": "Are you sure you want to delete the player {name}?",
+  "@deletePlayerAreYouSure": {
+    "description": "Dialog text to ask if you aere sure about deleting the player",
+    "type": "text",
+    "placeholders": {
+      "name": {}
+    }
   },
   "Shots": "Shots",
   "@Shots": {
@@ -739,5 +815,234 @@
   "@Basketball stats is an exciting app to show statsabout basketball games.  It shows nifty graphs and fun stuff": {
     "type": "text",
     "placeholders": {}
+  },
+  "getUnverified": "{name} [unverified]",
+  "@getUnverified": {
+    "description": "If the user is unverified",
+    "type": "text",
+    "placeholders": {
+      "name": {},
+      "unverified": {}
+    }
+  },
+  "seasonSummaryExpanded": "Pts {points} Blks {blocks} Stls {steals}",
+  "@seasonSummaryExpanded": {
+    "description": "Subtitle to markt he season as current",
+    "type": "text",
+    "placeholders": {
+      "points": {},
+      "blocks": {},
+      "steals": {}
+    }
+  },
+  "playedSeasons": "Played {numSeasons} seasons",
+  "@playedSeasons": {
+    "description": "Number of seasons playeed for the team",
+    "type": "text",
+    "placeholders": {
+      "numSeasons": {}
+    }
+  },
+  "winLoss": "Win {wins} Loss {loses}",
+  "@winLoss": {
+    "description": "Number of seasons playeed for the team",
+    "type": "text",
+    "placeholders": {
+      "wins": {},
+      "loses": {},
+      "ties": {}
+    }
+  },
+  "getGameVs": "vs {opponent} at {place}",
+  "@getGameVs": {
+    "description": "Heading for a game showing the opponent and the place",
+    "type": "text",
+    "placeholders": {
+      "opponent": {},
+      "place": {}
+    }
+  },
+  "invitedpeople": "Invited: {numPeopleInvited}",
+  "@invitedpeople": {
+    "description": "Heading showing the number of pending invites",
+    "type": "text",
+    "placeholders": {
+      "numPeopleInvited": {}
+    }
+  },
+  "Not started": "Not started",
+  "@Not started": {
+    "description": "The game is not started",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Overtime": "Overtime",
+  "@Overtime": {
+    "description": "The game is in overtime",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 1": "Period 1",
+  "@Period 1": {
+    "description": "The game is in period 1",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 2": "Period 2",
+  "@Period 2": {
+    "description": "The game is in period 2",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 3": "Period 3",
+  "@Period 3": {
+    "description": "The game is in period 3",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 4": "Period 4",
+  "@Period 4": {
+    "description": "The game is in period 4",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Finished": "Finished",
+  "@Finished": {
+    "description": "The game has finished",
+    "type": "text",
+    "placeholders": {}
+  },
+  "madeEventType": "{points}",
+  "@madeEventType": {
+    "description": "+num points",
+    "type": "text",
+    "placeholders": {
+      "points": {}
+    }
+  },
+  "missedEventType": "Miss {points}",
+  "@missedEventType": {
+    "description": "missed num points",
+    "type": "text",
+    "placeholders": {
+      "points": {}
+    }
+  },
+  "Foul": "Foul",
+  "@Foul": {
+    "description": "Foul on player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Subsitution": "Subsitution",
+  "@Subsitution": {
+    "description": "Subsitiution of player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Off Rebound": "Off Rebound",
+  "@Off Rebound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Def Rebound": "Def Rebound",
+  "@Def Rebound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Block": "Block",
+  "@Block": {
+    "description": "Block of a shot",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Assist": "Assist",
+  "@Assist": {
+    "description": "Assist a shot",
+    "type": "text",
+    "placeholders": {}
+  },
+  "stealEventType": "Steal",
+  "@stealEventType": {
+    "description": "Steal a ball",
+    "type": "text",
+    "placeholders": {}
+  },
+  "turnOverEventType": "Turnover",
+  "@turnOverEventType": {
+    "description": "Caused a turnover",
+    "type": "text",
+    "placeholders": {}
+  },
+  "periodStart": "Start of {periodName}",
+  "@periodStart": {
+    "description": "Start of period",
+    "type": "text",
+    "placeholders": {
+      "periodName": {}
+    }
+  },
+  "periodEnd": "End of {periodName}",
+  "@periodEnd": {
+    "description": "End of period",
+    "type": "text",
+    "placeholders": {
+      "periodName": {}
+    }
+  },
+  "Lies, Damn Lies and Statistics": "Lies, Damn Lies and Statistics",
+  "@Lies, Damn Lies and Statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Mark Twain": "Mark Twain",
+  "@Mark Twain": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.": "I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.",
+  "@I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Michael Jordan": "Michael Jordan",
+  "@Michael Jordan": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I know I am getting better at golf because I am hitting fewer spectators.": "I know I am getting better at golf because I am hitting fewer spectators.",
+  "@I know I am getting better at golf because I am hitting fewer spectators.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Gerald R. Ford": "Gerald R. Ford",
+  "@Gerald R. Ford": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Don't Panic": "Don't Panic",
+  "@Don't Panic": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Douglas Adams": "Douglas Adams",
+  "@Douglas Adams": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmdeleteinvitetoteam": "Do you want to delete the invite to {teamName}?",
+  "@confirmdeleteinvitetoteam": {
+    "description": "Text to delete the invite to the team in the alert dialog.",
+    "type": "text",
+    "placeholders": {
+      "teamName": {}
+    }
+  },
+  "teamForInvite": "Team {teamName}",
+  "@teamForInvite": {
+    "type": "text",
+    "placeholders": {
+      "teamName": {}
+    }
   }
 }

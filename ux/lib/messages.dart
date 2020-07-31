@@ -329,25 +329,31 @@ class Messages {
       desc: 'Input box for a verification to the main password password');
 
   String get formerror => Intl.message('Please fix the items outlined in red',
-      name: 'Error in a form', desc: 'Error when submitting a form');
+      desc: 'Error when submitting a form');
 
   String loginFailureReason(LoginFailedReason reason) {
     switch (reason) {
       case LoginFailedReason.BadPassword:
-        return Intl.message('Email and/or password incorrect',
-            desc: 'Passwords or email is not correct, login failed',
-            locale: locale);
+        return loginFailureBadPassword;
       case LoginFailedReason.InternalError:
-        return Intl.message('Internal Error',
-            desc:
-                'Something happened inside the login system, not a bad password',
-            locale: locale);
+        return loginFailureInternalError;
       case LoginFailedReason.Cancelled:
-        return Intl.message('Login Cancelled',
-            desc: 'Login was cancelled', locale: locale);
+        return loginFailureCancelled;
     }
     return unknown;
   }
+
+  String get loginFailureBadPassword =>
+      Intl.message('Email and/or password incorrect',
+          desc: 'Passwords or email is not correct, login failed',
+          locale: locale);
+
+  String get loginFailureInternalError => Intl.message('Internal Error',
+      desc: 'Something happened inside the login system, not a bad password',
+      locale: locale);
+
+  String get loginFailureCancelled => Intl.message('Login Cancelled',
+      desc: 'Login was cancelled', locale: locale);
 
   String get passwordsnotmatching => Intl.message('Passwords must match',
       desc: 'Passwords must match signup form error');
@@ -358,7 +364,7 @@ class Messages {
           "Confirmation message after requesting the email verification code");
 
   String get youremailHint =>
-      Intl.message('Your email address', name: 'Your email input field hint');
+      Intl.message('Your email address', desc: 'Your email input field hint');
 
   String get displayname =>
       Intl.message('Name', desc: 'Name for the edit box to edit the user name');
@@ -374,9 +380,10 @@ class Messages {
       Intl.message("No account found for email or internal error occured");
 
   String verifyexplanation(String email) => Intl.message(
-        'Email address $email needs to be verified, please check your email or resend the verification details.',
-        name: 'Button to resend the email to verify their email address',
-      );
+      'Email address $email needs to be verified, please check your email or resend the verification details.',
+      desc: 'Button to resend the email to verify their email address',
+      args: [email],
+      name: "verifyexplanation");
 
   String get invalidUrl => Intl.message('Invalid URL',
       desc: 'Error in a form when the url is invalid');
@@ -389,13 +396,15 @@ class Messages {
 
   String get createnew => Intl.message(
         'Create new',
-        name: 'Create new account button text',
+        desc: 'Create new account button text',
       );
 
   String deletePlayerAreYouSure(String name) {
     return Intl.message("Are you sure you want to delete the player $name?",
         desc: "Dialog text to ask if you aere sure about deleting the player",
-        locale: locale);
+        args: [name],
+        locale: locale,
+        name: "deletePlayerAreYouSure");
   }
 
   String get shots => Intl.message("Shots",
@@ -493,149 +502,240 @@ class Messages {
   String getUnverified(String name, bool unverified) {
     if (unverified) {
       return Intl.message("$name [unverified]",
-          desc: "If the user is unverified", locale: locale);
+          args: [name, unverified],
+          desc: "If the user is unverified",
+          locale: locale,
+          name: "getUnverified");
     } else {
       return name;
     }
   }
 
   String seasonSummary(PlayerSeasonSummary summary) {
-    return Intl.message(
-        "Pts ${summary.summary.points} Blks ${summary.summary.blocks} Stls ${summary.summary.steals}",
-        desc: "Subtitle to markt he season as current",
-        locale: locale);
+    return seasonSummaryExpanded(
+        summary.summary.points, summary.summary.blocks, summary.summary.steals);
   }
 
-  String playedSeasons(int num) {
-    return Intl.message("Played $num seasons",
-        desc: "Number of seasons playeed for the team", locale: locale);
+  String seasonSummaryExpanded(int points, int blocks, int steals) {
+    return Intl.message("Pts $points Blks $blocks Stls $steals",
+        desc: "Subtitle to markt he season as current",
+        args: [points, blocks, steals],
+        locale: locale,
+        name: "seasonSummaryExpanded");
+  }
+
+  String playedSeasons(int numSeasons) {
+    return Intl.message("Played $numSeasons seasons",
+        args: [numSeasons],
+        desc: "Number of seasons playeed for the team",
+        locale: locale,
+        name: "playedSeasons");
   }
 
   String winLoss(int wins, int loses, int ties) {
     return Intl.message("Win $wins Loss $loses",
-        desc: "Number of seasons playeed for the team", locale: locale);
+        args: [wins, loses, ties],
+        desc: "Number of seasons playeed for the team",
+        locale: locale,
+        name: "winLoss");
   }
 
   String getGameVs(String opponent, String place) {
     return Intl.message("vs $opponent at $place",
+        args: [opponent, place],
         desc: "Heading for a game showing the opponent and the place",
-        locale: locale);
+        locale: locale,
+        name: "getGameVs");
   }
 
-  String invitedpeople(int num) {
-    return Intl.message("Invited: $num",
-        desc: "Heading showing the number of pending invites", locale: locale);
+  String invitedpeople(int numPeopleInvited) {
+    return Intl.message("Invited: $numPeopleInvited",
+        args: [numPeopleInvited],
+        desc: "Heading showing the number of pending invites",
+        locale: locale,
+        name: "invitedpeople");
   }
 
   String getPeriodName(GamePeriod p) {
     switch (p) {
       case GamePeriod.NotStarted:
-        return Intl.message("Not started",
-            desc: "The game is not startedn", locale: locale);
+        return periodNameNotStarted;
       case GamePeriod.OverTime:
-        return Intl.message("Overtime",
-            desc: "The game is in overtime", locale: locale);
+        return periodNameOverTime;
       case GamePeriod.Period1:
-        return Intl.message("Period 1",
-            desc: "The game is in period 1", locale: locale);
+        return periodNamePeriod1;
       case GamePeriod.Period2:
-        return Intl.message("Period 2",
-            desc: "The game is in period 2", locale: locale);
+        return periodNamePeriod2;
       case GamePeriod.Period3:
-        return Intl.message("Period 3",
-            desc: "The game is in period 3", locale: locale);
+        return periodNamePeriod3;
       case GamePeriod.Period4:
-        return Intl.message("Period 4",
-            desc: "The game is in period 4", locale: locale);
+        return periodNamePeriod4;
       case GamePeriod.Finished:
-        return Intl.message("Finished",
-            desc: "The game has finished", locale: locale);
+        return periodNameFinished;
     }
     return unknown;
   }
 
+  String get periodNameNotStarted => Intl.message("Not started",
+      desc: "The game is not started", locale: locale);
+
+  String get periodNameOverTime =>
+      Intl.message("Overtime", desc: "The game is in overtime", locale: locale);
+
+  String get periodNamePeriod1 =>
+      Intl.message("Period 1", desc: "The game is in period 1", locale: locale);
+  String get periodNamePeriod2 =>
+      Intl.message("Period 2", desc: "The game is in period 2", locale: locale);
+
+  String get periodNamePeriod3 =>
+      Intl.message("Period 3", desc: "The game is in period 3", locale: locale);
+
+  String get periodNamePeriod4 =>
+      Intl.message("Period 4", desc: "The game is in period 4", locale: locale);
+
+  String get periodNameFinished =>
+      Intl.message("Finished", desc: "The game has finished", locale: locale);
+
   String getGameEventType(GameEvent p) {
     switch (p.type) {
       case GameEventType.Made:
-        return Intl.message("${p.points}", desc: "+num points", locale: locale);
-        break;
+        return madeEventType(p.points);
       case GameEventType.Missed:
-        return Intl.message("Miss ${p.points}",
-            desc: "+num points", locale: locale);
-        break;
+        return missedEventType(p.points);
       case GameEventType.Foul:
-        return Intl.message("Foul", desc: "Foul on player", locale: locale);
-        break;
+        return foulEventType;
       case GameEventType.Sub:
-        return Intl.message("Subsitution",
-            desc: "Subsitiution of player", locale: locale);
-        break;
+        return subsitutionEventType;
       case GameEventType.OffsensiveRebound:
-        return Intl.message("Off Rebound", locale: locale);
+        return offensiveReboundEventType;
       case GameEventType.DefensiveRebound:
-        return Intl.message("Def Rebound", locale: locale);
+        return defensiveReboundEventType;
       case GameEventType.Block:
-        return Intl.message("Block", desc: "Block of a shot", locale: locale);
+        return blockEventType;
       case GameEventType.Assist:
-        return Intl.message("Assist", desc: "Assist a shot", locale: locale);
+        return assistEvntType;
       case GameEventType.Steal:
-        return Intl.message("Steal", desc: "Steal a ball", locale: locale);
+        return stealEventType;
       case GameEventType.Turnover:
-        return Intl.message("Turnover",
-            desc: "Caused a turnover", locale: locale);
+        return turnOverEventType;
       case GameEventType.PeriodStart:
-        return Intl.message("Start of ${getPeriodName(p.period)}",
-            desc: "Start of period", locale: locale);
+        return periodStart(getPeriodName(p.period));
       case GameEventType.PeriodEnd:
-        return Intl.message("End of ${getPeriodName(p.period)}",
-            desc: "Start of period", locale: locale);
+        return periodEnd(getPeriodName(p.period));
     }
     return unknown;
+  }
+
+  String madeEventType(int points) {
+    return Intl.message("$points",
+        args: [points],
+        desc: "+num points",
+        locale: locale,
+        name: "madeEventType");
+  }
+
+  String missedEventType(int points) {
+    return Intl.message("Miss $points",
+        args: [points],
+        desc: "missed num points",
+        locale: locale,
+        name: "missedEventType");
+  }
+
+  String get foulEventType =>
+      Intl.message("Foul", desc: "Foul on player", locale: locale);
+
+  String get subsitutionEventType => Intl.message("Subsitution",
+      desc: "Subsitiution of player", locale: locale);
+
+  String get offensiveReboundEventType =>
+      Intl.message("Off Rebound", locale: locale);
+
+  String get defensiveReboundEventType =>
+      Intl.message("Def Rebound", locale: locale);
+
+  String get blockEventType =>
+      Intl.message("Block", desc: "Block of a shot", locale: locale);
+
+  String get assistEvntType =>
+      Intl.message("Assist", desc: "Assist a shot", locale: locale);
+
+  String get stealEventType => Intl.message("Steal",
+      desc: "Steal a ball", locale: locale, name: "stealEventType");
+
+  String get turnOverEventType => Intl.message("Turnover",
+      desc: "Caused a turnover", locale: locale, name: "turnOverEventType");
+
+  String periodStart(String periodName) {
+    return Intl.message("Start of $periodName",
+        args: [periodName],
+        desc: "Start of period",
+        locale: locale,
+        name: "periodStart");
+  }
+
+  String periodEnd(String periodName) {
+    return Intl.message("End of $periodName",
+        args: [periodName],
+        desc: "End of period",
+        locale: locale,
+        name: "periodEnd");
   }
 
   QuoteAndAuthor quoteforsaving(int quoteId) {
     switch (quoteId % 4) {
       case 0:
-        return new QuoteAndAuthor(
-            quote:
-                Intl.message("Lies, Damn Lies and Statistics", locale: locale),
-            author: Intl.message("Mark Twain", locale: locale));
+        return new QuoteAndAuthor(quote: liesDamnLies, author: markTwain);
       case 1:
-        return new QuoteAndAuthor(
-            quote: Intl.message(
-                "I've missed more than 9000 shots in my career. "
-                "I've lost almost 300 games. 26 times, "
-                "I've been trusted to take the game winning shot and missed. "
-                "I've failed over and over and over again in my life. "
-                "And that is why I succeed.",
-                locale: locale),
-            author: Intl.message("Michael Jordan", locale: locale));
+        return new QuoteAndAuthor(quote: missedShots, author: michaelJordan);
       case 2:
         return new QuoteAndAuthor(
-          quote: Intl.message(
-              "I know I am getting better at golf because I am hitting fewer spectators.",
-              locale: locale),
-          author: Intl.message("Gerald R. Ford", locale: locale),
+          quote: missingSpectators,
+          author: geraldFord,
         );
       default:
-        return new QuoteAndAuthor(
-            quote: Intl.message("Don't Panic", locale: locale),
-            author: Intl.message("Douglas Adams", locale: locale));
+        return new QuoteAndAuthor(quote: dontPanic, author: douglaseAdams);
     }
   }
 
-  String confirmdelete(Invite invite) {
+  String get liesDamnLies =>
+      Intl.message("Lies, Damn Lies and Statistics", locale: locale);
+  String get markTwain => Intl.message("Mark Twain", locale: locale);
+
+  String get missedShots => Intl.message(
+      "I've missed more than 9000 shots in my career. "
+      "I've lost almost 300 games. 26 times, "
+      "I've been trusted to take the game winning shot and missed. "
+      "I've failed over and over and over again in my life. "
+      "And that is why I succeed.",
+      locale: locale);
+  String get michaelJordan => Intl.message("Michael Jordan", locale: locale);
+
+  String get missingSpectators => Intl.message(
+      "I know I am getting better at golf because I am hitting fewer spectators.",
+      locale: locale);
+  String get geraldFord => Intl.message("Gerald R. Ford", locale: locale);
+
+  String get dontPanic => Intl.message("Don't Panic", locale: locale);
+  String get douglaseAdams => Intl.message("Douglas Adams", locale: locale);
+
+  String confirmdeleteinvite(Invite invite) {
     if (invite is InviteToTeam) {
       InviteToTeam inviteTeam = invite;
-      return Intl.message(
-          'Do you want to delete the invite to ${inviteTeam.teamName}?',
-          name: 'Text to delete the invite to the team in the alert dialog.');
+      return confirmdeleteinvitetoteam(inviteTeam.teamName);
     }
     return unknown;
   }
 
-  String teamForInvite(String teamMame) =>
-      Intl.message("Team $teamMame", locale: locale);
+  String confirmdeleteinvitetoteam(String teamName) {
+    return Intl.message('Do you want to delete the invite to $teamName?',
+        args: [teamName],
+        desc: 'Text to delete the invite to the team in the alert dialog.',
+        name: "confirmdeleteinvitetoteam");
+  }
+
+  String teamForInvite(String teamName) => Intl.message("Team $teamName",
+      locale: locale, args: [teamName], name: "teamForInvite");
 }
 
 class QuoteAndAuthor {

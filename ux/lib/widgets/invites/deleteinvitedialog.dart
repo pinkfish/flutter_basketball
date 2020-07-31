@@ -22,7 +22,7 @@ Future<bool> deleteInviteDialog(
           child: new SingleChildScrollView(
             child: new ListBody(
               children: <Widget>[
-                new Text(mess.confirmdelete(bloc.state.invite)),
+                new Text(mess.confirmdeleteinvite(bloc.state.invite)),
               ],
             ),
           ),
