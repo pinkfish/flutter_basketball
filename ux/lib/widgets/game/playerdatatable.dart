@@ -62,44 +62,47 @@ class _PlayerDataTableState extends State<PlayerDataTable> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        DropdownButton<GamePeriod>(
-          value: _period,
-          items: [
-            DropdownMenuItem(
-              child: Text(Messages.of(context).allPeriods),
-              value: GamePeriod.Finished,
-            ),
-            DropdownMenuItem(
-              child: Text(Messages.of(context).allPeriods),
-              value: GamePeriod.NotStarted,
-            ),
-            DropdownMenuItem(
-              child:
-                  Text(Messages.of(context).getPeriodName(GamePeriod.Period1)),
-              value: GamePeriod.Period1,
-            ),
-            DropdownMenuItem(
-              child:
-                  Text(Messages.of(context).getPeriodName(GamePeriod.Period2)),
-              value: GamePeriod.Period2,
-            ),
-            DropdownMenuItem(
-              child:
-                  Text(Messages.of(context).getPeriodName(GamePeriod.Period3)),
-              value: GamePeriod.Period3,
-            ),
-            DropdownMenuItem(
-              child:
-                  Text(Messages.of(context).getPeriodName(GamePeriod.Period4)),
-              value: GamePeriod.Period4,
-            ),
-            DropdownMenuItem(
-              child:
-                  Text(Messages.of(context).getPeriodName(GamePeriod.OverTime)),
-              value: GamePeriod.OverTime,
-            ),
-          ],
-          onChanged: (GamePeriod p) => setState(() => _period = p),
+        Padding(
+          padding: EdgeInsets.only(left: 10, right: 10),
+          child: DropdownButton<GamePeriod>(
+            value: _period,
+            items: [
+              DropdownMenuItem(
+                child: Text(Messages.of(context).allPeriods),
+                value: GamePeriod.Finished,
+              ),
+              DropdownMenuItem(
+                child: Text(Messages.of(context).allPeriods),
+                value: GamePeriod.NotStarted,
+              ),
+              DropdownMenuItem(
+                child: Text(
+                    Messages.of(context).getPeriodName(GamePeriod.Period1)),
+                value: GamePeriod.Period1,
+              ),
+              DropdownMenuItem(
+                child: Text(
+                    Messages.of(context).getPeriodName(GamePeriod.Period2)),
+                value: GamePeriod.Period2,
+              ),
+              DropdownMenuItem(
+                child: Text(
+                    Messages.of(context).getPeriodName(GamePeriod.Period3)),
+                value: GamePeriod.Period3,
+              ),
+              DropdownMenuItem(
+                child: Text(
+                    Messages.of(context).getPeriodName(GamePeriod.Period4)),
+                value: GamePeriod.Period4,
+              ),
+              DropdownMenuItem(
+                child: Text(
+                    Messages.of(context).getPeriodName(GamePeriod.OverTime)),
+                value: GamePeriod.OverTime,
+              ),
+            ],
+            onChanged: (GamePeriod p) => setState(() => _period = p),
+          ),
         ),
         Expanded(
           child: SingleChildScrollView(

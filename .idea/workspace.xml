@@ -5,8 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gameplayerlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gameplayerlist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gametile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gametile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/playerdatatable.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playeredit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playeredit.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

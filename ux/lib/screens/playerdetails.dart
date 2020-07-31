@@ -1,6 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/player/teamdetailsexpansionpanel.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,12 +83,21 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
                 icon: Icon(Icons.more_vert),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
-                      value: "delete",
-                      child: Text(Messages.of(context).deletePlayer))
+                    value: "delete",
+                    child: Text(Messages.of(context).deletePlayer),
+                  ),
+                  PopupMenuItem<String>(
+                    value: "edit",
+                    child: Text(Messages.of(context).editPlayerTitle),
+                  )
                 ],
                 onSelected: (s) {
                   if (s == "delete") {
                     _doDelete(context, state);
+                  } else if (s == "edit") {
+                    RepositoryProvider.of<Router>(context).navigateTo(
+                        context, "/Player/Edit/" + state.player.uid,
+                        transition: TransitionType.materialFullScreenDialog);
                   }
                 },
               ),
@@ -126,7 +136,10 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _playerDetails(context, state),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: _playerDetails(context, state),
+          ),
           SizedBox(height: 10),
           Expanded(
             child: SingleChildScrollView(
@@ -146,7 +159,10 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _playerDetails(context, state),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: _playerDetails(context, state),
+            ),
             ButtonBar(
               children: <Widget>[
                 FlatButton.icon(
@@ -195,10 +211,13 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
           ),
         ),
         SizedBox(width: 20.0),
-        Text(
-          state.player.name,
-          style: Theme.of(context).textTheme.headline5,
-          textScaleFactor: 1.5,
+        Hero(
+          tag: "playername",
+          child: Text(
+            state.player.name,
+            style: Theme.of(context).textTheme.headline5,
+            textScaleFactor: 1.5,
+          ),
         ),
       ],
     );

@@ -118,9 +118,12 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SeasonDropDown(
-          value: _seasonPlayers,
-          onChanged: (String str) => setState(() => _seasonPlayers = str),
+        Padding(
+          padding: EdgeInsets.only(left: 20, right: 10),
+          child: SeasonDropDown(
+            value: _seasonPlayers,
+            onChanged: (String str) => setState(() => _seasonPlayers = str),
+          ),
         ),
         SingleChildScrollView(
           child: BlocProvider(
@@ -149,7 +152,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                     children: sorted
                         .map((Player p) => PlayerTile(
                               player: p,
-                              editButton: true,
+                              editButton: false,
                               summary: state.season.playerUids[p.uid],
                               onTap: (String playerUid) => Navigator.pushNamed(
                                   context, "/Player/View/" + p.uid),

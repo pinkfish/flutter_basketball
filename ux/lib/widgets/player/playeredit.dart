@@ -20,10 +20,11 @@ class PlayerEdit extends StatefulWidget {
   final Function onDelete;
   final bool hasOpponentField;
 
-  PlayerEdit({this.player,
-    this.onSave,
-    this.onDelete,
-    @required this.hasOpponentField});
+  PlayerEdit(
+      {this.player,
+      this.onSave,
+      this.onDelete,
+      @required this.hasOpponentField});
 
   @override
   State<StatefulWidget> createState() {
@@ -40,9 +41,7 @@ class _PlayerEditState extends State<PlayerEdit> {
   void _saveForm() {
     if (!_formKey.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text(Messages
-              .of(context)
-              .errorForm)));
+          SnackBar(content: Text(Messages.of(context).errorForm)));
 
       return;
     }
@@ -57,33 +56,32 @@ class _PlayerEditState extends State<PlayerEdit> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-            decoration: InputDecoration(
-              icon: Icon(Icons.people),
-              hintText: Messages.of(context).playerName,
-              labelText: Messages.of(context).playerName,
+          Hero(
+            tag: "playername",
+            child: TextFormField(
+              decoration: InputDecoration(
+                icon: Icon(Icons.people),
+                hintText: Messages.of(context).playerName,
+                labelText: Messages.of(context).playerName,
+              ),
+              onSaved: (String str) {
+                _name = str;
+              },
+              initialValue: widget.player?.name ?? "",
+              autovalidate: false,
+              validator: (String str) {
+                if (str == null || str == '') {
+                  return Messages.of(context).emptyText;
+                }
+                return null;
+              },
             ),
-            onSaved: (String str) {
-              _name = str;
-            },
-            initialValue: widget.player?.name ?? "",
-            autovalidate: false,
-            validator: (String str) {
-              if (str == null || str == '') {
-                return Messages.of(context).emptyText;
-              }
-              return null;
-            },
           ),
           TextFormField(
             decoration: InputDecoration(
               icon: Icon(MdiIcons.tshirtCrew),
-              hintText: Messages
-                  .of(context)
-                  .jersyNumber,
-              labelText: Messages
-                  .of(context)
-                  .jersyNumber,
+              hintText: Messages.of(context).jersyNumber,
+              labelText: Messages.of(context).jersyNumber,
             ),
             onSaved: (String str) {
               _jerseyNumber = str;
@@ -93,12 +91,10 @@ class _PlayerEditState extends State<PlayerEdit> {
           ),
           widget.hasOpponentField
               ? CheckboxListTile(
-            value: opponent,
-            onChanged: (bool result) => setState(() => opponent = result),
-            title: Text(Messages
-                .of(context)
-                .opponent),
-          )
+                  value: opponent,
+                  onChanged: (bool result) => setState(() => opponent = result),
+                  title: Text(Messages.of(context).opponent),
+                )
               : SizedBox(height: 0),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -106,13 +102,8 @@ class _PlayerEditState extends State<PlayerEdit> {
               children: [
                 FlatButton(
                   child: Text(
-                      MaterialLocalizations
-                          .of(context)
-                          .cancelButtonLabel,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .button),
+                      MaterialLocalizations.of(context).cancelButtonLabel,
+                      style: Theme.of(context).textTheme.button),
                   onPressed: () => Navigator.pop(context),
                 ),
                 FlatButton.icon(

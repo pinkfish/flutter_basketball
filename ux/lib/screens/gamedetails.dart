@@ -221,18 +221,6 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         builder: (BuildContext context, BoxConstraints viewportConstraints) =>
             SingleChildScrollView(
           child: Container(
-            /*
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/basketball.png'),
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-                colorFilter: ColorFilter.mode(
-                    Colors.white.withOpacity(0.2), BlendMode.dstATop),
-              ),
-            ),
-
-             */
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 minHeight: viewportConstraints.maxHeight,
