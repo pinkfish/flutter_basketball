@@ -74,7 +74,7 @@ class InvitesBloc extends Bloc<InvitesBlocEvent, InvitesBlocState> {
   }
 
   @override
-  Future<Function> close() {
+  Future<void> close() {
     _sub?.cancel();
     _sub = null;
     _dbChange?.cancel();

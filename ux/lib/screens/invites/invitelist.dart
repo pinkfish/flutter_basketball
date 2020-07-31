@@ -197,9 +197,13 @@ class InviteListScreenState extends State<InviteListScreen> {
               return SavingOverlay(
                 saving: state is SingleInviteSaving,
                 child: Column(
-                  children: state is SingleInviteLoaded
+                  children: state is InvitesBlocLoaded
                       ? _buildInviteList(state.invites)
-                      : LoadingWidget(),
+                      : [
+                          Center(
+                            child: LoadingWidget(),
+                          ),
+                        ],
                 ),
               );
             },

@@ -12,6 +12,9 @@ import 'package:built_collection/built_collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
+///
+/// The class to handle all the firebase interactions.
+///
 class FirestoreDatabase extends BasketballDatabase {
   final FirebaseAnalytics analytics;
 
