@@ -33,40 +33,45 @@ class SeasonExpansionPanel extends ExpansionPanel {
       this.initiallyExpanded = false})
       : super(
           headerBuilder: (BuildContext context, bool expanded) {
-            return Column(
-              children: [
-                ListTile(
-                  leading: Icon(MdiIcons.calendar),
-                  title: season.uid == currentSeason
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              season.name,
-                              textScaleFactor: 1.2,
-                              textAlign: TextAlign.start,
-                            ),
-                            Text(
-                              Messages.of(context).currentSeason,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .caption
-                                  .copyWith(fontStyle: FontStyle.italic),
-                            ),
-                          ],
-                        )
-                      : Text(
-                          season.name,
-                          textScaleFactor: 1.2,
-                          textAlign: TextAlign.end,
-                        ),
-                  subtitle: Text(
-                    Messages.of(context)
-                        .winLoss(season.summary.wins, season.summary.losses, 0),
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ListTile(
+                    title: season.uid == currentSeason
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                season.name,
+                                style: Theme.of(context).textTheme.headline4,
+                                textAlign: TextAlign.start,
+                              ),
+                              SizedBox(height: 5.0),
+                              Text(
+                                Messages.of(context).currentSeason,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(
+                                        fontStyle: FontStyle.italic,
+                                        color: Theme.of(context).accentColor),
+                              ),
+                            ],
+                          )
+                        : Text(
+                            season.name,
+                            style: Theme.of(context).textTheme.headline4,
+                            textAlign: TextAlign.end,
+                          ),
+                    subtitle: Text(
+                        Messages.of(context).winLoss(
+                            season.summary.wins, season.summary.losses, 0),
+                        style: Theme.of(context).textTheme.subtitle2),
                   ),
-                ),
-                buttonBar ?? SizedBox(height: 0),
-              ],
+                  buttonBar ?? SizedBox(height: 0),
+                ],
+              ),
             );
           },
           isExpanded: isExpanded,

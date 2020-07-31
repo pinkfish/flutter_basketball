@@ -1,11 +1,14 @@
 import 'package:basketballstats/services/authenticationbloc.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:basketballstats/services/loginbloc.dart';
+import 'package:basketballstats/widgets/util/gfdrawerheader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
+import 'util/gfavatar.dart';
 
 ///
 /// Shows a nice drawer for the app.  Yay!
@@ -42,15 +45,42 @@ class StatsDrawer extends StatelessWidget {
             builder: (BuildContext context, AuthenticationState state) {
               if (state is AuthenticationLoggedIn ||
                   state is AuthenticationLoggedInUnverified) {
-                return UserAccountsDrawerHeader(
-                  accountEmail: Text(state.user.email),
-                  accountName: Text(
-                    Messages.of(context).getUnverified(
-                        state.user.displayName ?? Messages.of(context).unknown,
-                        state is AuthenticationLoggedInUnverified),
+                return GFDrawerHeader(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      //begin: Alignment.bottomLeft,
+                      //end: Alignment.topRight,
+                      colors: [
+                        Theme.of(context).primaryColor,
+                        LocalStorageData.brighten(
+                            Theme.of(context).primaryColor, 60),
+                      ],
+                    ),
                   ),
-                  currentAccountPicture:
-                      Image.asset("assets/images/basketball.png"),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        Messages.of(context).getUnverified(
+                            state.user.displayName ??
+                                Messages.of(context).unknown,
+                            state is AuthenticationLoggedInUnverified),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        state.user.email,
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ],
+                  ),
+                  currentAccountPicture: GFAvatar(
+                      backgroundImage: AssetImage(
+                    "assets/images/basketball.png",
+                  )),
                 );
               }
               return DrawerHeader(

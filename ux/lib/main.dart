@@ -35,19 +35,22 @@ void main() {
   // Send error logs up to crashlytics.
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
-  runApp(MyApp(false, trace, BasketballAppRouter.createRouter(trace)));
+  runApp(MyApp(false, trace));
 }
 
 class MyApp extends StatelessWidget {
   final bool forceSql;
   final Trace startupTrace;
-  final Router router;
+  Router router;
 
-  MyApp(this.forceSql, this.startupTrace, this.router);
+  MyApp(this.forceSql, this.startupTrace);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if (router == null) {
+      router = BasketballAppRouter.createRouter(startupTrace);
+    }
     // Log an error if the db fails to open.
     //_db.waitTillOpen();
     var db = SQLDBRaw();
@@ -71,6 +74,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<LocalStorage>(
           create: (BuildContext contxt) => localStorage,
           lazy: false,
+        ),
+        RepositoryProvider<Router>(
+          create: (BuildContext context) => this.router,
         )
       ],
       child: MultiBlocProvider(

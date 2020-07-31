@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:basketballstats/widgets/game/gameduration.dart';
 import 'package:basketballstats/widgets/game/playerdatatable.dart';
 import 'package:flutter/material.dart';
@@ -88,8 +89,13 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       appBar: AppBar(
         title: widget.state.game == null
             ? Text(Messages.of(context).titleOfApp)
-            : Text("vs " + widget.state.game.opponentName,
-                style: Theme.of(context).textTheme.headline4),
+            : Text(
+                "vs " + widget.state.game.opponentName,
+                style: Theme.of(context).textTheme.headline5.copyWith(
+                    color: (LocalStorageData.isDark(context)
+                        ? Colors.black
+                        : Colors.white)),
+              ),
         actions: <Widget>[
           PopupMenuButton<_OverflowAction>(
             onSelected: _selectedPopup,
@@ -107,17 +113,19 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       body: SavingOverlay(
         saving: widget.state is SingleGameSaving,
         child: Center(
-          child: AnimatedSwitcher(
-            child: Padding(
-              padding: EdgeInsets.all(5),
+          child: Padding(
+            padding: EdgeInsets.all(5),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 500),
               child: _getBody(context, widget.state),
             ),
-            duration: const Duration(milliseconds: 500),
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Theme.of(context).unselectedWidgetColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(MdiIcons.graph),
@@ -222,23 +230,26 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(state.game.summary.pointsFor.toString(),
-                          style: pointsStyle),
-                      SizedBox(width: 30.0, child: Icon(Icons.add_circle)),
-                      Text(state.game.summary.pointsAgainst.toString(),
-                          style: pointsStyle),
-                      state.media.length > 0
-                          ? IconButton(
-                              color: Theme.of(context).accentColor,
-                              icon: Icon(Icons.videocam, size: 40.0),
-                              onPressed: () => Navigator.pushNamed(context,
-                                  'Game/Video/${widget.state.game.uid}'),
-                            )
-                          : SizedBox(width: 0.0),
-                    ],
+                  Hero(
+                    tag: "game" + state.game.uid,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(state.game.summary.pointsFor.toString(),
+                            style: pointsStyle),
+                        SizedBox(width: 30.0, child: Icon(Icons.add_circle)),
+                        Text(state.game.summary.pointsAgainst.toString(),
+                            style: pointsStyle),
+                        state.media.length > 0
+                            ? IconButton(
+                                color: Theme.of(context).accentColor,
+                                icon: Icon(Icons.videocam, size: 40.0),
+                                onPressed: () => Navigator.pushNamed(context,
+                                    'Game/Video/${widget.state.game.uid}'),
+                              )
+                            : SizedBox(width: 0.0),
+                      ],
+                    ),
                   ),
                   Divider(),
                   Text(

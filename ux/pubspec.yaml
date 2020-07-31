@@ -91,6 +91,7 @@ flutter:
     - assets/images/google_logo.png
     - assets/images/Basketball_Halfcourt.svg
     - assets/images/Basketball_Halfcourt_light.svg
+    - assets/images/hands_and_trophy.png
     - assets/icons/seasons.svg
 
 flutter_intl:

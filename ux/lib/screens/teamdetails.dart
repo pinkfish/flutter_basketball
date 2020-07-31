@@ -6,6 +6,7 @@ import 'package:basketballstats/widgets/player/playertile.dart';
 import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:basketballstats/widgets/team/teamstats.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -88,23 +89,26 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 loadGames: _expandedPanels.contains(g.uid),
                 initiallyExpanded: _expandedPanels.contains(g.uid),
                 onGameTapped: (String gameUid) =>
-                    Navigator.pushNamed(context, "/Game/View/" + gameUid),
+                    RepositoryProvider.of<Router>(context).navigateTo(
+                        context, "/Game/View/" + gameUid,
+                        transition: TransitionType.inFromRight),
               ),
             )
             .toList(),
       );
     }
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        ListTile(
-          leading: Icon(MdiIcons.tshirtCrew),
-          title: Text(
-            state.team.name,
-            textScaleFactor: 1.5,
+      children: [
+        Hero(
+          tag: "team" + state.team.uid,
+          child: Container(
+            height: 200.0,
+            color: Colors.lightBlue.shade50,
+            child: state.team.photoUid != null
+                ? Image.network(state.team.photoUid)
+                : Image.asset("assets/images/hands_and_trophy.png"),
           ),
         ),
-        SizedBox(height: 5.0),
         inner,
       ],
     );
@@ -179,9 +183,13 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
               builder: (BuildContext context, SingleTeamBlocState state) {
                 if (state is SingleTeamUninitialized ||
                     state is SingleTeamDeleted) {
-                  return Text(Messages.of(context).titleOfApp);
+                  return Center(
+                    child: Text(Messages.of(context).titleOfApp),
+                  );
                 }
-                return Text(state.team.name);
+                return Center(
+                  child: Text(state.team.name),
+                );
               },
             ),
           ),
@@ -216,9 +224,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
               if (_currentIndex != 1) {
                 return SavingOverlay(
                   saving: state is SingleTeamSaving,
-                  child: SingleChildScrollView(
-                    child: AnimatedSwitcher(
-                      duration: Duration(milliseconds: 500),
+                  child: AnimatedSwitcher(
+                    key: Key("gameswitch" + state.team.uid),
+                    duration: Duration(milliseconds: 500),
+                    child: SingleChildScrollView(
                       child: _currentIndex == 0
                           ? _innerTeamData(state)
                           : _currentIndex == 1
@@ -229,8 +238,13 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 );
               }
               return SavingOverlay(
-                  saving: state is SingleTeamSaving,
-                  child: _innerStatsData(state));
+                saving: state is SingleTeamSaving,
+                child: AnimatedSwitcher(
+                  key: Key("gameswitch" + state.team.uid),
+                  duration: Duration(milliseconds: 500),
+                  child: _innerStatsData(state),
+                ),
+              );
             },
           ),
           bottomNavigationBar: BottomNavigationBar(
@@ -311,12 +325,6 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       }),
     );
   }
-
-  bool _isDark() {
-    return Theme.of(context).brightness == Brightness.dark;
-  }
-
-
 
   void _addSeason(BuildContext context, SingleTeamBlocState state) {
     Navigator.pushNamed(context, "/Season/Add/" + state.team.uid);

@@ -33,38 +33,52 @@ class GameTile extends StatelessWidget {
         break;
     }
     return Card(
-      color: LocalStorageData.isDark(context)
-          ? Theme.of(context).primaryColor
-          : LocalStorageData.brighten(Theme.of(context).primaryColor, 80),
-      child: ListTile(
-        leading: Icon(MdiIcons.basketball),
-        title: Text(
-          Messages.of(context).getGameVs(game.opponentName, game.location),
-          style: Theme.of(context).textTheme.headline6,
-          textScaleFactor: 1.2,
+      elevation: 5.0,
+      margin: EdgeInsets.all(5.0),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            //begin: Alignment.bottomLeft,
+            //end: Alignment.topRight,
+            colors: [
+              LocalStorageData.brighten(Theme.of(context).primaryColor, 90),
+              LocalStorageData.brighten(Theme.of(context).primaryColor, 95),
+            ],
+          ),
         ),
-        subtitle: Text(
-          DateFormat("dd MMM hh:mm").format(game.eventTime.toLocal()),
-          style: Theme.of(context).textTheme.subtitle2.copyWith(
-                color: Theme.of(context).accentColor,
-              ),
-          textScaleFactor: 1.2,
-        ),
-        onTap: this.onTap,
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              game.summary.pointsFor.toString(),
-              style: style.copyWith(fontWeight: FontWeight.w600),
-              textScaleFactor: 1.3,
+        child: ListTile(
+          leading: Icon(MdiIcons.basketball),
+          title: Text(
+            Messages.of(context).getGameVs(game.opponentName, game.location),
+            style: Theme.of(context).textTheme.headline6,
+            textScaleFactor: 1.2,
+          ),
+          subtitle: Text(
+            DateFormat("dd MMM hh:mm").format(game.eventTime.toLocal()),
+            style: Theme.of(context).textTheme.subtitle2.copyWith(
+                  color: Theme.of(context).accentColor,
+                ),
+            textScaleFactor: 1.2,
+          ),
+          onTap: this.onTap,
+          trailing: Hero(
+            tag: "game" + game.uid,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  game.summary.pointsFor.toString(),
+                  style: style.copyWith(fontWeight: FontWeight.w600),
+                  textScaleFactor: 1.3,
+                ),
+                Text(
+                  game.summary.pointsAgainst.toString(),
+                  style: style.copyWith(fontWeight: FontWeight.w600),
+                  textScaleFactor: 1.3,
+                )
+              ],
             ),
-            Text(
-              game.summary.pointsAgainst.toString(),
-              style: style.copyWith(fontWeight: FontWeight.w600),
-              textScaleFactor: 1.3,
-            )
-          ],
+          ),
         ),
       ),
     );

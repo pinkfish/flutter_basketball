@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -28,12 +29,32 @@ class TeamWidget extends StatelessWidget {
                 dense: false,
                 title: Text(
                   team.name,
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.headline5,
                 ),
                 subtitle: _TeamSummary(),
-                leading: team.photoUid != null
-                    ? Image.network(team.photoUid)
-                    : Icon(MdiIcons.tshirtCrew),
+                leading: Hero(
+                  tag: "team" + team.uid,
+                  child: AnimatedContainer(
+                    constraints: BoxConstraints.tight(
+                      Size(
+                        60.0,
+                        60.0,
+                      ),
+                    ),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlueAccent,
+                      image: DecorationImage(
+                        image: team.photoUid != null
+                            ? NetworkImage(team.photoUid)
+                            : AssetImage("assets/images/hands_and_trophy.png"),
+                        fit: BoxFit.fitHeight,
+                      ),
+                      shape: BoxShape.circle,
+                    ),
+                    duration: Duration(milliseconds: 500),
+                  ),
+                ),
                 onTap: () => _onTap(context),
               ),
               ButtonBar(
@@ -57,7 +78,9 @@ class TeamWidget extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    Navigator.pushNamed(context, "/Team/View/" + team.uid);
+    var r = RepositoryProvider.of<Router>(context);
+    r.navigateTo(context, "/Team/View/" + team.uid,
+        transition: TransitionType.inFromRight);
   }
 }
 
