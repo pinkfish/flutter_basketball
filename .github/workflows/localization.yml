@@ -47,7 +47,7 @@ jobs:
         working-directory: ux
       - run: flutter pub run intl_translation:extract_to_arb --output-dir=lib/l10n lib/messages.dart
         working-directory: ux
-      - run: flutter pub run intl_translation:generate_from_arb     --outpudir=lib/l10n --no-use-deferred-loading     lib/messages.dart lib/l10n/intl_*.arb
+      - run: flutter pub run intl_translation:generate_from_arb  --outpudir=lib/l10n --no-use-deferred-loading lib/messages.dart lib/l10n/intl_??.arb
         working-directory: ux
       - name: Commit files
         run: |

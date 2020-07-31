@@ -1,5 +1,6 @@
 {
-  "@@last_modified": "2020-02-24T12:57:35.784993",
+  "@@locale": "en",
+  "@@last_modified": "2020-07-31T14:52:12.147589",
   "Basketball stats": "Basketball stats",
   "@Basketball stats": {
     "description": "Title of the app",
@@ -18,10 +19,1031 @@
     "type": "text",
     "placeholders": {}
   },
+  "Add User": "Add User",
+  "@Add User": {
+    "description": "Button to add a user to a team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "GUEST": "GUEST",
+  "@GUEST": {
+    "description": "Button text for adding a guest player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Guest players": "Guest players",
+  "@Guest players": {
+    "description": "Title to show the guest players in the game",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Details": "Details",
+  "@Details": {
+    "description": "Description of the form flow that has the game details",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No guest players": "No guest players",
+  "@No guest players": {
+    "description": "No guest players for the game",
+    "type": "text",
+    "placeholders": {}
+  },
+  "All Seasons": "All Seasons",
+  "@All Seasons": {
+    "description": "Tag on the dropdown to show all the seasons",
+    "type": "text",
+    "placeholders": {}
+  },
+  "All Players": "All Players",
+  "@All Players": {
+    "description": "Tag on the dropdown to show all the players",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Summary": "Summary",
+  "@Summary": {
+    "description": "Title for the page showing the add game summary",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Add Season": "Add Season",
+  "@Add Season": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "SEASON": "SEASON",
+  "@SEASON": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Edit Team": "Edit Team",
+  "@Edit Team": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Edit Player": "Edit Player",
+  "@Edit Player": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Users": "Users",
+  "@Users": {
+    "description": "Title of the users section in the team details",
+    "type": "text",
+    "placeholders": {}
+  },
   "Add Game": "Add Game",
   "@Add Game": {
     "description": "Message to on the tooltip to add a game",
     "type": "text",
     "placeholders": {}
+  },
+  "Add Player": "Add Player",
+  "@Add Player": {
+    "description": "Message to on the tooltip to add a player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No Teams": "No Teams",
+  "@No Teams": {
+    "description": "Message to say there are no teams currently setup",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No Games": "No Games",
+  "@No Games": {
+    "description": "Message to say there are no games currently setup",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No Seasons": "No Seasons",
+  "@No Seasons": {
+    "description": "Message to say there are no seasons currently setup",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No Players": "No Players",
+  "@No Players": {
+    "description": "Message to say there are no players currently setup",
+    "type": "text",
+    "placeholders": {}
+  },
+  "UI": "UI",
+  "@UI": {
+    "description": "Settings header for the UI settings",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Invite to Team": "Invite to Team",
+  "@Invite to Team": {
+    "description": "Button to show the invite to team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Light mode": "Light mode",
+  "@Light mode": {
+    "description": "Light mode for the ux",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No Players with state": "No Players with state",
+  "@No Players with state": {
+    "description": "Message to say there are no players currently setup",
+    "type": "text",
+    "placeholders": {}
+  },
+  "About": "About",
+  "@About": {
+    "description": "Menu item to open information about the app",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Do you want to finish streaming the game?": "Do you want to finish streaming the game?",
+  "@Do you want to finish streaming the game?": {
+    "description": "Menu item to open information about the app",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Failed to create thumbnail for the stream": "Failed to create thumbnail for the stream",
+  "@Failed to create thumbnail for the stream": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Video Steaming": "Video Steaming",
+  "@Video Steaming": {
+    "description": "Menu item to open information about the app",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Settings": "Settings",
+  "@Settings": {
+    "description": "Menu item to open information settings of the app",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Event Time": "Event Time",
+  "@Event Time": {
+    "description": "Time of the event",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Team Name": "Team Name",
+  "@Team Name": {
+    "description": "Name of the team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Season Name": "Season Name",
+  "@Season Name": {
+    "description": "Name of the season",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Player Name": "Player Name",
+  "@Player Name": {
+    "description": "Name of the player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Opponent": "Opponent",
+  "@Opponent": {
+    "description": "The opponent in the game",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Location": "Location",
+  "@Location": {
+    "description": "Location of the game",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Jersey Number": "Jersey Number",
+  "@Jersey Number": {
+    "description": "Jersey number for the playerr",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Must not be empty": "Must not be empty",
+  "@Must not be empty": {
+    "description": "Hint text to say the name must not be empty",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Error in the form": "Error in the form",
+  "@Error in the form": {
+    "description": "Snackbar that pops up to show that there is an error",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Save Failed": "Save Failed",
+  "@Save Failed": {
+    "description": "Failed to save a photo",
+    "type": "text",
+    "placeholders": {}
+  },
+  "SAVE": "SAVE",
+  "@SAVE": {
+    "description": "Text on a save button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "STATS": "STATS",
+  "@STATS": {
+    "description": "Text on a stats button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "GAMES": "GAMES",
+  "@GAMES": {
+    "description": "Text on a games button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "EDIT": "EDIT",
+  "@EDIT": {
+    "description": "Text on a edit button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "END": "END",
+  "@END": {
+    "description": "Text on a end button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "FOUL": "FOUL",
+  "@FOUL": {
+    "description": "Text on the foul button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "T/O": "T/O",
+  "@T/O": {
+    "description": "Turnover button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "BLK": "BLK",
+  "@BLK": {
+    "description": "Block button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ASST": "ASST",
+  "@ASST": {
+    "description": "Assist button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "STL": "STL",
+  "@STL": {
+    "description": "Steal button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "DEF RB": "DEF RB",
+  "@DEF RB": {
+    "description": "Defensive Rebound button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "OFF RB": "OFF RB",
+  "@OFF RB": {
+    "description": "Offensive Rebound button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "SUB": "SUB",
+  "@SUB": {
+    "description": "Text on a substitution button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "PLAYER": "PLAYER",
+  "@PLAYER": {
+    "description": "Text on a add player button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "START": "START",
+  "@START": {
+    "description": "Text on a button to start the period",
+    "type": "text",
+    "placeholders": {}
+  },
+  "GAME": "GAME",
+  "@GAME": {
+    "description": "Text on a add game button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TEAM": "TEAM",
+  "@TEAM": {
+    "description": "Text on a add team button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "unknown": "unknown",
+  "@unknown": {
+    "description": "Used when the data is unknown",
+    "type": "text",
+    "placeholders": {}
+  },
+  "All Periods": "All Periods",
+  "@All Periods": {
+    "description": "Drop down menu item for all periods",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Timeline": "Timeline",
+  "@Timeline": {
+    "description": "Bottom navigation to open the timeline",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Events": "Events",
+  "@Events": {
+    "description": "Bottom navigation to open the events",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Stats": "Stats",
+  "@Stats": {
+    "description": "Used when the data is unknown",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Players": "Players",
+  "@Players": {
+    "description": "Used when the data is unknown",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Video": "Video",
+  "@Video": {
+    "description": "Shows video for the game",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Select Media": "Select Media",
+  "@Select Media": {
+    "description": "Title for the dialog to select a video",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Upload Video": "Upload Video",
+  "@Upload Video": {
+    "description": "Upload a video",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Photo": "Photo",
+  "@Photo": {
+    "description": "Upload a photo",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Stream Live": "Stream Live",
+  "@Stream Live": {
+    "description": "Live video streaming",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CAMERA": "CAMERA",
+  "@CAMERA": {
+    "description": "Live video streaming",
+    "type": "text",
+    "placeholders": {}
+  },
+  "GALLERY": "GALLERY",
+  "@GALLERY": {
+    "description": "Live video streaming",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No Media": "No Media",
+  "@No Media": {
+    "description": "No media to display",
+    "type": "text",
+    "placeholders": {}
+  },
+  "STREAM": "STREAM",
+  "@STREAM": {
+    "description": "Button to display a stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "UPLOAD": "UPLOAD",
+  "@UPLOAD": {
+    "description": "Button to display upload a stream",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Delete Player": "Delete Player",
+  "@Delete Player": {
+    "description": "Dialog title for deleting a playern",
+    "type": "text",
+    "placeholders": {}
+  },
+  "End timeout": "End timeout",
+  "@End timeout": {
+    "description": "Text to end the timeout",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period": "Period",
+  "@Period": {
+    "description": "Dialog title for sertting the current period",
+    "type": "text",
+    "placeholders": {}
+  },
+  "PERIOD": "PERIOD",
+  "@PERIOD": {
+    "description": "Button to set the current period",
+    "type": "text",
+    "placeholders": {}
+  },
+  "You must have some players in a season to be able to create a game.": "You must have some players in a season to be able to create a game.",
+  "@You must have some players in a season to be able to create a game.": {
+    "description": "Text in a dialog to warn you need players",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Name is required.": "Name is required.",
+  "@Name is required.": {
+    "description": "Text in a snackbar to say the name is required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email is required.": "Email is required.",
+  "@Email is required.": {
+    "description": "Text in a snackbar to say the email is required",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Invalid email": "Invalid email",
+  "@Invalid email": {
+    "description": "Text in a snackbar to say the email is invalid",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Empty password": "Empty password",
+  "@Empty password": {
+    "description": "Snackbar to show the password is empty",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Password must be 6 characters long": "Password must be 6 characters long",
+  "@Password must be 6 characters long": {
+    "description": "Snackbar message to say the password is too short",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email": "Email",
+  "@Email": {
+    "description": "Email hint text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "FORGOT PASSWORD": "FORGOT PASSWORD",
+  "@FORGOT PASSWORD": {
+    "description": "Forgot password button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sent email to your email address to reset your password": "Sent email to your email address to reset your password",
+  "@Sent email to your email address to reset your password": {
+    "description": "Forgot password happy button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "The users who have access to this team, they can see the stats and edit the team/seasons/players.": "The users who have access to this team, they can see the stats and edit the team/seasons/players.",
+  "@The users who have access to this team, they can see the stats and edit the team/seasons/players.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "The email to resend the password to": "The email to resend the password to",
+  "@The email to resend the password to": {
+    "description": "Forgot password happy button",
+    "type": "text",
+    "placeholders": {}
+  },
+  "RESEND EMAIL": "RESEND EMAIL",
+  "@RESEND EMAIL": {
+    "description": "Button to resend the email to verify their email address",
+    "type": "text",
+    "placeholders": {}
+  },
+  "LOGIN": "LOGIN",
+  "@LOGIN": {
+    "description": "Login button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "LOGOUT": "LOGOUT",
+  "@LOGOUT": {
+    "description": "Logout button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "CREATE": "CREATE",
+  "@CREATE": {
+    "description": "Create account button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Contact phone number": "Contact phone number",
+  "@Contact phone number": {
+    "description": "Phone number for the edit box to edit the phone number",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Phone number (optional)": "Phone number (optional)",
+  "@Phone number (optional)": {
+    "description": "Phone number for the edit box to edit the phone number marked as optional",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Password": "Password",
+  "@Password": {
+    "description": "Input box for a password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Verify password": "Verify password",
+  "@Verify password": {
+    "description": "Input box for a verification to the main password password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Please fix the items outlined in red": "Please fix the items outlined in red",
+  "@Please fix the items outlined in red": {
+    "description": "Error when submitting a form",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Email and/or password incorrect": "Email and/or password incorrect",
+  "@Email and/or password incorrect": {
+    "description": "Passwords or email is not correct, login failed",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Internal Error": "Internal Error",
+  "@Internal Error": {
+    "description": "Something happened inside the login system, not a bad password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Login Cancelled": "Login Cancelled",
+  "@Login Cancelled": {
+    "description": "Login was cancelled",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Passwords must match": "Passwords must match",
+  "@Passwords must match": {
+    "description": "Passwords must match signup form error",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Created an account, please look in your email for the verification code..": "Created an account, please look in your email for the verification code..",
+  "@Created an account, please look in your email for the verification code..": {
+    "description": "Confirmation message after requesting the email verification code",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Your email address": "Your email address",
+  "@Your email address": {
+    "description": "Your email input field hint",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Name": "Name",
+  "@Name": {
+    "description": "Name for the edit box to edit the user name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Your name": "Your name",
+  "@Your name": {
+    "description": "Name for the edit box to edit the user name",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sent verification email, please check your email inbox.": "Sent verification email, please check your email inbox.",
+  "@Sent verification email, please check your email inbox.": {
+    "description": "Confirmation message after requesting the email verification code",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No account found for email or internal error occured": "No account found for email or internal error occured",
+  "@No account found for email or internal error occured": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "verifyexplanation": "Email address {email} needs to be verified, please check your email or resend the verification details.",
+  "@verifyexplanation": {
+    "description": "Button to resend the email to verify their email address",
+    "type": "text",
+    "placeholders": {
+      "email": {}
+    }
+  },
+  "Invalid URL": "Invalid URL",
+  "@Invalid URL": {
+    "description": "Error in a form when the url is invalid",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Error creating user, maybe the email address is already used": "Error creating user, maybe the email address is already used",
+  "@Error creating user, maybe the email address is already used": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "View": "View",
+  "@View": {
+    "description": "Title for the tab to show the playing video",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Create new": "Create new",
+  "@Create new": {
+    "description": "Create new account button text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deletePlayerAreYouSure": "Are you sure you want to delete the player {name}?",
+  "@deletePlayerAreYouSure": {
+    "description": "Dialog text to ask if you aere sure about deleting the player",
+    "type": "text",
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "Shots": "Shots",
+  "@Shots": {
+    "description": "Heading for the shots sectionn",
+    "type": "text",
+    "placeholders": {}
+  },
+  "All Events": "All Events",
+  "@All Events": {
+    "description": "Drop down menu item for all events",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Fouls": "Fouls",
+  "@Fouls": {
+    "description": "Drop down menu item for fouls",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Steals": "Steals",
+  "@Steals": {
+    "description": "Drop down menu item for steals",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Turnovers": "Turnovers",
+  "@Turnovers": {
+    "description": "Drop down menu item for turnovers",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Blocks": "Blocks",
+  "@Blocks": {
+    "description": "Drop down menu item for fouls",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Rebounds": "Rebounds",
+  "@Rebounds": {
+    "description": "Drop down menu item for rebounds",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Points": "Points",
+  "@Points": {
+    "description": "Drop down menu item for points",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Seasons": "Seasons",
+  "@Seasons": {
+    "description": "Header for the seasons section",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Current": "Current",
+  "@Current": {
+    "description": "Subtitle to markt he season as current",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Pts": "Pts",
+  "@Pts": {
+    "description": "Points abbreviation",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Stl": "Stl",
+  "@Stl": {
+    "description": "Steals abbreviation",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Blk": "Blk",
+  "@Blk": {
+    "description": "Blocks abbreviation",
+    "type": "text",
+    "placeholders": {}
+  },
+  "%age": "%age",
+  "@%age": {
+    "description": "Percentage made in game summary title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "O/RB": "O/RB",
+  "@O/RB": {
+    "description": "Offensive rebound abbreviation",
+    "type": "text",
+    "placeholders": {}
+  },
+  "D/RB": "D/RB",
+  "@D/RB": {
+    "description": "Defensive rebound abbreviation",
+    "type": "text",
+    "placeholders": {}
+  },
+  "RBs": "RBs",
+  "@RBs": {
+    "description": "Rebounds in game summary",
+    "type": "text",
+    "placeholders": {}
+  },
+  "URL": "URL",
+  "@URL": {
+    "description": "Title for the form field to set the url for media",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Description": "Description",
+  "@Description": {
+    "description": "Title for the description of the media",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Delete invite": "Delete invite",
+  "@Delete invite": {
+    "description": "Title for the dialog to delete an invite",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Invites": "Invites",
+  "@Invites": {
+    "description": "Title for the screen with the list of current invites",
+    "type": "text",
+    "placeholders": {}
+  },
+  "No invites": "No invites",
+  "@No invites": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Basketball stats is an exciting app to show statsabout basketball games.  It shows nifty graphs and fun stuff": "Basketball stats is an exciting app to show statsabout basketball games.  It shows nifty graphs and fun stuff",
+  "@Basketball stats is an exciting app to show statsabout basketball games.  It shows nifty graphs and fun stuff": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "getUnverified": "{name} [unverified]",
+  "@getUnverified": {
+    "description": "If the user is unverified",
+    "type": "text",
+    "placeholders": {
+      "name": {},
+      "unverified": {}
+    }
+  },
+  "seasonSummaryExpanded": "Pts {points} Blks {blocks} Stls {steals}",
+  "@seasonSummaryExpanded": {
+    "description": "Subtitle to markt he season as current",
+    "type": "text",
+    "placeholders": {
+      "points": {},
+      "blocks": {},
+      "steals": {}
+    }
+  },
+  "playedSeasons": "Played {numSeasons} seasons",
+  "@playedSeasons": {
+    "description": "Number of seasons playeed for the team",
+    "type": "text",
+    "placeholders": {
+      "numSeasons": {}
+    }
+  },
+  "winLoss": "Win {wins} Loss {loses}",
+  "@winLoss": {
+    "description": "Number of seasons playeed for the team",
+    "type": "text",
+    "placeholders": {
+      "wins": {},
+      "loses": {},
+      "ties": {}
+    }
+  },
+  "getGameVs": "vs {opponent} at {place}",
+  "@getGameVs": {
+    "description": "Heading for a game showing the opponent and the place",
+    "type": "text",
+    "placeholders": {
+      "opponent": {},
+      "place": {}
+    }
+  },
+  "invitedpeople": "Invited: {numPeopleInvited}",
+  "@invitedpeople": {
+    "description": "Heading showing the number of pending invites",
+    "type": "text",
+    "placeholders": {
+      "numPeopleInvited": {}
+    }
+  },
+  "Not started": "Not started",
+  "@Not started": {
+    "description": "The game is not started",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Overtime": "Overtime",
+  "@Overtime": {
+    "description": "The game is in overtime",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 1": "Period 1",
+  "@Period 1": {
+    "description": "The game is in period 1",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 2": "Period 2",
+  "@Period 2": {
+    "description": "The game is in period 2",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 3": "Period 3",
+  "@Period 3": {
+    "description": "The game is in period 3",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Period 4": "Period 4",
+  "@Period 4": {
+    "description": "The game is in period 4",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Finished": "Finished",
+  "@Finished": {
+    "description": "The game has finished",
+    "type": "text",
+    "placeholders": {}
+  },
+  "madeEventType": "{points}",
+  "@madeEventType": {
+    "description": "+num points",
+    "type": "text",
+    "placeholders": {
+      "points": {}
+    }
+  },
+  "missedEventType": "Miss {points}",
+  "@missedEventType": {
+    "description": "missed num points",
+    "type": "text",
+    "placeholders": {
+      "points": {}
+    }
+  },
+  "Foul": "Foul",
+  "@Foul": {
+    "description": "Foul on player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Subsitution": "Subsitution",
+  "@Subsitution": {
+    "description": "Subsitiution of player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Off Rebound": "Off Rebound",
+  "@Off Rebound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Def Rebound": "Def Rebound",
+  "@Def Rebound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Block": "Block",
+  "@Block": {
+    "description": "Block of a shot",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Assist": "Assist",
+  "@Assist": {
+    "description": "Assist a shot",
+    "type": "text",
+    "placeholders": {}
+  },
+  "stealEventType": "Steal",
+  "@stealEventType": {
+    "description": "Steal a ball",
+    "type": "text",
+    "placeholders": {}
+  },
+  "turnOverEventType": "Turnover",
+  "@turnOverEventType": {
+    "description": "Caused a turnover",
+    "type": "text",
+    "placeholders": {}
+  },
+  "periodStart": "Start of {periodName}",
+  "@periodStart": {
+    "description": "Start of period",
+    "type": "text",
+    "placeholders": {
+      "periodName": {}
+    }
+  },
+  "periodEnd": "End of {periodName}",
+  "@periodEnd": {
+    "description": "End of period",
+    "type": "text",
+    "placeholders": {
+      "periodName": {}
+    }
+  },
+  "Lies, Damn Lies and Statistics": "Lies, Damn Lies and Statistics",
+  "@Lies, Damn Lies and Statistics": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Mark Twain": "Mark Twain",
+  "@Mark Twain": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.": "I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.",
+  "@I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Michael Jordan": "Michael Jordan",
+  "@Michael Jordan": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "I know I am getting better at golf because I am hitting fewer spectators.": "I know I am getting better at golf because I am hitting fewer spectators.",
+  "@I know I am getting better at golf because I am hitting fewer spectators.": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Gerald R. Ford": "Gerald R. Ford",
+  "@Gerald R. Ford": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Don't Panic": "Don't Panic",
+  "@Don't Panic": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "Douglas Adams": "Douglas Adams",
+  "@Douglas Adams": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmdeleteinvitetoteam": "Do you want to delete the invite to {teamName}?",
+  "@confirmdeleteinvitetoteam": {
+    "description": "Text to delete the invite to the team in the alert dialog.",
+    "type": "text",
+    "placeholders": {
+      "teamName": {}
+    }
+  },
+  "teamForInvite": "Team {teamName}",
+  "@teamForInvite": {
+    "type": "text",
+    "placeholders": {
+      "teamName": {}
+    }
   }
 }
