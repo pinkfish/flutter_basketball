@@ -4,12 +4,7 @@
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.github/workflows/localization.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/localization.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/generated/intl/messages_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/intl/messages_en.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/generated/intl/messages_messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/intl/messages_messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/generated/l10n.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/l10n.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/l10n/intl_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/l10n/intl_en.arb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/l10n/messages_all.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/l10n/messages_all.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/l10n/messages_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/l10n/messages_en.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
