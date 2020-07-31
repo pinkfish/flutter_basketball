@@ -5,12 +5,12 @@ on:
     branches: [ main ]
     paths:
       - "ux/lib/messages.dart"
-      - ".github/workflows/localizations.yml"
+      - ".github/workflows/localization.yml"
   pull_request:
     branches: [ main ]
     paths:
       - "ux/lib/messages.dart"
-      - ".github/workflows/localizations.yml"
+      - ".github/workflows/localization.yml"
 
 jobs:
   build:
