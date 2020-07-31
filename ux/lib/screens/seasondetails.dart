@@ -11,7 +11,7 @@ import '../widgets/game/gametile.dart';
 import '../widgets/loading.dart';
 import '../widgets/player/playertile.dart';
 import '../widgets/savingoverlay.dart';
-import 'addplayerseason.dart';
+import 'seasonplayeradd.dart';
 
 class SeasonDetailsScreen extends StatefulWidget {
   final String seasonUid;

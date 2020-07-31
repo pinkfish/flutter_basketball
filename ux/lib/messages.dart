@@ -95,6 +95,9 @@ class Messages {
   String get uxSettingsSection => Intl.message("UI",
       desc: "Settings header for the UI settings", locale: locale);
 
+  String get inviteToTeam => Intl.message("Invite to Team",
+      desc: "Button to show the invite to team", locale: locale);
+
   String get lightMode =>
       Intl.message("Light mode", desc: "Light mode for the ux", locale: locale);
 

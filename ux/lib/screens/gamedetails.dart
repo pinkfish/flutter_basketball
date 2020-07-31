@@ -16,7 +16,7 @@ import '../widgets/game/gameshotlocations.dart';
 import '../widgets/game/gametimeseries.dart';
 import '../widgets/loading.dart';
 import '../widgets/savingoverlay.dart';
-import 'addplayergame.dart';
+import 'gameplayeradd.dart';
 
 ///
 /// Shows details of the game.

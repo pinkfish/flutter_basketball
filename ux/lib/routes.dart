@@ -1,20 +1,17 @@
-import 'package:basketballstats/screens/addmediafromurl.dart';
-import 'package:basketballstats/screens/addmediaphoto.dart';
-import 'package:basketballstats/screens/addmediastream.dart';
-import 'package:basketballstats/screens/gamevideoplayer.dart';
 import 'package:basketballstats/screens/settings.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/addgame.dart';
-import 'screens/addseason.dart';
-import 'screens/addteam.dart';
-import 'screens/editplayer.dart';
+import 'screens/gameadd.dart';
 import 'screens/gamedetails.dart';
+import 'screens/gamemediafromurladd.dart';
+import 'screens/gamemediaphotoadd.dart';
+import 'screens/gamemediastreamadd.dart';
 import 'screens/gameplayerdetails.dart';
 import 'screens/gamestats.dart';
 import 'screens/gamevideo.dart';
+import 'screens/gamevideoplayer.dart';
 import 'screens/invites/acceptinvitetoteam.dart';
 import 'screens/invites/invitelist.dart';
 import 'screens/login/forgotpassword.dart';
@@ -22,7 +19,10 @@ import 'screens/login/loginform.dart';
 import 'screens/login/signup.dart';
 import 'screens/login/verifyemail.dart';
 import 'screens/playerdetails.dart';
+import 'screens/playeredit.dart';
+import 'screens/seasonadd.dart';
 import 'screens/splashscreen.dart';
+import 'screens/teamadd.dart';
 import 'screens/teamdetails.dart';
 import 'screens/teamedit.dart';
 import 'screens/teams.dart';
@@ -76,7 +76,7 @@ class BasketballAppRouter {
     router.define("/Player/Edit/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
-                EditPlayerScreen(vals["id"][0].toString())));
+                PlayerEditScreen(vals["id"][0].toString())));
     router.define("/Game/Stats/:id/:season/:team",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

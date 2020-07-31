@@ -9,10 +9,10 @@ import '../messages.dart';
 ///
 /// Edit a player ing the world.
 ///
-class EditPlayerScreen extends StatelessWidget {
+class PlayerEditScreen extends StatelessWidget {
   final String playerUid;
 
-  EditPlayerScreen(this.playerUid);
+  PlayerEditScreen(this.playerUid);
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +23,16 @@ class EditPlayerScreen extends StatelessWidget {
       body: BlocProvider(
         create: (BuildContext context) => SinglePlayerBloc(
             db: BlocProvider.of<TeamsBloc>(context).db, playerUid: playerUid),
-        child: _EditPlayerInside(playerUid),
+        child: _PlayerEditInside(playerUid),
       ),
     );
   }
 }
 
-class _EditPlayerInside extends StatelessWidget {
+class _PlayerEditInside extends StatelessWidget {
   final String playerUid;
 
-  _EditPlayerInside(this.playerUid);
+  _PlayerEditInside(this.playerUid);
 
   void _saveForm(SinglePlayerBloc bloc, String name, String jersey) {
     bloc.add(SinglePlayerUpdate(

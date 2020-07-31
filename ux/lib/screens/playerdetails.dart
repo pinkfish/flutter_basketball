@@ -30,6 +30,8 @@ class PlayerDetailsScreen extends StatelessWidget {
   }
 }
 
+enum _DropDownMenuItems { Delete, Edit }
+
 class _PlayerDetails extends StatefulWidget {
   final String playerUid;
 
@@ -81,23 +83,27 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
             actions: <Widget>[
               PopupMenuButton(
                 icon: Icon(Icons.more_vert),
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: "delete",
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<_DropDownMenuItems>>[
+                  PopupMenuItem<_DropDownMenuItems>(
+                    value: _DropDownMenuItems.Delete,
                     child: Text(Messages.of(context).deletePlayer),
                   ),
-                  PopupMenuItem<String>(
-                    value: "edit",
+                  PopupMenuItem<_DropDownMenuItems>(
+                    value: _DropDownMenuItems.Edit,
                     child: Text(Messages.of(context).editPlayerTitle),
                   )
                 ],
                 onSelected: (s) {
-                  if (s == "delete") {
-                    _doDelete(context, state);
-                  } else if (s == "edit") {
-                    RepositoryProvider.of<Router>(context).navigateTo(
-                        context, "/Player/Edit/" + state.player.uid,
-                        transition: TransitionType.materialFullScreenDialog);
+                  switch (s) {
+                    case _DropDownMenuItems.Delete:
+                      _doDelete(context, state);
+                      break;
+                    case _DropDownMenuItems.Edit:
+                      RepositoryProvider.of<Router>(context).navigateTo(
+                          context, "/Player/Edit/" + state.player.uid,
+                          transition: TransitionType.materialFullScreenDialog);
+                      break;
                   }
                 },
               ),

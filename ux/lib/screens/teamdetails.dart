@@ -18,7 +18,7 @@ import '../widgets/deleted.dart';
 import '../widgets/loading.dart';
 import '../widgets/savingoverlay.dart';
 import '../widgets/seasons/seasonexpansionpanel.dart';
-import 'addplayerseason.dart';
+import 'seasonplayeradd.dart';
 
 ///
 /// Shows the details for the team, broken down by seasons.
@@ -36,6 +36,8 @@ class TeamDetailsScreen extends StatefulWidget {
     return _TeamDetailsScreenState();
   }
 }
+
+enum _TeamDropDown { Edit, Invite }
 
 class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   Set<String> _expandedPanels = Set();
@@ -195,6 +197,35 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 );
               },
             ),
+            actions: <Widget>[
+              PopupMenuButton<_TeamDropDown>(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (BuildContext context) => [
+                  PopupMenuItem(
+                    child: Text(Messages.of(context).editTeamTooltip),
+                    value: _TeamDropDown.Edit,
+                  ),
+                  PopupMenuItem(
+                    child: Text(Messages.of(context).inviteToTeam),
+                    value: _TeamDropDown.Invite,
+                  ),
+                ],
+                onSelected: (_TeamDropDown value) {
+                  switch (value) {
+                    case _TeamDropDown.Edit:
+                      RepositoryProvider.of<Router>(context).navigateTo(
+                          context, "/Team/Edit/" + widget.teamUid,
+                          transition: TransitionType.materialFullScreenDialog);
+                      break;
+                    case _TeamDropDown.Invite:
+                      RepositoryProvider.of<Router>(context).navigateTo(
+                          context, "/Team/Invite/" + widget.teamUid,
+                          transition: TransitionType.materialFullScreenDialog);
+                      break;
+                  }
+                },
+              )
+            ],
           ),
           body: BlocConsumer(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
@@ -290,15 +321,6 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                         ? SpeedDial(
                             animatedIcon: AnimatedIcons.menu_close,
                             children: [
-                              SpeedDialChild(
-                                child: Icon(Icons.edit),
-                                label: Messages.of(context).editTeamTooltip,
-                                labelStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline6
-                                    .copyWith(color: Colors.black),
-                                onTap: () => _addSeason(context, state),
-                              ),
                               SpeedDialChild(
                                 child: Icon(Icons.add),
                                 label: Messages.of(context).addSeasonTooltip,
