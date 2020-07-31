@@ -77,6 +77,21 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
         return Scaffold(
           appBar: AppBar(
             title: Text(Messages.of(context).titleOfApp),
+            actions: <Widget>[
+              PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                      value: "delete",
+                      child: Text(Messages.of(context).deletePlayer))
+                ],
+                onSelected: (s) {
+                  if (s == "delete") {
+                    _doDelete(context, state);
+                  }
+                },
+              ),
+            ],
           ),
           body: Container(
             child: OrientationBuilder(
@@ -112,14 +127,7 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _playerDetails(context, state),
-          ButtonBar(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () => _doDelete(context, state),
-              ),
-            ],
-          ),
+          SizedBox(height: 10),
           Expanded(
             child: SingleChildScrollView(
               child: TeamDetailsExpansionPanel(

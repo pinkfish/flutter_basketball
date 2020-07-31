@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:flutter/material.dart';
 
 import '../player/playertile.dart';
@@ -37,7 +38,10 @@ class GamePlayerList extends StatelessWidget {
               editButton: false,
               color: selectedPlayer == playerUid
                   ? Theme.of(context).splashColor
-                  : Theme.of(context).primaryColor,
+                  : LocalStorageData.isDark(context)
+                      ? Theme.of(context).primaryColor
+                      : LocalStorageData.brighten(
+                          Theme.of(context).primaryColor, 80),
               onTap: onSelectPlayer != null
                   ? (String playerUid) => onSelectPlayer(context, playerUid)
                   : null,

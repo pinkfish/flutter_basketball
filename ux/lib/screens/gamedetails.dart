@@ -93,7 +93,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                 "vs " + widget.state.game.opponentName,
                 style: Theme.of(context).textTheme.headline5.copyWith(
                     color: (LocalStorageData.isDark(context)
-                        ? Colors.black
+                        ? Colors.white
                         : Colors.white)),
               ),
         actions: <Widget>[
@@ -124,7 +124,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
+        selectedItemColor: Theme.of(context).indicatorColor,
         unselectedItemColor: Theme.of(context).unselectedWidgetColor,
         items: [
           BottomNavigationBarItem(
@@ -203,8 +203,17 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
       return LoadingWidget();
     }
     if (_currentIndex == 0) {
+      TextStyle headerStyle = Theme.of(context).textTheme.subtitle1.copyWith(
+          fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25,
+          color: LocalStorageData.darken(Theme.of(context).indicatorColor, 20),
+          fontWeight: FontWeight.bold);
       TextStyle dataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
-          fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25);
+            fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.35,
+          );
+      TextStyle opponentDataStyle =
+          Theme.of(context).textTheme.subtitle1.copyWith(
+                fontSize: Theme.of(context).textTheme.subtitle1.fontSize,
+              );
       TextStyle pointsStyle = Theme.of(context).textTheme.subtitle1.copyWith(
           fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 4.0);
 
@@ -212,6 +221,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
         builder: (BuildContext context, BoxConstraints viewportConstraints) =>
             SingleChildScrollView(
           child: Container(
+            /*
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/basketball.png'),
@@ -221,6 +231,8 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                     Colors.white.withOpacity(0.2), BlendMode.dstATop),
               ),
             ),
+
+             */
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 minHeight: viewportConstraints.maxHeight,
@@ -252,48 +264,67 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                     ),
                   ),
                   Divider(),
-                  Text(
-                      DateFormat("H:m MMM, d")
-                              .format(state.game.eventTime.toLocal()) +
-                          " at " +
-                          state.game.location,
-                      style: Theme.of(context).textTheme.headline5),
-                  ((state.game.currentPeriod != GamePeriod.NotStarted &&
-                          state.game.currentPeriod != GamePeriod.Finished)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              Messages.of(context)
-                                  .getPeriodName(state.game.currentPeriod),
-                              style: Theme.of(context).textTheme.bodyText2,
-                              textScaleFactor: 1.5,
-                            ),
-                            GameDuration(
-                              state: state,
-                              style: Theme.of(context).textTheme.bodyText2,
-                              textScaleFactor: 1.5,
-                            ),
-                          ],
-                        )
-                      : Center(
-                          child: Text(
-                          "Game Over",
-                          textScaleFactor: 1.2,
-                        ))),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image:
+                                    AssetImage("assets/images/basketball.png"),
+                              )),
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                      Column(
+                        children: [
+                          Text(
+                              DateFormat("H:m MMM, d")
+                                      .format(state.game.eventTime.toLocal()) +
+                                  " at " +
+                                  state.game.location,
+                              style: Theme.of(context).textTheme.headline5),
+                          ((state.game.currentPeriod != GamePeriod.NotStarted &&
+                                  state.game.currentPeriod !=
+                                      GamePeriod.Finished)
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      Messages.of(context).getPeriodName(
+                                          state.game.currentPeriod),
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      textScaleFactor: 1.5,
+                                    ),
+                                    GameDuration(
+                                      state: state,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                      textScaleFactor: 1.5,
+                                    ),
+                                  ],
+                                )
+                              : Center(
+                                  child: Text(
+                                  "Game Over",
+                                  textScaleFactor: 1.2,
+                                ))),
+                        ],
+                      ),
+                    ],
+                  ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("1pt",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
-                      Text("2pt",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
-                      Text("3pt",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("1pt", style: headerStyle),
+                      Text("2pt", style: headerStyle),
+                      Text("3pt", style: headerStyle),
                     ],
                   ),
                   Row(
@@ -314,29 +345,23 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                     children: [
                       Text(
                           _madeSummary(state.game.opponentSummary.fullData.one),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                       Text(
                           _madeSummary(state.game.opponentSummary.fullData.two),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                       Text(
                           _madeSummary(
                               state.game.opponentSummary.fullData.three),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                     ],
                   ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Foul",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
-                      Text("Steals",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
-                      Text("Turnover",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("Foul", style: headerStyle),
+                      Text("Steals", style: headerStyle),
+                      Text("Turnover", style: headerStyle),
                     ],
                   ),
                   Row(
@@ -356,29 +381,23 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(state.game.opponentSummary.fullData.fouls.toString(),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                       Text(
                           state.game.opponentSummary.fullData.steals.toString(),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                       Text(
                           state.game.opponentSummary.fullData.turnovers
                               .toString(),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                     ],
                   ),
                   Divider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Off Rb",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
-                      Text("Def Db",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
-                      Text("Blocks",
-                          style:
-                              dataStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text("Off Rb", style: headerStyle),
+                      Text("Def Db", style: headerStyle),
+                      Text("Blocks", style: headerStyle),
                     ],
                   ),
                   Row(
@@ -402,14 +421,14 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
                       Text(
                           state.game.opponentSummary.fullData.offensiveRebounds
                               .toString(),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                       Text(
                           state.game.opponentSummary.fullData.defensiveRebounds
                               .toString(),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                       Text(
                           state.game.opponentSummary.fullData.blocks.toString(),
-                          style: dataStyle),
+                          style: opponentDataStyle),
                     ],
                   ),
                 ],

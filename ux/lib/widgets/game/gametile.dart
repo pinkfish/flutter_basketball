@@ -40,10 +40,18 @@ class GameTile extends StatelessWidget {
           gradient: LinearGradient(
             //begin: Alignment.bottomLeft,
             //end: Alignment.topRight,
-            colors: [
-              LocalStorageData.brighten(Theme.of(context).primaryColor, 90),
-              LocalStorageData.brighten(Theme.of(context).primaryColor, 95),
-            ],
+            colors: LocalStorageData.isDark(context)
+                ? [
+                    LocalStorageData.brighten(
+                        Theme.of(context).primaryColor, 10),
+                    Theme.of(context).splashColor,
+                  ]
+                : [
+                    LocalStorageData.brighten(
+                        Theme.of(context).primaryColor, 90),
+                    LocalStorageData.brighten(
+                        Theme.of(context).primaryColor, 95),
+                  ],
           ),
         ),
         child: ListTile(
