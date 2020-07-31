@@ -83,13 +83,16 @@ class TeamsScreen extends StatelessWidget {
                               onTap: () =>
                                   Navigator.pushNamed(context, "/Invite/List"),
                             ),
-                            ...state.teams.map((t) => TeamWidget(t)).toList(),
+                            ...state.teams
+                                .map((t) => TeamWidget(teamUid: t.uid))
+                                .toList(),
                           ],
                         );
                       } else {
                         return ListView(
-                          children:
-                              state.teams.map((t) => TeamWidget(t)).toList(),
+                          children: state.teams
+                              .map((t) => TeamWidget(teamUid: t.uid))
+                              .toList(),
                         );
                       }
                     }

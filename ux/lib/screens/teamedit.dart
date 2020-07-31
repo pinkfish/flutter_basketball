@@ -1,9 +1,9 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
-import 'package:basketballstats/widgets/usertile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../messages.dart';
 
@@ -100,7 +100,7 @@ class _EditTeamFormState extends State<_EditTeamForm> {
                 TextFormField(
                   key: Key("teamFormField"),
                   decoration: InputDecoration(
-                    icon: Icon(Icons.people),
+                    icon: Icon(MdiIcons.tshirtCrew),
                     hintText: Messages.of(context).teamName,
                     labelText: Messages.of(context).teamName,
                   ),
@@ -137,42 +137,9 @@ class _EditTeamFormState extends State<_EditTeamForm> {
                         onPressed: () =>
                             _saveForm(BlocProvider.of<SingleTeamBloc>(context)),
                       ),
-                      RaisedButton.icon(
-                        key: Key("addUserButtonTeam"),
-                        textTheme: ButtonTextTheme.primary,
-                        elevation: 2,
-                        icon: Icon(Icons.person_add),
-                        label: Text(Messages.of(context).addUserButton,
-                            style: Theme.of(context).textTheme.button),
-                        onPressed: () =>
-                            _saveForm(BlocProvider.of<SingleTeamBloc>(context)),
-                      ),
                     ],
                   ),
                 ),
-                ExpansionPanelList(
-                  expansionCallback: (int index, bool isExpanded) {
-                    setState(() {
-                      usersIsExpanded = !isExpanded;
-                    });
-                  },
-                  children: [
-                    ExpansionPanel(
-                      isExpanded: usersIsExpanded,
-                      headerBuilder: (BuildContext context, bool expanded) =>
-                          Padding(
-                        padding: EdgeInsets.only(left: 10, right: 10),
-                        child: Text(Messages.of(context).usersTitle,
-                            style: Theme.of(context).textTheme.headline6),
-                      ),
-                      body: Column(
-                        children: state.team.users.keys
-                            .map((u) => UserTile(userUid: u))
-                            .toList(),
-                      ),
-                    ),
-                  ],
-                )
               ],
             ),
           ),

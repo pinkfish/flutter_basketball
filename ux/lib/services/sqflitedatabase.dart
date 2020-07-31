@@ -45,7 +45,9 @@ class SqlfliteDatabase extends BasketballDatabase {
         ..playing = true);
     }));
 
-    Game newG = game.rebuild((b) => b..uid = uid..players = players);
+    Game newG = game.rebuild((b) => b
+      ..uid = uid
+      ..players = players);
     print('Inserting ${json.encode(newG.toMap())}');
     await db.insert(SQLDBRaw.gamesTable, {
       SQLDBRaw.indexColumn: uid,
@@ -660,38 +662,37 @@ class SqlfliteDatabase extends BasketballDatabase {
 
   @override
   Future<String> addMedia({MediaInfo media}) {
-    // TODO: implement addMedia
     throw UnimplementedError();
   }
 
   @override
   Future<void> deleteMedia({String mediaInfoUid}) {
-    // TODO: implement deleteMedia
     throw UnimplementedError();
   }
 
   @override
   Stream<BuiltList<MediaInfo>> getMediaForGame({String gameUid}) {
-    // TODO: implement getMediaForGame
     throw UnimplementedError();
   }
 
   @override
   Stream<MediaInfo> getMediaInfo({String mediaInfoUid}) {
-    // TODO: implement getMediaForGame
     throw UnimplementedError();
   }
 
   @override
   Stream<Invite> getInvite({String inviteUid}) {
-    // TODO: implement getMediaForGame
     throw UnimplementedError();
   }
 
   @override
   Future<void> updateMediaInfoThumbnail(
       {MediaInfo mediaInfo, String thumbnailUrl}) {
-    // TODO: implement updateMediaInfoThumbnail
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> addInvite({Invite invite}) {
     throw UnimplementedError();
   }
 

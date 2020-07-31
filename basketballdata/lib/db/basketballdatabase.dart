@@ -75,6 +75,9 @@ abstract class BasketballDatabase {
   // Adds a user into the database
   Future<String> addUser({@required User user});
 
+  // Adds an invite into the database
+  Future<String> addInvite({@required Invite invite});
+
   /// Updates the team in the database.
   Future<void> updateTeam({@required Team team});
 

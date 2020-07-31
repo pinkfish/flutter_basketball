@@ -35,6 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
   FocusNode _focusNodePassword = new FocusNode();
   FocusNode _focusNodePasswordVerify = new FocusNode();
   LoginBloc _loginBloc;
+  Validations validations = new Validations();
 
   @override
   void initState() {
@@ -82,7 +83,6 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     //print(context.widget.toString());
-    Validations validations = new Validations();
 
     return Scaffold(
       key: _scaffoldKey,

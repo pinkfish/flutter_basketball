@@ -37,7 +37,7 @@ class TeamDetailsScreen extends StatefulWidget {
   }
 }
 
-enum _TeamDropDown { Edit, Invite }
+enum _TeamDropDown { Edit, Users, Invite }
 
 class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   Set<String> _expandedPanels = Set();
@@ -206,6 +206,10 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                     value: _TeamDropDown.Edit,
                   ),
                   PopupMenuItem(
+                    child: Text(Messages.of(context).usersTitle),
+                    value: _TeamDropDown.Users,
+                  ),
+                  PopupMenuItem(
                     child: Text(Messages.of(context).inviteToTeam),
                     value: _TeamDropDown.Invite,
                   ),
@@ -220,6 +224,11 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                     case _TeamDropDown.Invite:
                       RepositoryProvider.of<Router>(context).navigateTo(
                           context, "/Team/Invite/" + widget.teamUid,
+                          transition: TransitionType.materialFullScreenDialog);
+                      break;
+                    case _TeamDropDown.Users:
+                      RepositoryProvider.of<Router>(context).navigateTo(
+                          context, "/Team/Users/" + widget.teamUid,
                           transition: TransitionType.materialFullScreenDialog);
                       break;
                   }

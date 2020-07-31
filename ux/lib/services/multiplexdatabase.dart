@@ -403,6 +403,14 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
+  Future<String> addInvite({Invite invite}) {
+    if (useSql)
+      return _sql.addInvite(invite: invite);
+    else
+      return _fs.addInvite(invite: invite);
+  }
+
+  @override
   String get userUid {
     if (useSql)
       return _sql.userUid;

@@ -290,11 +290,16 @@ class Messages {
       Intl.message("Email", desc: "Email hint text", locale: locale);
 
   String get forgotPasswordButton =>
-      Intl.message('FORGOT PASSWORD', name: 'Forgot password button text');
+      Intl.message('FORGOT PASSWORD', desc: 'Forgot password button text');
 
   String get forgotPasswordSent =>
       Intl.message('Sent email to your email address to reset your password',
-          name: 'Forgot password happy button');
+          desc: 'Forgot password happy button');
+
+  String get usersDescriptions => Intl.message(
+      'The users who have access to this team, they can see the '
+      'stats and edit the team/seasons/players.',
+      locale: locale);
 
   String get forgotPasswordHint =>
       Intl.message('The email to resend the password to',

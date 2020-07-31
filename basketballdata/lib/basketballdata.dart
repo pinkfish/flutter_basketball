@@ -6,6 +6,7 @@ export 'bloc/add/addmediabloc.dart';
 export 'bloc/add/addplayerbloc.dart';
 export 'bloc/add/addseasonbloc.dart';
 export 'bloc/add/addteambloc.dart';
+export 'bloc/add/addinvitebloc.dart';
 export 'bloc/invitesbloc.dart';
 export 'bloc/singlegamebloc.dart';
 export 'bloc/singleinvitebloc.dart';

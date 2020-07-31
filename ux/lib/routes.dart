@@ -25,7 +25,9 @@ import 'screens/splashscreen.dart';
 import 'screens/teamadd.dart';
 import 'screens/teamdetails.dart';
 import 'screens/teamedit.dart';
+import 'screens/teaminvite.dart';
 import 'screens/teams.dart';
+import 'screens/teamusers.dart';
 
 ///
 /// Router for all the exciting routers in the app.
@@ -57,6 +59,14 @@ class BasketballAppRouter {
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
                 TeamEditScreen(teamUid: vals["id"][0].toString())));
+    router.define("/Team/Invite/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                TeamInviteScreen(teamUid: vals["id"][0].toString())));
+    router.define("/Team/Users/:id",
+        handler: Handler(
+            handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
+                TeamUsersScreen(teamUid: vals["id"][0].toString())));
     router.define("/Season/Add/:teamUid",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
