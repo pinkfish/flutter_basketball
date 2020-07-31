@@ -48,7 +48,7 @@ class BasketballAppRouter {
     router.define("/Game/Add/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>
-                AddGameScreen(teamUid: vals["id"][0].toString())));
+                GameAddScreen(teamUid: vals["id"][0].toString())));
     router.define("/Team/View/:id",
         handler: Handler(
             handlerFunc: (BuildContext context, Map<String, dynamic> vals) =>

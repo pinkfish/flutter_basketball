@@ -38,21 +38,19 @@ void main() {
   runApp(MyApp(false, trace));
 }
 
+///
+/// The main app class for the system.
+///
 class MyApp extends StatelessWidget {
   final bool forceSql;
   final Trace startupTrace;
-  Router router;
 
   MyApp(this.forceSql, this.startupTrace);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (router == null) {
-      router = BasketballAppRouter.createRouter(startupTrace);
-    }
     // Log an error if the db fails to open.
-    //_db.waitTillOpen();
     var db = SQLDBRaw();
     var localStorage = LocalStorage("basketballstats");
 
@@ -76,7 +74,8 @@ class MyApp extends StatelessWidget {
           lazy: false,
         ),
         RepositoryProvider<Router>(
-          create: (BuildContext context) => this.router,
+          create: (BuildContext context) =>
+              BasketballAppRouter.createRouter(startupTrace),
         )
       ],
       child: MultiBlocProvider(
@@ -130,7 +129,7 @@ class MyApp extends StatelessWidget {
                 FirebaseAnalyticsObserver(analytics: analytics),
               ],
               initialRoute: "Home",
-              onGenerateRoute: _buildRoute,
+              onGenerateRoute: (RouteSettings s) => _buildRoute(context, s),
             );
           },
         ),
@@ -138,8 +137,10 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Route<dynamic> _buildRoute(RouteSettings routeSettings) {
+  Route<dynamic> _buildRoute(
+      BuildContext context, RouteSettings routeSettings) {
     print("${routeSettings.name}");
+    var router = RepositoryProvider.of<Router>(context);
     return router.generator(routeSettings);
   }
 }

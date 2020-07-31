@@ -17,10 +17,10 @@ import '../widgets/util/datetimepicker.dart';
 ///
 /// Class to add a game to a specific season.
 ///
-class AddGameScreen extends StatelessWidget {
+class GameAddScreen extends StatelessWidget {
   final String teamUid;
 
-  AddGameScreen({@required this.teamUid});
+  GameAddScreen({@required this.teamUid});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class AddGameScreen extends StatelessWidget {
                     teamUid: teamUid,
                     db: BlocProvider.of<TeamsBloc>(context).db),
                 child: Builder(builder: (BuildContext context) {
-                  return _AddGameForm(
+                  return _GameAddForm(
                     teamUid: teamUid,
                     currentSeasonUid: state.team.currentSeasonUid,
                   );
@@ -64,19 +64,19 @@ class AddGameScreen extends StatelessWidget {
   }
 }
 
-class _AddGameForm extends StatefulWidget {
+class _GameAddForm extends StatefulWidget {
   final String teamUid;
   final String currentSeasonUid;
 
-  _AddGameForm({@required this.teamUid, @required this.currentSeasonUid});
+  _GameAddForm({@required this.teamUid, @required this.currentSeasonUid});
 
   @override
   State<StatefulWidget> createState() {
-    return _AddGameFormState();
+    return _GameAddFormState();
   }
 }
 
-class _AddGameFormState extends State<_AddGameForm> {
+class _GameAddFormState extends State<_GameAddForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _guestPlayersFormKey = GlobalKey<FormState>();
   String _opponent;

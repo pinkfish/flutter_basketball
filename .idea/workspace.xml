@@ -3,21 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/routes.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addgame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediafromurl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamemediafromurladd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediaphoto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamemediaphotoadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addmediastream.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamemediastreamadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addplayergame.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameplayeradd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addplayerseason.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasonplayeradd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addseason.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/addteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/editplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playeredit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasondetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasondetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
