@@ -9,6 +9,7 @@
       <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/l10n/intl_messages.arb" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/l10n/intl_messages.arb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/routes.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/screens/login/signup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/login/signup.dart" afterDir="false" />
@@ -19,7 +20,6 @@
       <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/sqflitedatabase.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

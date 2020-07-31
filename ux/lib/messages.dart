@@ -303,14 +303,14 @@ class Messages {
 
   String get forgotPasswordHint =>
       Intl.message('The email to resend the password to',
-          name: 'Forgot password happy button');
+          desc: 'Forgot password happy button');
 
   String get resendverifyButton => Intl.message('RESEND EMAIL',
-      name: 'Button to resend the email to verify their email address');
+      desc: 'Button to resend the email to verify their email address');
 
-  String get loginButton => Intl.message('LOGIN', name: 'Login button text');
+  String get loginButton => Intl.message('LOGIN', desc: 'Login button text');
 
-  String get logoutButton => Intl.message('LOGOUT', name: 'Logout button text');
+  String get logoutButton => Intl.message('LOGOUT', desc: 'Logout button text');
 
   String get createaccountButton =>
       Intl.message('CREATE', desc: 'Create account button text');
