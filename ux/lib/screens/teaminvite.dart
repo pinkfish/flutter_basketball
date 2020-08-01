@@ -7,6 +7,7 @@ import 'package:basketballstats/widgets/team/teamwidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 import '../messages.dart';
 
@@ -25,20 +26,40 @@ class TeamInviteScreen extends StatefulWidget {
 }
 
 class _TeamInviteState extends State<TeamInviteScreen> {
-  GlobalKey<FormState> _form;
+  GlobalKey<FormState> _form = GlobalKey<FormState>();
   String _email;
   bool _autoValidate = false;
   Validations validations = new Validations();
+  bool _keyboardVisible = false;
+
+  void initState() {
+    super.initState();
+    KeyboardVisibilityNotification().addNewListener(
+      onChange: (bool visible) {
+        setState(() => _keyboardVisible = visible);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).viewInsets.bottom);
     return Scaffold(
       appBar: AppBar(
         title: Text(Messages.of(context).addUserButton),
       ),
-      body: BlocProvider(
-        create: (BuildContext context) => AddInviteBloc(
-            db: RepositoryProvider.of<BasketballDatabase>(context)),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) => AddInviteBloc(
+                db: RepositoryProvider.of<BasketballDatabase>(context)),
+          ),
+          BlocProvider(
+            create: (BuildContext context) => SingleTeamBloc(
+                db: RepositoryProvider.of<BasketballDatabase>(context),
+                teamUid: widget.teamUid),
+          ),
+        ],
         child: Builder(
           builder: (BuildContext context) => BlocConsumer(
             cubit: BlocProvider.of<AddInviteBloc>(context),
@@ -58,12 +79,15 @@ class _TeamInviteState extends State<TeamInviteScreen> {
                 key: _form,
                 child: Column(
                   children: <Widget>[
-                    TeamWidget(
-                      teamUid: widget.teamUid,
-                    ),
+                    _keyboardVisible
+                        ? SizedBox(height: 0)
+                        : TeamWidget(
+                            teamUid: widget.teamUid,
+                            showGameButton: false,
+                          ),
                     TextFormField(
                       initialValue: _email,
-                      onSaved: (String str) => setState(() => _email = str),
+                      onSaved: (String str) => _email = str,
                       validator: _validateEmail,
                       decoration: InputDecoration(
                         icon: Icon(Icons.email),
@@ -73,16 +97,24 @@ class _TeamInviteState extends State<TeamInviteScreen> {
                     ),
                     ButtonBar(
                       children: [
-                        FlatButton(
-                          child: Text(
-                              MaterialLocalizations.of(context).okButtonLabel),
-                          onPressed: () => _saveForm(context),
+                        BlocBuilder(
+                          cubit: BlocProvider.of<SingleTeamBloc>(context),
+                          builder: (BuildContext context,
+                              SingleTeamBlocState state) {
+                            return FlatButton(
+                              child: Text(MaterialLocalizations.of(context)
+                                  .okButtonLabel),
+                              onPressed: state is SingleTeamLoaded
+                                  ? () => _saveForm(context, state)
+                                  : null,
+                            );
+                          },
                         ),
                         FlatButton(
                           child: Text(MaterialLocalizations.of(context)
                               .cancelButtonLabel),
                           onPressed: () => Navigator.pop(context),
-                        )
+                        ),
                       ],
                     ),
                   ],
@@ -95,7 +127,7 @@ class _TeamInviteState extends State<TeamInviteScreen> {
     );
   }
 
-  void _saveForm(BuildContext context) {
+  void _saveForm(BuildContext context, SingleTeamBlocState state) {
     if (!_form.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text(Messages.of(context).invalidemail)));
@@ -106,7 +138,9 @@ class _TeamInviteState extends State<TeamInviteScreen> {
     InviteToTeam invite = InviteToTeam((b) => b
       ..email = _email
       ..teamUid = widget.teamUid
+      ..teamName = state.team.name
       ..email = BlocProvider.of<AuthenticationBloc>(context).state.user.email);
+
     BlocProvider.of<AddInviteBloc>(context)
         .add(AddInviteCommit(newInvite: invite));
   }

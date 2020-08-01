@@ -2,7 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/localization.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/localization.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -237,29 +243,29 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1596225892665">
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1596316599337">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1596225892665" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1596316599337" />
     <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1596225892664">
+    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1596316599336">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1596225892664" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1596316599336" />
     <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1596225892663">
+    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1596316599336">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1596225892663" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1596316599336" />
     <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1595565081587" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1596225892664">
+    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1596316599336">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1596225892664" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1596316599336" />
     <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1595565081588" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
@@ -294,6 +300,18 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/ux/lib/screens/teaminvite.dart</url>
+          <line>130</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/ux/lib/screens/teaminvite.dart</url>
+          <line>148</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="dart-exception" />
       </default-breakpoints>

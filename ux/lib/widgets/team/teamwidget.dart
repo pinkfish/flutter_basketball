@@ -14,8 +14,10 @@ class TeamWidget extends StatelessWidget {
   final String teamUid;
   final Team team;
   final GestureTapCallback onTap;
+  final bool showGameButton;
 
-  TeamWidget({String teamUid, this.team, this.onTap})
+  TeamWidget(
+      {String teamUid, this.team, this.onTap, this.showGameButton = true})
       : assert(team != null || teamUid != null),
         this.teamUid = teamUid ?? team.uid;
 
@@ -73,19 +75,21 @@ class TeamWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton.icon(
-                            icon: Icon(MdiIcons.basketball),
-                            label: Text(
-                              Messages.of(context).gamesButton,
-                              textScaleFactor: 1.2,
-                              style: Theme.of(context).textTheme.button,
-                            ),
-                            onPressed: null,
-                          ),
-                        ],
-                      )
+                      showGameButton
+                          ? ButtonBar(
+                              children: <Widget>[
+                                FlatButton.icon(
+                                  icon: Icon(MdiIcons.basketball),
+                                  label: Text(
+                                    Messages.of(context).gamesButton,
+                                    textScaleFactor: 1.2,
+                                    style: Theme.of(context).textTheme.button,
+                                  ),
+                                  onPressed: null,
+                                ),
+                              ],
+                            )
+                          : SizedBox(height: 0),
                     ],
                   ),
                 );
