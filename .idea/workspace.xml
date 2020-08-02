@@ -2,17 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitetype.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/invites/invite.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/invites/invite.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitefactory.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitefactory.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitetoteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitetoteam.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

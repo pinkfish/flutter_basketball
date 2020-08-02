@@ -427,7 +427,7 @@ class FirestoreDatabase extends BasketballDatabase {
   @override
   Future<String> addInvite({Invite invite}) async {
     String ret;
-    var ref = Firestore.instance.collection(SQLDBRaw.playersTable).document();
+    var ref = Firestore.instance.collection(SQLDBRaw.invitesTable).document();
     if (invite is InviteToTeam) {
       var i = invite.rebuild((b) => b
         ..uid = ref.documentID
