@@ -24,6 +24,7 @@ import 'services/uploadfilesbackground.dart';
 FirebaseAnalytics analytics = FirebaseAnalytics();
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   var trace = FirebasePerformance.instance.newTrace("startup");
   trace.start();
   Bloc.observer = _SimpleBlocDelegate();

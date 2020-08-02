@@ -21,6 +21,7 @@ class FirestoreDatabase extends BasketballDatabase {
   FirestoreDatabase(this.analytics);
 
   String userUid;
+  String userEmail;
 
   @override
   Future<String> addGame({Game game, BuiltList<Player> guestPlayers}) async {
@@ -428,7 +429,9 @@ class FirestoreDatabase extends BasketballDatabase {
     String ret;
     var ref = Firestore.instance.collection(SQLDBRaw.playersTable).document();
     if (invite is InviteToTeam) {
-      var i = invite.rebuild((b) => b..uid = ref.documentID);
+      var i = invite.rebuild((b) => b
+        ..uid = ref.documentID
+        ..sentByUid = userUid);
       await ref.setData(i.toMap());
     } else {
       throw UnimplementedError();

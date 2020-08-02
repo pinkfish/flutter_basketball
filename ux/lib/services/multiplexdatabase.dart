@@ -31,6 +31,7 @@ class MultiplexDatabase extends BasketballDatabase {
       bool oldSql = useSql;
       if (user != null) {
         _fs.userUid = user.uid;
+        _fs.userEmail = user.email;
         useSql = false || forceSql;
       } else {
         useSql = true;

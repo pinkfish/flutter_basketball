@@ -1,11 +1,8 @@
 import 'package:built_value/built_value.dart';
 
-part 'invite.g.dart';
+import 'invitetype.dart';
 
-/// The type of the invite.
-enum InviteType {
-  Team,
-}
+part 'invite.g.dart';
 
 ///
 /// Base class for all invites.

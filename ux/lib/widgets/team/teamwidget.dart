@@ -15,15 +15,23 @@ class TeamWidget extends StatelessWidget {
   final Team team;
   final GestureTapCallback onTap;
   final bool showGameButton;
+  final bool onlyTeamName;
 
   TeamWidget(
-      {String teamUid, this.team, this.onTap, this.showGameButton = true})
+      {String teamUid,
+      this.team,
+      this.onTap,
+      this.showGameButton = true,
+      this.onlyTeamName = false})
       : assert(team != null || teamUid != null),
         this.teamUid = teamUid ?? team.uid;
 
   @override
   Widget build(BuildContext context) {
     if (team != null) {
+      if (onlyTeamName) {
+        return Text(team.name, style: Theme.of(context).textTheme.headline5);
+      }
       return _buildTeam(context, team);
     } else {
       return BlocProvider(
@@ -40,6 +48,15 @@ class TeamWidget extends StatelessWidget {
             },
             builder: (BuildContext context, SingleTeamBlocState state) {
               var widget;
+              if (onlyTeamName) {
+                if (state is SingleTeamLoaded) {
+                  return Text(state.team.name,
+                      style: Theme.of(context).textTheme.headline5);
+                }
+                return Text(Messages.of(context).loadingText,
+                    style: Theme.of(context).textTheme.headline5);
+              }
+
               if (state is SingleTeamLoaded) {
                 widget = _buildTeam(context, state.team);
               } else if (state is SingleTeamUninitialized) {

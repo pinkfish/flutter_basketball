@@ -1,5 +1,6 @@
 import 'invite.dart';
 import 'invitetoteam.dart';
+import 'invitetype.dart';
 
 ///
 /// Base class for all invites.

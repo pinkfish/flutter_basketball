@@ -74,52 +74,62 @@ class _TeamInviteState extends State<TeamInviteScreen> {
             builder: (BuildContext context, AddItemState state) =>
                 SavingOverlay(
               saving: state is AddItemSaving,
-              child: Form(
-                autovalidate: _autoValidate,
-                key: _form,
-                child: Column(
-                  children: <Widget>[
-                    _keyboardVisible
-                        ? SizedBox(height: 0)
-                        : TeamWidget(
-                            teamUid: widget.teamUid,
-                            showGameButton: false,
+              child: BlocBuilder(
+                  cubit: BlocProvider.of<SingleTeamBloc>(context),
+                  builder: (BuildContext context, SingleTeamBlocState state) {
+                    return Form(
+                      autovalidate: _autoValidate,
+                      key: _form,
+                      child: Column(
+                        children: <Widget>[
+                          AnimatedCrossFade(
+                            duration: Duration(milliseconds: 500),
+                            crossFadeState: _keyboardVisible
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                            firstChild: state is SingleTeamLoaded
+                                ? TeamWidget(
+                                    team: state.team,
+                                    onlyTeamName: true,
+                                  )
+                                : Text(Messages.of(context).loadingText),
+                            secondChild: state is SingleTeamLoaded
+                                ? TeamWidget(
+                                    team: state.team,
+                                    showGameButton: false,
+                                  )
+                                : Text(Messages.of(context).loadingText),
                           ),
-                    TextFormField(
-                      initialValue: _email,
-                      onSaved: (String str) => _email = str,
-                      validator: _validateEmail,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.email),
-                        hintText: Messages.of(context).email,
-                        labelText: Messages.of(context).email,
+                          TextFormField(
+                            initialValue: _email,
+                            onSaved: (String str) => _email = str,
+                            validator: _validateEmail,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.email),
+                              hintText: Messages.of(context).email,
+                              labelText: Messages.of(context).email,
+                            ),
+                          ),
+                          ButtonBar(
+                            children: [
+                              FlatButton(
+                                child: Text(MaterialLocalizations.of(context)
+                                    .okButtonLabel),
+                                onPressed: state is SingleTeamLoaded
+                                    ? () => _saveForm(context, state)
+                                    : null,
+                              ),
+                              FlatButton(
+                                child: Text(MaterialLocalizations.of(context)
+                                    .cancelButtonLabel),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ),
-                    ButtonBar(
-                      children: [
-                        BlocBuilder(
-                          cubit: BlocProvider.of<SingleTeamBloc>(context),
-                          builder: (BuildContext context,
-                              SingleTeamBlocState state) {
-                            return FlatButton(
-                              child: Text(MaterialLocalizations.of(context)
-                                  .okButtonLabel),
-                              onPressed: state is SingleTeamLoaded
-                                  ? () => _saveForm(context, state)
-                                  : null,
-                            );
-                          },
-                        ),
-                        FlatButton(
-                          child: Text(MaterialLocalizations.of(context)
-                              .cancelButtonLabel),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                    );
+                  }),
             ),
           ),
         ),
@@ -135,11 +145,13 @@ class _TeamInviteState extends State<TeamInviteScreen> {
       return;
     }
     _form.currentState.save();
+    var authBlocState = BlocProvider.of<AuthenticationBloc>(context).state;
     InviteToTeam invite = InviteToTeam((b) => b
+      ..uid = ""
       ..email = _email
       ..teamUid = widget.teamUid
       ..teamName = state.team.name
-      ..email = BlocProvider.of<AuthenticationBloc>(context).state.user.email);
+      ..sentByUid = authBlocState.user.uid);
 
     BlocProvider.of<AddInviteBloc>(context)
         .add(AddInviteCommit(newInvite: invite));

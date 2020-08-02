@@ -23,6 +23,7 @@ import 'game/gameshareddata.dart';
 import 'game/gamesummary.dart';
 import 'game/playergamesummary.dart';
 import 'invites/invitetoteam.dart';
+import 'invites/invitetype.dart';
 import 'leagueortournament/leagueortournament.dart';
 import 'media/mediainfo.dart';
 import 'media/mediatype.dart';
@@ -56,6 +57,7 @@ part 'serializers.g.dart';
   GameSharedData,
   GameSummary,
   InviteToTeam,
+  InviteType,
   LeagueOrTournament,
   LeagueOrTournamentDivison,
   LeagueOrTournamentSeason,

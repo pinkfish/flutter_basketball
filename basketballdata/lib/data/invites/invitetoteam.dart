@@ -3,6 +3,7 @@ import 'package:built_value/serializer.dart';
 
 import '../serializers.dart';
 import 'invite.dart';
+import 'invitetype.dart';
 
 part 'invitetoteam.g.dart';
 
@@ -33,6 +34,9 @@ abstract class InviteToTeam
   factory InviteToTeam([void Function(InviteToTeamBuilder) updates]) =
       _$InviteToTeam;
   InviteToTeam._();
+
+  static void _initializeBuilder(InviteToTeamBuilder b) =>
+      b..invite = InviteType.Team;
 
   Map<String, dynamic> toMap() {
     return serializers.serializeWith(InviteToTeam.serializer, this);
