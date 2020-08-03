@@ -41,7 +41,7 @@ dependencies:
   uuid: ^2.2.0
   tuple: ^1.0.3
   image: ^2.1.12
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
   flutter_vector_icons: any
   event: ^1.1.4
   settings_ui: ^0.3.0

@@ -5,7 +5,7 @@ import 'package:basketballdata/data/invites/invite.dart';
 import 'package:basketballdata/data/invites/invitefactory.dart';
 import 'package:basketballdata/data/player/player.dart';
 import 'package:basketballdata/data/team/team.dart';
-import 'package:basketballdata/data/teamuser.dart';
+import 'package:basketballdata/data/team/teamuser.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/sqldbraw.dart';
 import 'package:built_collection/built_collection.dart';

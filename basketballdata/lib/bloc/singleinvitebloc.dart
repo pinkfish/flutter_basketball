@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballdata/data/teamuser.dart';
+import 'package:basketballdata/data/team/teamuser.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';

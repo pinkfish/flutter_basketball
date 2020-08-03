@@ -6,11 +6,11 @@ import '../serializers.dart';
 import 'gameperiod.dart';
 import 'gamesummary.dart';
 import 'playergamesummary.dart';
+import 'attendance.dart';
 
 part 'game.g.dart';
 
 enum GameResult { Win, Tie, Loss }
-enum Attendance { Yes, No, Maybe }
 
 ///
 /// Data about the game itself.
