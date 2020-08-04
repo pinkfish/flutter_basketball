@@ -31,8 +31,8 @@ class TeamsScreen extends StatelessWidget {
             builder: (BuildContext context, AuthenticationState authState) {
               print("State $authState");
               if (authState is AuthenticationLoggedInUnverified) {
-                startTrace.putAttribute("state", "unverified");
-                startTrace.stop();
+                startTrace?.putAttribute("state", "unverified");
+                startTrace?.stop();
                 // Say you need to verify first.
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -63,13 +63,13 @@ class TeamsScreen extends StatelessWidget {
                       return Text(Messages.of(context).loadingText);
                     }
                     if (state is TeamsBlocLoaded) {
-                      startTrace.putAttribute(
+                      startTrace?.putAttribute(
                           "state",
                           authState is AuthenticationLoggedIn
                               ? "LoggedIn"
                               : "Local");
-                      startTrace.incrementMetric("teams", state.teams.length);
-                      startTrace.stop();
+                      startTrace?.incrementMetric("teams", state.teams.length);
+                      startTrace?.stop();
                       if (state.teams.isEmpty) {
                         return Center(
                           child: Text(Messages.of(context).noTeams),

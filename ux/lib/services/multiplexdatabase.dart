@@ -10,6 +10,7 @@ import 'package:built_collection/built_collection.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 import 'sqldbraw.dart';
 
@@ -26,12 +27,19 @@ class MultiplexDatabase extends BasketballDatabase {
   MultiplexDatabase(bool forceSql, this._analyticsSubsystem, this._sqldbRaw)
       : _fs = FirestoreDatabase(_analyticsSubsystem),
         _sql = SqlfliteDatabase(_sqldbRaw) {
+    // We don't use sql on the web.
+    if (kIsWeb) {
+      useSql = false;
+      _controller.add(false);
+    }
     _stream = _controller.stream.asBroadcastStream();
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
       bool oldSql = useSql;
       if (user != null) {
         _fs.userUid = user.uid;
         _fs.userEmail = user.email;
+        useSql = false || forceSql;
+      } else if (kIsWeb) {
         useSql = false || forceSql;
       } else {
         useSql = true;
@@ -44,8 +52,10 @@ class MultiplexDatabase extends BasketballDatabase {
     });
     FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
       bool oldSql = useSql;
-      if (user != null) {
-        _fs.userUid = user.uid;
+      if (user != null || kIsWeb) {
+        if (!kIsWeb) {
+          _fs.userUid = user.uid;
+        }
         useSql = false || forceSql;
       } else {
         useSql = true;
@@ -56,9 +66,11 @@ class MultiplexDatabase extends BasketballDatabase {
         _controller.add(useSql);
       }
     });
-    _sqldbRaw.open().catchError((e, trace) {
-      Crashlytics.instance.recordError(e, trace);
-    });
+    if (!kIsWeb) {
+      _sqldbRaw.open().catchError((e, trace) {
+        Crashlytics.instance.recordError(e, trace);
+      });
+    }
   }
 
   Future<void> waitTillOpen() async {
@@ -171,6 +183,8 @@ class MultiplexDatabase extends BasketballDatabase {
 
   @override
   Stream<BuiltList<Team>> getAllTeams() {
+    print("In here $useSql");
+
     if (useSql)
       return _sql.getAllTeams();
     else

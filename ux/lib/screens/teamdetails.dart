@@ -7,6 +7,7 @@ import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:basketballstats/widgets/team/teamstats.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -28,8 +29,9 @@ class TeamDetailsScreen extends StatefulWidget {
   final Trace loadTrace;
 
   TeamDetailsScreen({@required this.teamUid, Trace loadTrace})
-      : this.loadTrace =
-            loadTrace ?? FirebasePerformance.instance.newTrace("loadTeam");
+      : this.loadTrace = loadTrace ?? kIsWeb
+            ? null
+            : FirebasePerformance.instance.newTrace("loadTeam");
 
   @override
   State<StatefulWidget> createState() {
@@ -57,8 +59,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       );
     } else if (state.seasons.isEmpty) {
       if (!_allLoaded) {
-        widget.loadTrace.incrementMetric("seasons", 0);
-        widget.loadTrace.stop();
+        widget.loadTrace?.incrementMetric("seasons", 0);
+        widget.loadTrace?.stop();
         _allLoaded = true;
       }
       inner = Center(
@@ -69,8 +71,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       );
     } else {
       if (!_allLoaded) {
-        widget.loadTrace.incrementMetric("seasons", state.seasons.length);
-        widget.loadTrace.stop();
+        widget.loadTrace?.incrementMetric("seasons", state.seasons.length);
+        widget.loadTrace?.stop();
       }
       inner = ExpansionPanelList(
         expansionCallback: (int index, bool expanded) {

@@ -20,7 +20,7 @@ dependencies:
   basketballdata:
     path: ../basketballdata
   firebase_core: 0.4.4
-  firebase_auth: 0.15.0
+  firebase_auth: 0.15.2
   firebase_analytics: ^5.0.16
   firebase_crashlytics: ^0.1.4+1
   firebase_storage: ^3.1.6

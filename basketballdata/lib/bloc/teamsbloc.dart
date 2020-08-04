@@ -61,6 +61,7 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   StreamSubscription<bool> _dbChange;
 
   TeamsBloc({this.db}) : super(TeamsBlocUninitialized()) {
+    print("Created teamsbloc");
     _sub = db.getAllTeams().listen(
         (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
     _dbChange = db.onDatabaseChange.listen((bool b) {

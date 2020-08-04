@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A resource to help developers evaluate and use Flutter.">
+  <meta name="description" content="Stats collection for basketball written in flutter.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,12 +15,7 @@
   <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
   <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
 
-  <title>Flutter Gallery</title>
-  <style>
-  body {
-    background-color: #030303;
-  }
-  </style>
+  <title>Basketball Stats</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -42,13 +37,19 @@
         navigator.serviceWorker.register('flutter_service_worker.js');
       });
     }
-    // TODO: Replace the following with your app's Firebase project configuration
-var firebaseConfig = {
-  // ...
-};
+    var firebaseConfig = {
+      apiKey: "AIzaSyChyoi0sTxCIpZpHrDzjf3g_Sf1LF_E9hI",
+      authDomain: "basketballstats-8ed93.firebaseapp.com",
+      databaseURL: "https://basketballstats-8ed93.firebaseio.com",
+      projectId: "basketballstats-8ed93",
+      storageBucket: "basketballstats-8ed93.appspot.com",
+      messagingSenderId: "27184933338",
+      appId: "1:27184933338:web:8710f251e6f810c6aff8e3",
+      measurementId: "G-3PT6MR4B6S"
+    };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+   // Initialize Firebase
+   firebase.initializeApp(firebaseConfig);
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
