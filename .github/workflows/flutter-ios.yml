@@ -34,7 +34,6 @@ jobs:
         SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
     - uses: subosito/flutter-action@v1
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}   
         channel: 'beta' # or: 'dev' or 'beta'
     - run: flutter pub get
       working-directory: basketballdata

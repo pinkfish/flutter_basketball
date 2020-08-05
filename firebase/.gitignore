@@ -63,3 +63,6 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# Ignore the public directory, this is always compiled
+public/
