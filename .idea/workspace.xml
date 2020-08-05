@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.github/workflows/web_deploy.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/splashscreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/splashscreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ux/web/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

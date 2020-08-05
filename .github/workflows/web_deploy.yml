@@ -1,0 +1,56 @@
+name: Flutter
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ux/lib/**
+      - .github/workflows/web_deploy.yml
+
+
+jobs:
+  build:
+   runs-on: ubuntu-latest
+
+   steps:
+    - uses: actions/checkout@v2
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        ref: ${{ github.head_ref }}
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        channel: 'beta' # or: 'dev' or 'beta'
+    - run: flutter config --enable-web
+      working-directory: ux
+    - run: flutter pub get
+      working-directory: basketballdata
+    - run: flutter pub run build_runner build
+      working-directory: basketballdata
+    - run: flutter packages get
+      working-directory: ux
+    - run: flutter build web
+      working-directory: ux
+    - run: cp -fR ux/build/web/* firebase/public
+    - name: Deploy to Firebase
+      uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        FIREBASE_PROJECT: basketballstats-8ed93
+        PROJECT_PATH: ./firebase
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Release notes for the ios ${{ steps.branch_name.outputs.SOURCE_TAG}} version" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUBPUSHTOKEN }}
+        branch: main
+        force: true
