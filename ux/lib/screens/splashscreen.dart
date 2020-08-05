@@ -13,20 +13,32 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("Splash!");
-    if (kIsWeb) {
+    if (kIsWeb &&
+        !(BlocProvider.of<AuthenticationBloc>(context).state
+            is AuthenticationLoggedIn)) {
+      print("Listen! ${BlocProvider.of<AuthenticationBloc>(context).state}");
       return BlocListener(
         cubit: BlocProvider.of<AuthenticationBloc>(context),
         listener: (BuildContext context, AuthenticationState state) {
+          print("Blocs of stuff $state");
           if (state is AuthenticationLoggedInUnverified) {
             Navigator.popAndPushNamed(context, "/Login/Verify");
           }
           if (state is AuthenticationLoggedOut) {
             Navigator.popAndPushNamed(context, "/Login/Home");
           }
+          if (state is AuthenticationLoggedIn) {
+            print("Team list");
+            Navigator.popAndPushNamed(context, "/Team/List");
+          }
+        },
+        listenWhen: (AuthenticationState old, AuthenticationState fluff) {
+          print("listenWhen $old $fluff");
         },
         child: _buildScaffold(context),
       );
     } else {
+      print("Wait for teams");
       return BlocListener(
         cubit: BlocProvider.of<TeamsBloc>(context),
         listener: (BuildContext context, TeamsBlocState state) {

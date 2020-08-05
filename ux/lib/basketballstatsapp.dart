@@ -87,6 +87,7 @@ class BasketballStatsApp extends StatelessWidget {
               cubit: BlocProvider.of<AuthenticationBloc>(context),
               builder: (BuildContext contex, AuthenticationState state) {
                 if (!kIsWeb || state is AuthenticationLoggedIn) {
+                  print("Making a team!");
                   return BlocProvider<TeamsBloc>(
                     create: (BuildContext context) => TeamsBloc(
                         db: RepositoryProvider.of<BasketballDatabase>(context)),

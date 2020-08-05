@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 ///
@@ -101,7 +102,8 @@ class AuthenticationBloc
       : super(AuthenticationUninitialized()) {
     FirebaseAuth.instance
         .currentUser()
-        .then((FirebaseUser user) => _authChanged(user));
+        .then((FirebaseUser user) => _authChanged(user))
+        .catchError((e) => _authChanged(null));
     _listener = FirebaseAuth.instance.onAuthStateChanged.listen(_authChanged);
   }
 
@@ -138,6 +140,7 @@ class AuthenticationBloc
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
+    print("Mapping $event");
     if (event is _AuthenticationLogIn) {
       _AuthenticationLogIn loggedInEvent = event;
       var state = _updateWithUser(loggedInEvent.user);
@@ -159,11 +162,15 @@ class AuthenticationBloc
   }
 
   void _authChanged(FirebaseUser user) async {
+    print("Auth $user");
     if (user != null) {
+      print("Adding event");
       add(_AuthenticationLogIn(user: user));
     } else {
+      print("Adding event");
       if (state is AuthenticationLoggedIn ||
-          state is AuthenticationLoggedInUnverified) {
+          state is AuthenticationLoggedInUnverified ||
+          (kIsWeb && state is AuthenticationUninitialized)) {
         add(_AuthenticationLogOut());
       }
     }

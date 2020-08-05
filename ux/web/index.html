@@ -9,14 +9,15 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="gallery">
+  <meta name="google-signin-client_id" content="27184933338-v9nlc8iqumtcsp49boo1vs75ci9bqjhk.apps.googleusercontent.com" />
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16"/>
   <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32"/>
 
+
   <title>Basketball Stats</title>
-  <link rel="manifest" href="manifest.json">
 </head>
 <body>
 <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -32,11 +33,12 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
+
+  //  if ('serviceWorker' in navigator) {
+  //    window.addEventListener('load', function () {
+  //      navigator.serviceWorker.register('flutter_service_worker.js');
+  //    });
+  //  }
     var firebaseConfig = {
       apiKey: "AIzaSyChyoi0sTxCIpZpHrDzjf3g_Sf1LF_E9hI",
       authDomain: "basketballstats-8ed93.firebaseapp.com",
