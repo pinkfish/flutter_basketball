@@ -2,7 +2,7 @@ name: Flutter
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - ux/lib/**
       - .github/workflows/web_deploy.yml
