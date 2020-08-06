@@ -31,13 +31,13 @@ jobs:
       working-directory: basketballdata
     - run: flutter packages get
       working-directory: ux
-    - run: flutter build web
-      working-directory: ux
     - run: sudo apt-get install -y graphicsmagick
       working-directory: ux
     - run: |
         gm convert  ux/assets/icons/app_icon.png -resize 16x16 ux/web/favicon-16x16.png
         gm convert  ux/assets/icons/app_icon.png -resize 32x32 ux/web/favicon-32x32.png
+    - run: flutter build web
+      working-directory: ux
     - run: cp -fR ux/build/web/* firebase/public
     - name: Deploy to Firebase
       uses: w9jds/firebase-action@master

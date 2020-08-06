@@ -2,6 +2,8 @@
 
 _A whelksoft project_
 
+[![Star on GitHub](https://img.shields.io/github/stars/pinkfish/flutter_basketball.svg?style=flat&logo=github&colorB=deeppink&label=Stars)](https://github.com/klisiewicz/flutter-bloc-patterns) [![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
+
 A nifty flutter project to give happy stats about basketballl
 
 ## Getting Started

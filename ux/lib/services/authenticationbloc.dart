@@ -151,7 +151,12 @@ class AuthenticationBloc
 
     if (event is _AuthenticationLogOut) {
       try {
-        await FirebaseAuth.instance.signOut();
+        if (await FirebaseAuth.instance.currentUser() != null) {
+          print("Doing a signout");
+          await FirebaseAuth.instance
+              .signOut()
+              .timeout(Duration(milliseconds: 1000));
+        }
       } catch (error, stack) {
         Crashlytics.instance.recordError(error, stack);
         print("Error $error");
