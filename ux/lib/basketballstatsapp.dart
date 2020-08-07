@@ -29,8 +29,10 @@ class BasketballStatsApp extends StatelessWidget {
   final bool forceSql;
   final Trace startupTrace;
   final FirebaseAnalytics analytics;
+  final CrashReportingService service;
 
-  BasketballStatsApp(this.forceSql, this.startupTrace, this.analytics);
+  BasketballStatsApp(
+      this.forceSql, this.startupTrace, this.analytics, this.service);
 
   // This widget is the root of your application.
   @override
@@ -43,12 +45,12 @@ class BasketballStatsApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<CrashReporting>(
-          create: (BuildContext context) => CrashReportingService(),
+          create: (BuildContext context) => service,
           lazy: false,
         ),
         RepositoryProvider<BasketballDatabase>(
-          create: (BuildContext context) => MultiplexDatabase(forceSql,
-              analytics, db, RepositoryProvider.of<CrashReporting>(context)),
+          create: (BuildContext context) =>
+              MultiplexDatabase(forceSql, analytics, db, service),
           lazy: false,
         ),
         RepositoryProvider<MediaStreaming>(
@@ -72,14 +74,13 @@ class BasketballStatsApp extends StatelessWidget {
         providers: <BlocProvider>[
           BlocProvider<AuthenticationBloc>(
             create: (BuildContext context) => AuthenticationBloc(
-                analyticsSubsystem: analytics,
-                crashes: RepositoryProvider.of<CrashReporting>(context)),
+                analyticsSubsystem: analytics, crashes: service),
           ),
           BlocProvider<LoginBloc>(
             create: (BuildContext context) => LoginBloc(
                 analyticsSubsystem: analytics,
                 db: RepositoryProvider.of<BasketballDatabase>(context),
-                crashes: RepositoryProvider.of<CrashReporting>(context)),
+                crashes: service),
           ),
         ],
         child: StreamBuilder(

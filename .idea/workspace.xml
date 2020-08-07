@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/crashreportingservice.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/crashreportingservice.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/test_driver/app.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/test_driver/app.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +58,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/ux/lib" />
     <property name="project.structure.last.edited" value="Modules" />

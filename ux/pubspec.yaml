@@ -46,6 +46,7 @@ dependencies:
   event: ^1.1.4
   settings_ui: ^0.3.0
   keyboard_visibility: ^0.5.6
+  package_info: ^0.4.1
   charts_flutter:
     #path: /Users/david/development/charts/charts_flutter
     git:

@@ -11,6 +11,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
+import 'crashreportingservice.dart';
 import 'sqldbraw.dart';
 
 class MultiplexDatabase extends BasketballDatabase {
@@ -45,6 +46,11 @@ class MultiplexDatabase extends BasketballDatabase {
       } else {
         useSql = true;
       }
+      // Tell the analytics system about the user change.
+      if (crashes is CrashReportingService) {
+        var c = crashes as CrashReportingService;
+        c.setUser(user);
+      }
       if (oldSql != useSql) {
         _analyticsSubsystem
             .logEvent(name: "FirestoreDB", parameters: {"enabled": useSql});
@@ -61,6 +67,11 @@ class MultiplexDatabase extends BasketballDatabase {
         useSql = false || forceSql;
       } else {
         useSql = true;
+      }
+      // Tell the analytics system about the user change.
+      if (crashes is CrashReportingService) {
+        var c = crashes as CrashReportingService;
+        c.setUser(user);
       }
       if (oldSql != useSql) {
         _analyticsSubsystem

@@ -730,6 +730,13 @@
             </list>
           </value>
         </entry>
+        <entry key="package_info">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-0.4.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="path">
           <value>
             <list>
@@ -1284,6 +1291,7 @@
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/node_preamble-1.4.12/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/node_preamble-1.4.8/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/package_config-1.9.3/lib" />
+      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/package_info-0.4.1/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.7.0/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/path_drawing-0.4.1/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/path_parsing-0.1.4/lib" />
