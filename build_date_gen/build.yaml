@@ -1,0 +1,24 @@
+targets:
+  $default:
+    builders:
+      build_date_gen|basketballdata|build_date_post_process:
+        enabled: true
+
+builders:
+  basketballdata:
+    target: ":build_date_gen"
+    import: "package:build_date_gen/builder.dart"
+    builder_factories: ["buildDateReporter"]
+    build_extensions: {".dart": [".build_date.g.dart"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder|",":build_date_post_process"]
+
+post_process_builders:
+  build_date_post_process:
+    import: "package:build_date_gen/builder.dart"
+    builder_factory: "buildDatePostProcess"
+    input_extensions: [".dart"]
+    defaults:
+      release_options:
+        enabled: true

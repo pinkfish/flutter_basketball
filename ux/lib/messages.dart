@@ -33,6 +33,8 @@ class Messages {
       desc: "Message to show while loading data", locale: locale);
   String get addTeamTooltip => Intl.message("Add Team",
       desc: "Message to on the tooltip to add a team", locale: locale);
+  String get signinWithGoolge => Intl.message('Sign in with Google',
+      desc: "Sign in button for logging into google", locale: locale);
 
   String get addUserButton => Intl.message("Add User",
       desc: "Button to add a user to a team", locale: locale);

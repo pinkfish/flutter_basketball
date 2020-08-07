@@ -1,0 +1,3 @@
+class BuildDate {
+  const BuildDate();
+}

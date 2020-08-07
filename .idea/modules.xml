@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.github/.github.iml" filepath="$PROJECT_DIR$/.github/.github.iml" />
       <module fileurl="file://$PROJECT_DIR$/basketballdata/basketballdata.iml" filepath="$PROJECT_DIR$/basketballdata/basketballdata.iml" />
+      <module fileurl="file://$PROJECT_DIR$/build_date_gen/build_date_gen.iml" filepath="$PROJECT_DIR$/build_date_gen/build_date_gen.iml" />
       <module fileurl="file://$PROJECT_DIR$/firebase/firebase.iml" filepath="$PROJECT_DIR$/firebase/firebase.iml" />
       <module fileurl="file://$PROJECT_DIR$/ux/ux.iml" filepath="$PROJECT_DIR$/ux/ux.iml" />
     </modules>

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/services/authenticationbloc.dart';
 import 'package:flutter/foundation.dart';
@@ -17,25 +19,25 @@ class SplashScreen extends StatelessWidget {
         !(BlocProvider.of<AuthenticationBloc>(context).state
             is AuthenticationLoggedIn)) {
       print("Listen! ${BlocProvider.of<AuthenticationBloc>(context).state}");
-      return BlocListener(
+      return BlocBuilder(
         cubit: BlocProvider.of<AuthenticationBloc>(context),
-        listener: (BuildContext context, AuthenticationState state) {
+        builder: (BuildContext context, AuthenticationState state) {
           print("Blocs of stuff $state");
           if (state is AuthenticationLoggedInUnverified) {
-            Navigator.popAndPushNamed(context, "/Login/Verify");
+            Timer(Duration(milliseconds: 50),
+                () => Navigator.popAndPushNamed(context, "/Login/Verify"));
           }
           if (state is AuthenticationLoggedOut) {
-            Navigator.popAndPushNamed(context, "/Login/Home");
+            Timer(Duration(milliseconds: 50),
+                () => Navigator.popAndPushNamed(context, "/Login/Home"));
           }
           if (state is AuthenticationLoggedIn) {
             print("Team list");
-            Navigator.popAndPushNamed(context, "/Team/List");
+            Timer(Duration(milliseconds: 50),
+                () => Navigator.popAndPushNamed(context, "/Team/List"));
           }
+          return _buildScaffold(context);
         },
-        listenWhen: (AuthenticationState old, AuthenticationState fluff) {
-          print("listenWhen $old $fluff");
-        },
-        child: _buildScaffold(context),
       );
     } else {
       print("Wait for teams");
@@ -53,21 +55,21 @@ class SplashScreen extends StatelessWidget {
 
   Widget _buildScaffold(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(Messages.of(context).titleOfApp),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(Messages.of(context).titleOfApp),
       ),
       body: Container(
         padding: new EdgeInsets.all(16.0),
         //decoration: new BoxDecoration(image: backgroundImage),
-        child: new Column(
+        child: Column(
           children: <Widget>[
-            new Container(
-              child: new Column(
+            Container(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Center(
+                  Center(
                       child: new Image(
                     image:
                         new ExactAssetImage("assets/images/abstractsport.png"),
@@ -79,16 +81,27 @@ class SplashScreen extends StatelessWidget {
                 ],
               ),
             ),
-            new Container(
-              child: new Column(
+            Container(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new CircularProgressIndicator(),
-                  new Text(Messages.of(context).loadingText),
+                  CircularProgressIndicator(),
+                  Text(Messages.of(context).loadingText),
                 ],
               ),
-            )
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  children: [
+                    Text(buildDateOfDart.toString(),
+                        style: Theme.of(context).textTheme.caption),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

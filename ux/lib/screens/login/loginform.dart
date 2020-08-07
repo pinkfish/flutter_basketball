@@ -148,9 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
       splashColor: Theme.of(context).splashColor,
       onPressed: () =>
           BlocProvider.of<LoginBloc>(context).add(LoginAsGoogleUser()),
-      //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
-      //  borderSide: BorderSide(color: Theme.of(context).buttonColor),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
@@ -163,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                Messages.of(context).signinWithGoolge,
                 style: Theme.of(context).primaryTextTheme.button,
               ),
             )

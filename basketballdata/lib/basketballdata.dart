@@ -34,3 +34,4 @@ export 'data/season/season.dart';
 export 'data/team/team.dart';
 export 'data/uploaddata.dart';
 export 'data/user.dart';
+export 'data.dart';

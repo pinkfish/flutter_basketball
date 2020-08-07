@@ -20,6 +20,9 @@ abstract class AuthenticationState extends Equatable {
   List<Object> get props => [user?.email];
 }
 
+///
+/// We are not setup yet, still waiting.
+///
 class AuthenticationUninitialized extends AuthenticationState {
   AuthenticationUninitialized() : super(user: null);
 
@@ -56,7 +59,7 @@ class AuthenticationLoggedOut extends AuthenticationState {
   AuthenticationLoggedOut() : super(user: null);
 
   @override
-  String toString() => "AuthenticationState::AuthenticatonUninitialized";
+  String toString() => "AuthenticationState::AuthenticationLoggedOut";
 }
 
 ///
@@ -129,10 +132,8 @@ class AuthenticationBloc
           return null;
         }
       }
-      print("Email verified");
       return AuthenticationLoggedIn(user: user);
     } else {
-      print("Email not verified ${user.providerId ?? "frog"}");
       return AuthenticationLoggedInUnverified(user: user);
     }
   }
@@ -140,7 +141,6 @@ class AuthenticationBloc
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
-    print("Mapping $event");
     if (event is _AuthenticationLogIn) {
       _AuthenticationLogIn loggedInEvent = event;
       var state = _updateWithUser(loggedInEvent.user);
@@ -152,14 +152,12 @@ class AuthenticationBloc
     if (event is _AuthenticationLogOut) {
       try {
         if (await FirebaseAuth.instance.currentUser() != null) {
-          print("Doing a signout");
           await FirebaseAuth.instance
               .signOut()
               .timeout(Duration(milliseconds: 1000));
         }
       } catch (error, stack) {
         Crashlytics.instance.recordError(error, stack);
-        print("Error $error");
       }
       // Finished logging out.
       yield AuthenticationLoggedOut();
@@ -169,10 +167,8 @@ class AuthenticationBloc
   void _authChanged(FirebaseUser user) async {
     print("Auth $user");
     if (user != null) {
-      print("Adding event");
       add(_AuthenticationLogIn(user: user));
     } else {
-      print("Adding event");
       if (state is AuthenticationLoggedIn ||
           state is AuthenticationLoggedInUnverified ||
           (kIsWeb && state is AuthenticationUninitialized)) {

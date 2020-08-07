@@ -26,6 +26,8 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.10.0
   built_value_generator: ^7.1.0
+  build_date_gen:
+    path: ../build_date_gen
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
