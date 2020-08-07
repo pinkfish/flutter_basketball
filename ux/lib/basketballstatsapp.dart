@@ -148,6 +148,8 @@ class BasketballStatsApp extends StatelessWidget {
   Route<dynamic> _buildRoute(
       BuildContext context, RouteSettings routeSettings) {
     print("${routeSettings.name}");
+    // States on routes.
+    analytics.logEvent(name: routeSettings.name);
     var router = RepositoryProvider.of<Router>(context);
     return router.generator(routeSettings);
   }

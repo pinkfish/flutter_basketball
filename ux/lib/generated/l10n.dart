@@ -39,6 +39,8 @@ class S {
 
   // skipped getter for the 'Add Team' key
 
+  // skipped getter for the 'Sign in with Google' key
+
   // skipped getter for the 'Add User' key
 
   /// `GUEST`

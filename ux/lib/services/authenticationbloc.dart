@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:basketballdata/basketballdata.dart';
 import 'package:bloc/bloc.dart';
@@ -129,6 +130,9 @@ class AuthenticationBloc
     if (user.isEmailVerified) {
       print("Verified user ${user.providerId ?? "frog"}");
       analyticsSubsystem.setUserId(user.uid);
+      analyticsSubsystem.setUserProperty(
+          name: "os", value: Platform.operatingSystem);
+      analyticsSubsystem.setUserProperty(name: "web", value: kIsWeb.toString());
       if (currentUser != null) {
         if (user == currentUser) {
           return null;

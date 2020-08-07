@@ -374,10 +374,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
     if (event is LoginEventLogout) {
       FirebaseAuth.instance.signOut();
+      analyticsSubsystem.logEvent(name: "Logout");
     }
     if (event is LoginEventResendEmail) {
       var user = await FirebaseAuth.instance.currentUser();
       user.sendEmailVerification();
+      analyticsSubsystem.logEvent(name: "ResendVerifyEmail");
     }
     if (event is LoginEventAttempt) {
       yield LoginValidating();
@@ -520,6 +522,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 ..uid = newResult.user.uid
                 ..email = newResult.user.email
                 ..name = newResult.user.displayName));
+          analyticsSubsystem.logSignUp(signUpMethod: "email");
           if (!newResult.user.isEmailVerified) {
             // Send a password verify email
             newResult.user.sendEmailVerification();
