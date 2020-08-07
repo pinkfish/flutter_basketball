@@ -61,9 +61,9 @@ jobs:
         FL_GITHUB_RELEASE_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
     - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/debug/*.apk"
-          token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        artifacts: "build/app/outputs/apk/debug/*.apk"
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"

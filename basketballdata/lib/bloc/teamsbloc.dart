@@ -54,6 +54,14 @@ class TeamsBlocUpdateTeams extends TeamsBlocEvent {
 abstract class TeamsBlocEvent extends Equatable {}
 
 ///
+/// Resets up the connections because the user might have changed.
+///
+class TeamsReloadData extends TeamsBlocEvent {
+  @override
+  List<Object> get props => [];
+}
+
+///
 /// The bloc for dealing with all the teams.
 ///
 class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
@@ -66,6 +74,12 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   TeamsBloc({@required this.db, @required this.crashes})
       : super(TeamsBlocUninitialized()) {
     print("Created teamsbloc");
+    _setupSub();
+  }
+
+  void _setupSub() {
+    _sub?.cancel();
+    _sub = null;
     _sub = db.getAllTeams().listen(
         (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
     _sub.onError((e, stack) => crashes.recordError(e, stack));
@@ -81,6 +95,10 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   Stream<TeamsBlocState> mapEventToState(TeamsBlocEvent event) async* {
     if (event is TeamsBlocUpdateTeams) {
       yield TeamsBlocLoaded(state: state, teams: event.teams);
+    }
+
+    if (event is TeamsReloadData) {
+      _setupSub();
     }
   }
 

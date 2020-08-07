@@ -207,12 +207,12 @@ class BasketballAppRouter {
       return SettingsScreen();
     }));
 
-    router.notFoundHandler = Handler(
-        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      analytics.logEvent(name: "RouteNotFound", parameters: params);
-      print("ROUTE WAS NOT FOUND !!! $params");
-      return null;
-    });
+    //router.notFoundHandler = Handler(
+    //    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    //  analytics.logEvent(name: "RouteNotFound", parameters: params);
+    //  print("ROUTE WAS NOT FOUND !!! $params");
+    //  return null;
+    //});
 
     return router;
   }

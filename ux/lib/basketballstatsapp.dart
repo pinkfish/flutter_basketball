@@ -30,6 +30,7 @@ class BasketballStatsApp extends StatelessWidget {
   final Trace startupTrace;
   final FirebaseAnalytics analytics;
   final CrashReportingService service;
+  final GlobalKey<NavigatorState> finalKey = GlobalKey<NavigatorState>();
 
   BasketballStatsApp(
       this.forceSql, this.startupTrace, this.analytics, this.service);
@@ -82,6 +83,11 @@ class BasketballStatsApp extends StatelessWidget {
                 db: RepositoryProvider.of<BasketballDatabase>(context),
                 crashes: service),
           ),
+          BlocProvider<TeamsBloc>(
+            create: (BuildContext context) => TeamsBloc(
+                db: RepositoryProvider.of<BasketballDatabase>(context),
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
+          ),
         ],
         child: StreamBuilder(
           stream: localStorage.stream,
@@ -94,18 +100,10 @@ class BasketballStatsApp extends StatelessWidget {
             return BlocBuilder(
               cubit: BlocProvider.of<AuthenticationBloc>(context),
               builder: (BuildContext contex, AuthenticationState state) {
-                if (!kIsWeb || state is AuthenticationLoggedIn) {
-                  print("Making a team!");
-                  return BlocProvider<TeamsBloc>(
-                    create: (BuildContext context) => TeamsBloc(
-                        db: RepositoryProvider.of<BasketballDatabase>(context),
-                        crashes:
-                            RepositoryProvider.of<CrashReporting>(context)),
-                    child: _materialApp(context, mode),
-                  );
-                } else {
-                  return _materialApp(context, mode);
+                if (state is AuthenticationLoggedIn) {
+                  BlocProvider.of<TeamsBloc>(context).add(TeamsReloadData());
                 }
+                return _materialApp(context, mode, finalKey);
               },
             );
           },
@@ -114,8 +112,9 @@ class BasketballStatsApp extends StatelessWidget {
     );
   }
 
-  Widget _materialApp(BuildContext context, ThemeMode mode) {
+  Widget _materialApp(BuildContext context, ThemeMode mode, Key navigatorKey) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         MessagesDelegate(),
         GlobalMaterialLocalizations.delegate,
@@ -141,7 +140,7 @@ class BasketballStatsApp extends StatelessWidget {
       navigatorObservers: [
         FirebaseAnalyticsObserver(analytics: analytics),
       ],
-      initialRoute: "Home",
+      initialRoute: "/Home/Splash",
       onGenerateRoute: (RouteSettings s) => _buildRoute(context, s),
     );
   }

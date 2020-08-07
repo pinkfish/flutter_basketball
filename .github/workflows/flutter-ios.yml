@@ -68,9 +68,9 @@ jobs:
         SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
         FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 10 # Longer timeout for the build settings.
     - uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/ios/iphoneos/*.app"
-          token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        artifacts: "build/ios/iphoneos/*.app"
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
