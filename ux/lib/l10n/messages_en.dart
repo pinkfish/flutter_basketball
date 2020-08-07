@@ -179,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Sent verification email, please check your email inbox." : MessageLookupByLibrary.simpleMessage("Sent verification email, please check your email inbox."),
     "Settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "Shots" : MessageLookupByLibrary.simpleMessage("Shots"),
+    "Sign in with Google" : MessageLookupByLibrary.simpleMessage("Sign in with Google"),
     "Stats" : MessageLookupByLibrary.simpleMessage("Stats"),
     "Steals" : MessageLookupByLibrary.simpleMessage("Steals"),
     "Stl" : MessageLookupByLibrary.simpleMessage("Stl"),

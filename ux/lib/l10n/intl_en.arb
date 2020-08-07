@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "@@last_modified": "2020-07-31T22:56:59.903514",
+  "@@last_modified": "2020-08-07T05:14:17.120642",
   "Basketball stats": "Basketball stats",
   "@Basketball stats": {
     "description": "Title of the app",
@@ -16,6 +16,12 @@
   "Add Team": "Add Team",
   "@Add Team": {
     "description": "Message to on the tooltip to add a team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Sign in with Google": "Sign in with Google",
+  "@Sign in with Google": {
+    "description": "Sign in button for logging into google",
     "type": "text",
     "placeholders": {}
   },
