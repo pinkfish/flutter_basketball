@@ -34,9 +34,7 @@ import 'screens/teamusers.dart';
 /// Router for all the exciting routers in the app.
 ///
 class BasketballAppRouter {
-  FirebaseAnalytics analytics;
-
-  static Router createRouter(Trace startTrace) {
+  static Router createRouter(Trace startTrace, FirebaseAnalytics analytics) {
     Router router = Router();
     router.define("/Home/Splash",
         handler: Handler(
@@ -208,6 +206,13 @@ class BasketballAppRouter {
       analytics.logEvent(name: "/Settings", parameters: {});
       return SettingsScreen();
     }));
+
+    router.notFoundHandler = Handler(
+        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      analytics.logEvent(name: "RouteNotFound", parameters: params);
+      print("ROUTE WAS NOT FOUND !!! $params");
+      return null;
+    });
 
     return router;
   }

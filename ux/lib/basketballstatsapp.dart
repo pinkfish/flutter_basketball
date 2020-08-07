@@ -65,7 +65,7 @@ class BasketballStatsApp extends StatelessWidget {
         ),
         RepositoryProvider<Router>(
           create: (BuildContext context) =>
-              BasketballAppRouter.createRouter(startupTrace),
+              BasketballAppRouter.createRouter(startupTrace, analytics),
         )
       ],
       child: MultiBlocProvider(
