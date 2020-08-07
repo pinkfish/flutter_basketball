@@ -95,7 +95,8 @@ class InviteListScreenState extends State<InviteListScreen> {
     return BlocProvider(
       create: (BuildContext context) => SingleInviteBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
-          inviteUid: inviteData.uid),
+          inviteUid: inviteData.uid,
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: Builder(
         builder: (BuildContext context) => BlocBuilder(
           cubit: BlocProvider.of<SingleInviteBloc>(context),

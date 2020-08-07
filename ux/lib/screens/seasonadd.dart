@@ -23,13 +23,15 @@ class AddSeasonScreen extends StatelessWidget {
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (BuildContext context) =>
-                AddSeasonBloc(db: BlocProvider.of<TeamsBloc>(context).db),
+            create: (BuildContext context) => AddSeasonBloc(
+                db: BlocProvider.of<TeamsBloc>(context).db,
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
           BlocProvider(
             create: (BuildContext context) => SingleTeamBloc(
                 db: RepositoryProvider.of<BasketballDatabase>(context),
-                teamUid: this.teamUid),
+                teamUid: this.teamUid,
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
         ],
         child: _AddSeasonForm(teamUid),

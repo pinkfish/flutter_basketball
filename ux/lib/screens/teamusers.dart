@@ -28,7 +28,8 @@ class TeamUsersScreen extends StatelessWidget {
               create: (BuildContext context) {
                 var bloc = SingleTeamBloc(
                     db: RepositoryProvider.of<BasketballDatabase>(context),
-                    teamUid: teamUid);
+                    teamUid: teamUid,
+                    crashes: RepositoryProvider.of<CrashReporting>(context));
                 bloc.add(SingleTeamLoadSeasons());
                 return bloc;
               },

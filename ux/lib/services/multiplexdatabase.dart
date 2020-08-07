@@ -9,7 +9,6 @@ import 'package:basketballstats/services/sqflitedatabase.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
 import 'sqldbraw.dart';
@@ -20,11 +19,13 @@ class MultiplexDatabase extends BasketballDatabase {
   final StreamController<bool> _controller = StreamController<bool>();
   final FirebaseAnalytics _analyticsSubsystem;
   final SQLDBRaw _sqldbRaw;
+  final CrashReporting crashes;
 
   Stream<bool> _stream;
   bool useSql = true;
 
-  MultiplexDatabase(bool forceSql, this._analyticsSubsystem, this._sqldbRaw)
+  MultiplexDatabase(
+      bool forceSql, this._analyticsSubsystem, this._sqldbRaw, this.crashes)
       : _fs = FirestoreDatabase(_analyticsSubsystem),
         _sql = SqlfliteDatabase(_sqldbRaw) {
     // We don't use sql on the web.
@@ -53,8 +54,9 @@ class MultiplexDatabase extends BasketballDatabase {
     FirebaseAuth.instance.onAuthStateChanged.listen((FirebaseUser user) {
       bool oldSql = useSql;
       if (user != null || kIsWeb) {
-        if (!kIsWeb) {
+        if (!kIsWeb || user != null) {
           _fs.userUid = user.uid;
+          _fs.userEmail = user.email;
         }
         useSql = false || forceSql;
       } else {
@@ -68,7 +70,7 @@ class MultiplexDatabase extends BasketballDatabase {
     });
     if (!kIsWeb) {
       _sqldbRaw.open().catchError((e, trace) {
-        Crashlytics.instance.recordError(e, trace);
+        crashes.recordError(e, trace);
       });
     }
   }

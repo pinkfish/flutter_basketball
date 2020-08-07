@@ -6,11 +6,11 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
 import '../data/invites/invite.dart';
 import '../data/season/season.dart';
+import 'crashreporting.dart';
 
 abstract class SingleInviteBlocState extends Equatable {
   final Invite invite;
@@ -155,11 +155,13 @@ class _SingleInviteDeleted extends SingleInviteEvent {
 class SingleInviteBloc extends Bloc<SingleInviteEvent, SingleInviteBlocState> {
   final BasketballDatabase db;
   final String inviteUid;
+  final CrashReporting crashes;
 
   StreamSubscription<Invite> _inviteSub;
   StreamSubscription<BuiltList<Season>> _seasonSub;
 
-  SingleInviteBloc({@required this.db, @required this.inviteUid})
+  SingleInviteBloc(
+      {@required this.db, @required this.inviteUid, @required this.crashes})
       : super(SingleInviteUninitialized()) {
     _inviteSub = db.getInvite(inviteUid: inviteUid).listen((Invite t) {
       if (t != null) {
@@ -201,7 +203,7 @@ class SingleInviteBloc extends Bloc<SingleInviteEvent, SingleInviteBlocState> {
         yield SingleInviteSaveSuccessful(singleInviteState: state);
         yield SingleInviteLoaded(state: state, invite: state.invite);
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleInviteSaveFailed(singleInviteState: state, error: error);
         yield SingleInviteLoaded(state: state, invite: state.invite);
       }
@@ -223,10 +225,10 @@ class SingleInviteBloc extends Bloc<SingleInviteEvent, SingleInviteBlocState> {
           var error = ArgumentError("invite not InviteToTeam");
           yield SingleInviteSaveFailed(singleInviteState: state, error: error);
           yield SingleInviteLoaded(state: state, invite: state.invite);
-          Crashlytics.instance.recordError(error, StackTrace.current);
+          crashes.recordError(error, StackTrace.current);
         }
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleInviteSaveFailed(singleInviteState: state, error: error);
         yield SingleInviteLoaded(state: state, invite: state.invite);
       }
@@ -239,7 +241,7 @@ class SingleInviteBloc extends Bloc<SingleInviteEvent, SingleInviteBlocState> {
         yield SingleInviteSaveSuccessful(singleInviteState: state);
         yield SingleInviteLoaded(state: state, invite: state.invite);
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleInviteSaveFailed(singleInviteState: state, error: error);
         yield SingleInviteLoaded(state: state, invite: state.invite);
       }

@@ -25,7 +25,8 @@ class AddPlayerSeasonScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (BuildContext context) => AddPlayerBloc(
-            db: RepositoryProvider.of<BasketballDatabase>(context)),
+            db: RepositoryProvider.of<BasketballDatabase>(context),
+            crashes: RepositoryProvider.of<CrashReporting>(context)),
         child: _AddPlayerSeasonInside(),
       ),
     );

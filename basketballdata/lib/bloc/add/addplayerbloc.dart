@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/player/player.dart';
 import '../../db/basketballdatabase.dart';
+import '../crashreporting.dart';
 import 'additemstate.dart';
 
 abstract class AddPlayerEvent extends Equatable {}
@@ -28,9 +28,11 @@ class AddPlayerEventCommit extends AddPlayerEvent {
 /// players.
 ///
 class AddPlayerBloc extends Bloc<AddPlayerEvent, AddItemState> {
+  final CrashReporting crashes;
   final BasketballDatabase db;
 
-  AddPlayerBloc({@required this.db}) : super(AddItemUninitialized());
+  AddPlayerBloc({@required this.db, @required this.crashes})
+      : super(AddItemUninitialized());
 
   @override
   Stream<AddItemState> mapEventToState(AddPlayerEvent event) async* {
@@ -44,7 +46,7 @@ class AddPlayerBloc extends Bloc<AddPlayerEvent, AddItemState> {
       } catch (e, s) {
         print(e);
         print(s);
-        Crashlytics.instance.recordError(e, s);
+        crashes.recordError(e, s);
         yield AddItemSaveFailed(error: e);
       }
     }

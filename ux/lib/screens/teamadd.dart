@@ -13,8 +13,9 @@ class AddTeamScreen extends StatelessWidget {
         title: Text(Messages.of(context).addTeamTooltip),
       ),
       body: BlocProvider(
-        create: (BuildContext context) =>
-            AddTeamBloc(db: BlocProvider.of<TeamsBloc>(context).db),
+        create: (BuildContext context) => AddTeamBloc(
+            db: BlocProvider.of<TeamsBloc>(context).db,
+            crashes: RepositoryProvider.of<CrashReporting>(context)),
         child: _AddTeamForm(),
       ),
     );

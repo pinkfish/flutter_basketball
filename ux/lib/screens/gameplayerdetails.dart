@@ -33,7 +33,8 @@ class _GameDetailsStateScreen extends State<GamePlayerDetailsScreen> {
     return BlocProvider(
       create: (BuildContext context) => SingleGameBloc(
           gameUid: widget.gameUid,
-          db: RepositoryProvider.of<BasketballDatabase>(context)),
+          db: RepositoryProvider.of<BasketballDatabase>(context),
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: Scaffold(
         appBar: AppBar(
           title: Row(

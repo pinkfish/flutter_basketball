@@ -127,7 +127,8 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
             key: Key("season${widget.seasonState.season.uid}"),
             create: (BuildContext context) => SingleSeasonBloc(
               seasonUid: widget.seasonState.season.uid,
-              db: RepositoryProvider.of<BasketballDatabase>(context),
+              db: RepositoryProvider.of<BasketballDatabase>(context)
+    , crashes: RepositoryProvider.of<CrashReporting>(context),
             ),
             child: Builder(
               builder: (BuildContext context) => BlocConsumer(

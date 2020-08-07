@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/media/mediainfo.dart';
 import '../../db/basketballdatabase.dart';
+import '../crashreporting.dart';
 import 'additemstate.dart';
 
 abstract class AddMediaEvent extends Equatable {}
@@ -29,8 +29,10 @@ class AddMediaEventCommit extends AddMediaEvent {
 ///
 class AddMediaBloc extends Bloc<AddMediaEvent, AddItemState> {
   final BasketballDatabase db;
+  final CrashReporting crashes;
 
-  AddMediaBloc({@required this.db}) : super(AddItemUninitialized());
+  AddMediaBloc({@required this.db, @required this.crashes})
+      : super(AddItemUninitialized());
 
   @override
   Stream<AddItemState> mapEventToState(AddMediaEvent event) async* {
@@ -42,7 +44,7 @@ class AddMediaBloc extends Bloc<AddMediaEvent, AddItemState> {
         String uid = await db.addMedia(media: event.newMedia);
         yield AddItemDone(uid: uid);
       } catch (e, s) {
-        Crashlytics.instance.recordError(e, s);
+        crashes.recordError(e, s);
         yield AddItemSaveFailed(error: e);
       }
     }

@@ -36,7 +36,9 @@ class TeamWidget extends StatelessWidget {
     } else {
       return BlocProvider(
         create: (BuildContext context) => SingleTeamBloc(
-            teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
+            teamUid: teamUid,
+            db: BlocProvider.of<TeamsBloc>(context).db,
+            crashes: RepositoryProvider.of<CrashReporting>(context)),
         child: Builder(
           builder: (BuildContext context) => BlocConsumer(
             cubit: BlocProvider.of<SingleTeamBloc>(context),

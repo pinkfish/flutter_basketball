@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:basketballdata/bloc/crashreporting.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
@@ -57,17 +58,22 @@ abstract class TeamsBlocEvent extends Equatable {}
 ///
 class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   final BasketballDatabase db;
+  final CrashReporting crashes;
+
   StreamSubscription<BuiltList<Team>> _sub;
   StreamSubscription<bool> _dbChange;
 
-  TeamsBloc({this.db}) : super(TeamsBlocUninitialized()) {
+  TeamsBloc({@required this.db, @required this.crashes})
+      : super(TeamsBlocUninitialized()) {
     print("Created teamsbloc");
     _sub = db.getAllTeams().listen(
         (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
+    _sub.onError((e, stack) => crashes.recordError(e, stack));
     _dbChange = db.onDatabaseChange.listen((bool b) {
       _sub?.cancel();
       _sub = db.getAllTeams().listen(
           (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
+      _sub.onError((e, stack) => crashes.recordError(e, stack));
     });
   }
 

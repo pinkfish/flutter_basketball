@@ -22,7 +22,9 @@ class PlayerEditScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (BuildContext context) => SinglePlayerBloc(
-            db: BlocProvider.of<TeamsBloc>(context).db, playerUid: playerUid),
+            db: BlocProvider.of<TeamsBloc>(context).db,
+            playerUid: playerUid,
+            crashes: RepositoryProvider.of<CrashReporting>(context)),
         child: _PlayerEditInside(playerUid),
       ),
     );

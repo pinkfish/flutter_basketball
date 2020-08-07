@@ -24,7 +24,8 @@ class PlayerDetailsScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => SinglePlayerBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
-          playerUid: playerUid),
+          playerUid: playerUid,
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: _PlayerDetails(playerUid),
     );
   }

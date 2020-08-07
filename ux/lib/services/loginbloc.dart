@@ -6,7 +6,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
@@ -349,6 +348,7 @@ class LoginAsGoogleUser extends LoginEvent {
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final FirebaseAnalytics analyticsSubsystem;
   final BasketballDatabase db;
+  final CrashReporting crashes;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
@@ -357,7 +357,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     ],
   );
 
-  LoginBloc({@required this.analyticsSubsystem, @required this.db})
+  LoginBloc(
+      {@required this.analyticsSubsystem,
+      @required this.db,
+      @required this.crashes})
       : super(LoginInitial());
 
   @override
@@ -389,7 +392,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       } catch (error, stack) {
         print('Error: $error');
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         // Failed to login, probably bad password.
         yield LoginFailed(
             userData: signedIn, reason: LoginFailedReason.BadPassword);
@@ -455,7 +458,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               userData: null, reason: LoginFailedReason.Cancelled);
         }
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         print('Error: $error');
         if (error is PlatformException) {
           switch (error.code) {
@@ -489,7 +492,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await FirebaseAuth.instance.sendPasswordResetEmail(email: forgot.email);
         yield LoginForgotPasswordDone();
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield LoginForgotPasswordFailed(error: error);
       }
     }
@@ -527,7 +530,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       } catch (error, stack) {
         print("Error $error");
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield LoginSignupFailed(userData: null);
       }
     }

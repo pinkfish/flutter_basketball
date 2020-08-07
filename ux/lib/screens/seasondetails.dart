@@ -107,7 +107,8 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
       create: (BuildContext context) {
         var bloc = SingleSeasonBloc(
             db: BlocProvider.of<TeamsBloc>(context).db,
-            seasonUid: widget.seasonUid);
+            seasonUid: widget.seasonUid,
+            crashes: RepositoryProvider.of<CrashReporting>(context));
         bloc.add(SingleSeasonLoadGames());
         return bloc;
       },

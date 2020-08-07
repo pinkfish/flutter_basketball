@@ -133,7 +133,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           child: BlocProvider(
             create: (BuildContext context) => SingleSeasonBloc(
                 db: RepositoryProvider.of<BasketballDatabase>(context),
-                seasonUid: _seasonPlayers),
+                seasonUid: _seasonPlayers,
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
             child: Builder(
               builder: (BuildContext context) => BlocBuilder(
                 cubit: BlocProvider.of<SingleSeasonBloc>(context),
@@ -178,7 +179,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
       create: (BuildContext context) {
         var bloc = SingleTeamBloc(
             db: RepositoryProvider.of<BasketballDatabase>(context),
-            teamUid: widget.teamUid);
+            teamUid: widget.teamUid,
+            crashes: RepositoryProvider.of<CrashReporting>(context));
         bloc.add(SingleTeamLoadSeasons());
         return bloc;
       },

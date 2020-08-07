@@ -78,7 +78,8 @@ class SeasonExpansionPanel extends ExpansionPanel {
           body: BlocProvider(
             create: (BuildContext context) => SingleSeasonBloc(
               seasonUid: season.uid,
-              db: RepositoryProvider.of<BasketballDatabase>(context),
+              db: RepositoryProvider.of<BasketballDatabase>(context)
+                , crashes: RepositoryProvider.of<CrashReporting>(context),
             ),
             child: Builder(
               builder: (BuildContext context) => AnimatedSwitcher(

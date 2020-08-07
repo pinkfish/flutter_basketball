@@ -57,6 +57,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
         teamBlocs[g.teamUid] = SingleTeamBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
           teamUid: g.teamUid,
+          crashes: RepositoryProvider.of<CrashReporting>(context),
         );
       }
       if (graphSeasonUid == null) {
@@ -67,6 +68,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
         seasonBlocs[g.seasonUid] = SingleSeasonBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
           seasonUid: g.seasonUid,
+          crashes: RepositoryProvider.of<CrashReporting>(context),
         );
       }
     });
@@ -170,17 +172,16 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                   Iterable<String> seasons = teamSeason[teamUid];
                   return MultiBlocListener(
                     listeners: seasons
-                        .map((String s) =>
-                        BlocListener(
-                          cubit: seasonBlocs[s],
-                          listener: (BuildContext context,
-                              SingleSeasonBlocState state) {
-                            if (state is SingleSeasonLoaded &&
-                                !state.loadedGames) {
-                              seasonBlocs[s].add(SingleSeasonLoadGames());
-                            }
-                          },
-                        ))
+                        .map((String s) => BlocListener(
+                              cubit: seasonBlocs[s],
+                              listener: (BuildContext context,
+                                  SingleSeasonBlocState state) {
+                                if (state is SingleSeasonLoaded &&
+                                    !state.loadedGames) {
+                                  seasonBlocs[s].add(SingleSeasonLoadGames());
+                                }
+                              },
+                            ))
                         .toList(),
                     child: _getDataTableByTeam(state.team),
                   );
@@ -200,7 +201,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
               ),
             ),
           ),
-    )
+        )
         .toList();
   }
 
@@ -226,10 +227,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     }
 
     // Show the games.
-    TextStyle headerStyle = Theme
-        .of(context)
-        .textTheme
-        .subtitle1;
+    TextStyle headerStyle = Theme.of(context).textTheme.subtitle1;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
@@ -278,9 +276,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
               });
             },
             label: Text(
-              Messages
-                  .of(context)
-                  .pointsTitle,
+              Messages.of(context).pointsTitle,
               style: headerStyle,
             ),
           ),
@@ -298,7 +294,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                 var cmp = a.seasonUid.compareTo(b.seasonUid);
                 if (cmp == 0) {
                   cmp = _getPercentForSorting(
-                      a.players[widget.playerUid].fullData.one) -
+                          a.players[widget.playerUid].fullData.one) -
                       _getPercentForSorting(
                           b.players[widget.playerUid].fullData.one);
                   cmp *= (sortAscending ? -1 : 1);
@@ -321,7 +317,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                 var cmp = a.seasonUid.compareTo(b.seasonUid);
                 if (cmp == 0) {
                   cmp = _getPercentForSorting(
-                      a.players[widget.playerUid].fullData.two) -
+                          a.players[widget.playerUid].fullData.two) -
                       _getPercentForSorting(
                           b.players[widget.playerUid].fullData.two);
                   cmp *= (sortAscending ? -1 : 1);
@@ -344,7 +340,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                 var cmp = a.seasonUid.compareTo(b.seasonUid);
                 if (cmp == 0) {
                   cmp = _getPercentForSorting(
-                      a.players[widget.playerUid].fullData.three) -
+                          a.players[widget.playerUid].fullData.three) -
                       _getPercentForSorting(
                           b.players[widget.playerUid].fullData.three);
                   cmp *= (sortAscending ? -1 : 1);
@@ -355,9 +351,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           ),
           DataColumn(
             label: Text(
-              Messages
-                  .of(context)
-                  .offensiveReboundTitle,
+              Messages.of(context).offensiveReboundTitle,
               style: headerStyle,
             ),
             onSort: (int index, bool ascending) {
@@ -378,9 +372,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           ),
           DataColumn(
             label: Text(
-              Messages
-                  .of(context)
-                  .defensiveReboundTitle,
+              Messages.of(context).defensiveReboundTitle,
               style: headerStyle,
             ),
             onSort: (int index, bool ascending) {
@@ -401,9 +393,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           ),
           DataColumn(
             label: Text(
-              Messages
-                  .of(context)
-                  .stealsTitle,
+              Messages.of(context).stealsTitle,
               style: headerStyle,
             ),
             onSort: (int index, bool ascending) {
@@ -424,9 +414,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           ),
           DataColumn(
             label: Text(
-              Messages
-                  .of(context)
-                  .blocksTitle,
+              Messages.of(context).blocksTitle,
               style: headerStyle,
             ),
             onSort: (int index, bool ascending) {
@@ -447,9 +435,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           ),
           DataColumn(
             label: Text(
-              Messages
-                  .of(context)
-                  .turnoversTitle,
+              Messages.of(context).turnoversTitle,
               style: headerStyle,
             ),
             onSort: (int index, bool ascending) {
@@ -470,9 +456,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
           ),
           DataColumn(
             label: Text(
-              Messages
-                  .of(context)
-                  .fouls,
+              Messages.of(context).fouls,
               style: headerStyle,
             ),
             onSort: (int index, bool ascending) {
@@ -565,13 +549,10 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
   }
 
   DataRow _seasonDataRow(Season s) {
-    TextStyle style = Theme
-        .of(context)
+    TextStyle style = Theme.of(context)
         .textTheme
         .bodyText2
-        .copyWith(color: Theme
-        .of(context)
-        .accentColor);
+        .copyWith(color: Theme.of(context).accentColor);
     return DataRow(
       cells: [
         DataCell(

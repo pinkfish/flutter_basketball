@@ -436,16 +436,21 @@ class GameStatsScreen extends StatelessWidget {
           providers: [
             BlocProvider(
               create: (BuildContext context) => SingleTeamBloc(
-                  teamUid: teamUid, db: BlocProvider.of<TeamsBloc>(context).db),
+                  teamUid: teamUid,
+                  db: BlocProvider.of<TeamsBloc>(context).db,
+                  crashes: RepositoryProvider.of<CrashReporting>(context)),
             ),
             BlocProvider(
-              create: (BuildContext context) => SingleGameBloc(
-                  gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
-            ),
+                create: (BuildContext context) => SingleGameBloc(
+                      gameUid: gameUid,
+                      db: BlocProvider.of<TeamsBloc>(context).db,
+                      crashes: RepositoryProvider.of<CrashReporting>(context),
+                    )),
             BlocProvider(
               create: (BuildContext context) => SingleSeasonBloc(
                   seasonUid: seasonUid,
-                  db: BlocProvider.of<TeamsBloc>(context).db),
+                  db: BlocProvider.of<TeamsBloc>(context).db,
+                  crashes: RepositoryProvider.of<CrashReporting>(context)),
             ),
           ],
           child: OrientationBuilder(

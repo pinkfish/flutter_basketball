@@ -14,6 +14,7 @@ import 'messages.dart';
 import 'routes.dart';
 import 'screens/splashscreen.dart';
 import 'services/authenticationbloc.dart';
+import 'services/crashreportingservice.dart';
 import 'services/localstoragedata.dart';
 import 'services/loginbloc.dart';
 import 'services/mediastreaming.dart';
@@ -41,9 +42,13 @@ class BasketballStatsApp extends StatelessWidget {
 
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<CrashReporting>(
+          create: (BuildContext context) => CrashReportingService(),
+          lazy: false,
+        ),
         RepositoryProvider<BasketballDatabase>(
-          create: (BuildContext context) =>
-              MultiplexDatabase(forceSql, analytics, db),
+          create: (BuildContext context) => MultiplexDatabase(forceSql,
+              analytics, db, RepositoryProvider.of<CrashReporting>(context)),
           lazy: false,
         ),
         RepositoryProvider<MediaStreaming>(
@@ -66,13 +71,15 @@ class BasketballStatsApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: <BlocProvider>[
           BlocProvider<AuthenticationBloc>(
-            create: (BuildContext context) =>
-                AuthenticationBloc(analyticsSubsystem: analytics),
+            create: (BuildContext context) => AuthenticationBloc(
+                analyticsSubsystem: analytics,
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
           BlocProvider<LoginBloc>(
             create: (BuildContext context) => LoginBloc(
                 analyticsSubsystem: analytics,
-                db: RepositoryProvider.of<BasketballDatabase>(context)),
+                db: RepositoryProvider.of<BasketballDatabase>(context),
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
         ],
         child: StreamBuilder(
@@ -90,7 +97,9 @@ class BasketballStatsApp extends StatelessWidget {
                   print("Making a team!");
                   return BlocProvider<TeamsBloc>(
                     create: (BuildContext context) => TeamsBloc(
-                        db: RepositoryProvider.of<BasketballDatabase>(context)),
+                        db: RepositoryProvider.of<BasketballDatabase>(context),
+                        crashes:
+                            RepositoryProvider.of<CrashReporting>(context)),
                     child: _materialApp(context, mode),
                   );
                 } else {

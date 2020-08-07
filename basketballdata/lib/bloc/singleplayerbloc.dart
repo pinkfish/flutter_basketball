@@ -4,11 +4,11 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../basketballdata.dart';
+import 'crashreporting.dart';
 
 ///
 /// The data associated with the player.
@@ -185,11 +185,13 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
   final String playerUid;
   final BasketballDatabase db;
   final Lock _lock = Lock();
+  final CrashReporting crashes;
 
   StreamSubscription<Player> _playerSub;
   StreamSubscription<BuiltList<Game>> _gameEventSub;
 
-  SinglePlayerBloc({@required this.db, @required this.playerUid})
+  SinglePlayerBloc(
+      {@required this.db, @required this.playerUid, @required this.crashes})
       : super(SinglePlayerUninitialized()) {
     _playerSub = db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdate);
   }
@@ -231,7 +233,7 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
         await db.deletePlayer(playerUid: player.uid);
         yield SinglePlayerDeleted();
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SinglePlayerSaveFailed(singlePlayerState: state, error: error);
       }
     }
@@ -244,7 +246,7 @@ class SinglePlayerBloc extends Bloc<SinglePlayerEvent, SinglePlayerState> {
         await db.updatePlayer(player: player);
         yield SinglePlayerSaveSuccessful(singlePlayerState: state);
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SinglePlayerSaveFailed(singlePlayerState: state, error: error);
       }
     }

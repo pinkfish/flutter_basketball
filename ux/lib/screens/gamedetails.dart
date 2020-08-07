@@ -32,7 +32,9 @@ class GameDetailsScreen extends StatelessWidget {
       providers: [
         BlocProvider<SingleGameBloc>(
           create: (BuildContext context) => SingleGameBloc(
-              gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
+              gameUid: gameUid,
+              db: BlocProvider.of<TeamsBloc>(context).db,
+              crashes: RepositoryProvider.of<CrashReporting>(context)),
         ),
       ],
       child: OrientationBuilder(

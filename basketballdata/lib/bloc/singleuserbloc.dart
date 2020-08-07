@@ -4,8 +4,9 @@ import 'package:basketballdata/data/user.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
+
+import 'crashreporting.dart';
 
 ///
 /// The basic data for the user and all the data associated with it.
@@ -128,10 +129,13 @@ class _SingleUserDeleted extends SingleUserEvent {
 class SingleUserBloc extends Bloc<SingleUserEvent, SingleUserState> {
   final String userUid;
   final BasketballDatabase db;
+  final CrashReporting crashes;
 
   StreamSubscription<User> _userSub;
 
-  SingleUserBloc({@required this.db, @required this.userUid}) : super(SingleUserUninitialized()) {
+  SingleUserBloc(
+      {@required this.db, @required this.userUid, @required this.crashes})
+      : super(SingleUserUninitialized()) {
     _userSub = db.getUser(userUid: userUid).listen(_onUserUpdate);
   }
 
@@ -170,7 +174,7 @@ class SingleUserBloc extends Bloc<SingleUserEvent, SingleUserState> {
         yield SingleUserSaveSuccessful(singleUserState: state);
         yield SingleUserLoaded(user: event.user, state: state);
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleUserSaveFailed(singleUserState: state, error: error);
       }
     }

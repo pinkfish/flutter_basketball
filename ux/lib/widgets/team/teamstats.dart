@@ -50,7 +50,8 @@ class _TeamStatsWidgetState extends State<TeamStatsWidget> {
         return BlocProvider(
           create: (BuildContext context) => SingleSeasonBloc(
               db: RepositoryProvider.of<BasketballDatabase>(context),
-              seasonUid: _currentSeasonUid),
+              seasonUid: _currentSeasonUid,
+              crashes: RepositoryProvider.of<CrashReporting>(context)),
           child: Builder(
             builder: (BuildContext context) => Column(
               children: [

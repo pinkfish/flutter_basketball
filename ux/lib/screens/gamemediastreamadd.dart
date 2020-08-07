@@ -8,7 +8,6 @@ import 'package:basketballstats/services/uploadfilesbackground.dart';
 import 'package:basketballstats/widgets/media/gamestatusoverlay.dart';
 import 'package:camera_with_rtmp/camera.dart';
 import 'package:camera_with_rtmp/new/src/common/camera_interface.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +34,8 @@ class AddMediaStreamGameScreen extends StatelessWidget {
       body: BlocProvider(
         create: (BuildContext context) => SingleGameBloc(
           gameUid: gameUid,
-          db: RepositoryProvider.of<BasketballDatabase>(context),
+          db: RepositoryProvider.of<BasketballDatabase>(context)
+            , crashes: RepositoryProvider.of<CrashReporting>(context)
         ),
         child: Builder(
           builder: (BuildContext context) => BlocBuilder(
@@ -93,7 +93,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
         print("Initialized controller");
         setState(() => true);
       } catch (e, stack) {
-        Crashlytics.instance.recordError(e, stack);
+        RepositoryProvider.of<CrashReporting>(context).recordError(e, stack);
         showInSnackBar("Error starting camera");
       }
     });
@@ -355,10 +355,10 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
             .then((d) {
           if (mounted) Navigator.pop(context);
         }).catchError((e, stack) {
-          Crashlytics.instance.recordError(e, stack);
+          RepositoryProvider.of<CrashReporting>(context).recordError(e, stack);
         });
       }).catchError((e, stack) {
-        Crashlytics.instance.recordError(e, stack);
+        RepositoryProvider.of<CrashReporting>(context).recordError(e, stack);
       });
     }
   }
@@ -426,7 +426,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
         }
       });
     } catch (e, stack) {
-      Crashlytics.instance.recordError(e, stack);
+      RepositoryProvider.of<CrashReporting>(context).recordError(e, stack);
       return false;
     }
     return true;
@@ -490,7 +490,7 @@ class _AddMediaStreamGameInsideState extends State<_AddMediaStreamGameInside> {
   }
 
   void _showCameraException(CameraException e, StackTrace stack) {
-    Crashlytics.instance.recordError(e, stack);
+    RepositoryProvider.of<CrashReporting>(context).recordError(e, stack);
     showInSnackBar('Error: ${e.code}\n${e.description}');
   }
 

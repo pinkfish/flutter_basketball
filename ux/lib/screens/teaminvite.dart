@@ -52,12 +52,14 @@ class _TeamInviteState extends State<TeamInviteScreen> {
         providers: [
           BlocProvider(
             create: (BuildContext context) => AddInviteBloc(
-                db: RepositoryProvider.of<BasketballDatabase>(context)),
+                db: RepositoryProvider.of<BasketballDatabase>(context),
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
           BlocProvider(
             create: (BuildContext context) => SingleTeamBloc(
                 db: RepositoryProvider.of<BasketballDatabase>(context),
-                teamUid: widget.teamUid),
+                teamUid: widget.teamUid,
+                crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
         ],
         child: Builder(

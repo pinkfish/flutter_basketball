@@ -25,7 +25,8 @@ class PlayerName extends StatelessWidget {
       key: Key("player$playerUid"),
       create: (BuildContext context) => SinglePlayerBloc(
           playerUid: this.playerUid,
-          db: BlocProvider.of<TeamsBloc>(context).db),
+          db: BlocProvider.of<TeamsBloc>(context).db,
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: Builder(
         builder: (BuildContext context) {
           return BlocBuilder(

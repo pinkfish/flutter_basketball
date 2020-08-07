@@ -32,7 +32,8 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
     // Default to empty.
     _singleInviteBloc = SingleInviteBloc(
         db: RepositoryProvider.of<BasketballDatabase>(context),
-        inviteUid: widget._inviteUid);
+        inviteUid: widget._inviteUid,
+        crashes: RepositoryProvider.of<CrashReporting>(context));
   }
 
   @override

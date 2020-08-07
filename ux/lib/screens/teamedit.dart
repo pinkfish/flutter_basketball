@@ -17,7 +17,8 @@ class TeamEditScreen extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => SingleTeamBloc(
           teamUid: teamUid,
-          db: RepositoryProvider.of<BasketballDatabase>(context)),
+          db: RepositoryProvider.of<BasketballDatabase>(context),
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: Builder(
         builder: (BuildContext context) => BlocBuilder(
           cubit: BlocProvider.of<SingleTeamBloc>(context),

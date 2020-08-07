@@ -30,7 +30,9 @@ class GameAddScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (BuildContext context) => SingleTeamBloc(
-            db: BlocProvider.of<TeamsBloc>(context).db, teamUid: teamUid),
+            db: BlocProvider.of<TeamsBloc>(context).db,
+            teamUid: teamUid,
+            crashes: RepositoryProvider.of<CrashReporting>(context)),
         child: Builder(
           builder: (BuildContext context) => BlocBuilder(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
@@ -48,7 +50,8 @@ class GameAddScreen extends StatelessWidget {
               return BlocProvider(
                 create: (BuildContext context) => AddGameBloc(
                     teamUid: teamUid,
-                    db: BlocProvider.of<TeamsBloc>(context).db),
+                    db: BlocProvider.of<TeamsBloc>(context).db,
+                    crashes: RepositoryProvider.of<CrashReporting>(context)),
                 child: Builder(builder: (BuildContext context) {
                   return _GameAddForm(
                     teamUid: teamUid,
@@ -367,7 +370,9 @@ class _GameAddFormState extends State<_GameAddForm> {
                       create: (BuildContext context) => SingleSeasonBloc(
                           db: RepositoryProvider.of<BasketballDatabase>(
                               context),
-                          seasonUid: _seasonUid),
+                          seasonUid: _seasonUid,
+                          crashes:
+                              RepositoryProvider.of<CrashReporting>(context)),
                       child: Builder(
                         builder: (BuildContext context) => BlocBuilder(
                           cubit: BlocProvider.of<SingleSeasonBloc>(context),

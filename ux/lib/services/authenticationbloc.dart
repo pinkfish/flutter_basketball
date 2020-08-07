@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:basketballdata/basketballdata.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
@@ -98,10 +98,12 @@ class _AuthenticationLogOut extends AuthenticationEvent {
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final FirebaseAnalytics analyticsSubsystem;
+  final CrashReporting crashes;
 
   StreamSubscription<FirebaseUser> _listener;
 
-  AuthenticationBloc({@required this.analyticsSubsystem})
+  AuthenticationBloc(
+      {@required this.analyticsSubsystem, @required this.crashes})
       : super(AuthenticationUninitialized()) {
     FirebaseAuth.instance
         .currentUser()
@@ -157,7 +159,7 @@ class AuthenticationBloc
               .timeout(Duration(milliseconds: 1000));
         }
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
       }
       // Finished logging out.
       yield AuthenticationLoggedOut();

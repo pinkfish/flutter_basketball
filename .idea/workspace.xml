@@ -2,30 +2,59 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/builddate.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/data.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/.metadata" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/build.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/lib/builddategenerator.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/lib/builddatepostprocess.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/lib/builder.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_date_gen/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/flutter-ios.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter-ios.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/flutter.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter-android.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/web_deploy.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/flutter-web.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/crashreporting.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/lib/services/crashreportingservice.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/login/loginform.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/login/loginform.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/splashscreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/splashscreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addgamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addgamebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addinvitebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addinvitebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addmediabloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addmediabloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addplayerbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addplayerbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addseasonbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addseasonbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addteambloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addteambloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleinvitebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleinvitebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleseasonbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleseasonbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleuserbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleuserbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/teamsbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/teamsbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamemediafromurladd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamemediafromurladd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamemediaphotoadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamemediaphotoadd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamemediastreamadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamemediastreamadd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameplayeradd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameplayeradd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameplayerdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/invites/acceptinvitetoteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/invites/acceptinvitetoteam.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/invites/invitelist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/invites/invitelist.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/playeredit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playeredit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasondetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasondetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasonplayeradd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasonplayeradd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamadd.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamedit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamedit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamusers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamusers.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/loginbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/loginbloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/multiplexdatabase.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playername.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playername.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/playertile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/playertile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/teamdetailsexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/teamdetailsexpansionpanel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/teamplayergraphs.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/teamplayergraphs.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonexpansionpanel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonname.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasonname.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/username.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/username.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/usertile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/usertile.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,9 +102,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ux/ios/fastlane/metadata" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ux/lib" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -260,30 +288,34 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="437" height="466" key="DebuggerActiveHint/0.23.1280.924@0.23.1280.924" timestamp="1589259692887" />
-    <state width="645" height="242" key="GridCell.Tab.0.bottom" timestamp="1596762758557">
+    <state x="428" y="249" key="FileChooserDialogImpl" timestamp="1596786107102">
+      <screen x="0" y="23" width="1280" height="927" />
+    </state>
+    <state x="428" y="249" key="FileChooserDialogImpl/0.23.1280.927@0.23.1280.927" timestamp="1596786107102" />
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom" timestamp="1596785745313">
       <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
     <state width="646" height="242" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1596520871996" />
-    <state width="645" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1596762758557" />
-    <state width="645" height="242" key="GridCell.Tab.0.center" timestamp="1596762758556">
+    <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1596785745313" />
+    <state width="1238" height="242" key="GridCell.Tab.0.center" timestamp="1596785745312">
       <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
     <state width="646" height="242" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1596520871995" />
-    <state width="645" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1596762758556" />
-    <state width="645" height="242" key="GridCell.Tab.0.left" timestamp="1596762758555">
+    <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1596785745312" />
+    <state width="1238" height="242" key="GridCell.Tab.0.left" timestamp="1596785745311">
       <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
     <state width="646" height="242" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1596520871995" />
-    <state width="645" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1596762758555" />
-    <state width="645" height="242" key="GridCell.Tab.0.right" timestamp="1596762758556">
+    <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1596785745311" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right" timestamp="1596785745312">
       <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
     <state width="646" height="242" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1596520871996" />
-    <state width="645" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1596762758556" />
+    <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1596785745312" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
     </state>
@@ -299,10 +331,11 @@
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
     <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1594842060225" />
     <state x="128" y="66" key="SettingsEditor/0.23.1280.927@0.23.1280.927" timestamp="1596746487047" />
-    <state x="347" y="240" width="586" height="490" key="find.popup" timestamp="1596482258082">
-      <screen x="0" y="23" width="1280" height="924" />
+    <state x="347" y="241" width="586" height="492" key="find.popup" timestamp="1596786531956">
+      <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state x="347" y="240" width="586" height="490" key="find.popup/0.23.1280.924@0.23.1280.924" timestamp="1596482258082" />
+    <state x="347" y="241" width="586" height="492" key="find.popup/0.23.1280.927@0.23.1280.927" timestamp="1596786531956" />
     <state x="25" y="212" key="new project wizard" timestamp="1594841852376">
       <screen x="0" y="23" width="1280" height="924" />
     </state>

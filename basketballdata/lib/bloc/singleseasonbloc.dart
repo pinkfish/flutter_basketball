@@ -6,12 +6,12 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../data/game/game.dart';
 import '../data/season/season.dart';
+import 'crashreporting.dart';
 
 abstract class SingleSeasonBlocState extends Equatable {
   final Season season;
@@ -236,13 +236,15 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
   final BasketballDatabase db;
   final String seasonUid;
   final Lock _lock = new Lock();
+  final CrashReporting crashes;
 
   StreamSubscription<Season> _seasonSub;
   StreamSubscription<BuiltList<Game>> _gameSub;
   Map<String, StreamSubscription<Player>> _players;
   Map<String, Player> _loadedPlayers;
 
-  SingleSeasonBloc({@required this.db, @required this.seasonUid})
+  SingleSeasonBloc(
+      {@required this.db, @required this.seasonUid, @required this.crashes})
       : super(SingleSeasonUninitialized()) {
     _players = {};
     _loadedPlayers = {};
@@ -293,7 +295,7 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
           yield SingleSeasonLoaded(state: state, season: event.season);
         }
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
@@ -308,7 +310,7 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
           yield SingleSeasonLoaded(state: state);
         }
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
@@ -323,7 +325,7 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
           yield SingleSeasonLoaded(state: state);
         }
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }
@@ -332,7 +334,7 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
       try {
         await db.deleteSeason(seasonUid: seasonUid);
       } catch (error, stack) {
-        Crashlytics.instance.recordError(error, stack);
+        crashes.recordError(error, stack);
         yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
       }
     }

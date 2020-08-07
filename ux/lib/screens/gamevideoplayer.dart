@@ -23,7 +23,9 @@ class GameVideoPlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<SingleGameBloc>(
       create: (BuildContext context) => SingleGameBloc(
-          gameUid: gameUid, db: BlocProvider.of<TeamsBloc>(context).db),
+          gameUid: gameUid,
+          db: BlocProvider.of<TeamsBloc>(context).db,
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
           return BlocConsumer(

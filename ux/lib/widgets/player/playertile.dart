@@ -45,7 +45,8 @@ class PlayerTile extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => SinglePlayerBloc(
           playerUid: this.playerUid,
-          db: RepositoryProvider.of<BasketballDatabase>(context)),
+          db: RepositoryProvider.of<BasketballDatabase>(context),
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: Builder(
         builder: (BuildContext context) {
           return AnimatedSwitcher(

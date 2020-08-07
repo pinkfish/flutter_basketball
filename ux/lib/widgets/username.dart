@@ -21,7 +21,9 @@ class UserName extends StatelessWidget {
     return BlocProvider(
       key: Key("user$userUid"),
       create: (BuildContext context) => SingleUserBloc(
-          userUid: this.userUid, db: BlocProvider.of<TeamsBloc>(context).db),
+          userUid: this.userUid,
+          db: BlocProvider.of<TeamsBloc>(context).db,
+          crashes: RepositoryProvider.of<CrashReporting>(context)),
       child: Builder(
         builder: (BuildContext context) {
           return BlocBuilder(

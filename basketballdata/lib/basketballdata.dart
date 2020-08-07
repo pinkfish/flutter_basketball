@@ -1,5 +1,6 @@
 library basketballdata;
 
+export 'bloc/crashreporting.dart';
 export 'bloc/add/addgamebloc.dart';
 export 'bloc/add/additemstate.dart';
 export 'bloc/add/addmediabloc.dart';

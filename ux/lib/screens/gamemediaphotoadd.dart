@@ -32,12 +32,14 @@ class AddMediaPhotoGameScreen extends StatelessWidget {
       body: BlocProvider(
         create: (BuildContext context) => SingleGameBloc(
           gameUid: gameUid,
-          db: RepositoryProvider.of<BasketballDatabase>(context),
+          db: RepositoryProvider.of<BasketballDatabase>(context)
+            , crashes: RepositoryProvider.of<CrashReporting>(context)
         ),
         child: Builder(
           builder: (BuildContext context) => BlocProvider(
             create: (BuildContext context) => AddMediaBloc(
-              db: RepositoryProvider.of<BasketballDatabase>(context),
+              db: RepositoryProvider.of<BasketballDatabase>(context)
+                , crashes: RepositoryProvider.of<CrashReporting>(context)
             ),
             child: BlocBuilder(
               cubit: BlocProvider.of<SingleGameBloc>(context),
