@@ -22,19 +22,34 @@ class SplashScreen extends StatelessWidget {
       return BlocBuilder(
         cubit: BlocProvider.of<AuthenticationBloc>(context),
         builder: (BuildContext context, AuthenticationState state) {
+          bool navigated = false;
           print("Blocs of stuff $state");
           if (state is AuthenticationLoggedInUnverified) {
-            Timer(Duration(milliseconds: 50),
-                () => Navigator.popAndPushNamed(context, "/Login/Verify"));
+            Timer(
+                Duration(milliseconds: 50),
+                () {
+                  if (!navigated) {
+                    Navigator.popAndPushNamed(context, "/Login/Verify");
+                  }
+                  navigated = true;
+                });
           }
           if (state is AuthenticationLoggedOut) {
-            Timer(Duration(milliseconds: 50),
-                () => Navigator.popAndPushNamed(context, "/Login/Home"));
+            Timer(Duration(milliseconds: 50), () {
+              if (!navigated) {
+                Navigator.popAndPushNamed(context, "/Login/Home");
+              }
+              navigated = true;
+            });
           }
           if (state is AuthenticationLoggedIn) {
             print("Team list");
-            Timer(Duration(milliseconds: 50),
-                () => Navigator.popAndPushNamed(context, "/Team/List"));
+            Timer(Duration(milliseconds: 50), () {
+              if (!navigated) {
+                Navigator.popAndPushNamed(context, "/Team/List");
+              }
+              navigated = true;
+            });
           }
           return _buildScaffold(context);
         },
