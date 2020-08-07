@@ -25,14 +25,12 @@ class SplashScreen extends StatelessWidget {
           bool navigated = false;
           print("Blocs of stuff $state");
           if (state is AuthenticationLoggedInUnverified) {
-            Timer(
-                Duration(milliseconds: 50),
-                () {
-                  if (!navigated) {
-                    Navigator.popAndPushNamed(context, "/Login/Verify");
-                  }
-                  navigated = true;
-                });
+            Timer(Duration(milliseconds: 50), () {
+              if (!navigated) {
+                Navigator.popAndPushNamed(context, "/Login/Verify");
+              }
+              navigated = true;
+            });
           }
           if (state is AuthenticationLoggedOut) {
             Timer(Duration(milliseconds: 50), () {
