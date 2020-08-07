@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/generated/l10n.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/l10n.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/routes.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/authenticationbloc.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/services/loginbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/loginbloc.dart" afterDir="false" />
     </list>
@@ -54,7 +55,6 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
-    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/ux/lib" />
     <property name="project.structure.last.edited" value="Modules" />
