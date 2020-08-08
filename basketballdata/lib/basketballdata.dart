@@ -5,6 +5,7 @@ export 'bloc/add/addgamebloc.dart';
 export 'bloc/add/additemstate.dart';
 export 'bloc/add/addmediabloc.dart';
 export 'bloc/add/addplayerbloc.dart';
+export 'bloc/gameeventreplay.dart';
 export 'bloc/add/addseasonbloc.dart';
 export 'bloc/add/addteambloc.dart';
 export 'bloc/add/addinvitebloc.dart';

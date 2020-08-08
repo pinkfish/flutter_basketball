@@ -243,30 +243,6 @@ class PlayerSummaryWithOpponent {
 }
 
 ///
-/// Adds an event to the game.
-///
-class SingleGameAddEvent extends SingleGameEvent {
-  final GameEvent event;
-
-  SingleGameAddEvent({@required this.event});
-
-  @override
-  List<Object> get props => [event];
-}
-
-///
-/// Removes an event from the game.
-///
-class SingleGameRemoveEvent extends SingleGameEvent {
-  final String eventUid;
-
-  SingleGameRemoveEvent({@required this.eventUid});
-
-  @override
-  List<Object> get props => [eventUid];
-}
-
-///
 /// Deletes an player from the game.
 ///
 class SingleGameRemovePlayer extends SingleGameEvent {
@@ -456,30 +432,6 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         Game game = event.game;
         await db.updateGame(game: game);
         yield SingleGameLoaded(game: event.game, state: state);
-      } catch (error, stack) {
-        crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
-      }
-    }
-
-    // Adds the game event into the system.
-    if (event is SingleGameAddEvent) {
-      try {
-        print("Adding ${event.event}");
-
-        await db.addGameEvent(
-            event: event.event.rebuild((b) => b..gameUid = this.gameUid));
-      } catch (error, stack) {
-        print(error);
-        crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
-      }
-    }
-
-    // Removes the game event from the system.
-    if (event is SingleGameRemoveEvent) {
-      try {
-        await db.deleteGameEvent(gameEventUid: event.eventUid);
       } catch (error, stack) {
         crashes.recordError(error, stack);
         yield SingleGameSaveFailed(singleGameState: state, error: error);

@@ -81,18 +81,18 @@ class _StartPeriodState extends State<StartPeriod> {
                 onPressed: () {
                   // ignore: close_sinks
                   var bloc = BlocProvider.of<SingleGameBloc>(context);
-                  bloc.add(
-                    SingleGameAddEvent(
-                      event: GameEvent((b) => b
-                        ..gameUid = widget.game.uid
-                        ..playerUid = ""
-                        ..period = period
-                        ..timestamp = DateTime.now().toUtc()
-                        ..opponent = false
-                        ..eventTimeline = bloc.state.game.currentGameTime
-                        ..points = 0
-                        ..type = GameEventType.PeriodStart),
-                    ),
+                  var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+                  undoBloc.addEvent(
+                    GameEvent((b) => b
+                      ..gameUid = widget.game.uid
+                      ..playerUid = ""
+                      ..period = period
+                      ..timestamp = DateTime.now().toUtc()
+                      ..opponent = false
+                      ..eventTimeline = bloc.state.game.currentGameTime
+                      ..points = 0
+                      ..type = GameEventType.PeriodStart),
+                    false,
                   );
                   // Update the game to start the clock.
                   var players = bloc.state.game.players.map((u, d) => MapEntry(

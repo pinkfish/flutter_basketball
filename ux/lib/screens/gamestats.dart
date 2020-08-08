@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/deleted.dart';
 import 'package:basketballstats/widgets/game/gameduration.dart';
 import 'package:basketballstats/widgets/game/gameeventwidget.dart';
@@ -17,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuple/tuple.dart';
-import 'package:undo/undo.dart' as undo;
 
 import '../messages.dart';
 
@@ -31,7 +31,6 @@ class GameStatsScreen extends StatelessWidget {
   final String gameUid;
   final String seasonUid;
   final String teamUid;
-  final undo.ChangeStack stack = new undo.ChangeStack();
 
   GameStatsScreen(this.gameUid, this.seasonUid, this.teamUid);
 
@@ -48,19 +47,20 @@ class GameStatsScreen extends StatelessWidget {
     if (playerData == null) {
       return;
     }
-    bloc.add(
-      SingleGameAddEvent(
-          event: GameEvent((b) => b
-            ..playerUid = playerData.item1
-            ..points = pts
-            ..timestamp = (DateTime.now().toUtc())
-            ..gameUid = gameUid
-            ..period = bloc.state.game.currentPeriod
-            ..eventTimeline = bloc.state.game.currentGameTime
-            ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
-            ..courtLocation =
-                (playerData.item2 != null ? playerData.item2.toBuilder() : null)
-            ..type = made ? GameEventType.Made : GameEventType.Missed)),
+    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+    undoBloc.addEvent(
+      GameEvent((b) => b
+        ..playerUid = playerData.item1
+        ..points = pts
+        ..timestamp = (DateTime.now().toUtc())
+        ..gameUid = gameUid
+        ..period = bloc.state.game.currentPeriod
+        ..eventTimeline = bloc.state.game.currentGameTime
+        ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
+        ..courtLocation =
+            (playerData.item2 != null ? playerData.item2.toBuilder() : null)
+        ..type = made ? GameEventType.Made : GameEventType.Missed),
+      false,
     );
   }
 
@@ -77,17 +77,20 @@ class GameStatsScreen extends StatelessWidget {
     if (playerData == null) {
       return;
     }
-    bloc.add(SingleGameAddEvent(
-        event: GameEvent((b) => b
-          ..playerUid = playerData.item1
-          ..replacementPlayerUid = playerData.item2
-          ..points = 0
-          ..gameUid = gameUid
-          ..period = bloc.state.game.currentPeriod
-          ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
-          ..eventTimeline = bloc.state.game.currentGameTime
-          ..timestamp = DateTime.now().toUtc()
-          ..type = type)));
+    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+    undoBloc.addEvent(
+      GameEvent((b) => b
+        ..playerUid = playerData.item1
+        ..replacementPlayerUid = playerData.item2
+        ..points = 0
+        ..gameUid = gameUid
+        ..period = bloc.state.game.currentPeriod
+        ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
+        ..eventTimeline = bloc.state.game.currentGameTime
+        ..timestamp = DateTime.now().toUtc()
+        ..type = type),
+      false,
+    );
     // Update the game to add in the subs.
     MapBuilder<String, PlayerSummaryWithOpponent> data = MapBuilder();
     if (bloc.state.game.players.containsKey(playerData.item1)) {
@@ -128,16 +131,19 @@ class GameStatsScreen extends StatelessWidget {
     if (playerUid == null) {
       return;
     }
-    bloc.add(SingleGameAddEvent(
-        event: GameEvent((b) => b
-          ..playerUid = playerUid
-          ..points = 0
-          ..gameUid = gameUid
-          ..period = bloc.state.game.currentPeriod
-          ..opponent = bloc.state.game.opponents.containsKey(playerUid)
-          ..eventTimeline = bloc.state.game.currentGameTime
-          ..timestamp = DateTime.now().toUtc()
-          ..type = type)));
+    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+    undoBloc.addEvent(
+      GameEvent((b) => b
+        ..playerUid = playerUid
+        ..points = 0
+        ..gameUid = gameUid
+        ..period = bloc.state.game.currentPeriod
+        ..opponent = bloc.state.game.opponents.containsKey(playerUid)
+        ..eventTimeline = bloc.state.game.currentGameTime
+        ..timestamp = DateTime.now().toUtc()
+        ..type = type),
+      false,
+    );
   }
 
   Widget _buildPointSection(BuildContext context, BoxConstraints constraints,
@@ -211,17 +217,18 @@ class GameStatsScreen extends StatelessWidget {
         ),
       ),
     ];
+    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
     List<Widget> fourWidgets = <Widget>[
       RoundButton(
         borderColor: Colors.blue,
         size: buttonSize * 3 / 4,
         child: Icon(Icons.undo),
-        onPressed: stack.canUndo ? () => stack.undo() : null,
+        onPressed: undoBloc.canUndo ? () => undoBloc.undo() : null,
       ),
       RoundButton(
         borderColor: Colors.blue,
         size: buttonSize * 3 / 4,
-        onPressed: stack.canRedo ? () => stack.redo() : null,
+        onPressed: undoBloc.canRedo ? () => undoBloc.redo() : null,
         child: Icon(
           Icons.redo,
         ),
@@ -452,6 +459,11 @@ class GameStatsScreen extends StatelessWidget {
                   db: BlocProvider.of<TeamsBloc>(context).db,
                   crashes: RepositoryProvider.of<CrashReporting>(context)),
             ),
+            BlocProvider(
+              create: (BuildContext context) => GameEventUndoStack(
+                db: RepositoryProvider.of<BasketballDatabase>(context),
+              ),
+            )
           ],
           child: OrientationBuilder(
             builder: (BuildContext context, Orientation orientation) =>
@@ -464,11 +476,14 @@ class GameStatsScreen extends StatelessWidget {
                     BlocProvider.of<SingleGameBloc>(context)
                         .add(SingleGameLoadEvents());
                   }
-                  if (state is SingleGameChangeEvents) {
-                    // Only worry about added events.
-                    for (GameEvent ev in state.newEvents) {
-                      stack.add(_GameEventChange(
-                          BlocProvider.of<SingleGameBloc>(context), ev));
+
+                  if (state is SingleGameLoaded && state.loadedGameEvents) {
+                    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+                    if (undoBloc.isGameEmpty) {
+                      // Fill in with all these stats.
+                      for (GameEvent ev in state.gameEvents) {
+                        undoBloc.addEvent(ev, true);
+                      }
                     }
                   }
                 },
@@ -507,6 +522,7 @@ class GameStatsScreen extends StatelessWidget {
                     return TimeoutEnd(game: state.game);
                   }
                   if (orientation == Orientation.landscape) {
+                    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
                     return Row(
                       children: <Widget>[
                         LayoutBuilder(
@@ -517,7 +533,7 @@ class GameStatsScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: _GameStateSection(
-                              stack, orientation, _selectPeriod),
+                              undoBloc, orientation, _selectPeriod),
                         ),
                         LayoutBuilder(
                           builder: (BuildContext context,
@@ -528,6 +544,7 @@ class GameStatsScreen extends StatelessWidget {
                       ],
                     );
                   } else {
+                    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
                     return Column(
                       children: <Widget>[
                         LayoutBuilder(
@@ -539,7 +556,7 @@ class GameStatsScreen extends StatelessWidget {
                         Divider(),
                         Expanded(
                           child: _GameStateSection(
-                              stack, orientation, _selectPeriod),
+                              undoBloc, orientation, _selectPeriod),
                         ),
                         Divider(),
                         LayoutBuilder(
@@ -569,16 +586,17 @@ class GameStatsScreen extends StatelessWidget {
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Write out the event to start the new period.
-    bloc.add(
-      SingleGameAddEvent(
-          event: GameEvent((b) => b
-            ..playerUid = ""
-            ..points = 0
-            ..timestamp = (DateTime.now().toUtc())
-            ..gameUid = bloc.gameUid
-            ..period = bloc.state.game.currentPeriod
-            ..opponent = false
-            ..type = GameEventType.PeriodEnd)),
+    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+    undoBloc.addEvent(
+      GameEvent((b) => b
+        ..playerUid = ""
+        ..points = 0
+        ..timestamp = (DateTime.now().toUtc())
+        ..gameUid = bloc.gameUid
+        ..period = bloc.state.game.currentPeriod
+        ..opponent = false
+        ..type = GameEventType.PeriodEnd),
+      false,
     );
 
     // Update the game to stop the clock.
@@ -597,11 +615,11 @@ class GameStatsScreen extends StatelessWidget {
 }
 
 class _GameStateSection extends StatelessWidget {
-  final undo.ChangeStack stack;
+  final GameEventUndoStack undoCubit;
   final Orientation orientation;
   final SelectCallback selectCallback;
 
-  _GameStateSection(this.stack, this.orientation, this.selectCallback);
+  _GameStateSection(this.undoCubit, this.orientation, this.selectCallback);
 
   @override
   Widget build(BuildContext context) {
@@ -816,31 +834,6 @@ class _GameStateSection extends StatelessWidget {
       BlocProvider.of<SingleGameBloc>(context)
           .add(SingleGameUpdate(game: newGame));
     }
-  }
-}
-
-class _GameEventChange extends undo.Change {
-  final SingleGameBloc bloc;
-  final GameEvent ev;
-  bool ignored = false;
-
-  _GameEventChange(this.bloc, this.ev);
-
-  @override
-  void execute() {
-    if (!ignored) {
-      ignored = true;
-      return;
-    }
-
-    bloc.add(SingleGameAddEvent(event: ev));
-  }
-
-  @override
-  void undo() {
-    print("Deleting  $ev");
-
-    bloc.add(SingleGameRemoveEvent(eventUid: ev.uid));
   }
 }
 

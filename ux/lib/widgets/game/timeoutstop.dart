@@ -54,18 +54,18 @@ class TimeoutEnd extends StatelessWidget {
                 onPressed: () {
                   // ignore: close_sinks
                   var bloc = BlocProvider.of<SingleGameBloc>(context);
-                  bloc.add(
-                    SingleGameAddEvent(
-                      event: GameEvent((b) => b
-                        ..gameUid = game.uid
-                        ..playerUid = ""
-                        ..period = game.currentPeriod
-                        ..timestamp = DateTime.now().toUtc()
-                        ..opponent = false
-                        ..eventTimeline = bloc.state.game.currentGameTime
-                        ..points = 0
-                        ..type = GameEventType.TimeoutEnd),
-                    ),
+                  var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+                  undoBloc.addEvent(
+                    GameEvent((b) => b
+                      ..gameUid = game.uid
+                      ..playerUid = ""
+                      ..period = game.currentPeriod
+                      ..timestamp = DateTime.now().toUtc()
+                      ..opponent = false
+                      ..eventTimeline = bloc.state.game.currentGameTime
+                      ..points = 0
+                      ..type = GameEventType.TimeoutEnd),
+                    false,
                   );
                 },
               ),

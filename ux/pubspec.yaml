@@ -37,7 +37,7 @@ dependencies:
   material_design_icons_flutter: ^4.0.5345
   flutter_speed_dial: ^1.2.5
   equatable: ^1.2.3
-  undo: ^1.1.0+1
+  undo: ^1.2.0+1
   uuid: ^2.2.0
   tuple: ^1.0.3
   image: ^2.1.12

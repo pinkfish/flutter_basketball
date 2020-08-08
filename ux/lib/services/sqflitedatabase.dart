@@ -60,20 +60,22 @@ class SqlfliteDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGameEvent({GameEvent event}) async {
+  Future<String> getGameEventId({GameEvent event}) async {
+    return uuid.v5(Uuid.NAMESPACE_OID, SQLDBRaw.gameEventsTable);
+  }
+
+  @override
+  Future<void> setGameEvent({GameEvent event}) async {
     Database db = await _sqldbRaw.getDatabase();
 
-    String uid =
-        event.uid ?? uuid.v5(Uuid.NAMESPACE_OID, SQLDBRaw.gameEventsTable);
-    GameEvent newEv = event.rebuild((b) => b..uid = uid);
     db.insert(SQLDBRaw.gameEventsTable, {
-      SQLDBRaw.indexColumn: uid,
+      SQLDBRaw.indexColumn: event.uid,
       SQLDBRaw.secondaryIndexColumn: event.gameUid,
-      SQLDBRaw.dataColumn: json.encode(newEv.toMap())
+      SQLDBRaw.dataColumn: json.encode(event.toMap())
     });
     _changeTableNotification(SQLDBRaw.gameEventsTable,
-        uid: uid, secondaryUid: event.gameUid);
-    return uid;
+        uid: event.uid, secondaryUid: event.gameUid);
+    return null;
   }
 
   @override

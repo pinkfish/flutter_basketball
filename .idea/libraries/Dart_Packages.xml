@@ -275,6 +275,13 @@
             </list>
           </value>
         </entry>
+        <entry key="cubit">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/cubit-0.1.2/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="cupertino_icons">
           <value>
             <list>
@@ -856,6 +863,13 @@
             </list>
           </value>
         </entry>
+        <entry key="replay_cubit">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/replay_cubit-0.2.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="resource">
           <value>
             <list>
@@ -1078,7 +1092,7 @@
         <entry key="undo">
           <value>
             <list>
-              <option value="$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/undo-1.1.0+1/lib" />
+              <option value="$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/undo-1.2.0+2/lib" />
             </list>
           </value>
         </entry>
@@ -1226,6 +1240,7 @@
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.16.1/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/csslib-0.16.2/lib" />
+      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/cubit-0.1.2/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-0.1.3/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-1.3.4/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/dart_style-1.3.6/lib" />
@@ -1309,6 +1324,7 @@
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/pub_semver-1.4.4/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/pubspec_parse-0.1.5/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-2.1.3/lib" />
+      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/replay_cubit-0.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/resource-2.1.6/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/rxdart-0.24.0/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/settings_ui-0.3.0/lib" />
@@ -1340,7 +1356,7 @@
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/tool_mobile-1.9.5+1/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/tuple-1.0.3/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.2.0/lib" />
-      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/undo-1.1.0+1/lib" />
+      <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/undo-1.2.0+2/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/uuid-2.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.0.8/lib" />
       <root url="file://$PROJECT_DIR$/../development/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-0.10.11+2/lib" />

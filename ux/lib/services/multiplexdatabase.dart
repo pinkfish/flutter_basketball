@@ -100,11 +100,19 @@ class MultiplexDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGameEvent({GameEvent event}) {
+  Future<void> setGameEvent({GameEvent event}) {
     if (useSql)
-      return _sql.addGameEvent(event: event);
+      return _sql.setGameEvent(event: event);
     else
-      return _fs.addGameEvent(event: event);
+      return _fs.setGameEvent(event: event);
+  }
+
+  @override
+  Future<String> getGameEventId({GameEvent event}) {
+    if (useSql)
+      return _sql.getGameEventId(event: event);
+    else
+      return _fs.getGameEventId(event: event);
   }
 
   @override

@@ -61,22 +61,26 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   @override
-  Future<void> addGameEvent({GameEvent event}) async {
+  Future<String> getGameEventId({GameEvent event}) async {
+    var ref =
+        Firestore.instance.collection(SQLDBRaw.gameEventsTable).document();
+    analytics.logEvent(name: "AddGameEvent", parameters: {
+      "type": event.type.toString(),
+      "points": event.points.toString()
+    });
+    return ref.documentID;
+  }
+
+  @override
+  Future<void> setGameEvent({GameEvent event}) async {
     if (event.uid == null || event.uid.isEmpty) {
-      var ref =
-          Firestore.instance.collection(SQLDBRaw.gameEventsTable).document();
-      event.rebuild((b) => b..uid = ref.documentID);
-      analytics.logEvent(name: "AddGameEvent", parameters: {
-        "type": event.type.toString(),
-        "points": event.points.toString()
-      });
-      return ref.setData(event.toMap());
+      throw ArgumentError("uid must not be empty");
     }
     analytics.logEvent(name: "UpdateGameEvent");
     return Firestore.instance
         .collection(SQLDBRaw.gameEventsTable)
         .document(event.uid)
-        .updateData(event.toMap());
+        .setData(event.toMap());
   }
 
   @override
