@@ -58,7 +58,7 @@ abstract class BasketballDatabase {
   Stream<Invite> getInvite({@required String inviteUid});
 
   /// Gets the UID for the game event to write out.
-  Future<String> getGameEventId();
+  Future<String> getGameEventId({@required GameEvent event});
 
   /// Adds the game event into the database
   Future<void> setGameEvent({@required GameEvent event});

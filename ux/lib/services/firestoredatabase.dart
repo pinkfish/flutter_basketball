@@ -76,6 +76,7 @@ class FirestoreDatabase extends BasketballDatabase {
     if (event.uid == null || event.uid.isEmpty) {
       throw ArgumentError("uid must not be empty");
     }
+    print("Saving game event $event");
     analytics.logEvent(name: "UpdateGameEvent");
     return Firestore.instance
         .collection(SQLDBRaw.gameEventsTable)
@@ -538,6 +539,7 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   Map<String, dynamic> _addUid(String uid, Map<String, dynamic> data) {
+    print("addUid $uid $data");
     data.putIfAbsent("uid", () => uid);
     return data;
   }

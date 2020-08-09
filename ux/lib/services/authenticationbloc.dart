@@ -130,8 +130,12 @@ class AuthenticationBloc
     if (user.isEmailVerified) {
       print("Verified user ${user.providerId ?? "frog"}");
       analyticsSubsystem.setUserId(user.uid);
-      analyticsSubsystem.setUserProperty(
-          name: "os", value: Platform.operatingSystem);
+      if (kIsWeb) {
+        analyticsSubsystem.setUserProperty(name: "os", value: "web");
+      } else {
+        analyticsSubsystem.setUserProperty(
+            name: "os", value: Platform.operatingSystem);
+      }
       analyticsSubsystem.setUserProperty(name: "web", value: kIsWeb.toString());
       if (currentUser != null) {
         if (user == currentUser) {
@@ -181,5 +185,12 @@ class AuthenticationBloc
         add(_AuthenticationLogOut());
       }
     }
+  }
+
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    print("got error $error");
+    crashes.recordError(error, stackTrace);
+    super.onError(error, stackTrace);
   }
 }

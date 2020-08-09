@@ -360,13 +360,15 @@ class GameStatsScreen extends StatelessWidget {
           Row(
             children: thirdWidgets,
           ),
-          _buildSubButtons(context, orientation),
+          _buildSubButtons(context, orientation, boxConstraints),
         ],
       );
     }
   }
 
-  Widget _buildSubButtons(BuildContext context, Orientation orientation) {
+  Widget _buildSubButtons(BuildContext context, Orientation orientation,
+      BoxConstraints boxConstraints) {
+    print(boxConstraints);
     return BlocBuilder(
         cubit: BlocProvider.of<SingleGameBloc>(context),
         builder: (BuildContext context, SingleGameState state) {
@@ -376,10 +378,16 @@ class GameStatsScreen extends StatelessWidget {
           if (state is SingleGameDeleted) {
             return DeletedWidget();
           }
+          double padding = 10.0;
+          if (boxConstraints.maxWidth < 336 &&
+              orientation == Orientation.portrait) {
+            padding = 10 - (336 - boxConstraints.maxWidth) / 3;
+          }
           var buttons = <Widget>[
             FlatButton(
               child: Padding(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.only(
+                    top: 10.0, bottom: 10.0, left: padding, right: padding),
                 child: Text(
                   Messages.of(context).subButton,
                   style: Theme.of(context).textTheme.button,
@@ -394,7 +402,8 @@ class GameStatsScreen extends StatelessWidget {
             ),
             FlatButton(
               child: Padding(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.only(
+                    top: 10.0, bottom: 10.0, left: padding, right: padding),
                 child: Text(
                   Messages.of(context).foulButton,
                   textScaleFactor: 1.5,
@@ -413,7 +422,8 @@ class GameStatsScreen extends StatelessWidget {
               0,
               FlatButton(
                 child: Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.only(
+                      top: 10.0, bottom: 10.0, left: padding, right: padding),
                   child: Text(
                     Messages.of(context).periodButton,
                     style: Theme.of(context).textTheme.button,
@@ -428,7 +438,8 @@ class GameStatsScreen extends StatelessWidget {
               ),
             );
           }
-          return ButtonBar(
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: buttons,
           );
         });
@@ -459,7 +470,7 @@ class GameStatsScreen extends StatelessWidget {
                   db: BlocProvider.of<TeamsBloc>(context).db,
                   crashes: RepositoryProvider.of<CrashReporting>(context)),
             ),
-            BlocProvider(
+            BlocProvider<GameEventUndoStack>(
               create: (BuildContext context) => GameEventUndoStack(
                 db: RepositoryProvider.of<BasketballDatabase>(context),
               ),
@@ -479,6 +490,7 @@ class GameStatsScreen extends StatelessWidget {
 
                   if (state is SingleGameLoaded && state.loadedGameEvents) {
                     var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
+                    print("undoBloc $undoBloc");
                     if (undoBloc.isGameEmpty) {
                       // Fill in with all these stats.
                       for (GameEvent ev in state.gameEvents) {
@@ -565,9 +577,11 @@ class GameStatsScreen extends StatelessWidget {
                               _buildDefenceSection(
                                   context, boxConstraint, orientation),
                         ),
-                        Builder(
-                          builder: (BuildContext context) =>
-                              _buildSubButtons(context, orientation),
+                        LayoutBuilder(
+                          builder: (BuildContext context,
+                                  BoxConstraints boxConstraint) =>
+                              _buildSubButtons(
+                                  context, orientation, boxConstraint),
                         ),
                       ],
                     );

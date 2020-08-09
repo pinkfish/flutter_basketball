@@ -21,6 +21,7 @@ class GameEventType extends EnumClass {
   static const GameEventType PeriodEnd = _$periodEnd;
   static const GameEventType TimeoutStart = _$timeoutStart;
   static const GameEventType TimeoutEnd = _$timeoutEnd;
+  static const GameEventType EmptyEvent = _$emptyEvent;
 
   const GameEventType._(String name) : super(name);
 

@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:flutter/material.dart';
 
 import '../player/playertile.dart';
@@ -44,6 +45,23 @@ class PlayerMultiselect extends StatelessWidget {
       }
       return 0;
     });
+    Color mainColor;
+    Color mainColorSelected;
+    Color selectedBorder;
+    Color unSelectedBorder;
+    if (LocalStorageData.isDark(context)) {
+      mainColor = Theme.of(context).primaryColor;
+      mainColorSelected = Theme.of(context).primaryColor;
+      selectedBorder = Theme.of(context).indicatorColor;
+      unSelectedBorder = Theme.of(context).primaryColor;
+    } else {
+      mainColor = LocalStorageData.brighten(Theme.of(context).primaryColor, 96);
+      mainColorSelected =
+          LocalStorageData.brighten(Theme.of(context).primaryColor, 90);
+      selectedBorder = Theme.of(context).indicatorColor;
+      unSelectedBorder =
+          LocalStorageData.brighten(Theme.of(context).primaryColor, 60);
+    }
     return ordered
         .map(
           (String playerUid) => Padding(
@@ -51,15 +69,12 @@ class PlayerMultiselect extends StatelessWidget {
             child: PlayerTile(
               playerUid: playerUid,
               editButton: false,
-              color: isSelected(playerUid)
-                  ? Theme.of(context).primaryColor
-                  : Theme.of(context).primaryColor,
+              color: isSelected(playerUid) ? mainColorSelected : mainColor,
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 side: BorderSide(
-                  color: isSelected(playerUid)
-                      ? Theme.of(context).indicatorColor
-                      : Theme.of(context).primaryColor,
+                  color:
+                      isSelected(playerUid) ? selectedBorder : unSelectedBorder,
                   width: 3.0,
                 ),
               ),

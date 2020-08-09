@@ -1,8 +1,10 @@
 import 'dart:collection';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballdata/data/timestampserializer.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 ///
 /// Undo stack to deal with undoing GameEvents as they are written and
@@ -13,11 +15,28 @@ class GameEventUndoStack extends Cubit<GameEventWithChange> {
   final BasketballDatabase db;
 
   /// Initial value is empty.
-  GameEventUndoStack({this.db}) : super(null);
+  GameEventUndoStack({@required this.db})
+      : super(GameEventWithChange(
+            GameEvent((b) => b
+              ..points = 0
+              ..opponent = false
+              ..playerUid = ""
+              ..timestamp = Timestamp.fromMicrosecondsSinceEpoch(
+                  DateTime.now().millisecondsSinceEpoch)
+              ..uid = ""
+              ..type = GameEventType.EmptyEvent
+              ..period = GamePeriod.Period1
+              ..courtLocation = (GameEventLocationBuilder()
+                ..x = 0
+                ..y = 0)
+              ..gameUid = ""),
+            true));
 
   Future<void> addEvent(GameEvent ev, bool existing) async {
-    var uid = await db.getGameEventId();
-    ev = ev.rebuild((b) => b..uid = uid);
+    if (ev.uid.isEmpty) {
+      var uid = await db.getGameEventId(event: ev);
+      ev = ev.rebuild((b) => b..uid = uid);
+    }
     emit(GameEventWithChange(ev, !existing));
   }
 
@@ -27,14 +46,16 @@ class GameEventUndoStack extends Cubit<GameEventWithChange> {
       this.state,
       () {
         // Don't write existing events back out again.
-        if (state.changedOnce) {
+        if (state.changedOnce && state.ev.type != GameEventType.EmptyEvent) {
           db.setGameEvent(event: state.ev);
         }
         state.changedOnce = true;
         super.emit(state);
       },
       (val) {
-        db.deleteGameEvent(gameEventUid: state.ev.uid);
+        if (state.ev.type != GameEventType.EmptyEvent) {
+          db.deleteGameEvent(gameEventUid: state.ev.uid);
+        }
         state.changedOnce = true;
         super.emit(val);
       },
