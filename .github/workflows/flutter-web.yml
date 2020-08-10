@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - ux/lib/**
-      - .github/workflows/web_deploy.yml
+      - .github/workflows/flutter-web.yml
 
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
       working-directory: basketballdata
     - run: flutter packages get
       working-directory: ux
-      
+
     - run: sudo apt-get install -y graphicsmagick
       working-directory: ux
     - run: |
