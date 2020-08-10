@@ -1,39 +1,12 @@
 import 'dart:async';
 
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../data/invites/invite.dart';
-
-///
-/// The base state for the invites bloc.  It tracks all the
-/// exciting invites stuff.
-///
-abstract class InvitesBlocState extends Equatable {
-  final BuiltList<Invite> invites;
-
-  InvitesBlocState({@required this.invites});
-
-  @override
-  List<Object> get props => [invites];
-}
-
-///
-/// The invites loaded from the database.
-///
-class InvitesBlocLoaded extends InvitesBlocState {
-  InvitesBlocLoaded(
-      {@required InvitesBlocState state, @required BuiltList<Invite> invites})
-      : super(invites: invites);
-}
-
-///
-/// The invites bloc that is unitialized.
-///
-class InvitesBlocUninitialized extends InvitesBlocState {}
+import 'data/invitesstate.dart';
 
 ///
 /// Updates all the invites in the invites bloc.
@@ -55,7 +28,7 @@ abstract class InvitesBlocEvent extends Equatable {}
 ///
 /// The bloc for dealing with all the invites.
 ///
-class InvitesBloc extends Bloc<InvitesBlocEvent, InvitesBlocState> {
+class InvitesBloc extends HydratedBloc<InvitesBlocEvent, InvitesBlocState> {
   final BasketballDatabase db;
   final String email;
   StreamSubscription<BuiltList<Invite>> _sub;
@@ -69,7 +42,7 @@ class InvitesBloc extends Bloc<InvitesBlocEvent, InvitesBlocState> {
   @override
   Stream<InvitesBlocState> mapEventToState(InvitesBlocEvent event) async* {
     if (event is _InvitesBlocUpdateInvites) {
-      yield InvitesBlocLoaded(state: state, invites: event.invites);
+      yield InvitesBlocLoaded((b) => b..invites = event.invites.toBuilder());
     }
   }
 
@@ -80,5 +53,26 @@ class InvitesBloc extends Bloc<InvitesBlocEvent, InvitesBlocState> {
     _dbChange?.cancel();
     _dbChange = null;
     return super.close();
+  }
+
+  @override
+  InvitesBlocState fromJson(Map<String, dynamic> json) {
+    if (json == null || !json.containsKey("type")) {
+      return InvitesBlocUninitialized();
+    }
+    InvitesBlocStateType type = InvitesBlocStateType.valueOf(json["type"]);
+    switch (type) {
+      case InvitesBlocStateType.Uninitialized:
+        return InvitesBlocUninitialized();
+      case InvitesBlocStateType.Loaded:
+        return InvitesBlocLoaded.fromMap(json);
+      default:
+        return InvitesBlocUninitialized();
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(InvitesBlocState state) {
+    return state.toMap();
   }
 }

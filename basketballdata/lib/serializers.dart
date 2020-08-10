@@ -8,11 +8,12 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
+import 'bloc/data/invitesstate.dart';
+import 'bloc/data/singlegamestate.dart';
 import 'bloc/data/singleplayerstate.dart';
 import 'bloc/data/singleseasonstate.dart';
 import 'bloc/data/singleteamstate.dart';
 import 'bloc/data/teamsblocstate.dart';
-import 'bloc/data/singlegamestate.dart';
 import 'data/ant/broadcast.dart';
 import 'data/ant/broadcaststatus.dart';
 import 'data/ant/broadcasttype.dart';
@@ -116,6 +117,9 @@ part 'serializers.g.dart';
   SingleGameSaveSuccessful,
   SingleGameSaveFailed,
   SingleGameSaving,
+  InvitesBlocUninitialized,
+  InvitesBlocLoaded,
+  InvitesBlocStateType,
   UploadData,
   User,
   WinRecord,
