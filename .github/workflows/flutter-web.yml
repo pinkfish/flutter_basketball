@@ -31,6 +31,7 @@ jobs:
       working-directory: basketballdata
     - run: flutter packages get
       working-directory: ux
+      
     - run: sudo apt-get install -y graphicsmagick
       working-directory: ux
     - run: |
