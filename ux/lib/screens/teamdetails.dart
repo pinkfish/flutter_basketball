@@ -48,7 +48,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
   int _currentIndex = 0;
   String _seasonPlayers;
 
-  Widget _innerTeamData(SingleTeamBlocState state) {
+  Widget _innerTeamData(SingleTeamState state) {
     Widget inner;
     if (!state.loadedSeasons) {
       inner = Center(
@@ -118,7 +118,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     );
   }
 
-  Widget _innerPlayerData(SingleTeamBlocState state) {
+  Widget _innerPlayerData(SingleTeamState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
@@ -189,7 +189,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           appBar: AppBar(
             title: BlocBuilder(
               cubit: BlocProvider.of<SingleTeamBloc>(context),
-              builder: (BuildContext context, SingleTeamBlocState state) {
+              builder: (BuildContext context, SingleTeamState state) {
                 if (state is SingleTeamUninitialized ||
                     state is SingleTeamDeleted) {
                   return Center(
@@ -242,7 +242,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           ),
           body: BlocConsumer(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
-            listener: (BuildContext context, SingleTeamBlocState state) {
+            listener: (BuildContext context, SingleTeamState state) {
               if (!state.loadedSeasons && !(state is SingleTeamUninitialized)) {
                 BlocProvider.of<SingleTeamBloc>(context)
                     .add(SingleTeamLoadSeasons());
@@ -261,7 +261,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 _loaded = true;
               }
             },
-            builder: (BuildContext context, SingleTeamBlocState state) {
+            builder: (BuildContext context, SingleTeamState state) {
               if (state is SingleTeamDeleted) {
                 return DeletedWidget();
               }
@@ -316,7 +316,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           ),
           floatingActionButton: BlocBuilder(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
-            builder: (BuildContext context, SingleTeamBlocState state) {
+            builder: (BuildContext context, SingleTeamState state) {
               return AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),
                 transitionBuilder: (Widget child, Animation<double> animation) {
@@ -364,15 +364,15 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
     );
   }
 
-  void _addSeason(BuildContext context, SingleTeamBlocState state) {
+  void _addSeason(BuildContext context, SingleTeamState state) {
     Navigator.pushNamed(context, "/Season/Add/" + state.team.uid);
   }
 
-  void _addGame(BuildContext context, SingleTeamBlocState state) {
+  void _addGame(BuildContext context, SingleTeamState state) {
     Navigator.pushNamed(context, "/Game/Add/" + state.team.uid);
   }
 
-  Widget _innerStatsData(SingleTeamBlocState state) {
+  Widget _innerStatsData(SingleTeamState state) {
     return TeamStatsWidget(
       teamUid: state.team.uid,
     );

@@ -78,7 +78,7 @@ class _TeamInviteState extends State<TeamInviteScreen> {
               saving: state is AddItemSaving,
               child: BlocBuilder(
                   cubit: BlocProvider.of<SingleTeamBloc>(context),
-                  builder: (BuildContext context, SingleTeamBlocState state) {
+                  builder: (BuildContext context, SingleTeamState state) {
                     return Form(
                       autovalidate: _autoValidate,
                       key: _form,
@@ -139,7 +139,7 @@ class _TeamInviteState extends State<TeamInviteScreen> {
     );
   }
 
-  void _saveForm(BuildContext context, SingleTeamBlocState state) {
+  void _saveForm(BuildContext context, SingleTeamState state) {
     if (!_form.currentState.validate()) {
       Scaffold.of(context).showSnackBar(
           SnackBar(content: Text(Messages.of(context).invalidemail)));

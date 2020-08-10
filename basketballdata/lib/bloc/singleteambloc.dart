@@ -2,125 +2,15 @@ import 'dart:async';
 
 import 'package:basketballdata/bloc/crashreporting.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../data/season/season.dart';
 import '../data/team/team.dart';
-
-abstract class SingleTeamBlocState extends Equatable {
-  final Team team;
-  final BuiltList<Season> seasons;
-  final bool loadedSeasons;
-
-  SingleTeamBlocState(
-      {@required this.team,
-      @required this.seasons,
-      @required this.loadedSeasons});
-
-  @override
-  List<Object> get props => [team, seasons, loadedSeasons];
-}
-
-///
-/// We have a team, default state.
-///
-class SingleTeamLoaded extends SingleTeamBlocState {
-  SingleTeamLoaded(
-      {@required SingleTeamBlocState state,
-      Team team,
-      BuiltList<Season> seasons,
-      bool loadedSeasons})
-      : super(
-            team: team ?? state.team,
-            seasons: seasons ?? state.seasons,
-            loadedSeasons: loadedSeasons ?? state.loadedSeasons);
-
-  @override
-  String toString() {
-    return 'SingleTeamLoaded{}';
-  }
-}
-
-///
-/// Saving operation in progress.
-///
-class SingleTeamSaving extends SingleTeamBlocState {
-  SingleTeamSaving({@required SingleTeamBlocState singleTeamState})
-      : super(
-            team: singleTeamState.team,
-            seasons: singleTeamState.seasons,
-            loadedSeasons: singleTeamState.loadedSeasons);
-
-  @override
-  String toString() {
-    return 'SingleTeamSaving{}';
-  }
-}
-
-///
-/// Saving operation is successful.
-///
-class SingleTeamSaveSuccessful extends SingleTeamBlocState {
-  SingleTeamSaveSuccessful({@required SingleTeamBlocState singleTeamState})
-      : super(
-            team: singleTeamState.team,
-            seasons: singleTeamState.seasons,
-            loadedSeasons: singleTeamState.loadedSeasons);
-
-  @override
-  String toString() {
-    return 'SingleTeamSaveSuccessful{}';
-  }
-}
-
-///
-/// Saving operation failed (goes back to loaded for success).
-///
-class SingleTeamSaveFailed extends SingleTeamBlocState {
-  final Error error;
-
-  SingleTeamSaveFailed(
-      {@required SingleTeamBlocState singleTeamState, this.error})
-      : super(
-            team: singleTeamState.team,
-            seasons: singleTeamState.seasons,
-            loadedSeasons: singleTeamState.loadedSeasons);
-
-  @override
-  String toString() {
-    return 'SingleTeamSaveFailed{}';
-  }
-}
-
-///
-/// Team got deleted.
-///
-class SingleTeamDeleted extends SingleTeamBlocState {
-  SingleTeamDeleted()
-      : super(team: null, seasons: BuiltList.of([]), loadedSeasons: false);
-
-  @override
-  String toString() {
-    return 'SingleTeamDeleted{}';
-  }
-}
-
-///
-/// Team is still loading.
-///
-class SingleTeamUninitialized extends SingleTeamBlocState {
-  SingleTeamUninitialized()
-      : super(team: null, seasons: BuiltList.of([]), loadedSeasons: false);
-
-  @override
-  String toString() {
-    return 'SingleTeamUninitialized{}';
-  }
-}
+import 'data/singleteamstate.dart';
 
 abstract class SingleTeamEvent extends Equatable {}
 
@@ -196,7 +86,7 @@ class _SingleTeamDeleted extends SingleTeamEvent {
 ///
 /// Bloc to handle updates and state of a specific team.
 ///
-class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
+class SingleTeamBloc extends HydratedBloc<SingleTeamEvent, SingleTeamState> {
   final BasketballDatabase db;
   final String teamUid;
   final Lock _lock = new Lock();
@@ -221,6 +111,9 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   }
 
   @override
+  String get id => teamUid;
+
+  @override
   Future<void> close() async {
     _teamSub?.cancel();
     _seasonSub?.cancel();
@@ -228,9 +121,11 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
   }
 
   @override
-  Stream<SingleTeamBlocState> mapEventToState(SingleTeamEvent event) async* {
+  Stream<SingleTeamState> mapEventToState(SingleTeamEvent event) async* {
     if (event is _SingleTeamNewTeam) {
-      yield SingleTeamLoaded(state: state, team: event.newTeam);
+      yield (SingleTeamLoaded.fromState(state)
+            ..team = event.newTeam.toBuilder())
+          .build();
     }
 
     // The team is deleted.
@@ -240,46 +135,53 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
 
     // Save the team.
     if (event is SingleTeamUpdate) {
-      yield SingleTeamSaving(singleTeamState: state);
+      yield SingleTeamSaving.fromState(state).build();
       try {
         Team team = event.team;
         if (team != state.team) {
           await db.updateTeam(team: team);
           // This will get overridden by the loaded event right afterwards.
-          yield SingleTeamSaveSuccessful(singleTeamState: state);
+          yield SingleTeamSaveSuccessful.fromState(state).build();
+          yield SingleTeamLoaded.fromState(state).build();
         } else {
-          yield SingleTeamSaveSuccessful(singleTeamState: state);
-          yield SingleTeamLoaded(state: state, team: event.team);
+          yield SingleTeamSaveSuccessful.fromState(state).build();
+          yield SingleTeamLoaded.fromState(state).build();
         }
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleTeamSaveFailed(singleTeamState: state, error: error);
+        yield (SingleTeamSaveFailed.fromState(state)..error = error).build();
       }
     }
 
     if (event is SingleTeamAddSeasonPlayer) {
-      yield SingleTeamSaving(singleTeamState: state);
+      yield SingleTeamSaving.fromState(state).build();
       try {
         await db.addSeasonPlayer(
             seasonUid: event.seasonUid, playerUid: event.playerUid);
+        yield SingleTeamSaveSuccessful.fromState(state).build();
+        yield SingleTeamLoaded.fromState(state).build();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleTeamSaveFailed(singleTeamState: state, error: error);
+        yield (SingleTeamSaveFailed.fromState(state)..error = error).build();
       }
     }
 
     if (event is SingleTeamDelete) {
       try {
         await db.deleteTeam(teamUid: teamUid);
+        yield SingleTeamSaveSuccessful.fromState(state).build();
+        yield SingleTeamDeleted();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleTeamSaveFailed(singleTeamState: state, error: error);
+        yield (SingleTeamSaveFailed.fromState(state)..error = error).build();
       }
     }
 
     if (event is _SingleTeamUpdateSeasons) {
-      yield SingleTeamLoaded(
-          state: state, seasons: event.seasons, loadedSeasons: true);
+      yield (SingleTeamLoaded.fromState(state)
+            ..seasons = event.seasons.toBuilder()
+            ..loadedSeasons = true)
+          .build();
     }
 
     if (event is SingleTeamLoadSeasons) {
@@ -291,5 +193,34 @@ class SingleTeamBloc extends Bloc<SingleTeamEvent, SingleTeamBlocState> {
         });
       });
     }
+  }
+
+  @override
+  SingleTeamState fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey("type")) {
+      return SingleTeamUninitialized();
+    }
+    SingleTeamStateType type = SingleTeamStateType.valueOf(json["type"]);
+    switch (type) {
+      case SingleTeamStateType.Uninitialized:
+        return SingleTeamUninitialized();
+      case SingleTeamStateType.Loaded:
+        return SingleTeamLoaded.fromMap(json);
+      case SingleTeamStateType.Deleted:
+        return SingleTeamDeleted.fromMap(json);
+      case SingleTeamStateType.SaveFailed:
+        return SingleTeamSaveFailed.fromMap(json);
+      case SingleTeamStateType.SaveSuccessful:
+        return SingleTeamSaveSuccessful.fromMap(json);
+      case SingleTeamStateType.Saving:
+        return SingleTeamSaving.fromMap(json);
+      default:
+        return SingleTeamUninitialized();
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(SingleTeamState state) {
+    return state.toMap();
   }
 }

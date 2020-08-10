@@ -30,6 +30,7 @@ dependencies:
 
   google_sign_in: ^4.5.1
   flutter_bloc: ^6.0.1
+  hydrated_bloc: ^6.0.1
   cloud_firestore: 0.13.4
   intl: ^0.16.1
   fluro: ^1.6.3
@@ -52,6 +53,10 @@ dependencies:
     git:
       url: https://github.com/pinkfish/charts.git
       path: charts_flutter
+
+  # Lightweight localstorage
+  hive: ^1.4.3
+  hive_flutter: ^0.3.1
 
   # For doing things with video
   camera_with_rtmp: ^0.3.2

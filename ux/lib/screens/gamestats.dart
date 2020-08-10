@@ -742,7 +742,7 @@ class _GameStateSection extends StatelessWidget {
                                   cubit:
                                       BlocProvider.of<SingleTeamBloc>(context),
                                   builder: (BuildContext context,
-                                      SingleTeamBlocState teamState) {
+                                      SingleTeamState teamState) {
                                     if (teamState is SingleTeamUninitialized ||
                                         teamState is SingleTeamDeleted) {
                                       return Text(

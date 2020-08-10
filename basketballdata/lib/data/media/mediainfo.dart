@@ -2,7 +2,7 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
 import 'mediatype.dart';
-import '../serializers.dart';
+import '../../serializers.dart';
 import '../timestampserializer.dart';
 
 part 'mediainfo.g.dart';

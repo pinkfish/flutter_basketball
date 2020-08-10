@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:settings_ui/settings_ui.dart';
 
@@ -29,7 +30,7 @@ class SettingsScreen extends StatelessWidget {
                 leading: Icon(Icons.lightbulb_outline),
                 switchValue: mode == ThemeMode.light,
                 onToggle: (bool value) {
-                  localstorage.setItem(
+                  Hive.box(LocalStorageData.settingsBox).put(
                       LocalStorageData.themeMode,
                       value
                           ? ThemeMode.light.toString()

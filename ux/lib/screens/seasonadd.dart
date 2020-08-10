@@ -78,12 +78,12 @@ class _AddSeasonFormState extends State<_AddSeasonForm> {
   Widget build(BuildContext context) {
     return BlocConsumer(
       cubit: BlocProvider.of<SingleTeamBloc>(context),
-      listener: (BuildContext context, SingleTeamBlocState teamState) {
+      listener: (BuildContext context, SingleTeamState teamState) {
         if (teamState is SingleTeamLoaded && !teamState.loadedSeasons) {
           BlocProvider.of<SingleTeamBloc>(context).add(SingleTeamLoadSeasons());
         }
       },
-      builder: (BuildContext context, SingleTeamBlocState teamState) =>
+      builder: (BuildContext context, SingleTeamState teamState) =>
           BlocConsumer(
         cubit: BlocProvider.of<AddSeasonBloc>(context),
         listener: (BuildContext context, AddItemState state) {

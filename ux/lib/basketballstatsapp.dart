@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:localstorage/localstorage.dart';
 
 import 'messages.dart';
@@ -59,7 +61,7 @@ class BasketballStatsApp extends StatelessWidget {
           lazy: true,
         ),
         RepositoryProvider<UploadFilesBackground>(
-          create: (BuildContext context) => UploadFilesBackground(db),
+          create: (BuildContext context) => UploadFilesBackground(),
           lazy: false,
         ),
         RepositoryProvider<LocalStorage>(
@@ -89,17 +91,17 @@ class BasketballStatsApp extends StatelessWidget {
                 crashes: RepositoryProvider.of<CrashReporting>(context)),
           ),
         ],
-        child: StreamBuilder(
-          stream: localStorage.stream,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            var str = localStorage.getItem(LocalStorageData.themeMode);
+        child: ValueListenableBuilder(
+          valueListenable: Hive.box(LocalStorageData.settingsBox).listenable(),
+          builder: (BuildContext context, Box<dynamic> box, Widget widget) {
+            var str = box.get(LocalStorageData.themeMode);
             var mode = ThemeMode.values.firstWhere(
                 (element) => element.toString() == str,
                 orElse: () => ThemeMode.light);
 
             return BlocBuilder(
               cubit: BlocProvider.of<AuthenticationBloc>(context),
-              builder: (BuildContext contex, AuthenticationState state) {
+              builder: (BuildContext context, AuthenticationState state) {
                 if (state is AuthenticationLoggedIn) {
                   BlocProvider.of<TeamsBloc>(context).add(TeamsReloadData());
                 }

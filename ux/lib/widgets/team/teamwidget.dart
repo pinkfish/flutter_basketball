@@ -42,13 +42,13 @@ class TeamWidget extends StatelessWidget {
         child: Builder(
           builder: (BuildContext context) => BlocConsumer(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
-            listener: (BuildContext context, SingleTeamBlocState state) {
+            listener: (BuildContext context, SingleTeamState state) {
               if (state is SingleTeamLoaded && !state.loadedSeasons) {
                 BlocProvider.of<SingleTeamBloc>(context)
                     .add(SingleTeamLoadSeasons());
               }
             },
-            builder: (BuildContext context, SingleTeamBlocState state) {
+            builder: (BuildContext context, SingleTeamState state) {
               var widget;
               if (onlyTeamName) {
                 if (state is SingleTeamLoaded) {
@@ -196,7 +196,7 @@ class _TeamSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder(
         cubit: BlocProvider.of<SingleTeamBloc>(context),
-        builder: (BuildContext context, SingleTeamBlocState state) {
+        builder: (BuildContext context, SingleTeamState state) {
           if (state is SingleTeamLoaded && !state.loadedSeasons ||
               state is SingleTeamUninitialized) {
             return Text(Messages.of(context).loadingText,

@@ -36,7 +36,7 @@ class TeamUsersScreen extends StatelessWidget {
               child: Builder(
                 builder: (BuildContext context) => BlocBuilder(
                   cubit: BlocProvider.of<SingleTeamBloc>(context),
-                  builder: (BuildContext context, SingleTeamBlocState state) {
+                  builder: (BuildContext context, SingleTeamState state) {
                     if (state is SingleTeamDeleted) {
                       Navigator.pop(context, false);
                       return Text(Messages.of(context).loadingText);

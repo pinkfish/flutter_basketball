@@ -539,7 +539,6 @@ class FirestoreDatabase extends BasketballDatabase {
   }
 
   Map<String, dynamic> _addUid(String uid, Map<String, dynamic> data) {
-    print("addUid $uid $data");
     data.putIfAbsent("uid", () => uid);
     return data;
   }

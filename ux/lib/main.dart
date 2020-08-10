@@ -1,16 +1,20 @@
 import 'package:basketballstats/services/crashreportingservice.dart';
+import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'basketballstatsapp.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 CrashReportingService crashReportingService = CrashReportingService();
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Setup crash reporting.
@@ -24,9 +28,12 @@ void main() {
   }
   Bloc.observer = _SimpleBlocDelegate();
 
-  WidgetsFlutterBinding.ensureInitialized();
-
   analytics.logAppOpen();
+
+  await Hive.initFlutter();
+  await Hive.openBox(LocalStorageData.settingsBox);
+
+  HydratedBloc.storage = await HydratedStorage.build();
 
   // Send error logs up to crashlytics.
   FlutterError.onError = crashReportingService.recordFlutterError;

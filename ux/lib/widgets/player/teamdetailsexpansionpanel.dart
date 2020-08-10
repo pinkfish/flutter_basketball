@@ -143,7 +143,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
             headerBuilder: (BuildContext context, bool isExpanded) {
               return BlocBuilder(
                 cubit: teamBlocs[teamUid],
-                builder: (BuildContext context, SingleTeamBlocState state) {
+                builder: (BuildContext context, SingleTeamState state) {
                   if (state is SingleTeamUninitialized) {
                     return Text(Messages.of(context).loadingText);
                   }
@@ -164,7 +164,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
               duration: Duration(milliseconds: 500),
               child: BlocConsumer(
                 cubit: teamBlocs[teamUid],
-                builder: (BuildContext context, SingleTeamBlocState state) {
+                builder: (BuildContext context, SingleTeamState state) {
                   if (state is SingleTeamUninitialized ||
                       state is SingleTeamDeleted) {
                     return LoadingWidget();
@@ -186,7 +186,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                     child: _getDataTableByTeam(state.team),
                   );
                 },
-                listener: (BuildContext context, SingleTeamBlocState state) {
+                listener: (BuildContext context, SingleTeamState state) {
                   if (state is SingleTeamLoaded && !state.loadedSeasons) {
                     teamBlocs[teamUid].add(SingleTeamLoadSeasons());
                   }

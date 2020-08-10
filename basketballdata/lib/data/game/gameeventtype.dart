@@ -4,6 +4,9 @@ import 'package:built_value/serializer.dart';
 
 part 'gameeventtype.g.dart';
 
+///
+/// The type of the game event.
+///
 class GameEventType extends EnumClass {
   static Serializer<GameEventType> get serializer => _$gameEventTypeSerializer;
 

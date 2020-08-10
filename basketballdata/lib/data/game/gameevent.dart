@@ -1,9 +1,9 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
+import '../../serializers.dart';
 import 'gameeventtype.dart';
 import 'gameperiod.dart';
-import '../serializers.dart';
 
 part 'gameevent.g.dart';
 

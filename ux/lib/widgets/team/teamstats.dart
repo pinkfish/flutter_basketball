@@ -32,12 +32,12 @@ class _TeamStatsWidgetState extends State<TeamStatsWidget> {
   Widget build(BuildContext context) {
     return BlocConsumer(
       cubit: BlocProvider.of<SingleTeamBloc>(context),
-      listener: (BuildContext context, SingleTeamBlocState state) {
+      listener: (BuildContext context, SingleTeamState state) {
         if (state is SingleTeamLoaded && !state.loadedSeasons) {
           BlocProvider.of<SingleTeamBloc>(context).add(SingleTeamLoadSeasons());
         }
       },
-      builder: (BuildContext context, SingleTeamBlocState state) {
+      builder: (BuildContext context, SingleTeamState state) {
         if (state is SingleTeamUninitialized) {
           return LoadingWidget();
         }

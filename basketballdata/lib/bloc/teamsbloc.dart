@@ -2,39 +2,13 @@ import 'dart:async';
 
 import 'package:basketballdata/bloc/crashreporting.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import '../data/team/team.dart';
-
-///
-/// The base state for the teams bloc.  It tracks all the
-/// exciting teams stuff.
-///
-abstract class TeamsBlocState extends Equatable {
-  final BuiltList<Team> teams;
-
-  TeamsBlocState({@required this.teams});
-
-  @override
-  List<Object> get props => [teams];
-}
-
-///
-/// The teams loaded from the database.
-///
-class TeamsBlocLoaded extends TeamsBlocState {
-  TeamsBlocLoaded(
-      {@required TeamsBlocState state, @required BuiltList<Team> teams})
-      : super(teams: teams);
-}
-
-///
-/// The teams bloc that is unitialized.
-///
-class TeamsBlocUninitialized extends TeamsBlocState {}
+import 'data/teamsblocstate.dart';
 
 ///
 /// Updates all the teams in the teams bloc.
@@ -61,10 +35,19 @@ class TeamsReloadData extends TeamsBlocEvent {
   List<Object> get props => [];
 }
 
+class _TeamsLoadedData extends TeamsBlocEvent {
+  final BuiltList<Team> teams;
+
+  _TeamsLoadedData(this.teams);
+
+  @override
+  List<Object> get props => [];
+}
+
 ///
 /// The bloc for dealing with all the teams.
 ///
-class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
+class TeamsBloc extends HydratedBloc<TeamsBlocEvent, TeamsBlocState> {
   final BasketballDatabase db;
   final CrashReporting crashes;
 
@@ -80,25 +63,28 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
   void _setupSub() {
     _sub?.cancel();
     _sub = null;
-    _sub = db.getAllTeams().listen(
-        (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
+    _sub = db
+        .getAllTeams()
+        .listen((BuiltList<Team> team) => add(_TeamsLoadedData(team)));
     _sub.onError((e, stack) => crashes.recordError(e, stack));
     _dbChange = db.onDatabaseChange.listen((bool b) {
       _sub?.cancel();
-      _sub = db.getAllTeams().listen(
-          (BuiltList<Team> team) => add(TeamsBlocUpdateTeams(teams: team)));
+      _sub = db
+          .getAllTeams()
+          .listen((BuiltList<Team> team) => add(_TeamsLoadedData(team)));
       _sub.onError((e, stack) => crashes.recordError(e, stack));
     });
   }
 
   @override
   Stream<TeamsBlocState> mapEventToState(TeamsBlocEvent event) async* {
-    if (event is TeamsBlocUpdateTeams) {
-      yield TeamsBlocLoaded(state: state, teams: event.teams);
-    }
-
     if (event is TeamsReloadData) {
       _setupSub();
+    }
+
+    if (event is _TeamsLoadedData) {
+      yield (TeamsBlocLoaded.fromState(state)..teams = event.teams.toBuilder())
+          .build();
     }
   }
 
@@ -109,5 +95,26 @@ class TeamsBloc extends Bloc<TeamsBlocEvent, TeamsBlocState> {
     _dbChange?.cancel();
     _dbChange = null;
     return super.close();
+  }
+
+  @override
+  TeamsBlocState fromJson(Map<String, dynamic> json) {
+    if (json == null || !json.containsKey("type")) {
+      return TeamsBlocUninitialized();
+    }
+    TeamsBlocStateType type = TeamsBlocStateType.valueOf(json["type"]);
+    switch (type) {
+      case TeamsBlocStateType.Uninitialized:
+        return TeamsBlocUninitialized();
+      case TeamsBlocStateType.Loaded:
+        return TeamsBlocLoaded.fromMap(json);
+      default:
+        return TeamsBlocUninitialized();
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(TeamsBlocState state) {
+    return state.toMap();
   }
 }

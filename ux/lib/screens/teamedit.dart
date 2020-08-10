@@ -22,8 +22,7 @@ class TeamEditScreen extends StatelessWidget {
       child: Builder(
         builder: (BuildContext context) => BlocBuilder(
           cubit: BlocProvider.of<SingleTeamBloc>(context),
-          builder: (BuildContext context, SingleTeamBlocState state) =>
-              Scaffold(
+          builder: (BuildContext context, SingleTeamState state) => Scaffold(
             appBar: AppBar(
                 title: Text(state.team?.name ?? Messages.of(context).unknown)),
             body: _EditTeamForm(),
@@ -69,7 +68,7 @@ class _EditTeamFormState extends State<_EditTeamForm> {
   Widget build(BuildContext context) {
     return BlocConsumer(
       cubit: BlocProvider.of<SingleTeamBloc>(context),
-      listener: (BuildContext context, SingleTeamBlocState state) {
+      listener: (BuildContext context, SingleTeamState state) {
         if (state is SingleTeamSaveSuccessful) {
           print("Pop add done");
           Navigator.pop(context);
@@ -84,7 +83,7 @@ class _EditTeamFormState extends State<_EditTeamForm> {
           }
         }
       },
-      builder: (BuildContext context, SingleTeamBlocState state) {
+      builder: (BuildContext context, SingleTeamState state) {
         if (state is SingleTeamUninitialized) {
           return SavingOverlay(
             saving: true,

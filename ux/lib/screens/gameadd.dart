@@ -36,7 +36,7 @@ class GameAddScreen extends StatelessWidget {
         child: Builder(
           builder: (BuildContext context) => BlocBuilder(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
-            builder: (BuildContext context, SingleTeamBlocState state) {
+            builder: (BuildContext context, SingleTeamState state) {
               if (state is SingleTeamDeleted) {
                 return Center(child: DeletedWidget());
               }

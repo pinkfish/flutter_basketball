@@ -15,6 +15,12 @@ import '../data/user.dart';
 /// Interface to load all the data from the database.
 ///
 abstract class BasketballDatabase {
+  static String playerBox = "player";
+  static String gameBox = "game";
+  static String teamBox = "team";
+  static String seasonBox = "season";
+  static String allTeamBox = "allteam";
+
   /// Gets all the currently known teams.
   Stream<BuiltList<Team>> getAllTeams();
 
