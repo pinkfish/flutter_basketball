@@ -11,6 +11,7 @@ export 'bloc/crashreporting.dart';
 export 'bloc/data/singleplayerstate.dart';
 export 'bloc/data/singleteamstate.dart';
 export 'bloc/data/teamsblocstate.dart';
+export 'bloc/data/singleseasonstate.dart';
 export 'bloc/gameeventreplay.dart';
 export 'bloc/invitesbloc.dart';
 export 'bloc/singlegamebloc.dart';

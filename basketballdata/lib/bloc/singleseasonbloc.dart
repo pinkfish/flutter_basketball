@@ -3,133 +3,16 @@ import 'dart:async';
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/data/season/seasonsummary.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
-import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../data/game/game.dart';
 import '../data/season/season.dart';
 import 'crashreporting.dart';
-
-abstract class SingleSeasonBlocState extends Equatable {
-  final Season season;
-  final BuiltList<Game> games;
-  final BuiltMap<String, Player> players;
-  final bool loadedGames;
-  final bool loadedPlayers;
-
-  SingleSeasonBlocState(
-      {@required this.season,
-      @required this.games,
-      @required this.loadedGames,
-      @required this.players,
-      @required this.loadedPlayers});
-
-  @override
-  List<Object> get props =>
-      [season, games, loadedGames, players, loadedPlayers];
-}
-
-///
-/// We have a season, default state.
-///
-class SingleSeasonLoaded extends SingleSeasonBlocState {
-  SingleSeasonLoaded(
-      {@required SingleSeasonBlocState state,
-      Season season,
-      BuiltList<Game> games,
-      bool loadedGames,
-      BuiltMap<String, Player> players,
-      bool loadedPlayers})
-      : super(
-            season: season ?? state.season,
-            games: games ?? state.games,
-            loadedGames: loadedGames ?? state.loadedGames,
-            players: players ?? state.players,
-            loadedPlayers: loadedPlayers ?? state.loadedPlayers);
-
-  @override
-  String toString() {
-    return 'SingleSeasonLoaded{}';
-  }
-}
-
-///
-/// Saving operation in progress.
-///
-class SingleSeasonSaving extends SingleSeasonBlocState {
-  SingleSeasonSaving({@required SingleSeasonBlocState singleSeasonState})
-      : super(
-            season: singleSeasonState.season,
-            games: singleSeasonState.games,
-            loadedGames: singleSeasonState.loadedGames,
-            players: singleSeasonState.players,
-            loadedPlayers: singleSeasonState.loadedPlayers);
-
-  @override
-  String toString() {
-    return 'SingleSeasonSaving{}';
-  }
-}
-
-///
-/// Saving operation failed (goes back to loaded for success).
-///
-class SingleSeasonSaveFailed extends SingleSeasonBlocState {
-  final Error error;
-
-  SingleSeasonSaveFailed(
-      {@required SingleSeasonBlocState singleSeasonState, this.error})
-      : super(
-            season: singleSeasonState.season,
-            games: singleSeasonState.games,
-            loadedGames: singleSeasonState.loadedGames,
-            players: singleSeasonState.players,
-            loadedPlayers: singleSeasonState.loadedPlayers);
-
-  @override
-  String toString() {
-    return 'SingleSeasonSaveFailed{}';
-  }
-}
-
-///
-/// Season got deleted.
-///
-class SingleSeasonDeleted extends SingleSeasonBlocState {
-  SingleSeasonDeleted()
-      : super(
-            season: null,
-            games: BuiltList.of([]),
-            loadedGames: false,
-            players: BuiltMap.of({}),
-            loadedPlayers: false);
-
-  @override
-  String toString() {
-    return 'SingleSeasonDeleted{}';
-  }
-}
-
-///
-/// Season is still loading.
-///
-class SingleSeasonUninitialized extends SingleSeasonBlocState {
-  SingleSeasonUninitialized()
-      : super(
-            season: null,
-            games: BuiltList.of([]),
-            loadedGames: false,
-            players: BuiltMap.of({}),
-            loadedPlayers: false);
-
-  @override
-  String toString() {
-    return 'SingleSeasonUninitialized{}';
-  }
-}
+import 'data/singleseasonstate.dart';
 
 abstract class SingleSeasonEvent extends Equatable {}
 
@@ -232,7 +115,8 @@ class _SingleSeasonDeleted extends SingleSeasonEvent {
 ///
 /// Bloc to handle updates and state of a specific season.
 ///
-class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
+class SingleSeasonBloc
+    extends HydratedBloc<SingleSeasonEvent, SingleSeasonState> {
   final BasketballDatabase db;
   final String seasonUid;
   final Lock _lock = new Lock();
@@ -261,6 +145,9 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
   }
 
   @override
+  String get id => seasonUid;
+
+  @override
   Future<void> close() async {
     _seasonSub?.cancel();
     _gameSub?.cancel();
@@ -273,10 +160,11 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
   }
 
   @override
-  Stream<SingleSeasonBlocState> mapEventToState(
-      SingleSeasonEvent event) async* {
+  Stream<SingleSeasonState> mapEventToState(SingleSeasonEvent event) async* {
     if (event is _SingleSeasonNewSeason) {
-      yield SingleSeasonLoaded(state: state, season: event.newSeason);
+      yield (SingleSeasonLoaded.fromState(state)
+            ..season = event.newSeason.toBuilder())
+          .build();
     }
 
     // The season is deleted.
@@ -286,47 +174,58 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
 
     // Save the season.
     if (event is SingleSeasonUpdate) {
-      yield SingleSeasonSaving(singleSeasonState: state);
+      yield SingleSeasonSaving.fromState(state).build();
       try {
         Season season = event.season;
         if (season != state.season) {
           await db.updateSeason(season: season);
+          yield SingleSeasonSaveSuccessful.fromState(state).build();
+          yield (SingleSeasonLoaded.fromState(state)
+                ..season = event.season.toBuilder())
+              .build();
         } else {
-          yield SingleSeasonLoaded(state: state, season: event.season);
+          yield SingleSeasonLoaded.fromState(state).build();
         }
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
+        yield (SingleSeasonSaveFailed.fromState(state)..error = error).build();
+        yield SingleSeasonLoaded.fromState(state).build();
       }
     }
 
     if (event is SingleSeasonAddPlayer) {
-      yield SingleSeasonSaving(singleSeasonState: state);
+      yield SingleSeasonSaving.fromState(state).build();
       try {
         if (!state.season.playerUids.containsKey(event.playerUid)) {
           await db.addSeasonPlayer(
               seasonUid: seasonUid, playerUid: event.playerUid);
+          yield SingleSeasonSaveSuccessful.fromState(state).build();
+          yield SingleSeasonLoaded.fromState(state).build();
         } else {
-          yield SingleSeasonLoaded(state: state);
+          yield SingleSeasonLoaded.fromState(state).build();
         }
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
+        yield (SingleSeasonSaveFailed.fromState(state)..error = error).build();
+        yield SingleSeasonLoaded.fromState(state).build();
       }
     }
 
     if (event is SingleSeasonRemovePlayer) {
-      yield SingleSeasonSaving(singleSeasonState: state);
+      yield SingleSeasonSaving.fromState(state).build();
       try {
         if (state.season.playerUids.containsKey(event.playerUid)) {
           await db.deleteSeasonPlayer(
               seasonUid: seasonUid, playerUid: event.playerUid);
+          yield SingleSeasonSaveSuccessful.fromState(state).build();
+          yield SingleSeasonLoaded.fromState(state).build();
         } else {
-          yield SingleSeasonLoaded(state: state);
+          yield SingleSeasonLoaded.fromState(state).build();
         }
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
+        yield (SingleSeasonSaveFailed.fromState(state)..error = error).build();
+        yield SingleSeasonLoaded.fromState(state).build();
       }
     }
 
@@ -335,18 +234,23 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
         await db.deleteSeason(seasonUid: seasonUid);
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleSeasonSaveFailed(singleSeasonState: state, error: error);
+        yield (SingleSeasonSaveFailed.fromState(state)..error = error).build();
+        yield SingleSeasonLoaded.fromState(state).build();
       }
     }
 
     if (event is _SingleSeasonUpdateGames) {
-      yield SingleSeasonLoaded(
-          state: state, games: event.games, loadedGames: true);
+      yield (SingleSeasonLoaded.fromState(state)
+            ..games = event.games.toBuilder()
+            ..loadedGames = true)
+          .build();
     }
 
     if (event is _SingleSeasonUpdatePlayers) {
-      yield SingleSeasonLoaded(
-          state: state, players: event.players, loadedPlayers: true);
+      yield (SingleSeasonLoaded.fromState(state)
+            ..players = event.players.toBuilder()
+            ..loadedPlayers = true)
+          .build();
     }
 
     if (event is SingleSeasonLoadGames) {
@@ -448,5 +352,34 @@ class SingleSeasonBloc extends Bloc<SingleSeasonEvent, SingleSeasonBlocState> {
       // Loaded them all.
       add(_SingleSeasonUpdatePlayers(players: BuiltMap.of(_loadedPlayers)));
     }
+  }
+
+  @override
+  SingleSeasonState fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey("type")) {
+      return SingleSeasonUninitialized();
+    }
+    SingleSeasonStateType type = SingleSeasonStateType.valueOf(json["type"]);
+    switch (type) {
+      case SingleSeasonStateType.Uninitialized:
+        return SingleSeasonUninitialized();
+      case SingleSeasonStateType.Loaded:
+        return SingleSeasonLoaded.fromMap(json);
+      case SingleSeasonStateType.Deleted:
+        return SingleSeasonDeleted.fromMap(json);
+      case SingleSeasonStateType.SaveFailed:
+        return SingleSeasonSaveFailed.fromMap(json);
+      case SingleSeasonStateType.SaveSuccessful:
+        return SingleSeasonSaveSuccessful.fromMap(json);
+      case SingleSeasonStateType.Saving:
+        return SingleSeasonSaving.fromMap(json);
+      default:
+        return SingleSeasonUninitialized();
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(SingleSeasonState state) {
+    return state.toMap();
   }
 }

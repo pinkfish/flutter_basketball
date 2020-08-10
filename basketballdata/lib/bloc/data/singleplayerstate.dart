@@ -33,9 +33,9 @@ abstract class SinglePlayerState {
   @nullable
   Player get player;
   // Don't track the games or save them out to disk.
-  @memoized
+  @BuiltValueField(serialize: false)
   bool get loadedGames;
-  @memoized
+  @BuiltValueField(serialize: false)
   BuiltList<Game> get games;
   SinglePlayerStateType get type;
 

@@ -9,8 +9,9 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import 'bloc/data/singleplayerstate.dart';
-import 'bloc/data/teamsblocstate.dart';
+import 'bloc/data/singleseasonstate.dart';
 import 'bloc/data/singleteamstate.dart';
+import 'bloc/data/teamsblocstate.dart';
 import 'data/ant/broadcast.dart';
 import 'data/ant/broadcaststatus.dart';
 import 'data/ant/broadcasttype.dart';
@@ -97,6 +98,14 @@ part 'serializers.g.dart';
   SingleTeamSaveSuccessful,
   SingleTeamSaveFailed,
   SingleTeamSaving,
+  SingleSeasonState,
+  SingleSeasonStateType,
+  SingleSeasonLoaded,
+  SingleSeasonDeleted,
+  SingleSeasonUninitialized,
+  SingleSeasonSaveSuccessful,
+  SingleSeasonSaveFailed,
+  SingleSeasonSaving,
   UploadData,
   User,
   WinRecord,

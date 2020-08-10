@@ -108,7 +108,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
     if (widget.showGraphs) {
       return BlocBuilder(
         cubit: seasonBlocs[graphSeasonUid],
-        builder: (BuildContext context, SingleSeasonBlocState state) => Padding(
+        builder: (BuildContext context, SingleSeasonState state) => Padding(
           padding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 5.0),
           child: TeamPlayerGraphs(
             playerUid: widget.playerUid,
@@ -175,7 +175,7 @@ class _TeamDetailsExpansionPanel extends State<TeamDetailsExpansionPanel> {
                         .map((String s) => BlocListener(
                               cubit: seasonBlocs[s],
                               listener: (BuildContext context,
-                                  SingleSeasonBlocState state) {
+                                  SingleSeasonState state) {
                                 if (state is SingleSeasonLoaded &&
                                     !state.loadedGames) {
                                   seasonBlocs[s].add(SingleSeasonLoadGames());

@@ -21,7 +21,7 @@ enum ShowGameData {
 /// Shows the detailed player based stats for the season.
 ///
 class TeamSeasonStats extends StatefulWidget {
-  final SingleSeasonBlocState state;
+  final SingleSeasonState state;
   final ShowGameData gameData;
   final String playerUid;
 

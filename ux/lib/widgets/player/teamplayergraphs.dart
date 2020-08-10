@@ -14,7 +14,7 @@ import '../../messages.dart';
 ///
 class TeamPlayerGraphs extends StatefulWidget {
   final String playerUid;
-  final SingleSeasonBlocState seasonState;
+  final SingleSeasonState seasonState;
 
   TeamPlayerGraphs({@required this.playerUid, @required this.seasonState});
 
@@ -127,20 +127,19 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
             key: Key("season${widget.seasonState.season.uid}"),
             create: (BuildContext context) => SingleSeasonBloc(
               seasonUid: widget.seasonState.season.uid,
-              db: RepositoryProvider.of<BasketballDatabase>(context)
-    , crashes: RepositoryProvider.of<CrashReporting>(context),
+              db: RepositoryProvider.of<BasketballDatabase>(context),
+              crashes: RepositoryProvider.of<CrashReporting>(context),
             ),
             child: Builder(
               builder: (BuildContext context) => BlocConsumer(
                   cubit: BlocProvider.of<SingleSeasonBloc>(context),
-                  listener:
-                      (BuildContext context, SingleSeasonBlocState state) {
+                  listener: (BuildContext context, SingleSeasonState state) {
                     if (state is SingleSeasonLoaded && !state.loadedGames) {
                       BlocProvider.of<SingleSeasonBloc>(context)
                           .add(SingleSeasonLoadGames());
                     }
                   },
-                  builder: (BuildContext context, SingleSeasonBlocState state) {
+                  builder: (BuildContext context, SingleSeasonState state) {
                     if (state is SingleSeasonUninitialized ||
                         !state.loadedGames) {
                       return LoadingWidget();
@@ -182,7 +181,7 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
   }
 
   List<charts.Series<_CumulativeScore, String>> _getSeries(
-      SingleSeasonBlocState state) {
+      SingleSeasonState state) {
     switch (type) {
       case _GameTimeseriesType.All:
         return [
@@ -233,7 +232,7 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
   }
 
   charts.Series<_CumulativeScore, String> _getEventSeries(
-      SingleSeasonBlocState state, _GameTimeseriesType eventType, Color color) {
+      SingleSeasonState state, _GameTimeseriesType eventType, Color color) {
     return charts.Series<_CumulativeScore, String>(
       id: eventType.toString(),
       seriesCategory: eventType == _GameTimeseriesType.DefensiveRebounds ||

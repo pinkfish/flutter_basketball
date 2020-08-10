@@ -138,7 +138,7 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
             child: Builder(
               builder: (BuildContext context) => BlocBuilder(
                 cubit: BlocProvider.of<SingleSeasonBloc>(context),
-                builder: (BuildContext context, SingleSeasonBlocState state) {
+                builder: (BuildContext context, SingleSeasonState state) {
                   if (state is SingleSeasonUninitialized) {
                     return LoadingWidget();
                   }

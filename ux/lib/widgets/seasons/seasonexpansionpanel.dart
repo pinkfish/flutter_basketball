@@ -78,8 +78,8 @@ class SeasonExpansionPanel extends ExpansionPanel {
           body: BlocProvider(
             create: (BuildContext context) => SingleSeasonBloc(
               seasonUid: season.uid,
-              db: RepositoryProvider.of<BasketballDatabase>(context)
-                , crashes: RepositoryProvider.of<CrashReporting>(context),
+              db: RepositoryProvider.of<BasketballDatabase>(context),
+              crashes: RepositoryProvider.of<CrashReporting>(context),
             ),
             child: Builder(
               builder: (BuildContext context) => AnimatedSwitcher(
@@ -89,8 +89,7 @@ class SeasonExpansionPanel extends ExpansionPanel {
                 },
                 child: BlocBuilder(
                     cubit: BlocProvider.of<SingleSeasonBloc>(context),
-                    builder:
-                        (BuildContext context, SingleSeasonBlocState state) {
+                    builder: (BuildContext context, SingleSeasonState state) {
                       if (state is SingleSeasonDeleted) {
                         return Center(
                           child: DeletedWidget(),

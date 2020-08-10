@@ -49,8 +49,8 @@ class PlayerDropDown extends StatelessWidget {
   Widget _insideStuff(BuildContext context) {
     return BlocConsumer(
         cubit: BlocProvider.of<SingleSeasonBloc>(context),
-        listener: (BuildContext context, SingleSeasonBlocState state) {},
-        builder: (BuildContext context, SingleSeasonBlocState state) {
+        listener: (BuildContext context, SingleSeasonState state) {},
+        builder: (BuildContext context, SingleSeasonState state) {
           if (state is SingleSeasonUninitialized ||
               state is SingleSeasonDeleted) {
             return DropdownButton(

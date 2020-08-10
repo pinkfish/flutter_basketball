@@ -27,7 +27,7 @@ class SeasonDetailsScreen extends StatefulWidget {
 class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
   int _currentIndex = 0;
 
-  Widget _innerData(SingleSeasonBlocState state) {
+  Widget _innerData(SingleSeasonState state) {
     if (_currentIndex == 0) {
       Widget inner;
       if (!state.loadedGames) {
@@ -117,7 +117,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
           appBar: AppBar(
             title: BlocBuilder(
               cubit: BlocProvider.of<SingleSeasonBloc>(context),
-              builder: (BuildContext context, SingleSeasonBlocState state) {
+              builder: (BuildContext context, SingleSeasonState state) {
                 if (state is SingleSeasonUninitialized ||
                     state is SingleSeasonDeleted) {
                   return Text(Messages.of(context).titleOfApp);
@@ -128,7 +128,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
           ),
           body: BlocConsumer(
             cubit: BlocProvider.of<SingleSeasonBloc>(context),
-            listener: (BuildContext context, SingleSeasonBlocState state) {
+            listener: (BuildContext context, SingleSeasonState state) {
               if (!state.loadedGames && !(state is SingleSeasonUninitialized)) {
                 BlocProvider.of<SingleSeasonBloc>(context)
                     .add(SingleSeasonLoadGames());
@@ -138,7 +138,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
                 Navigator.pop(context);
               }
             },
-            builder: (BuildContext context, SingleSeasonBlocState state) {
+            builder: (BuildContext context, SingleSeasonState state) {
               if (state is SingleSeasonDeleted) {
                 return DeletedWidget();
               }
@@ -170,7 +170,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
           ),
           floatingActionButton: BlocBuilder(
             cubit: BlocProvider.of<SingleSeasonBloc>(context),
-            builder: (BuildContext context, SingleSeasonBlocState state) {
+            builder: (BuildContext context, SingleSeasonState state) {
               return AnimatedSwitcher(
                 duration: Duration(milliseconds: 500),
                 transitionBuilder: (Widget child, Animation<double> animation) {
@@ -197,7 +197,7 @@ class _SeasonDetailsScreenState extends State<SeasonDetailsScreen> {
   }
 
   void _addGame(
-      BuildContext context, String seasonUid, SingleSeasonBlocState state) {
+      BuildContext context, String seasonUid, SingleSeasonState state) {
     if (state.season.playerUids.isEmpty) {
       showDialog(
         context: context,

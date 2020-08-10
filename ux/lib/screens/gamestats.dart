@@ -515,7 +515,7 @@ class GameStatsScreen extends StatelessWidget {
                     return BlocBuilder(
                       cubit: BlocProvider.of<SingleSeasonBloc>(context),
                       builder: (BuildContext context,
-                          SingleSeasonBlocState seasonState) {
+                          SingleSeasonState seasonState) {
                         if (seasonState is SingleSeasonUninitialized) {
                           return LoadingWidget();
                         }

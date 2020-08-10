@@ -377,7 +377,7 @@ class _GameAddFormState extends State<_GameAddForm> {
                         builder: (BuildContext context) => BlocBuilder(
                           cubit: BlocProvider.of<SingleSeasonBloc>(context),
                           builder: (BuildContext context,
-                              SingleSeasonBlocState seasonState) {
+                              SingleSeasonState seasonState) {
                             if (seasonState is SingleSeasonUninitialized) {
                               return LoadingWidget();
                             }

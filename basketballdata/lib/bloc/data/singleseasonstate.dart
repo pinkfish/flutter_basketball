@@ -35,19 +35,21 @@ class SingleSeasonStateType extends EnumClass {
 @BuiltValue(instantiable: false)
 abstract class SingleSeasonState {
   @nullable
-  Season season;
-  BuiltList<Game> games;
-  bool loadedGames;
+  Season get season;
+  BuiltList<Game> get games;
+  bool get loadedGames;
   // Don't save all the player details.
-  @memoized
-  BuiltMap<String, Player> players;
-  @memoized
-  bool loadedPlayers;
+  @BuiltValueField(serialize: false)
+  BuiltMap<String, Player> get players;
+  @BuiltValueField(serialize: false)
+  bool get loadedPlayers;
+
+  SingleSeasonStateType get type;
 
   static SingleSeasonStateBuilder fromState(
       SingleSeasonState state, SingleSeasonStateBuilder builder) {
     return builder
-      ..loadedSeasons = state.loadedSeasons
+      ..loadedGames = state.loadedGames
       ..season = state.season?.toBuilder()
       ..games = state.games.toBuilder()
       ..loadedPlayers = state.loadedPlayers
@@ -76,7 +78,8 @@ abstract class SingleSeasonLoaded
   /// Defaults for the state.  Always default to no games loaded.
   static void _initializeBuilder(SingleSeasonLoadedBuilder b) => b
     ..type = SingleSeasonStateType.Loaded
-    ..loadedSeasons = false;
+    ..loadedGames = false
+    ..loadedPlayers = false;
 
   Map<String, dynamic> toMap() {
     return serializers.serializeWith(SingleSeasonLoaded.serializer, this);
@@ -108,7 +111,8 @@ abstract class SingleSeasonSaving
 
   static void _initializeBuilder(SingleSeasonSavingBuilder b) => b
     ..type = SingleSeasonStateType.Saving
-    ..loadedSeasons = false;
+    ..loadedGames = false
+    ..loadedPlayers = false;
 
   SingleSeasonSaving._();
   factory SingleSeasonSaving(
@@ -141,7 +145,8 @@ abstract class SingleSeasonSaveSuccessful
 
   static void _initializeBuilder(SingleSeasonSaveSuccessfulBuilder b) => b
     ..type = SingleSeasonStateType.SaveSuccessful
-    ..loadedSeasons = false;
+    ..loadedGames = false
+    ..loadedPlayers = false;
 
   SingleSeasonSaveSuccessful._();
   factory SingleSeasonSaveSuccessful(
@@ -183,7 +188,8 @@ abstract class SingleSeasonSaveFailed
 
   static void _initializeBuilder(SingleSeasonSaveFailedBuilder b) => b
     ..type = SingleSeasonStateType.SaveFailed
-    ..loadedSeasons = false;
+    ..loadedGames = false
+    ..loadedPlayers = false;
 
   SingleSeasonSaveFailed._();
   factory SingleSeasonSaveFailed(
@@ -226,7 +232,8 @@ abstract class SingleSeasonDeleted
   static void _initializeBuilder(SingleSeasonDeletedBuilder b) => b
     ..type = SingleSeasonStateType.Deleted
     ..season = null
-    ..loadedSeasons = false;
+    ..loadedGames = false
+    ..loadedPlayers = false;
 
   Map<String, dynamic> toMap() {
     return serializers.serializeWith(SingleSeasonSaveFailed.serializer, this);
@@ -256,7 +263,8 @@ abstract class SingleSeasonUninitialized
   static void _initializeBuilder(SingleSeasonUninitializedBuilder b) => b
     ..type = SingleSeasonStateType.Uninitialized
     ..season = null
-    ..loadedSeasons = false;
+    ..loadedGames = false
+    ..loadedPlayers = false;
 
   @override
   String toString() {
