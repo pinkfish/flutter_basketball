@@ -1,30 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/data/singlegamestate.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/data/singlegamestate.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singlegamebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/serializers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamedetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideoplayer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/playerdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamusers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamusers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gameeventlist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gamemedialist.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/game/gametimeseries.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
-    </list>
+    <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
