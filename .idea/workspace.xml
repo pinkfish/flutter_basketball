@@ -2,63 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/data/singleplayerstate.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/data/singleteamstate.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/data/teamsblocstate.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/data/singleseasonstate.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/basketballdata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleplayerbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/singleteambloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/teamsbloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/teamsbloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/ant/broadcast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/ant/broadcast.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/game.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/game.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/gameevent.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/gameevent.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/gameeventtype.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/gameeventtype.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/gameofficalresults.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/gameofficalresults.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/gameplace.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/gameplace.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/gameshareddata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/gameshareddata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/gamesummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/gamesummary.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/game/playergamesummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/game/playergamesummary.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitetoteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/invites/invitetoteam.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournament.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournament.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournamentdivision.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournamentdivision.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournamentseason.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournamentseason.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournamentteam.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/leagueortournament/leagueortournamentteam.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/media/mediainfo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/media/mediainfo.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/player.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/player/player.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/player/playersummarydata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/player/playersummarydata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/season/playerseasonsummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/playerseasonsummary.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/season/season.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/season.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/season/seasonsummary.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/season/seasonsummary.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/serializers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/serializers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/team/opponent.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/team/opponent.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/team/team.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/team/team.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/team/teamuser.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/team/teamuser.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/team/winrecord.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/team/winrecord.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/uploaddata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/uploaddata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/data/user.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/data/user.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/db/basketballdatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/basketballstatsapp.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gameadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamestats.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/seasonadd.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/settings.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/settings.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamdetails.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamedit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamedit.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teaminvite.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/screens/teamusers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/teamusers.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/firestoredatabase.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/localstoragedata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/localstoragedata.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/services/uploadfilesbackground.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/services/uploadfilesbackground.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/player/teamdetailsexpansionpanel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/player/teamdetailsexpansionpanel.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/seasons/seasondropdown.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamstats.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/widgets/team/teamwidget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/ux/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
