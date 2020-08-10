@@ -8,6 +8,7 @@ export 'bloc/add/addplayerbloc.dart';
 export 'bloc/add/addseasonbloc.dart';
 export 'bloc/add/addteambloc.dart';
 export 'bloc/crashreporting.dart';
+export 'bloc/data/invitesstate.dart';
 export 'bloc/data/singlegamestate.dart';
 export 'bloc/data/singleplayerstate.dart';
 export 'bloc/data/singleseasonstate.dart';
