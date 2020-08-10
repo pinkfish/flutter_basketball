@@ -12,6 +12,7 @@ import 'bloc/data/singleplayerstate.dart';
 import 'bloc/data/singleseasonstate.dart';
 import 'bloc/data/singleteamstate.dart';
 import 'bloc/data/teamsblocstate.dart';
+import 'bloc/data/singlegamestate.dart';
 import 'data/ant/broadcast.dart';
 import 'data/ant/broadcaststatus.dart';
 import 'data/ant/broadcasttype.dart';
@@ -106,6 +107,15 @@ part 'serializers.g.dart';
   SingleSeasonSaveSuccessful,
   SingleSeasonSaveFailed,
   SingleSeasonSaving,
+  SingleGameState,
+  SingleGameStateType,
+  SingleGameLoaded,
+  SingleGameChangeEvents,
+  SingleGameDeleted,
+  SingleGameUninitialized,
+  SingleGameSaveSuccessful,
+  SingleGameSaveFailed,
+  SingleGameSaving,
   UploadData,
   User,
   WinRecord,

@@ -30,9 +30,11 @@ class GameAddScreen extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (BuildContext context) => SingleTeamBloc(
-            db: BlocProvider.of<TeamsBloc>(context).db,
-            teamUid: teamUid,
-            crashes: RepositoryProvider.of<CrashReporting>(context)),
+          db: BlocProvider.of<TeamsBloc>(context).db,
+          teamUid: teamUid,
+          crashes: RepositoryProvider.of<CrashReporting>(context),
+          loadSeasons: true,
+        ),
         child: Builder(
           builder: (BuildContext context) => BlocBuilder(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
@@ -42,10 +44,6 @@ class GameAddScreen extends StatelessWidget {
               }
               if (state is SingleTeamUninitialized) {
                 return Center(child: LoadingWidget());
-              }
-              if (!state.loadedSeasons) {
-                BlocProvider.of<SingleTeamBloc>(context)
-                    .add(SingleTeamLoadSeasons());
               }
               return BlocProvider(
                 create: (BuildContext context) => AddGameBloc(

@@ -463,6 +463,7 @@ class GameStatsScreen extends StatelessWidget {
                       gameUid: gameUid,
                       db: BlocProvider.of<TeamsBloc>(context).db,
                       crashes: RepositoryProvider.of<CrashReporting>(context),
+                      loadGameEvents: true,
                     )),
             BlocProvider(
               create: (BuildContext context) => SingleSeasonBloc(
@@ -480,14 +481,10 @@ class GameStatsScreen extends StatelessWidget {
             builder: (BuildContext context, Orientation orientation) =>
                 AnimatedSwitcher(
               duration: Duration(milliseconds: 500),
-              child: BlocConsumer(
+              child: BlocBuilder(
                 cubit: BlocProvider.of<SingleGameBloc>(context),
-                listener: (BuildContext context, SingleGameState state) {
-                  if (!state.loadedGameEvents) {
-                    BlocProvider.of<SingleGameBloc>(context)
-                        .add(SingleGameLoadEvents());
-                  }
-
+                builder: (BuildContext context, SingleGameState state) {
+                  // Preload the undo set if it is not yet loaded.
                   if (state is SingleGameLoaded && state.loadedGameEvents) {
                     var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
                     print("undoBloc $undoBloc");
@@ -498,8 +495,7 @@ class GameStatsScreen extends StatelessWidget {
                       }
                     }
                   }
-                },
-                builder: (BuildContext context, SingleGameState state) {
+
                   if (state is SingleGameUninitialized ||
                       (state is SingleGameLoaded && !state.loadedGameEvents)) {
                     return LoadingWidget(

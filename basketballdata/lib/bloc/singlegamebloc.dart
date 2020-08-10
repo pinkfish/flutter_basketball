@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:basketballdata/data/media/mediainfo.dart';
-import 'package:bloc/bloc.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:synchronized/synchronized.dart';
 
@@ -17,179 +17,7 @@ import '../data/player/player.dart';
 import '../data/player/playersummarydata.dart';
 import '../db/basketballdatabase.dart';
 import 'crashreporting.dart';
-
-///
-/// The basic data for the game and all the data associated with it.
-///
-abstract class SingleGameState extends Equatable {
-  final Game game;
-  final bool loadedGameEvents;
-  final BuiltList<GameEvent> gameEvents;
-  final bool loadedMedia;
-  final BuiltList<MediaInfo> media;
-  final bool loadedPlayers;
-  final BuiltMap<String, Player> players;
-
-  SingleGameState(
-      {@required this.game,
-      @required this.loadedGameEvents,
-      @required this.gameEvents,
-      @required this.loadedMedia,
-      @required this.media,
-      @required this.loadedPlayers,
-      @required this.players});
-
-  @override
-  List<Object> get props => [
-        game,
-        loadedGameEvents,
-        gameEvents,
-        loadedMedia,
-        media,
-        loadedPlayers,
-        players
-      ];
-}
-
-///
-/// We have a game, default state.
-///
-class SingleGameLoaded extends SingleGameState {
-  SingleGameLoaded(
-      {Game game,
-      bool loadedGameEvents,
-      BuiltList<GameEvent> gameEvents,
-      SingleGameState state,
-      bool loadedMedia,
-      BuiltList<MediaInfo> media,
-      bool loadedPlayers,
-      BuiltMap<String, Player> players})
-      : super(
-            game: game ?? state.game,
-            loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
-            gameEvents: gameEvents ?? state.gameEvents,
-            loadedMedia: loadedMedia ?? state.loadedMedia,
-            media: media ?? state.media,
-            loadedPlayers: loadedPlayers ?? state.loadedPlayers,
-            players: players ?? state.players);
-
-  @override
-  String toString() {
-    return 'SingleGameLoaded{}';
-  }
-}
-
-///
-/// We have a game, default state.
-///
-class SingleGameChangeEvents extends SingleGameState {
-  final BuiltList<GameEvent> newEvents;
-  final BuiltList<GameEvent> removedEvents;
-
-  SingleGameChangeEvents({
-    Game game,
-    bool loadedGameEvents,
-    BuiltList<GameEvent> gameEvents,
-    SingleGameState state,
-    this.newEvents,
-    this.removedEvents,
-  }) : super(
-            game: game ?? state.game,
-            loadedGameEvents: loadedGameEvents ?? state.loadedGameEvents,
-            gameEvents: gameEvents ?? state.gameEvents,
-            loadedMedia: state.loadedMedia,
-            media: state.media,
-            players: state.players,
-            loadedPlayers: state.loadedPlayers);
-
-  @override
-  String toString() {
-    return 'SingleGameChangeEvents{}';
-  }
-
-  @override
-  List<Object> get props =>
-      [game, loadedGameEvents, gameEvents, newEvents, removedEvents];
-}
-
-///
-/// Saving operation in progress.
-///
-class SingleGameSaving extends SingleGameState {
-  SingleGameSaving({@required SingleGameState singleGameState})
-      : super(
-          game: singleGameState.game,
-          loadedGameEvents: singleGameState.loadedGameEvents,
-          gameEvents: singleGameState.gameEvents,
-          loadedMedia: singleGameState.loadedMedia,
-          media: singleGameState.media,
-          loadedPlayers: singleGameState.loadedPlayers,
-          players: singleGameState.players,
-        );
-
-  @override
-  String toString() {
-    return 'SingleGameSaving{}';
-  }
-}
-
-///
-/// Saving operation failed (goes back to loaded for success).
-///
-class SingleGameSaveFailed extends SingleGameState {
-  final Error error;
-
-  SingleGameSaveFailed({@required SingleGameState singleGameState, this.error})
-      : super(
-          game: singleGameState.game,
-          loadedGameEvents: singleGameState.loadedGameEvents,
-          gameEvents: singleGameState.gameEvents,
-          loadedMedia: singleGameState.loadedMedia,
-          media: singleGameState.media,
-          loadedPlayers: singleGameState.loadedPlayers,
-          players: singleGameState.players,
-        );
-
-  @override
-  String toString() {
-    return 'SingleGameSaveFailed{}';
-  }
-}
-
-///
-/// Game got deleted.
-///
-class SingleGameDeleted extends SingleGameState {
-  SingleGameDeleted()
-      : super(
-            game: null,
-            loadedGameEvents: false,
-            gameEvents: BuiltList.of([]),
-            loadedMedia: false,
-            media: BuiltList.of([]),
-            loadedPlayers: false,
-            players: BuiltMap.of({}));
-
-  @override
-  String toString() {
-    return 'SingleGameDeleted{}';
-  }
-}
-
-///
-/// What the system has not yet read the game state.
-///
-class SingleGameUninitialized extends SingleGameState {
-  SingleGameUninitialized()
-      : super(
-            game: null,
-            loadedGameEvents: false,
-            gameEvents: BuiltList.of([]),
-            loadedMedia: false,
-            media: BuiltList.of([]),
-            loadedPlayers: false,
-            players: BuiltMap.of({}));
-}
+import 'data/singlegamestate.dart';
 
 abstract class SingleGameEvent extends Equatable {}
 
@@ -342,11 +170,14 @@ class _SingleGameUpdatePlayers extends SingleGameEvent {
 ///
 /// Bloc to handle updates and state of a specific game.
 ///
-class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
+class SingleGameBloc extends HydratedBloc<SingleGameEvent, SingleGameState> {
   final String gameUid;
   final BasketballDatabase db;
   final Lock _lock = Lock();
   final CrashReporting crashes;
+  final bool loadPlayers;
+  final bool loadMedia;
+  final bool loadGameEvents;
 
   StreamSubscription<Game> _gameSub;
   StreamSubscription<BuiltList<GameEvent>> _gameEventSub;
@@ -357,12 +188,35 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
   Map<String, Player> _loadedPlayers;
 
   SingleGameBloc(
-      {@required this.db, @required this.gameUid, @required this.crashes})
+      {@required this.db,
+      @required this.gameUid,
+      @required this.crashes,
+      this.loadPlayers = false,
+      this.loadMedia = false,
+      this.loadGameEvents = false})
       : super(SingleGameUninitialized()) {
     _gameSub = db.getGame(gameUid: gameUid).listen(_onGameUpdate);
     _players = {};
     _loadedPlayers = {};
+    _loadStuff();
   }
+
+  void _loadStuff() {
+    if (state is SingleGameLoaded) {
+      if (loadPlayers && !state.loadedPlayers) {
+        add(SingleGameLoadPlayers());
+      }
+      if (loadMedia && !state.loadedMedia) {
+        add(SingleGameLoadMedia());
+      }
+      if (loadGameEvents && !state.loadedGameEvents) {
+        add(SingleGameLoadEvents());
+      }
+    }
+  }
+
+  @override
+  String get id => gameUid;
 
   void _onGameUpdate(Game g) {
     if (g != this.state.game) {
@@ -393,17 +247,22 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
   @override
   Stream<SingleGameState> mapEventToState(SingleGameEvent event) async* {
     if (event is _SingleGameNewGame) {
-      yield SingleGameLoaded(game: event.newGame, state: state);
+      yield (SingleGameLoaded.fromState(state)
+            ..game = event.newGame.toBuilder())
+          .build();
+      _loadStuff();
     }
 
     if (event is _SingleGameNewEvents) {
-      yield SingleGameChangeEvents(
-          gameEvents: event.events,
-          state: state,
-          newEvents: event.newEvents,
-          removedEvents: event.removedEvents);
-      yield SingleGameLoaded(
-          gameEvents: event.events, state: state, loadedGameEvents: true);
+      yield (SingleGameChangeEvents.fromState(state)
+            ..gameEvents = event.events.toBuilder()
+            ..newEvents = event.newEvents.toBuilder()
+            ..removedEvents = event.removedEvents.toBuilder())
+          .build();
+      yield (SingleGameLoaded.fromState(state)
+            ..gameEvents = event.events.toBuilder()
+            ..loadedGameEvents = true)
+          .build();
     }
 
     // The game is deleted.
@@ -413,7 +272,7 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
     // Save the game.
     if (event is SingleGameUpdate) {
-      yield SingleGameSaving(singleGameState: state);
+      yield SingleGameSaving.fromState(state).build();
       try {
         // Add an opponent if they don't exist.
         if (event.game.opponents.length == 0) {
@@ -431,10 +290,14 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
 
         Game game = event.game;
         await db.updateGame(game: game);
-        yield SingleGameLoaded(game: event.game, state: state);
+        yield (SingleGameSaveSuccessful.fromState(state)
+              ..game = event.game.toBuilder())
+            .build();
+        yield (SingleGameLoaded.fromState(state)..game = event.game.toBuilder())
+            .build();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
+        yield (SingleGameSaveFailed.fromState(state)..error = error).build();
       }
     }
 
@@ -463,27 +326,32 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     if (event is _SingleGameNewMedia) {
-      yield SingleGameLoaded(
-          state: state, loadedMedia: true, media: event.newMedia);
+      yield (SingleGameLoaded.fromState(state)
+            ..media = event.newMedia.toBuilder()
+            ..loadedMedia = true)
+          .build();
     }
 
     // Adds a player to the game
     if (event is SingleGameAddPlayer) {
-      yield SingleGameSaving(singleGameState: state);
+      yield SingleGameSaving.fromState(state).build();
       try {
         await db.addGamePlayer(
             gameUid: gameUid,
             playerUid: event.playerUid,
             opponent: event.opponent);
+        yield SingleGameSaveSuccessful.fromState(state).build();
+        yield SingleGameLoaded.fromState(state).build();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
+        yield (SingleGameSaveFailed.fromState(state)..error = error).build();
+        yield SingleGameLoaded.fromState(state).build();
       }
     }
 
     // Updates a player in the game
     if (event is SingleGameUpdatePlayer) {
-      yield SingleGameSaving(singleGameState: state);
+      yield SingleGameSaving.fromState(state).build();
       try {
         for (MapEntry<String, PlayerSummaryWithOpponent> entry
             in event.summary.entries) {
@@ -493,22 +361,28 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
               summary: entry.value.summary,
               playerUid: entry.key);
         }
+        yield SingleGameSaveSuccessful.fromState(state).build();
+        yield SingleGameLoaded.fromState(state).build();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
+        yield (SingleGameSaveFailed.fromState(state)..error = error).build();
+        yield SingleGameLoaded.fromState(state).build();
       }
     }
     // Removes a player from the game.
     if (event is SingleGameRemovePlayer) {
-      yield SingleGameSaving(singleGameState: state);
+      yield SingleGameSaving.fromState(state).build();
       try {
         await db.deleteGamePlayer(
             gameUid: gameUid,
             playerUid: event.playerUid,
             opponent: event.opponent);
+        yield SingleGameSaveSuccessful.fromState(state).build();
+        yield SingleGameLoaded.fromState(state).build();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
+        yield (SingleGameSaveFailed.fromState(state)..error = error).build();
+        yield SingleGameLoaded.fromState(state).build();
       }
     }
 
@@ -516,9 +390,12 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     if (event is SingleGameDelete) {
       try {
         await db.deleteGame(gameUid: gameUid);
+        yield SingleGameSaveSuccessful.fromState(state).build();
+        yield SingleGameDeleted();
       } catch (error, stack) {
         crashes.recordError(error, stack);
-        yield SingleGameSaveFailed(singleGameState: state, error: error);
+        yield (SingleGameSaveFailed.fromState(state)..error = error).build();
+        yield SingleGameLoaded.fromState(state).build();
       }
     }
 
@@ -535,8 +412,10 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
     }
 
     if (event is _SingleGameUpdatePlayers) {
-      yield SingleGameLoaded(
-          state: state, players: event.players, loadedPlayers: true);
+      yield (SingleGameLoaded.fromState(state)
+            ..players = event.players.toBuilder()
+            ..loadedPlayers = true)
+          .build();
     }
   }
 
@@ -727,5 +606,34 @@ class SingleGameBloc extends Bloc<SingleGameEvent, SingleGameState> {
         events: evList,
         removedEvents: BuiltList.of(removed),
         newEvents: BuiltList.of(added)));
+  }
+
+  @override
+  SingleGameState fromJson(Map<String, dynamic> json) {
+    if (!json.containsKey("type")) {
+      return SingleGameUninitialized();
+    }
+    SingleGameStateType type = SingleGameStateType.valueOf(json["type"]);
+    switch (type) {
+      case SingleGameStateType.Uninitialized:
+        return SingleGameUninitialized();
+      case SingleGameStateType.Loaded:
+        return SingleGameLoaded.fromMap(json);
+      case SingleGameStateType.Deleted:
+        return SingleGameDeleted.fromMap(json);
+      case SingleGameStateType.SaveFailed:
+        return SingleGameSaveFailed.fromMap(json);
+      case SingleGameStateType.SaveSuccessful:
+        return SingleGameSaveSuccessful.fromMap(json);
+      case SingleGameStateType.Saving:
+        return SingleGameSaving.fromMap(json);
+      default:
+        return SingleGameUninitialized();
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(SingleGameState state) {
+    return state.toMap();
   }
 }

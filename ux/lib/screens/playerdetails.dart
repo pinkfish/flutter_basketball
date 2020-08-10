@@ -25,7 +25,8 @@ class PlayerDetailsScreen extends StatelessWidget {
       create: (BuildContext context) => SinglePlayerBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
           playerUid: playerUid,
-          crashes: RepositoryProvider.of<CrashReporting>(context)),
+          crashes: RepositoryProvider.of<CrashReporting>(context),
+          loadGames: true),
       child: _PlayerDetails(playerUid),
     );
   }
@@ -52,10 +53,6 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
     return BlocConsumer(
       cubit: BlocProvider.of<SinglePlayerBloc>(context),
       listener: (BuildContext context, SinglePlayerState state) {
-        if (state is SinglePlayerLoaded && !state.loadedGames) {
-          BlocProvider.of<SinglePlayerBloc>(context)
-              .add(SinglePlayerLoadGames());
-        }
         if (state is SinglePlayerDeleted) {
           Navigator.pop(context);
         }

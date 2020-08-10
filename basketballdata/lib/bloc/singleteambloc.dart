@@ -91,12 +91,16 @@ class SingleTeamBloc extends HydratedBloc<SingleTeamEvent, SingleTeamState> {
   final String teamUid;
   final Lock _lock = new Lock();
   final CrashReporting crashes;
+  final bool loadSeasons;
 
   StreamSubscription<Team> _teamSub;
   StreamSubscription<BuiltList<Season>> _seasonSub;
 
   SingleTeamBloc(
-      {@required this.db, @required this.teamUid, @required this.crashes})
+      {@required this.db,
+      @required this.teamUid,
+      @required this.crashes,
+      this.loadSeasons = false})
       : super(SingleTeamUninitialized()) {
     _teamSub = db.getTeam(teamUid: teamUid).listen((Team t) {
       if (t != null) {
@@ -108,6 +112,13 @@ class SingleTeamBloc extends HydratedBloc<SingleTeamEvent, SingleTeamState> {
         add(_SingleTeamDeleted());
       }
     });
+    _loadStuff();
+  }
+
+  void _loadStuff() {
+    if (!(state is SingleTeamLoaded) && loadSeasons && !state.loadedSeasons) {
+      add(SingleTeamLoadSeasons());
+    }
   }
 
   @override
@@ -126,6 +137,7 @@ class SingleTeamBloc extends HydratedBloc<SingleTeamEvent, SingleTeamState> {
       yield (SingleTeamLoaded.fromState(state)
             ..team = event.newTeam.toBuilder())
           .build();
+      _loadStuff();
     }
 
     // The team is deleted.

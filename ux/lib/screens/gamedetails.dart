@@ -32,9 +32,13 @@ class GameDetailsScreen extends StatelessWidget {
       providers: [
         BlocProvider<SingleGameBloc>(
           create: (BuildContext context) => SingleGameBloc(
-              gameUid: gameUid,
-              db: BlocProvider.of<TeamsBloc>(context).db,
-              crashes: RepositoryProvider.of<CrashReporting>(context)),
+            gameUid: gameUid,
+            db: BlocProvider.of<TeamsBloc>(context).db,
+            crashes: RepositoryProvider.of<CrashReporting>(context),
+            loadGameEvents: true,
+            loadPlayers: true,
+            loadMedia: true,
+          ),
         ),
       ],
       child: OrientationBuilder(
@@ -44,18 +48,6 @@ class GameDetailsScreen extends StatelessWidget {
             listener: (BuildContext context, SingleGameState state) {
               if (state is SingleGameDeleted) {
                 Navigator.pop(context);
-              }
-              if (state is SingleGameLoaded && !state.loadedGameEvents) {
-                BlocProvider.of<SingleGameBloc>(context)
-                    .add(SingleGameLoadEvents());
-              }
-              if (state is SingleGameLoaded && !state.loadedMedia) {
-                BlocProvider.of<SingleGameBloc>(context)
-                    .add(SingleGameLoadMedia());
-              }
-              if (state is SingleGameLoaded && !state.loadedPlayers) {
-                BlocProvider.of<SingleGameBloc>(context)
-                    .add(SingleGameLoadPlayers());
               }
             },
             builder: (BuildContext context, SingleGameState state) {

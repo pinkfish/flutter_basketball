@@ -49,10 +49,11 @@ abstract class SingleGameState {
   @BuiltValueField(serialize: false)
   BuiltMap<String, Player> get players;
 
+  SingleGameStateType get type;
+
   static SingleGameStateBuilder fromState(
       SingleGameState state, SingleGameStateBuilder builder) {
     return builder
-      ..loadedSeasons = state.loadedSeasons
       ..game = state.game?.toBuilder()
       ..gameEvents = state.gameEvents.toBuilder()
       ..loadedGameEvents = state.loadedGameEvents
@@ -97,6 +98,45 @@ abstract class SingleGameLoaded
 
   static Serializer<SingleGameLoaded> get serializer =>
       _$singleGameLoadedSerializer;
+}
+
+///
+/// We have a game, default state.
+///
+abstract class SingleGameChangeEvents
+    implements
+        SingleGameState,
+        Built<SingleGameChangeEvents, SingleGameChangeEventsBuilder> {
+  BuiltList<GameEvent> get removedEvents;
+  BuiltList<GameEvent> get newEvents;
+
+  SingleGameChangeEvents._();
+  factory SingleGameChangeEvents(
+          [void Function(SingleGameChangeEventsBuilder) updates]) =
+      _$SingleGameChangeEvents;
+
+  static SingleGameChangeEventsBuilder fromState(SingleGameState state) {
+    return SingleGameState.fromState(state, SingleGameChangeEventsBuilder());
+  }
+
+  /// Defaults for the state.  Always default to no games loaded.
+  static void _initializeBuilder(SingleGameChangeEventsBuilder b) => b
+    ..type = SingleGameStateType.Loaded
+    ..loadedPlayers = false
+    ..loadedMedia = false
+    ..loadedGameEvents = false;
+
+  Map<String, dynamic> toMap() {
+    return serializers.serializeWith(SingleGameChangeEvents.serializer, this);
+  }
+
+  static SingleGameChangeEvents fromMap(Map<String, dynamic> jsonData) {
+    return serializers.deserializeWith(
+        SingleGameChangeEvents.serializer, jsonData);
+  }
+
+  static Serializer<SingleGameChangeEvents> get serializer =>
+      _$singleGameChangeEventsSerializer;
 }
 
 ///

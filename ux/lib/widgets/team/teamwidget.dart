@@ -36,18 +36,14 @@ class TeamWidget extends StatelessWidget {
     } else {
       return BlocProvider(
         create: (BuildContext context) => SingleTeamBloc(
-            teamUid: teamUid,
-            db: BlocProvider.of<TeamsBloc>(context).db,
-            crashes: RepositoryProvider.of<CrashReporting>(context)),
+          teamUid: teamUid,
+          db: BlocProvider.of<TeamsBloc>(context).db,
+          crashes: RepositoryProvider.of<CrashReporting>(context),
+          loadSeasons: true,
+        ),
         child: Builder(
-          builder: (BuildContext context) => BlocConsumer(
+          builder: (BuildContext context) => BlocBuilder(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
-            listener: (BuildContext context, SingleTeamState state) {
-              if (state is SingleTeamLoaded && !state.loadedSeasons) {
-                BlocProvider.of<SingleTeamBloc>(context)
-                    .add(SingleTeamLoadSeasons());
-              }
-            },
             builder: (BuildContext context, SingleTeamState state) {
               var widget;
               if (onlyTeamName) {

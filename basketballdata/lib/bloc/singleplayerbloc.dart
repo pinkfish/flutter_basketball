@@ -79,14 +79,25 @@ class SinglePlayerBloc
   final BasketballDatabase db;
   final Lock _lock = Lock();
   final CrashReporting crashes;
+  final bool loadGames;
 
   StreamSubscription<Player> _playerSub;
   StreamSubscription<BuiltList<Game>> _gameEventSub;
 
   SinglePlayerBloc(
-      {@required this.db, @required this.playerUid, @required this.crashes})
+      {@required this.db,
+      @required this.playerUid,
+      @required this.crashes,
+      this.loadGames = false})
       : super(SinglePlayerUninitialized()) {
     _playerSub = db.getPlayer(playerUid: playerUid).listen(_onPlayerUpdate);
+    _loadStuff();
+  }
+
+  void _loadStuff() {
+    if (!(state is SinglePlayerLoaded) && loadGames && !state.loadedGames) {
+      add(SinglePlayerLoadGames());
+    }
   }
 
   @override
@@ -117,6 +128,7 @@ class SinglePlayerBloc
       yield (SinglePlayerLoaded.fromState(state)
             ..player = event.newPlayer.toBuilder())
           .build();
+      _loadStuff();
     }
 
     // The player is deleted.

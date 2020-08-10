@@ -29,9 +29,11 @@ class AddSeasonScreen extends StatelessWidget {
           ),
           BlocProvider(
             create: (BuildContext context) => SingleTeamBloc(
-                db: RepositoryProvider.of<BasketballDatabase>(context),
-                teamUid: this.teamUid,
-                crashes: RepositoryProvider.of<CrashReporting>(context)),
+              db: RepositoryProvider.of<BasketballDatabase>(context),
+              teamUid: this.teamUid,
+              crashes: RepositoryProvider.of<CrashReporting>(context),
+              loadSeasons: true,
+            ),
           ),
         ],
         child: _AddSeasonForm(teamUid),
@@ -76,13 +78,8 @@ class _AddSeasonFormState extends State<_AddSeasonForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer(
+    return BlocBuilder(
       cubit: BlocProvider.of<SingleTeamBloc>(context),
-      listener: (BuildContext context, SingleTeamState teamState) {
-        if (teamState is SingleTeamLoaded && !teamState.loadedSeasons) {
-          BlocProvider.of<SingleTeamBloc>(context).add(SingleTeamLoadSeasons());
-        }
-      },
       builder: (BuildContext context, SingleTeamState teamState) =>
           BlocConsumer(
         cubit: BlocProvider.of<AddSeasonBloc>(context),

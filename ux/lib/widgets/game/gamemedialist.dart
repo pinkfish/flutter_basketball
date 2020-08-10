@@ -1,4 +1,4 @@
-import 'package:basketballdata/bloc/singlegamebloc.dart';
+import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/messages.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +13,18 @@ import '../media/mediatypelisttile.dart';
 class GameMediaList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer(
+    return BlocBuilder(
       cubit: BlocProvider.of<SingleGameBloc>(context),
-      listener: (BuildContext context, SingleGameState state) {
-        print("Got state $state");
+      builder: (BuildContext context, SingleGameState state) {
+        Widget stuff;
+
+        // Load stuff.
         if (state is SingleGameLoaded && !state.loadedMedia) {
           BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadMedia());
         }
         if (state is SingleGameLoaded && !state.loadedGameEvents) {
           BlocProvider.of<SingleGameBloc>(context).add(SingleGameLoadEvents());
         }
-      },
-      builder: (BuildContext context, SingleGameState state) {
-        Widget stuff;
 
         if (state is SingleGameUninitialized || !state.loadedMedia) {
           stuff = Text(Messages.of(context).loadingText);
