@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
-import 'package:basketballstats/services/sqldbraw.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
+
+import 'localutilities.dart';
 
 class _UploadTask {
   final UploadData data;
@@ -20,7 +20,7 @@ class UploadFilesBackground {
   final Uuid uuid = new Uuid(options: {'grng': UuidUtil.cryptoRNG});
   final Box<Map<String, dynamic>> box;
 
-  UploadFilesBackground() : box = Hive.box(LocalStorageData.uploadsBox) {
+  UploadFilesBackground() : box = Hive.box(LocalUtilities.uploadsBox) {
     // Wait till we get a database, then load everything.
     var uploads = box.values.map((d) => UploadData.fromMap(d)).toList();
     _restartUploads(uploads);
@@ -72,7 +72,7 @@ class UploadFilesBackground {
           ..videoUid = videoUid
           ..gcsPath = uploadPath
           ..localPath = path
-          ..uid = uuid.v5(Uuid.NAMESPACE_OID, SQLDBRaw.uploadTable)),
+          ..uid = uuid.v5(Uuid.NAMESPACE_OID, LocalUtilities.uploadsBox)),
         task);
     task.onComplete.then((value) => _doRemoval(data.data));
     _data.add(data);

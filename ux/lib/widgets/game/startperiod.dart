@@ -1,11 +1,11 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
-import 'package:basketballstats/widgets/game/perioddropdown.dart';
-import 'package:basketballstats/widgets/game/playermultiselect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../messages.dart';
+import '../../services/localutilities.dart';
+import '../game/perioddropdown.dart';
+import '../game/playermultiselect.dart';
 
 ///
 /// Pulls up some data to start the period.
@@ -32,7 +32,7 @@ class _StartPeriodState extends State<StartPeriod> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: LocalStorageData.isDark(context)
+        color: LocalUtilities.isDark(context)
             ? Theme.of(context).backgroundColor
             : Colors.white,
       ),
@@ -73,9 +73,9 @@ class _StartPeriodState extends State<StartPeriod> {
               ),
               SizedBox(width: 30.0),
               FlatButton(
-                color: LocalStorageData.isDark(context)
+                color: LocalUtilities.isDark(context)
                     ? Theme.of(context).primaryColor
-                    : LocalStorageData.brighten(
+                    : LocalUtilities.brighten(
                         Theme.of(context).accentColor, 80),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),

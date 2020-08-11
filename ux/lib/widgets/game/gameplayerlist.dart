@@ -1,7 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/localutilities.dart';
 import '../player/playertile.dart';
 
 typedef void SelectPlayerCallback(BuildContext context, String playerUid);
@@ -38,9 +38,9 @@ class GamePlayerList extends StatelessWidget {
               editButton: false,
               color: selectedPlayer == playerUid
                   ? Theme.of(context).splashColor
-                  : LocalStorageData.isDark(context)
+                  : LocalUtilities.isDark(context)
                       ? Theme.of(context).primaryColor
-                      : LocalStorageData.brighten(
+                      : LocalUtilities.brighten(
                           Theme.of(context).primaryColor, 80),
               onTap: onSelectPlayer != null
                   ? (String playerUid) => onSelectPlayer(context, playerUid)

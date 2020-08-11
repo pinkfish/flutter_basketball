@@ -1,7 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/localutilities.dart';
 import '../player/playertile.dart';
 
 typedef void PlayerSelectFunction(String uid, bool selected);
@@ -49,18 +49,18 @@ class PlayerMultiselect extends StatelessWidget {
     Color mainColorSelected;
     Color selectedBorder;
     Color unSelectedBorder;
-    if (LocalStorageData.isDark(context)) {
+    if (LocalUtilities.isDark(context)) {
       mainColor = Theme.of(context).primaryColor;
       mainColorSelected = Theme.of(context).primaryColor;
       selectedBorder = Theme.of(context).indicatorColor;
       unSelectedBorder = Theme.of(context).primaryColor;
     } else {
-      mainColor = LocalStorageData.brighten(Theme.of(context).primaryColor, 96);
+      mainColor = LocalUtilities.brighten(Theme.of(context).primaryColor, 96);
       mainColorSelected =
-          LocalStorageData.brighten(Theme.of(context).primaryColor, 90);
+          LocalUtilities.brighten(Theme.of(context).primaryColor, 90);
       selectedBorder = Theme.of(context).indicatorColor;
       unSelectedBorder =
-          LocalStorageData.brighten(Theme.of(context).primaryColor, 60);
+          LocalUtilities.brighten(Theme.of(context).primaryColor, 60);
     }
     return ordered
         .map(

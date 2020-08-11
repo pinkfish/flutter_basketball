@@ -218,7 +218,7 @@ abstract class SingleTeamDeleted
     ..loadedSeasons = false;
 
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(SingleTeamSaveFailed.serializer, this);
+    return serializers.serializeWith(SingleTeamDeleted.serializer, this);
   }
 
   static SingleTeamDeleted fromMap(Map<String, dynamic> jsonData) {

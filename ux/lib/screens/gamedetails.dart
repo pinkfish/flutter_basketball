@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
-import 'package:basketballstats/widgets/game/gameduration.dart';
-import 'package:basketballstats/widgets/game/playerdatatable.dart';
+import '../widgets/game/gameduration.dart';
+import '../widgets/game/playerdatatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +10,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:tuple/tuple.dart';
 
 import '../messages.dart';
+import '../services/localutilities.dart';
 import '../widgets/deleted.dart';
 import '../widgets/game/gameshotlocations.dart';
 import '../widgets/game/gametimeseries.dart';
@@ -86,7 +86,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
             : Text(
                 "vs " + widget.state.game.opponentName,
                 style: Theme.of(context).textTheme.headline5.copyWith(
-                    color: (LocalStorageData.isDark(context)
+                    color: (LocalUtilities.isDark(context)
                         ? Colors.white
                         : Colors.white)),
               ),
@@ -199,7 +199,7 @@ class _GameDetailsScaffoldState extends State<_GameDetailsScaffold> {
     if (_currentIndex == 0) {
       TextStyle headerStyle = Theme.of(context).textTheme.subtitle1.copyWith(
           fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.25,
-          color: LocalStorageData.darken(Theme.of(context).indicatorColor, 20),
+          color: LocalUtilities.darken(Theme.of(context).indicatorColor, 20),
           fontWeight: FontWeight.bold);
       TextStyle dataStyle = Theme.of(context).textTheme.subtitle1.copyWith(
             fontSize: Theme.of(context).textTheme.subtitle1.fontSize * 1.35,

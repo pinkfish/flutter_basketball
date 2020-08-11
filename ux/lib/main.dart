@@ -1,5 +1,3 @@
-import 'package:basketballstats/services/crashreportingservice.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +8,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'basketballstatsapp.dart';
+import 'services/crashreportingservice.dart';
+import 'services/localutilities.dart';
 
 FirebaseAnalytics analytics = FirebaseAnalytics();
 CrashReportingService crashReportingService = CrashReportingService();
@@ -31,7 +31,10 @@ void main() async {
   analytics.logAppOpen();
 
   await Hive.initFlutter();
-  await Hive.openBox(LocalStorageData.settingsBox);
+  await Hive.openBox(LocalUtilities.settingsBox);
+  if (!Hive.isBoxOpen(LocalUtilities.uploadsBox)) {
+    await Hive.openBox<Map<String, dynamic>>(LocalUtilities.uploadsBox);
+  }
 
   HydratedBloc.storage = await HydratedStorage.build();
 

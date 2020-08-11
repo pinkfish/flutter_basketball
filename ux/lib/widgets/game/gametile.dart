@@ -1,10 +1,10 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../messages.dart';
+import '../../services/localutilities.dart';
 
 class GameTile extends StatelessWidget {
   final Game game;
@@ -40,17 +40,14 @@ class GameTile extends StatelessWidget {
           gradient: LinearGradient(
             //begin: Alignment.bottomLeft,
             //end: Alignment.topRight,
-            colors: LocalStorageData.isDark(context)
+            colors: LocalUtilities.isDark(context)
                 ? [
-                    LocalStorageData.brighten(
-                        Theme.of(context).primaryColor, 10),
+                    LocalUtilities.brighten(Theme.of(context).primaryColor, 10),
                     Theme.of(context).splashColor,
                   ]
                 : [
-                    LocalStorageData.brighten(
-                        Theme.of(context).primaryColor, 90),
-                    LocalStorageData.brighten(
-                        Theme.of(context).primaryColor, 95),
+                    LocalUtilities.brighten(Theme.of(context).primaryColor, 90),
+                    LocalUtilities.brighten(Theme.of(context).primaryColor, 95),
                   ],
           ),
         ),

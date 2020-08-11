@@ -5,7 +5,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../messages.dart';
-import '../services/localstoragedata.dart';
+import '../services/localutilities.dart';
 
 ///
 /// Shows settings for the app.
@@ -30,8 +30,8 @@ class SettingsScreen extends StatelessWidget {
                 leading: Icon(Icons.lightbulb_outline),
                 switchValue: mode == ThemeMode.light,
                 onToggle: (bool value) {
-                  Hive.box(LocalStorageData.settingsBox).put(
-                      LocalStorageData.themeMode,
+                  Hive.box(LocalUtilities.settingsBox).put(
+                      LocalUtilities.themeMode,
                       value
                           ? ThemeMode.light.toString()
                           : ThemeMode.dark.toString());

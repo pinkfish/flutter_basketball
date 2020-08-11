@@ -10,14 +10,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:localstorage/localstorage.dart';
 
 import 'messages.dart';
 import 'routes.dart';
 import 'screens/splashscreen.dart';
 import 'services/authenticationbloc.dart';
 import 'services/crashreportingservice.dart';
-import 'services/localstoragedata.dart';
+import 'services/localutilities.dart';
 import 'services/loginbloc.dart';
 import 'services/mediastreaming.dart';
 import 'services/multiplexdatabase.dart';
@@ -43,7 +42,6 @@ class BasketballStatsApp extends StatelessWidget {
     print("MyApp");
     // Log an error if the db fails to open.
     var db = SQLDBRaw();
-    var localStorage = LocalStorage("basketballstats");
 
     return MultiRepositoryProvider(
       providers: [
@@ -62,10 +60,6 @@ class BasketballStatsApp extends StatelessWidget {
         ),
         RepositoryProvider<UploadFilesBackground>(
           create: (BuildContext context) => UploadFilesBackground(),
-          lazy: false,
-        ),
-        RepositoryProvider<LocalStorage>(
-          create: (BuildContext contxt) => localStorage,
           lazy: false,
         ),
         RepositoryProvider<Router>(
@@ -92,9 +86,9 @@ class BasketballStatsApp extends StatelessWidget {
           ),
         ],
         child: ValueListenableBuilder(
-          valueListenable: Hive.box(LocalStorageData.settingsBox).listenable(),
+          valueListenable: Hive.box(LocalUtilities.settingsBox).listenable(),
           builder: (BuildContext context, Box<dynamic> box, Widget widget) {
-            var str = box.get(LocalStorageData.themeMode);
+            var str = box.get(LocalUtilities.themeMode);
             var mode = ThemeMode.values.firstWhere(
                 (element) => element.toString() == str,
                 orElse: () => ThemeMode.light);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 /// Simple helpers to deal with common queries for the local storage
 /// data.
 ///
-class LocalStorageData {
+class LocalUtilities {
   static String themeMode = "ThemeMode";
   static String settingsBox = "settings";
   static String uploadsBox = "uploads";

@@ -1,7 +1,7 @@
-import 'package:basketballstats/services/authenticationbloc.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
-import 'package:basketballstats/services/loginbloc.dart';
-import 'package:basketballstats/widgets/util/gfdrawerheader.dart';
+import '../services/authenticationbloc.dart';
+import '../services/localutilities.dart';
+import '../services/loginbloc.dart';
+import '../widgets/util/gfdrawerheader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -52,7 +52,7 @@ class StatsDrawer extends StatelessWidget {
                       //end: Alignment.topRight,
                       colors: [
                         Theme.of(context).primaryColor,
-                        LocalStorageData.brighten(
+                        LocalUtilities.brighten(
                             Theme.of(context).primaryColor, 60),
                       ],
                     ),

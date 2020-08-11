@@ -1,10 +1,10 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../messages.dart';
+import '../../services/localutilities.dart';
 import '../chart/durationtimeaxisspec.dart';
 import '../chart/stuff/durationserieschart.dart';
 import '../loading.dart';
@@ -295,7 +295,7 @@ class _GameTimeseriesData extends State<GameTimeseries> {
         renderSpec: charts.SmallTickRendererSpec(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: LocalStorageData.isDark(context)
+            color: LocalUtilities.isDark(context)
                 ? charts.Color.white
                 : charts.Color.black,
           ),
@@ -306,7 +306,7 @@ class _GameTimeseriesData extends State<GameTimeseries> {
         renderSpec: charts.SmallTickRendererSpec<Duration>(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: LocalStorageData.isDark(context)
+            color: LocalUtilities.isDark(context)
                 ? charts.Color.white
                 : charts.Color.black,
           ),

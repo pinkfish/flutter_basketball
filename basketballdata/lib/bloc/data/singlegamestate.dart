@@ -282,7 +282,7 @@ abstract class SingleGameDeleted
     ..loadedGameEvents = false;
 
   Map<String, dynamic> toMap() {
-    return serializers.serializeWith(SingleGameSaveFailed.serializer, this);
+    return serializers.serializeWith(SingleGameDeleted.serializer, this);
   }
 
   static SingleGameDeleted fromMap(Map<String, dynamic> jsonData) {

@@ -1,9 +1,9 @@
 import 'package:basketballdata/basketballdata.dart';
-import 'package:basketballstats/services/localstoragedata.dart';
-import 'package:basketballstats/widgets/player/playerdropdown.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
+import '../../services/localutilities.dart';
+import '../player/playerdropdown.dart';
 import '../../messages.dart';
 
 enum ShowGameData {
@@ -171,7 +171,7 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
         renderSpec: charts.SmallTickRendererSpec(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: LocalStorageData.isDark(context)
+            color: LocalUtilities.isDark(context)
                 ? charts.Color.white
                 : charts.Color.black,
           ),
@@ -182,7 +182,7 @@ class _TeamSeasonStatsData extends State<TeamSeasonStats> {
         renderSpec: charts.SmallTickRendererSpec<DateTime>(
           labelStyle: charts.TextStyleSpec(
             fontSize: 18,
-            color: LocalStorageData.isDark(context)
+            color: LocalUtilities.isDark(context)
                 ? charts.Color.white
                 : charts.Color.black,
           ),
