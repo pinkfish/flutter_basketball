@@ -5,37 +5,12 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.043883914">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.040075">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: Switch to android build_and_push_to_play_store_track_github lane" time="0.002714562">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="2: get_github_release" time="0.085460891">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="3: Switch to android create_icons lane" time="0.002433345">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="4: android_appicon" time="1.647649786">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="5: cd ../.. &amp;&amp; flutter build appbundle --target-platform android-arm,android-arm64,android-x64 --build-name=0.3.9 --build-number=372" time="330.998059861">
-        
-      </testcase>
-    
-      
-      <testcase classname="fastlane.lanes" name="6: upload_to_play_store" time="69.500681793">
+      <testcase classname="fastlane.lanes" name="1: Switch to android build_and_push_to_play_store_track_github lane" time="0.002751">
         
       </testcase>
     
