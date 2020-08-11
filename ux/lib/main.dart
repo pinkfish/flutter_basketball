@@ -20,6 +20,9 @@ void main() async {
   // Setup crash reporting.
   crashReportingService.setUser(null);
 
+  //newBuiltValueToStringHelper =
+  //    (String className) => JustClassNameBuiltValueToStringHelper(className);
+
   // Start startup trace.
   Trace trace;
   if (!kIsWeb) {
@@ -44,10 +47,15 @@ void main() async {
   runApp(BasketballStatsApp(false, trace, analytics, crashReportingService));
 }
 
+///
+/// Simple delegate to print out the transitions.
+///
 class _SimpleBlocDelegate extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    print(transition);
+    print("Transition: ${transition.currentState.runtimeType.toString()} "
+        "event: ${transition.event.runtimeType.toString()} "
+        "nextState: ${transition.nextState.runtimeType.toString()}");
   }
 }
