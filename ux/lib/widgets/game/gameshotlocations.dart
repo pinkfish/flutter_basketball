@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -63,9 +64,16 @@ class _GameShotLocationsState extends State<GameShotLocations>
   Widget _courtDetails(BuildContext context, BoxConstraints box) {
     return Stack(
       children: <Widget>[
-        SvgPicture.asset(
-          "assets/images/Basketball_Halfcourt.svg",
-        ),
+        kIsWeb
+            ? Image.network(
+                "assets/images/Basketball_Halfcourt.svg",
+                fit: BoxFit.contain,
+                height: min(box.maxWidth, box.maxHeight),
+                width: min(box.maxWidth, box.maxHeight),
+              )
+            : SvgPicture.asset(
+                "assets/images/Basketball_Halfcourt.svg",
+              ),
         SizedBox(
           height: min(box.maxWidth, box.maxHeight),
           width: min(box.maxWidth, box.maxHeight),

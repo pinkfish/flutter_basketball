@@ -243,25 +243,21 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
           body: BlocConsumer(
             cubit: BlocProvider.of<SingleTeamBloc>(context),
             listener: (BuildContext context, SingleTeamState state) {
-              if (!state.loadedSeasons && !(state is SingleTeamUninitialized)) {
-                BlocProvider.of<SingleTeamBloc>(context)
-                    .add(SingleTeamLoadSeasons());
-              }
               if (state is SingleTeamDeleted) {
                 print("Pop deleted");
                 Navigator.pop(context);
               }
+            },
+            builder: (BuildContext context, SingleTeamState state) {
+              // Setup the opened season.
               if (state is SingleTeamLoaded) {
                 if (!_loaded) {
-                  setState(() {
                     _expandedPanels.add(state.team.currentSeasonUid);
                     _seasonPlayers = state.team.currentSeasonUid;
-                  });
                 }
                 _loaded = true;
               }
-            },
-            builder: (BuildContext context, SingleTeamState state) {
+
               if (state is SingleTeamDeleted) {
                 return DeletedWidget();
               }
