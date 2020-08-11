@@ -31,6 +31,7 @@ export 'data/game/gameeventtype.dart';
 export 'data/game/gameperiod.dart';
 export 'data/game/gamesummary.dart';
 export 'data/game/playergamesummary.dart';
+export 'data/game/gamefoultype.dart';
 export 'data/invites/invite.dart';
 export 'data/invites/invitetoteam.dart';
 export 'data/media/mediainfo.dart';

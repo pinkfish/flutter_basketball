@@ -230,6 +230,9 @@ class Messages {
   String get selectMediaType => Intl.message("Select Media",
       desc: "Title for the dialog to select a video", locale: locale);
 
+  String get selectPlayer => Intl.message("Select Player",
+      desc: "Selects the player for the event", locale: locale);
+
   String get videoMediaType =>
       Intl.message("Upload Video", desc: "Upload a video", locale: locale);
 
@@ -344,6 +347,25 @@ class Messages {
     }
     return unknown;
   }
+
+  String foultype(GameFoulType type) {
+    switch (type) {
+      case GameFoulType.Personal:
+        return personalFoulType;
+      case GameFoulType.Flagrant:
+        return flagrantFoulType;
+      case GameFoulType.Technical:
+        return technicalFoulType;
+    }
+    return unknown;
+  }
+
+  String get personalFoulType =>
+      Intl.message('Personal Foul', desc: 'Personal foul type', locale: locale);
+  String get technicalFoulType => Intl.message('Technical Foul',
+      desc: 'Technical foul type', locale: locale);
+  String get flagrantFoulType =>
+      Intl.message('Flagrant Foul', desc: 'Flagrant foul type', locale: locale);
 
   String get loginFailureBadPassword =>
       Intl.message('Email and/or password incorrect',

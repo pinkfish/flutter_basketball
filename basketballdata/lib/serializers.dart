@@ -20,6 +20,7 @@ import 'data/ant/broadcasttype.dart';
 import 'data/game/game.dart';
 import 'data/game/gameevent.dart';
 import 'data/game/gameeventtype.dart';
+import 'data/game/gamefoultype.dart';
 import 'data/game/gameofficalresults.dart';
 import 'data/game/gameperiod.dart';
 import 'data/game/gameplace.dart';
@@ -58,6 +59,7 @@ part 'serializers.g.dart';
   GameEvent,
   GameEventType,
   GameEventLocation,
+  GameFoulType,
   GameOfficalResults,
   GamePeriod,
   GamePlace,

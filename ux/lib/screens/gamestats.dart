@@ -123,10 +123,30 @@ class GameStatsScreen extends StatelessWidget {
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Select the player.
+    GamePlayerExtraButtons extra;
+    GameFoulType foulType;
+    if (type == GameEventType.Foul) {
+      foulType = GameFoulType.Personal;
+      extra = (c) => [
+            DropdownButton<GameFoulType>(
+              value: foulType,
+              onChanged: (GameFoulType t) => foulType = t,
+              items: GameFoulType.values.map(
+                (i) => DropdownMenuItem(
+                  value: i,
+                  child: Text(Messages.of(context).foultype(i)),
+                ),
+              ),
+            ),
+          ];
+    }
     String playerUid = await showDialog<String>(
         context: context,
         builder: (BuildContext context) {
-          return GamePlayerDialog(game: bloc.state.game);
+          return GamePlayerDialog(
+            game: bloc.state.game,
+            extraButtons: extra,
+          );
         });
     if (playerUid == null) {
       return;
@@ -141,6 +161,7 @@ class GameStatsScreen extends StatelessWidget {
         ..opponent = bloc.state.game.opponents.containsKey(playerUid)
         ..eventTimeline = bloc.state.game.currentGameTime
         ..timestamp = DateTime.now().toUtc()
+        ..foulType = foulType
         ..type = type),
       false,
     );

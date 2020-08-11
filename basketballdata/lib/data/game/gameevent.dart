@@ -3,6 +3,7 @@ import 'package:built_value/serializer.dart';
 
 import '../../serializers.dart';
 import 'gameeventtype.dart';
+import 'gamefoultype.dart';
 import 'gameperiod.dart';
 
 part 'gameevent.g.dart';
@@ -36,6 +37,9 @@ abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
 
   @nullable
   String get replacementPlayerUid;
+
+  @nullable
+  GameFoulType get foulType;
 
   static void _initializeBuilder(GameEventBuilder b) =>
       b..eventTimeline = Duration(seconds: 0);
