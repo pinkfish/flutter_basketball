@@ -64,6 +64,7 @@ jobs:
       with:
         artifacts: "build/app/outputs/apk/debug/*.apk"
         token: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"

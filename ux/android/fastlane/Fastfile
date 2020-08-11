@@ -75,9 +75,9 @@ platform :android do
    desc "Build and push to play store track"
     private_lane :build_and_push_to_play_store_track_github do |options|
       # Use the github run number + 300 to be past the existing build numbers.
-      #@build_number = ENV["GITHUB_RUN_NUMBER"].to_i + 300
-      puts DateTime.now.to_time.to_i/600
-      @build_number = DateTime.now.to_time.to_i/600
+      @build_number = ENV["GITHUB_RUN_NUMBER"].to_i + 380
+      #puts DateTime.now.to_time.to_i/600
+      #@build_number = DateTime.now.to_time.to_i/600
       puts @build_number
 
       github_api_token = ENV["FL_GITHUB_RELEASE_API_TOKEN"]

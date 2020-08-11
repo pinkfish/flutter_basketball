@@ -71,6 +71,7 @@ jobs:
       with:
         artifacts: "build/ios/iphoneos/*.app"
         token: ${{ secrets.GITHUB_TOKEN }}
+      continue-on-error: true
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
