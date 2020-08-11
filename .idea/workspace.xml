@@ -5,6 +5,7 @@
       <change afterPath="$PROJECT_DIR$/ux/lib/services/builtvalueprint.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/screens/gamevideo.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

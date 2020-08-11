@@ -1,4 +1,5 @@
 import 'package:basketballdata/basketballdata.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -106,16 +107,20 @@ class _GameVideoScaffoldState extends State<_GameVideoScaffold> {
                 ),
                 SimpleDialogOption(
                   onPressed: () =>
-                      Navigator.pop(context, MediaType.VideoStreaming),
-                  child:
-                      Text(Messages.of(context).streamMediaType, style: style),
-                ),
-                SimpleDialogOption(
-                  onPressed: () =>
                       Navigator.pop(context, MediaType.VideoOnDemand),
                   child:
                       Text(Messages.of(context).videoMediaType, style: style),
                 ),
+                ...(kIsWeb
+                    ? []
+                    : [
+                        SimpleDialogOption(
+                          onPressed: () =>
+                              Navigator.pop(context, MediaType.VideoStreaming),
+                          child: Text(Messages.of(context).streamMediaType,
+                              style: style),
+                        ),
+                      ]),
               ]);
         })) {
       case MediaType.Image:
