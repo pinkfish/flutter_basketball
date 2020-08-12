@@ -19,6 +19,7 @@ class CrashReportingService implements CrashReporting {
     if (kIsWeb) {
       Crashlytics.instance.recordFlutterError(details);
     }
+    print(details);
   }
 
   void setUser(FirebaseUser user) async {

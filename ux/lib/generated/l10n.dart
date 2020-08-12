@@ -407,6 +407,8 @@ class S {
 
   // skipped getter for the 'Select Media' key
 
+  // skipped getter for the 'Select Player' key
+
   // skipped getter for the 'Upload Video' key
 
   /// `Photo`
@@ -539,12 +541,32 @@ class S {
     );
   }
 
+  /// `SKIP`
+  String get SKIP {
+    return Intl.message(
+      'SKIP',
+      name: 'SKIP',
+      desc: 'Skip button text',
+      args: [],
+    );
+  }
+
   /// `CREATE`
   String get CREATE {
     return Intl.message(
       'CREATE',
       name: 'CREATE',
       desc: 'Create account button text',
+      args: [],
+    );
+  }
+
+  /// `DONE`
+  String get DONE {
+    return Intl.message(
+      'DONE',
+      name: 'DONE',
+      desc: 'Done completely button',
       args: [],
     );
   }
@@ -566,6 +588,22 @@ class S {
   // skipped getter for the 'Verify password' key
 
   // skipped getter for the 'Please fix the items outlined in red' key
+
+  /// `Optional`
+  String get Optional {
+    return Intl.message(
+      'Optional',
+      name: 'Optional',
+      desc: 'Optional subtitle for a stepper',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'Personal Foul' key
+
+  // skipped getter for the 'Technical Foul' key
+
+  // skipped getter for the 'Flagrant Foul' key
 
   // skipped getter for the 'Email and/or password incorrect' key
 

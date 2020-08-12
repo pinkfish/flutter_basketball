@@ -698,7 +698,7 @@ class Messages {
   String get turnOverEventType => Intl.message("Turnover",
       desc: "Caused a turnover", locale: locale, name: "turnOverEventType");
 
-  String get assistTitle => Intl.message("Assisted",
+  String get assistTitle => Intl.message("Assists",
       desc: "Title for the section on a player assist", locale: locale);
 
   String periodStart(String periodName) {

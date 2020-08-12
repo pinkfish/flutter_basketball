@@ -22,6 +22,7 @@ class PlayerTile extends StatelessWidget {
   final PlayerCallbackFunc onTap;
   final bool editButton;
   final Color color;
+  final Color contentColor;
   final ShapeBorder shape;
   final bool compactDisplay;
   final PlayerExtraFunc extra;
@@ -34,6 +35,7 @@ class PlayerTile extends StatelessWidget {
       this.onTap,
       this.editButton = true,
       this.color,
+      this.contentColor,
       this.summary,
       this.shape,
       this.extra,
@@ -193,29 +195,30 @@ class PlayerTile extends StatelessWidget {
           title: Text(
             player.name,
             style: Theme.of(context).textTheme.headline6.copyWith(
-                fontSize: min(box.maxHeight - 3,
+                fontSize: min(box.maxHeight - 5,
                     Theme.of(context).textTheme.headline6.fontSize)),
             overflow: TextOverflow.ellipsis,
             textScaleFactor: 1.0,
           ),
           leading: ConstrainedBox(
             constraints: BoxConstraints.tightFor(
-                height: min(40.0, box.maxHeight - 4),
-                width: min(40.0, box.maxHeight - 4)),
+                height: min(40.0, box.maxHeight - 6),
+                width: min(40.0, box.maxHeight - 6)),
             child: Container(
               child: Center(
                 child: Text(
                   player.jerseyNumber,
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        color: Theme.of(context).accentColor,
+                        color: contentColor ?? Theme.of(context).accentColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: min(20.0, box.maxHeight - 10),
+                        fontSize: min(20.0, box.maxHeight - 12),
                       ),
                 ),
               ),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Theme.of(context).primaryColor),
+                border: Border.all(
+                    color: contentColor ?? Theme.of(context).primaryColor),
               ),
             ),
           ),

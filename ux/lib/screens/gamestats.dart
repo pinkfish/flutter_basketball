@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:basketballdata/basketballdata.dart';
@@ -143,18 +144,24 @@ class GameStatsScreen extends StatelessWidget {
     // Select the player.
     GamePlayerExtraButtons extra;
     GameFoulType foulType;
+    StreamController<bool> updateDialogStream = StreamController<bool>();
     if (type == GameEventType.Foul) {
       foulType = GameFoulType.Personal;
       extra = (c) => [
             DropdownButton<GameFoulType>(
               value: foulType,
-              onChanged: (GameFoulType t) => foulType = t,
-              items: GameFoulType.values.map(
-                (i) => DropdownMenuItem(
-                  value: i,
-                  child: Text(Messages.of(context).foultype(i)),
-                ),
-              ),
+              onChanged: (GameFoulType t) {
+                foulType = t;
+                updateDialogStream.add(true);
+              },
+              items: GameFoulType.values
+                  .map(
+                    (i) => DropdownMenuItem(
+                      value: i,
+                      child: Text(Messages.of(context).foultype(i)),
+                    ),
+                  )
+                  .toList(),
             ),
           ];
     }
@@ -162,10 +169,12 @@ class GameStatsScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return GamePlayerDialog(
+            changeStream: updateDialogStream.stream,
             game: bloc.state.game,
             extraButtons: extra,
           );
         });
+    updateDialogStream.close();
     if (playerUid == null) {
       return;
     }
@@ -514,114 +523,155 @@ class GameStatsScreen extends StatelessWidget {
               create: (BuildContext context) => GameEventUndoStack(
                 db: RepositoryProvider.of<BasketballDatabase>(context),
               ),
-            )
+            ),
+            BlocProvider<AddPlayerBloc>(
+              create: (BuildContext context) => AddPlayerBloc(
+                  db: BlocProvider.of<TeamsBloc>(context).db,
+                  crashes: RepositoryProvider.of<CrashReporting>(context)),
+            ),
           ],
           child: OrientationBuilder(
             builder: (BuildContext context, Orientation orientation) =>
-                AnimatedSwitcher(
-              duration: Duration(milliseconds: 500),
-              child: BlocBuilder(
-                cubit: BlocProvider.of<SingleGameBloc>(context),
-                builder: (BuildContext context, SingleGameState state) {
-                  // Preload the undo set if it is not yet loaded.
-                  if (state is SingleGameLoaded && state.loadedGameEvents) {
-                    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
-                    print("undoBloc $undoBloc");
-                    if (undoBloc.isGameEmpty) {
-                      // Fill in with all these stats.
-                      for (GameEvent ev in state.gameEvents) {
-                        undoBloc.addEvent(ev, true);
+                BlocListener(
+              cubit: BlocProvider.of<AddPlayerBloc>(context),
+              listener: (BuildContext context, AddItemState state) {
+                // Once we make the player, save it to the game.
+                if (state is AddItemDone) {
+                  print("Saved player ${state.uid}");
+                  BlocProvider.of<SingleGameBloc>(context)
+                      .add(SingleGameAddPlayer(
+                    playerUid: state.uid,
+                    opponent: true,
+                  ));
+                }
+              },
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 500),
+                child: BlocBuilder(
+                  cubit: BlocProvider.of<SingleGameBloc>(context),
+                  builder: (BuildContext context, SingleGameState state) {
+                    // Preload the undo set if it is not yet loaded.
+                    if (state is SingleGameLoaded && state.loadedGameEvents) {
+                      var undoBloc =
+                          BlocProvider.of<GameEventUndoStack>(context);
+                      print("undoBloc $undoBloc");
+                      if (undoBloc.isGameEmpty) {
+                        // Fill in with all these stats.
+                        for (GameEvent ev in state.gameEvents) {
+                          undoBloc.addEvent(ev, true);
+                        }
                       }
                     }
-                  }
 
-                  if (state is SingleGameUninitialized ||
-                      (state is SingleGameLoaded && !state.loadedGameEvents)) {
-                    return LoadingWidget(
-                      showAppBar: true,
-                      game: state.game,
-                    );
-                  }
-                  if ((state.loadedGameEvents &&
-                          (state.gameEvents.length == 0 ||
-                              state.gameEvents.last.type ==
-                                  GameEventType.PeriodEnd)) ||
-                      state.game?.currentPeriod == GamePeriod.NotStarted) {
-                    return BlocBuilder(
-                      cubit: BlocProvider.of<SingleSeasonBloc>(context),
-                      builder: (BuildContext context,
-                          SingleSeasonState seasonState) {
-                        if (seasonState is SingleSeasonUninitialized) {
-                          return LoadingWidget();
-                        }
-                        return StartPeriod(
-                          game: state.game,
-                          season: seasonState.season,
-                          orientation: orientation,
+                    if (state is SingleGameUninitialized ||
+                        (state is SingleGameLoaded &&
+                            !state.loadedGameEvents)) {
+                      return LoadingWidget(
+                        showAppBar: true,
+                        game: state.game,
+                      );
+                    }
+
+                    if (state is SingleGameLoaded &&
+                        state.game.opponents.isEmpty) {
+                      // ignore: close_sinks
+                      var addPlayerBloc =
+                          BlocProvider.of<AddPlayerBloc>(context);
+                      if (addPlayerBloc.state is AddItemUninitialized) {
+                        print("Adding missing opponent");
+                        addPlayerBloc.add(
+                          AddPlayerEventCommit(
+                              newPlayer: Player((b) => b
+                                ..name = state.game.opponentName.isNotEmpty
+                                    ? state.game.opponentName
+                                    : "default"
+                                ..jerseyNumber = "xx")),
                         );
-                      },
-                    );
-                  }
-                  if (state.loadedGameEvents &&
-                      (state.gameEvents.length == 0 ||
-                          state.gameEvents.last.type ==
-                              GameEventType.TimeoutStart)) {
-                    return TimeoutEnd(game: state.game);
-                  }
-                  if (orientation == Orientation.landscape) {
-                    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
-                    return Row(
-                      children: <Widget>[
-                        LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints boxConstraint) =>
-                              _buildPointSection(
-                                  context, boxConstraint, orientation),
-                        ),
-                        Expanded(
-                          child: _GameStateSection(
-                              undoBloc, orientation, _selectPeriod),
-                        ),
-                        LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints boxConstraint) =>
-                              _buildDefenceSection(
-                                  context, boxConstraint, orientation),
-                        ),
-                      ],
-                    );
-                  } else {
-                    var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
-                    return Column(
-                      children: <Widget>[
-                        LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints boxConstraint) =>
-                              _buildPointSection(
-                                  context, boxConstraint, orientation),
-                        ),
-                        Divider(),
-                        Expanded(
-                          child: _GameStateSection(
-                              undoBloc, orientation, _selectPeriod),
-                        ),
-                        Divider(),
-                        LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints boxConstraint) =>
-                              _buildDefenceSection(
-                                  context, boxConstraint, orientation),
-                        ),
-                        LayoutBuilder(
-                          builder: (BuildContext context,
-                                  BoxConstraints boxConstraint) =>
-                              _buildSubButtons(
-                                  context, orientation, boxConstraint),
-                        ),
-                      ],
-                    );
-                  }
-                },
+                      }
+                    }
+                    if ((state.loadedGameEvents &&
+                            (state.gameEvents.length == 0 ||
+                                state.gameEvents.last.type ==
+                                    GameEventType.PeriodEnd)) ||
+                        state.game?.currentPeriod == GamePeriod.NotStarted) {
+                      return BlocBuilder(
+                        cubit: BlocProvider.of<SingleSeasonBloc>(context),
+                        builder: (BuildContext context,
+                            SingleSeasonState seasonState) {
+                          if (seasonState is SingleSeasonUninitialized) {
+                            return LoadingWidget();
+                          }
+                          return StartPeriod(
+                            game: state.game,
+                            season: seasonState.season,
+                            orientation: orientation,
+                          );
+                        },
+                      );
+                    }
+                    if (state.loadedGameEvents &&
+                        (state.gameEvents.length == 0 ||
+                            state.gameEvents.last.type ==
+                                GameEventType.TimeoutStart)) {
+                      return TimeoutEnd(game: state.game);
+                    }
+                    if (orientation == Orientation.landscape) {
+                      var undoBloc =
+                          BlocProvider.of<GameEventUndoStack>(context);
+                      return Row(
+                        children: <Widget>[
+                          LayoutBuilder(
+                            builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                _buildPointSection(
+                                    context, boxConstraint, orientation),
+                          ),
+                          Expanded(
+                            child: _GameStateSection(
+                                undoBloc, orientation, _selectPeriod),
+                          ),
+                          LayoutBuilder(
+                            builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                _buildDefenceSection(
+                                    context, boxConstraint, orientation),
+                          ),
+                        ],
+                      );
+                    } else {
+                      var undoBloc =
+                          BlocProvider.of<GameEventUndoStack>(context);
+                      return Column(
+                        children: <Widget>[
+                          LayoutBuilder(
+                            builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                _buildPointSection(
+                                    context, boxConstraint, orientation),
+                          ),
+                          Divider(),
+                          Expanded(
+                            child: _GameStateSection(
+                                undoBloc, orientation, _selectPeriod),
+                          ),
+                          Divider(),
+                          LayoutBuilder(
+                            builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                _buildDefenceSection(
+                                    context, boxConstraint, orientation),
+                          ),
+                          LayoutBuilder(
+                            builder: (BuildContext context,
+                                    BoxConstraints boxConstraint) =>
+                                _buildSubButtons(
+                                    context, orientation, boxConstraint),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ),

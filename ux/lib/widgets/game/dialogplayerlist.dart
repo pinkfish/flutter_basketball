@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:basketballdata/basketballdata.dart';
+import 'package:basketballstats/services/localutilities.dart';
 import 'package:flutter/material.dart';
 
 import '../player/playertile.dart';
@@ -32,9 +33,14 @@ class DialogPlayerList extends StatelessWidget {
       }
       return 0;
     });
+    var contentColor = (String playerUid) => game.players.containsKey(playerUid)
+        ? Theme.of(context).indicatorColor
+        : LocalUtilities.isDark(context)
+            ? Theme.of(context).primaryColor
+            : Colors.lightBlueAccent;
     return players
         .where((String playerUid) =>
-            filterPlayer != null ? filterPlayer(playerUid) : null)
+            filterPlayer != null ? filterPlayer(playerUid) : true)
         .map(
           (String playerUid) => Padding(
             padding: EdgeInsets.all(2.0),
@@ -45,12 +51,11 @@ class DialogPlayerList extends StatelessWidget {
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 side: BorderSide(
-                  color: game.players.containsKey(playerUid)
-                      ? Theme.of(context).indicatorColor
-                      : Theme.of(context).primaryColor,
+                  color: contentColor(playerUid),
                   width: 3.0,
                 ),
               ),
+              contentColor: contentColor(playerUid),
               onTap: (String playerUid) => onSelectPlayer(context, playerUid),
             ),
           ),
@@ -67,7 +72,7 @@ class DialogPlayerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return orientation == Orientation.portrait
+    return (orientation == Orientation.portrait)
         ? LayoutBuilder(builder: (BuildContext context, BoxConstraints box) {
             var width = box.maxWidth / 2;
             var minHeight = 50.0;
