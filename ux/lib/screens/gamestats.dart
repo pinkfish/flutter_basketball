@@ -39,10 +39,10 @@ class GameStatsScreen extends StatelessWidget {
     var bloc = BlocProvider.of<SingleGameBloc>(context);
 
     // Select the player.
-    var playerData = await showDialog<Tuple2<String, GameEventLocation>>(
+    var playerData = await showDialog<GameShotResult>(
         context: context,
         builder: (BuildContext context) {
-          return GameShotDialog(game: bloc.state.game, points: pts);
+          return GameShotDialog(game: bloc.state.game, points: pts, made: made);
         });
     if (playerData == null) {
       return;
@@ -50,18 +50,36 @@ class GameStatsScreen extends StatelessWidget {
     var undoBloc = BlocProvider.of<GameEventUndoStack>(context);
     undoBloc.addEvent(
       GameEvent((b) => b
-        ..playerUid = playerData.item1
+        ..playerUid = playerData.playerUid
         ..points = pts
         ..timestamp = (DateTime.now().toUtc())
         ..gameUid = gameUid
         ..period = bloc.state.game.currentPeriod
         ..eventTimeline = bloc.state.game.currentGameTime
-        ..opponent = bloc.state.game.opponents.containsKey(playerData.item1)
-        ..courtLocation =
-            (playerData.item2 != null ? playerData.item2.toBuilder() : null)
+        ..opponent = bloc.state.game.opponents.containsKey(playerData.playerUid)
+        ..courtLocation = (playerData.location != null
+            ? playerData.location.toBuilder()
+            : null)
         ..type = made ? GameEventType.Made : GameEventType.Missed),
       false,
     );
+    if (playerData.assistPlayerUid != null) {
+      undoBloc.addEvent(
+        GameEvent(
+          (b) => b
+            ..playerUid = playerData.assistPlayerUid
+            ..points = pts
+            ..timestamp = (DateTime.now().toUtc())
+            ..gameUid = gameUid
+            ..period = bloc.state.game.currentPeriod
+            ..eventTimeline = bloc.state.game.currentGameTime
+            ..opponent =
+                bloc.state.game.opponents.containsKey(playerData.playerUid)
+            ..type = GameEventType.Made,
+        ),
+        false,
+      );
+    }
   }
 
   Future<void> _doSubEvent(BuildContext context, GameEventType type) async {

@@ -33,7 +33,7 @@ class GameEventUndoStack extends Cubit<GameEventWithChange> {
             true));
 
   Future<void> addEvent(GameEvent ev, bool existing) async {
-    if (ev.uid.isEmpty) {
+    if (ev.uid == null || ev.uid.isEmpty) {
       var uid = await db.getGameEventId(event: ev);
       ev = ev.rebuild((b) => b..uid = uid);
     }

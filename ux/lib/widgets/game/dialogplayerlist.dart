@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:basketballdata/basketballdata.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class DialogPlayerList extends StatelessWidget {
   final SelectPlayerCallback onSelectPlayer;
   final FilterPlayerCallback filterPlayer;
   final Orientation orientation;
+  final double scale;
 
   List<Widget> _populateList(BuildContext context, Orientation o) {
     List<String> players = game.players.keys.toList();
@@ -38,6 +41,7 @@ class DialogPlayerList extends StatelessWidget {
             child: PlayerTile(
               playerUid: playerUid,
               editButton: false,
+              scale: scale,
               shape: ContinuousRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
                 side: BorderSide(
@@ -58,17 +62,23 @@ class DialogPlayerList extends StatelessWidget {
       {@required this.game,
       @required this.onSelectPlayer,
       @required this.orientation,
-      this.filterPlayer});
+      this.filterPlayer,
+      this.scale = 1.0});
 
   @override
   Widget build(BuildContext context) {
     return orientation == Orientation.portrait
-        ? GridView.count(
-            childAspectRatio: 3.0,
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            children: _populateList(context, orientation),
-          )
+        ? LayoutBuilder(builder: (BuildContext context, BoxConstraints box) {
+            var width = box.maxWidth / 2;
+            var minHeight = 50.0;
+            var ratio = min(width / minHeight, 3.0);
+            return GridView.count(
+              childAspectRatio: ratio,
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              children: _populateList(context, orientation),
+            );
+          })
         : GridView.count(
             childAspectRatio: 2.5,
             crossAxisCount: 4,

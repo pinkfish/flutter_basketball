@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/bloc/singleplayerbloc.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
@@ -24,6 +26,7 @@ class PlayerTile extends StatelessWidget {
   final bool compactDisplay;
   final PlayerExtraFunc extra;
   final PlayerSeasonSummary summary;
+  final double scale;
 
   PlayerTile(
       {this.playerUid,
@@ -34,11 +37,16 @@ class PlayerTile extends StatelessWidget {
       this.summary,
       this.shape,
       this.extra,
-      this.compactDisplay = false})
+      this.compactDisplay = false,
+      this.scale = 1.0})
       : assert(player != null || playerUid != null);
 
   @override
   Widget build(BuildContext context) {
+    return _innerBuild(context);
+  }
+
+  Widget _innerBuild(BuildContext context) {
     if (player != null) {
       return _loadedData(context, player);
     }
@@ -87,6 +95,11 @@ class PlayerTile extends StatelessWidget {
                     child: ListTile(
                       title: Text(Messages.of(context).loadingText,
                           style: Theme.of(context).textTheme.caption),
+                      subtitle: summary != null
+                          ? Text(
+                              Messages.of(context).seasonSummary(summary),
+                            )
+                          : null,
                       leading: Stack(
                         children: <Widget>[
                           Icon(MdiIcons.tshirtCrewOutline),
@@ -104,6 +117,11 @@ class PlayerTile extends StatelessWidget {
                   shape: shape,
                   child: ListTile(
                     title: Text(Messages.of(context).unknown),
+                    subtitle: summary != null
+                        ? Text(
+                            Messages.of(context).seasonSummary(summary),
+                          )
+                        : null,
                     leading: Stack(
                       children: <Widget>[
                         Icon(MdiIcons.tshirtCrewOutline),
@@ -165,45 +183,56 @@ class PlayerTile extends StatelessWidget {
     return Card(
       color: color,
       shape: shape,
-      child: ListTile(
-        onTap: onTap != null ? () => onTap(player.uid) : null,
-        title: Text(
-          player.name,
-          style: Theme.of(context).textTheme.headline6,
-          overflow: TextOverflow.ellipsis,
-        ),
-        leading: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(height: 40.0, width: 40.0),
-          child: Container(
-            child: Center(
-              child: Text(
-                player.jerseyNumber,
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: Theme.of(context).accentColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                    ),
+      child: LayoutBuilder(builder: (BuildContext context, BoxConstraints box) {
+        return ListTile(
+          visualDensity: box.maxHeight < 40.0
+              ? VisualDensity.compact
+              : VisualDensity.standard,
+          contentPadding: box.maxHeight < 40.0 ? EdgeInsets.all(1.0) : null,
+          onTap: onTap != null ? () => onTap(player.uid) : null,
+          title: Text(
+            player.name,
+            style: Theme.of(context).textTheme.headline6.copyWith(
+                fontSize: min(box.maxHeight - 3,
+                    Theme.of(context).textTheme.headline6.fontSize)),
+            overflow: TextOverflow.ellipsis,
+            textScaleFactor: 1.0,
+          ),
+          leading: ConstrainedBox(
+            constraints: BoxConstraints.tightFor(
+                height: min(40.0, box.maxHeight - 4),
+                width: min(40.0, box.maxHeight - 4)),
+            child: Container(
+              child: Center(
+                child: Text(
+                  player.jerseyNumber,
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                        color: Theme.of(context).accentColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: min(20.0, box.maxHeight - 10),
+                      ),
+                ),
+              ),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Theme.of(context).primaryColor),
               ),
             ),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Theme.of(context).primaryColor),
-            ),
           ),
-        ),
-        subtitle: summary != null
-            ? Text(
-                Messages.of(context).seasonSummary(summary),
-              )
-            : null,
-        trailing: editButton
-            ? IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () =>
-                    Navigator.pushNamed(context, "/Player/Edit/" + player.uid),
-              )
-            : null,
-      ),
+          subtitle: summary != null
+              ? Text(
+                  Messages.of(context).seasonSummary(summary),
+                )
+              : null,
+          trailing: editButton
+              ? IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () => Navigator.pushNamed(
+                      context, "/Player/Edit/" + player.uid),
+                )
+              : null,
+        );
+      }),
     );
   }
 }

@@ -294,12 +294,12 @@ class Messages {
   String get email =>
       Intl.message("Email", desc: "Email hint text", locale: locale);
 
-  String get forgotPasswordButton =>
-      Intl.message('FORGOT PASSWORD', desc: 'Forgot password button text');
+  String get forgotPasswordButton => Intl.message('FORGOT PASSWORD',
+      desc: 'Forgot password button text', locale: locale);
 
   String get forgotPasswordSent =>
       Intl.message('Sent email to your email address to reset your password',
-          desc: 'Forgot password happy button');
+          desc: 'Forgot password happy button', locale: locale);
 
   String get usersDescriptions => Intl.message(
       'The users who have access to this team, they can see the '
@@ -308,33 +308,46 @@ class Messages {
 
   String get forgotPasswordHint =>
       Intl.message('The email to resend the password to',
-          desc: 'Forgot password happy button');
+          desc: 'Forgot password happy button', locale: locale);
 
   String get resendverifyButton => Intl.message('RESEND EMAIL',
-      desc: 'Button to resend the email to verify their email address');
+      desc: 'Button to resend the email to verify their email address',
+      locale: locale);
 
-  String get loginButton => Intl.message('LOGIN', desc: 'Login button text');
+  String get loginButton =>
+      Intl.message('LOGIN', desc: 'Login button text', locale: locale);
 
-  String get logoutButton => Intl.message('LOGOUT', desc: 'Logout button text');
+  String get logoutButton =>
+      Intl.message('LOGOUT', desc: 'Logout button text', locale: locale);
 
-  String get createaccountButton =>
-      Intl.message('CREATE', desc: 'Create account button text');
+  String get skipButton =>
+      Intl.message('SKIP', desc: 'Skip button text', locale: locale);
+
+  String get createaccountButton => Intl.message('CREATE',
+      desc: 'Create account button text', locale: locale);
+
+  String get doneButton =>
+      Intl.message('DONE', desc: 'Done completely button', locale: locale);
 
   String get phonenumberhint => Intl.message('Contact phone number',
       desc: 'Phone number for the edit box to edit the phone number');
 
   String get phonenumberhintoptional => Intl.message('Phone number (optional)',
       desc:
-          'Phone number for the edit box to edit the phone number marked as optional');
+          'Phone number for the edit box to edit the phone number marked as optional',
+      locale: locale);
 
-  String get password =>
-      Intl.message('Password', desc: 'Input box for a password');
+  String get password => Intl.message('Password',
+      desc: 'Input box for a password', locale: locale);
 
   String get verifypassword => Intl.message('Verify password',
-      desc: 'Input box for a verification to the main password password');
+      desc: 'Input box for a verification to the main password password',
+      locale: locale);
 
   String get formerror => Intl.message('Please fix the items outlined in red',
-      desc: 'Error when submitting a form');
+      desc: 'Error when submitting a form', locale: locale);
+  String get optional => Intl.message('Optional',
+      desc: 'Optional subtitle for a stepper', locale: locale);
 
   String loginFailureReason(LoginFailedReason reason) {
     switch (reason) {
@@ -380,28 +393,29 @@ class Messages {
       desc: 'Login was cancelled', locale: locale);
 
   String get passwordsnotmatching => Intl.message('Passwords must match',
-      desc: 'Passwords must match signup form error');
+      desc: 'Passwords must match signup form error', locale: locale);
 
   String get createdaccount => Intl.message(
       "Created an account, please look in your email for the verification code..",
-      desc:
-          "Confirmation message after requesting the email verification code");
+      desc: "Confirmation message after requesting the email verification code",
+      locale: locale);
 
-  String get youremailHint =>
-      Intl.message('Your email address', desc: 'Your email input field hint');
+  String get youremailHint => Intl.message('Your email address',
+      desc: 'Your email input field hint', locale: locale);
 
-  String get displayname =>
-      Intl.message('Name', desc: 'Name for the edit box to edit the user name');
+  String get displayname => Intl.message('Name',
+      desc: 'Name for the edit box to edit the user name', locale: locale);
 
   String get displaynamehint => Intl.message('Your name',
-      desc: 'Name for the edit box to edit the user name');
+      desc: 'Name for the edit box to edit the user name', locale: locale);
 
   String get verifyemailsent => Intl.message(
       "Sent verification email, please check your email inbox.",
-      desc:
-          "Confirmation message after requesting the email verification code");
+      desc: "Confirmation message after requesting the email verification code",
+      locale: locale);
   String get verifyemailerror =>
-      Intl.message("No account found for email or internal error occured");
+      Intl.message("No account found for email or internal error occured",
+          locale: locale);
 
   String verifyexplanation(String email) => Intl.message(
       'Email address $email needs to be verified, please check your email or resend the verification details.',
@@ -410,18 +424,17 @@ class Messages {
       name: "verifyexplanation");
 
   String get invalidUrl => Intl.message('Invalid URL',
-      desc: 'Error in a form when the url is invalid');
+      desc: 'Error in a form when the url is invalid', locale: locale);
 
   String get errorcreatinguser => Intl.message(
-      "Error creating user, maybe the email address is already used");
+      "Error creating user, maybe the email address is already used",
+      locale: locale);
 
-  String get playVideoTitle =>
-      Intl.message("View", desc: "Title for the tab to show the playing video");
+  String get playVideoTitle => Intl.message("View",
+      desc: "Title for the tab to show the playing video", locale: locale);
 
-  String get createnew => Intl.message(
-        'Create new',
-        desc: 'Create new account button text',
-      );
+  String get createnew => Intl.message('Create new',
+      desc: 'Create new account button text', locale: locale);
 
   String deletePlayerAreYouSure(String name) {
     return Intl.message("Are you sure you want to delete the player $name?",
