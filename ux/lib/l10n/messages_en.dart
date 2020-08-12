@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "All Periods" : MessageLookupByLibrary.simpleMessage("All Periods"),
     "All Players" : MessageLookupByLibrary.simpleMessage("All Players"),
     "All Seasons" : MessageLookupByLibrary.simpleMessage("All Seasons"),
-    "Assist" : MessageLookupByLibrary.simpleMessage("Assist"),
+    "Assisted" : MessageLookupByLibrary.simpleMessage("Assisted"),
     "BLK" : MessageLookupByLibrary.simpleMessage("BLK"),
     "Basketball stats" : MessageLookupByLibrary.simpleMessage("Basketball stats"),
     "Basketball stats is an exciting app to show statsabout basketball games.  It shows nifty graphs and fun stuff" : MessageLookupByLibrary.simpleMessage("Basketball stats is an exciting app to show statsabout basketball games.  It shows nifty graphs and fun stuff"),
