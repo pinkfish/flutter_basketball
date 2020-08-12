@@ -325,7 +325,7 @@ class _GameShotDialogState extends State<GameShotDialog> {
                               : _currentTab > 2
                                   ? StepState.complete
                                   : StepState.indexed,
-                      title: Text(Messages.of(context).assistEvntType),
+                      title: Text(Messages.of(context).assistTitle),
                     ),
                   ],
                 ),

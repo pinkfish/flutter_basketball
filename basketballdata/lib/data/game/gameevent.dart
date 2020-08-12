@@ -41,6 +41,9 @@ abstract class GameEvent implements Built<GameEvent, GameEventBuilder> {
   @nullable
   GameFoulType get foulType;
 
+  @nullable
+  String get assistPlayerUid;
+
   static void _initializeBuilder(GameEventBuilder b) =>
       b..eventTimeline = Duration(seconds: 0);
 

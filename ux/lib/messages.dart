@@ -649,8 +649,6 @@ class Messages {
         return defensiveReboundEventType;
       case GameEventType.Block:
         return blockEventType;
-      case GameEventType.Assist:
-        return assistEvntType;
       case GameEventType.Steal:
         return stealEventType;
       case GameEventType.Turnover:
@@ -694,14 +692,14 @@ class Messages {
   String get blockEventType =>
       Intl.message("Block", desc: "Block of a shot", locale: locale);
 
-  String get assistEvntType =>
-      Intl.message("Assist", desc: "Assist a shot", locale: locale);
-
   String get stealEventType => Intl.message("Steal",
       desc: "Steal a ball", locale: locale, name: "stealEventType");
 
   String get turnOverEventType => Intl.message("Turnover",
       desc: "Caused a turnover", locale: locale, name: "turnOverEventType");
+
+  String get assistTitle => Intl.message("Assisted",
+      desc: "Title for the section on a player assist", locale: locale);
 
   String periodStart(String periodName) {
     return Intl.message("Start of $periodName",

@@ -455,6 +455,20 @@ class SingleGameBloc extends HydratedBloc<SingleGameEvent, SingleGameState> {
       PlayerSummaryDataBuilder sum;
       PlayerSummaryDataBuilder playerSum;
       GamePeriod oldPeriod = currentPeriod;
+      var getPlayerSum = (String playerUid) {
+        if (ev.opponent) {
+          return opponents[playerUid]
+              .perPeriod
+              .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+              .toBuilder();
+        } else {
+          return players[playerUid]
+              .perPeriod
+              .putIfAbsent(currentPeriod, () => PlayerSummaryData())
+              .toBuilder();
+        }
+      };
+
       if (ev.type != GameEventType.PeriodStart &&
           ev.type != GameEventType.PeriodEnd &&
           ev.type != GameEventType.TimeoutEnd &&
@@ -477,6 +491,7 @@ class SingleGameBloc extends HydratedBloc<SingleGameEvent, SingleGameState> {
               .putIfAbsent(currentPeriod, () => PlayerSummaryData())
               .toBuilder();
         }
+        playerSum = getPlayerSum(ev.playerUid);
       }
       switch (ev.type) {
         case GameEventType.Made:
@@ -500,6 +515,11 @@ class SingleGameBloc extends HydratedBloc<SingleGameEvent, SingleGameState> {
             gameSummary.pointsAgainst += ev.points;
           } else {
             gameSummary.pointsFor += ev.points;
+          }
+          if (ev.assistPlayerUid != null) {
+            var assistSummary = getPlayerSum(ev.playerUid);
+            assistSummary.assists++;
+            sum.assists++;
           }
           break;
         case GameEventType.Missed:
@@ -538,10 +558,6 @@ class SingleGameBloc extends HydratedBloc<SingleGameEvent, SingleGameState> {
         case GameEventType.Block:
           sum.blocks++;
           playerSum.blocks++;
-          break;
-        case GameEventType.Assist:
-          sum.assists++;
-          playerSum.assists++;
           break;
         case GameEventType.Steal:
           sum.steals++;

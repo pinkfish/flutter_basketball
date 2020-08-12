@@ -93,7 +93,6 @@ class GameEventWidget extends StatelessWidget {
     Color c = Theme.of(context).cardColor;
 
     switch (gameEvent.type) {
-      case GameEventType.Assist:
       case GameEventType.Made:
         return c.withRed(50);
       case GameEventType.Missed:

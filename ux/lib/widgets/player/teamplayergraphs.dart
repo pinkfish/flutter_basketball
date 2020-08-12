@@ -33,6 +33,7 @@ enum _GameTimeseriesType {
   Blocks,
   OffensiveRebounds,
   DefensiveRebounds,
+  Assists,
 }
 
 class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
@@ -117,6 +118,16 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
                     ),
                   ),
                   value: _GameTimeseriesType.Turnovers,
+                ),
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).assistTitle,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.Assists,
                 ),
               ],
             ),
@@ -219,6 +230,11 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
         return [
           _getEventSeries(state, _GameTimeseriesType.Blocks, Colors.blue),
         ];
+      case _GameTimeseriesType.Assists:
+        return [
+          _getEventSeries(
+              state, _GameTimeseriesType.Assists, Colors.lightGreen),
+        ];
       case _GameTimeseriesType.OffensiveRebounds:
         return [
           _getEventSeries(
@@ -276,6 +292,10 @@ class _TeamPlayerGraphsState extends State<TeamPlayerGraphs> {
           case _GameTimeseriesType.DefensiveRebounds:
             total = e.players[widget.playerUid].fullData.defensiveRebounds;
             name = Messages.of(context).blocksTitle;
+            break;
+          case _GameTimeseriesType.Assists:
+            total = e.players[widget.playerUid].fullData.assists;
+            name = Messages.of(context).assistTitle;
             break;
         }
         print("$name $total");

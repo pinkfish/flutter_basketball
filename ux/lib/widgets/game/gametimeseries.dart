@@ -31,6 +31,7 @@ enum _GameTimeseriesType {
   Turnovers,
   Steals,
   Blocks,
+  Assists,
 }
 
 class _GameTimeseriesData extends State<GameTimeseries> {
@@ -38,7 +39,8 @@ class _GameTimeseriesData extends State<GameTimeseries> {
   bool _showTimeSeries = false;
 
   charts.Series<_CumulativeScore, Duration> _getEventSeries(
-      GameEventType eventType, Color color, bool opponent) {
+      GameEventType eventType, Color color, bool opponent,
+      {bool assist = false}) {
     int total = 0;
     bool first = false;
     return charts.Series<_CumulativeScore, Duration>(
@@ -49,7 +51,11 @@ class _GameTimeseriesData extends State<GameTimeseries> {
           Duration(milliseconds: e.timestamp.inMilliseconds),
       measureFn: (_CumulativeScore e, _) => e.score,
       data: widget.state.gameEvents
-          .where((e) => e.type == eventType && !e.opponent || first)
+          .where((e) =>
+              (e.type == eventType &&
+                  e.opponent == opponent &&
+                  (!assist || e.assistPlayerUid != null)) ||
+              first)
           .map((e) {
         if (first && e.type != eventType) {
           first = false;
@@ -146,6 +152,13 @@ class _GameTimeseriesData extends State<GameTimeseries> {
           _getEventSeries(GameEventType.Block, Colors.blue, false),
           _getEventSeries(GameEventType.Block, Colors.lightBlue, true),
         ];
+      case _GameTimeseriesType.Assists:
+        return [
+          _getEventSeries(GameEventType.Made, Colors.lightGreenAccent, false,
+              assist: true),
+          _getEventSeries(GameEventType.Made, Colors.lightBlueAccent, true,
+              assist: true),
+        ];
       default:
         return [];
     }
@@ -219,6 +232,16 @@ class _GameTimeseriesData extends State<GameTimeseries> {
                     ),
                   ),
                   value: _GameTimeseriesType.Turnovers,
+                ),
+                DropdownMenuItem(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      Messages.of(context).assistTitle,
+                      textScaleFactor: 1.2,
+                    ),
+                  ),
+                  value: _GameTimeseriesType.Assists,
                 ),
               ],
             ),

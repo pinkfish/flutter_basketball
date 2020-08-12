@@ -17,7 +17,6 @@ class GameEventType extends EnumClass {
   static const GameEventType OffsensiveRebound = _$offensiveRebound;
   static const GameEventType DefensiveRebound = _$defensiveRebound;
   static const GameEventType Block = _$block;
-  static const GameEventType Assist = _$assist;
   static const GameEventType Steal = _$steal;
   static const GameEventType Turnover = _$turnover;
   static const GameEventType PeriodStart = _$periodStart;

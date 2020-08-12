@@ -51,8 +51,6 @@ class GameStatus {
             break;
           case GameEventType.Block:
             break;
-          case GameEventType.Assist:
-            break;
           case GameEventType.Steal:
             break;
           case GameEventType.Turnover:

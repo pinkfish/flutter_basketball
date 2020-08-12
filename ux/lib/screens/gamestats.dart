@@ -360,14 +360,14 @@ class GameStatsScreen extends StatelessWidget {
         child: Text(Messages.of(context).blockButton),
         onPressed: () => _doBasicEvent(context, GameEventType.Block),
       ),
-      RoundButton(
+/*      RoundButton(
         borderColor: Colors.red,
         size: buttonSize,
         child: Text(
           Messages.of(context).assistButton,
         ),
         onPressed: () => _doBasicEvent(context, GameEventType.Assist),
-      ),
+      ), */
     ];
 
     if (orientation == Orientation.portrait) {
