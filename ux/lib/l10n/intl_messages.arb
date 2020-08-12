@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-08-12T01:27:36.796771",
+  "@@last_modified": "2020-08-12T16:48:35.220231",
   "Basketball stats": "Basketball stats",
   "@Basketball stats": {
     "description": "Title of the app",
@@ -1004,12 +1004,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "Assist": "Assist",
-  "@Assist": {
-    "description": "Assist a shot",
-    "type": "text",
-    "placeholders": {}
-  },
   "stealEventType": "Steal",
   "@stealEventType": {
     "description": "Steal a ball",
@@ -1019,6 +1013,12 @@
   "turnOverEventType": "Turnover",
   "@turnOverEventType": {
     "description": "Caused a turnover",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Assisted": "Assisted",
+  "@Assisted": {
+    "description": "Title for the section on a player assist",
     "type": "text",
     "placeholders": {}
   },
