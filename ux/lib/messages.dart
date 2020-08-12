@@ -640,6 +640,12 @@ class Messages {
       case GameEventType.Missed:
         return missedEventType(p.points);
       case GameEventType.Foul:
+        switch (p.foulType) {
+          case GameFoulType.Flagrant:
+            return foulFlagrantEventType;
+          case GameFoulType.Technical:
+            return foulTechnicalEventType;
+        }
         return foulEventType;
       case GameEventType.Sub:
         return subsitutionEventType;
@@ -679,6 +685,10 @@ class Messages {
 
   String get foulEventType =>
       Intl.message("Foul", desc: "Foul on player", locale: locale);
+  String get foulFlagrantEventType => Intl.message("Foul Flagrent",
+      desc: "Flagrant foul on player", locale: locale);
+  String get foulTechnicalEventType => Intl.message("Foul Technical",
+      desc: "Technical foul on player", locale: locale);
 
   String get subsitutionEventType => Intl.message("Subsitution",
       desc: "Subsitiution of player", locale: locale);
