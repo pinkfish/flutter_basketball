@@ -26,8 +26,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
         working-directory: firebase/functions
-      - run: |
-        cp ux/assets/images/basketball.png firebase/functions/src/db/templates/invites/img/defaultteam.jpg
+      - name: Copy assets
+        run: cp ux/assets/images/basketball.png firebase/functions/src/db/templates/invites/img/defaultteam.jpg
       - name: Build
         run: npm run build
         working-directory: firebase/functions
