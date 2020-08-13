@@ -987,16 +987,6 @@ class S {
     );
   }
 
-  /// `Assist`
-  String get Assist {
-    return Intl.message(
-      'Assist',
-      name: 'Assist',
-      desc: 'Assist a shot',
-      args: [],
-    );
-  }
-
   /// `Steal`
   String get stealEventType {
     return Intl.message(
@@ -1013,6 +1003,16 @@ class S {
       'Turnover',
       name: 'turnOverEventType',
       desc: 'Caused a turnover',
+      args: [],
+    );
+  }
+
+  /// `Assisted`
+  String get Assisted {
+    return Intl.message(
+      'Assisted',
+      name: 'Assisted',
+      desc: 'Title for the section on a player assist',
       args: [],
     );
   }

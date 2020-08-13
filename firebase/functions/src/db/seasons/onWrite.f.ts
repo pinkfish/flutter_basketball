@@ -88,11 +88,11 @@ export default functions.firestore
         : { ptsFor: 0, ptsAgainst: 0, wins: 0, losses: 0, ties: 0 };
 
       if (
-        seasonSummary.ptsFor != ptsFor ||
-        seasonSummary.ptsAgainst != ptsAgainst ||
-        seasonSummary.wins != win ||
-        seasonSummary.losses != loss ||
-        seasonSummary.ties != tie
+        seasonSummary.ptsFor !== ptsFor ||
+        seasonSummary.ptsAgainst !== ptsAgainst ||
+        seasonSummary.wins !== win ||
+        seasonSummary.losses !== loss ||
+        seasonSummary.ties !== tie
       ) {
         // Update the season with the result.
         await db

@@ -21,6 +21,7 @@ dependencies:
   firebase_core: 0.4.4
   firebase_analytics: ^5.0.16
   firebase_crashlytics: ^0.1.4+1
+  firebase_dynamic_links: ^0.5.3
   timezone: ^0.5.7
   hive: ^1.4.3
 
