@@ -21,7 +21,7 @@ type FfmpegCallback = (n: string) => FfmpegCommand;
 export async function internalOnWrite(
   change: functions.Change<functions.firestore.DocumentSnapshot>,
   testFfmpeg?: FfmpegCallback
-) {
+): Promise<unknown> {
   // If it didn't exist or still exists then we update.
   const afterUrl = change.after.exists ? change.after.data()?.url : "";
   // Both finished so we don't do anything.

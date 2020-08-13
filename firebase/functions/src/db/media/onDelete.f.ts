@@ -27,7 +27,7 @@ api.interceptors.response.use(response => {
   return response;
 });
 
-async function deleteFile(fname: string) {
+async function deleteFile(fname: string): Promise<unknown> {
   if (fname.startsWith("gs://")) {
     const myUrl = new URL(fname);
     const bucket = admin.storage().bucket(myUrl.hostname);
@@ -38,11 +38,11 @@ async function deleteFile(fname: string) {
       console.log("Failed to delete ", e);
     }
   }
+  return;
 }
 
-export default functions.firestore
-  .document("Media/{mediaUid}")
-  .onDelete(async doc => {
+export default functions.firestore.document("Media/{mediaUid}").onDelete(
+  async (doc): Promise<unknown> => {
     if (doc.data()?.url !== null) {
       await deleteFile(doc.data()?.url);
     }
@@ -61,4 +61,5 @@ export default functions.firestore
     }
 
     return false;
-  });
+  }
+);
