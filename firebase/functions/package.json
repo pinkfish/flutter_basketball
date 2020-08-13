@@ -2,14 +2,15 @@
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .ts,.js,.jsx,.tsx src",
-    "build": "tsc",
+    "build": "npm run copytemplate && tsc",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "pretty": "prettier --write \"./**/*.{js,jsx,json,ts}\"",
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "copytemplate": "copyfiles --up 2 --verbose \"src/db/templates/**\" lib/src"
   },
   "engines": {
     "node": "10"
@@ -61,6 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^2.34.0",
     "@typescript-eslint/parser": "^2.34.0",
     "chai": "^4.2.0",
+    "copyfiles": "^2.3.0",
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^6.11.0",
