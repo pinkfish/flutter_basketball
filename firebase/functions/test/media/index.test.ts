@@ -25,7 +25,6 @@ describe("Media Util Tests", () => {
       await generateThumbnailFromPath("./test/media/data/frog.mp4");
       assert(false);
     } catch (e) {
-      console.log(e);
       expect(e.message).to.include("No such file or directory");
     }
   });

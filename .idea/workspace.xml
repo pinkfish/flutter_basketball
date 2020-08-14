@@ -2,15 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/firebase/functions/src/db/invite/onCreate.f.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/web/favicon-16x16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ux/web/favicon-32x32.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addinvitebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addinvitebloc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/basketballdata/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/pubspec.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/generated/intl/messages_en.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/intl/messages_en.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/generated/intl/messages_messages.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/intl/messages_messages.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ux/lib/generated/l10n.dart" beforeDir="false" afterPath="$PROJECT_DIR$/ux/lib/generated/l10n.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +78,7 @@
       <recent name="$PROJECT_DIR$/basketballdata/lib/data/season" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.FlutterRtmpPlublisher">
+  <component name="RunManager" selected="Android App.ux">
     <configuration name="FlutterRtmpPlublisher" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="FlutterRtmpPlublisher" />
       <option name="DEPLOY" value="true" />
@@ -145,8 +142,10 @@
     <list>
       <item itemvalue="Android App.FlutterRtmpPlublisher" />
       <item itemvalue="Android App.ux" />
+      <item itemvalue="Flutter.main.dart" />
     </list>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -199,6 +198,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="First pass on invite flow." />
   </component>
   <component name="WindowStateProjectService">
+    <state x="240" y="133" key="#Plugins" timestamp="1597435349028">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="240" y="133" key="#Plugins/0.23.1280.924@0.23.1280.924" timestamp="1597435349028" />
     <state x="354" y="294" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1594759742361">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
@@ -217,6 +220,10 @@
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="336" y="416" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1280.924@0.23.1280.924" timestamp="1588897399666" />
+    <state x="346" y="187" key="#ux" timestamp="1597434795847">
+      <screen x="0" y="23" width="1280" height="924" />
+    </state>
+    <state x="346" y="187" key="#ux/0.23.1280.924@0.23.1280.924" timestamp="1597434795847" />
     <state x="55" y="368" key="#xdebugger.evaluate" timestamp="1589350908904">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
@@ -267,11 +274,11 @@
     </state>
     <state x="290" y="188" key="NewModule_or_Project.wizard/0.23.1280.924@0.23.1280.924" timestamp="1594841890324" />
     <state x="290" y="189" key="NewModule_or_Project.wizard/0.23.1280.927@0.23.1280.927" timestamp="1596746478205" />
-    <state x="128" y="66" key="SettingsEditor" timestamp="1597266221553">
+    <state x="129" y="66" key="SettingsEditor" timestamp="1597445289916">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
-    <state x="128" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1597266221553" />
+    <state x="129" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1597445289916" />
     <state x="128" y="66" key="SettingsEditor/0.23.1280.927@0.23.1280.927" timestamp="1596746487047" />
     <state x="204" y="221" width="872" height="617" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1597254007366">
       <screen x="0" y="23" width="1280" height="924" />

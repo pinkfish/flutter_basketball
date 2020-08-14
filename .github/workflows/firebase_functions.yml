@@ -31,6 +31,9 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: firebase/functions
+      - name: Test
+        run: npm run test
+        working-directory: firebase/functions
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
