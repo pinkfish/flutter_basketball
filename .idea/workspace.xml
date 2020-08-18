@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ux/web/favicon-16x16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ux/web/favicon-32x32.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addinvitebloc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/basketballdata/lib/bloc/add/addinvitebloc.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/invite/onCreate.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/invite/onCreate.f.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ux/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ux/ios/Podfile.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,9 +65,6 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/ux/ios/fastlane/metadata" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/basketballdata/lib" />
       <recent name="$PROJECT_DIR$/basketballdata/lib/data/team" />
@@ -77,8 +72,11 @@
       <recent name="$PROJECT_DIR$/basketballdata/lib/data/game" />
       <recent name="$PROJECT_DIR$/basketballdata/lib/data/season" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ux/ios/fastlane/metadata" />
+    </key>
   </component>
-  <component name="RunManager" selected="Android App.ux">
+  <component name="RunManager" selected="Flutter.main.dart">
     <configuration name="FlutterRtmpPlublisher" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="FlutterRtmpPlublisher" />
       <option name="DEPLOY" value="true" />
@@ -216,10 +214,6 @@
     </state>
     <state x="330" y="226" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.924@0.23.1280.924" timestamp="1597266250799" />
     <state x="330" y="227" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1280.927@0.23.1280.927" timestamp="1595564955515" />
-    <state x="336" y="416" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1588897399666">
-      <screen x="0" y="23" width="1280" height="924" />
-    </state>
-    <state x="336" y="416" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1280.924@0.23.1280.924" timestamp="1588897399666" />
     <state x="346" y="187" key="#ux" timestamp="1597434795847">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
@@ -231,7 +225,6 @@
     <state x="253" y="59" key="CommitChangelistDialog2" timestamp="1595264066847">
       <screen x="0" y="23" width="1280" height="927" />
     </state>
-    <state x="253" y="59" key="CommitChangelistDialog2/0.23.1280.924@0.23.1280.924" timestamp="1588925858701" />
     <state x="253" y="59" key="CommitChangelistDialog2/0.23.1280.927@0.23.1280.927" timestamp="1595264066847" />
     <state width="437" height="466" key="DebuggerActiveHint" timestamp="1589259692887">
       <screen x="0" y="23" width="1280" height="924" />
@@ -241,29 +234,29 @@
       <screen x="0" y="23" width="1280" height="927" />
     </state>
     <state x="428" y="249" key="FileChooserDialogImpl/0.23.1280.927@0.23.1280.927" timestamp="1596786107102" />
-    <state width="1238" height="301" key="GridCell.Tab.0.bottom" timestamp="1597255103839">
+    <state width="643" height="243" key="GridCell.Tab.0.bottom" timestamp="1597730360316">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.bottom/0.23.1280.921@0.23.1280.921" timestamp="1589666144855" />
-    <state width="1238" height="301" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1597255103839" />
+    <state width="643" height="243" key="GridCell.Tab.0.bottom/0.23.1280.924@0.23.1280.924" timestamp="1597730360316" />
     <state width="1238" height="242" key="GridCell.Tab.0.bottom/0.23.1280.927@0.23.1280.927" timestamp="1596930666882" />
-    <state width="1238" height="301" key="GridCell.Tab.0.center" timestamp="1597255103836">
+    <state width="643" height="243" key="GridCell.Tab.0.center" timestamp="1597730360314">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.center/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="301" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1597255103836" />
+    <state width="643" height="243" key="GridCell.Tab.0.center/0.23.1280.924@0.23.1280.924" timestamp="1597730360314" />
     <state width="1238" height="242" key="GridCell.Tab.0.center/0.23.1280.927@0.23.1280.927" timestamp="1596930666881" />
-    <state width="1238" height="301" key="GridCell.Tab.0.left" timestamp="1597255103835">
+    <state width="643" height="243" key="GridCell.Tab.0.left" timestamp="1597730360313">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.left/0.23.1280.921@0.23.1280.921" timestamp="1589666144853" />
-    <state width="1238" height="301" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1597255103835" />
+    <state width="643" height="243" key="GridCell.Tab.0.left/0.23.1280.924@0.23.1280.924" timestamp="1597730360313" />
     <state width="1238" height="242" key="GridCell.Tab.0.left/0.23.1280.927@0.23.1280.927" timestamp="1596930666880" />
-    <state width="1238" height="301" key="GridCell.Tab.0.right" timestamp="1597255103837">
+    <state width="643" height="243" key="GridCell.Tab.0.right" timestamp="1597730360315">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state width="1238" height="244" key="GridCell.Tab.0.right/0.23.1280.921@0.23.1280.921" timestamp="1589666144854" />
-    <state width="1238" height="301" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1597255103837" />
+    <state width="643" height="243" key="GridCell.Tab.0.right/0.23.1280.924@0.23.1280.924" timestamp="1597730360315" />
     <state width="1238" height="242" key="GridCell.Tab.0.right/0.23.1280.927@0.23.1280.927" timestamp="1596930666882" />
     <state x="228" y="233" key="IDE.errors.dialog" timestamp="1589666141398">
       <screen x="0" y="23" width="1280" height="921" />
@@ -274,11 +267,11 @@
     </state>
     <state x="290" y="188" key="NewModule_or_Project.wizard/0.23.1280.924@0.23.1280.924" timestamp="1594841890324" />
     <state x="290" y="189" key="NewModule_or_Project.wizard/0.23.1280.927@0.23.1280.927" timestamp="1596746478205" />
-    <state x="129" y="66" key="SettingsEditor" timestamp="1597445289916">
+    <state x="129" y="66" key="SettingsEditor" timestamp="1597709367574">
       <screen x="0" y="23" width="1280" height="924" />
     </state>
     <state x="128" y="66" key="SettingsEditor/0.23.1280.921@0.23.1280.921" timestamp="1589662500782" />
-    <state x="129" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1597445289916" />
+    <state x="129" y="66" key="SettingsEditor/0.23.1280.924@0.23.1280.924" timestamp="1597709367574" />
     <state x="128" y="66" key="SettingsEditor/0.23.1280.927@0.23.1280.927" timestamp="1596746487047" />
     <state x="204" y="221" width="872" height="617" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1597254007366">
       <screen x="0" y="23" width="1280" height="924" />

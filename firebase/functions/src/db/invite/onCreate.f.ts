@@ -68,7 +68,11 @@ function mailToSender(
 
   const mailOptions: nodemailer.SendMailOptions = {
     from:
-      '"' + sendByData.name + '" <' + data.sentbyUid + "@email.teamsfuse.com>",
+      '"' +
+      sendByData.name +
+      '" <' +
+      data.sentByUid +
+      "@st-email.teamsfuse.com>",
     to: data.email,
     attachments: attachments
   };

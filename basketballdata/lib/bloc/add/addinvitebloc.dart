@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/invites/invite.dart';
@@ -44,22 +43,6 @@ class AddInviteBloc extends Bloc<AddInviteEvent, AddItemState> {
       try {
         String uid = await db.addInvite(invite: event.newInvite);
         yield AddItemDone(uid: uid);
-        var param = DynamicLinkParameters(
-          uriPrefix: "https://stats.whelksoft.com",
-          link: Uri.parse("https://stats.whelksoft.com"),
-          androidParameters: AndroidParameters(
-            packageName: "com.whelksoft.basketballstats",
-          ),
-          iosParameters: IosParameters(
-            bundleId: "com.whelksoft.basketballstats",
-            appStoreId: "1500194738",
-          ),
-          googleAnalyticsParameters: GoogleAnalyticsParameters(
-            campaign: "teamInvite",
-            medium: "app",
-            source: "app",
-          ),
-        );
       } catch (e, s) {
         crashes.recordError(e, s);
         yield AddItemSaveFailed(error: e);
