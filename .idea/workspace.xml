@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/test/rules/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/test/rules/index.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -33,7 +33,7 @@ function authedApp(auth: UserData | undefined) {
     .firestore();
 }
 
-async function createLex(): Promise<unknown> {
+async function createLex() {
   const dbLuthor = authedApp({
     uid: "lex",
     name: "Lex Luthor",
@@ -152,8 +152,56 @@ describe("My app", () => {
     );
   });
 
+  it("require users to be in the actual user", async () => {
+    const db = authedApp(allowedUserData);
+    const dbLex = await createLex();
+
+    await firebase.assertSucceeds(
+      db
+        .collection("Users")
+        .doc("alice")
+        .get()
+    );
+    await firebase.assertSucceeds(
+      dbLex
+        .collection("Users")
+        .doc("lex")
+        .get()
+    );
+    await firebase.assertSucceeds(
+      db
+        .collection("Users")
+        .doc("lex")
+        .get()
+    );
+    await firebase.assertFails(
+      dbLex
+        .collection("Users")
+        .doc("alice")
+        .update({ red: "yes" })
+    );
+    await firebase.assertFails(
+      db
+        .collection("Users")
+        .doc("lex")
+        .update({ red: "yes" })
+    );
+    await firebase.assertSucceeds(
+      dbLex
+        .collection("Users")
+        .doc("lex")
+        .update({ red: "yes" })
+    );
+    await firebase.assertSucceeds(
+      db
+        .collection("Users")
+        .doc("alice")
+        .update({ red: "yes" })
+    );
+  });
+
   it("require users to be in the teams to get team", async () => {
-    dbLex = await createLex();
+    const dbLex = await createLex();
     const db = authedApp(allowedUserData);
     await firebase.assertSucceeds(
       db
@@ -180,35 +228,19 @@ describe("My app", () => {
         .doc("other")
         .get()
     );
-  });
 
-  /*
-  it("require users to be in the season to get the season", async () => {
-    const db = authedApp(allowedUserData);
+    // Add our user into the dbLex team
     await firebase.assertSucceeds(
-      db
-        .collection("Seasons")
-        .doc("frog")
-        .set({ user: { alice: { added: true } } })
+      dbLex
+        .collection("Teams")
+        .doc("other")
+        .update({ "users.alice.enabled": true })
     );
-    //const doc = db.collection("Teams").doc("frog");
     await firebase.assertSucceeds(
       db
-        .collection("Seasons")
-        .doc("frog")
+        .collection("Teams")
+        .doc("other")
         .get()
     );
   });
-  it("should enforce the createdAt date in user profiles", async () => {
-    const db = authedApp(allowedUserData);
-    const profile = db.collection("UserData").doc("alice");
-    await firebase.assertFails(profile.set({ birthday: "January 1" }));
-    await firebase.assertSucceeds(
-      profile.set({
-        birthday: "January 1",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      })
-    );
-  });
-  */
 });

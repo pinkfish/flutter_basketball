@@ -36,9 +36,16 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: firebase/functions
-      - name: Test
-        run: npm run test
-        working-directory: firebase/functions
+      - name: Setup and test emulator
+        uses: w9jds/firebase-action@master
+        with:
+          args: |
+            setup:emulators:firestore
+            emulators:exec --only firestore \"npm run test --exit\"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
+          PROJECT_PATH: firebase
+          PROJECT_ID: basketballstats-8ed93
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
