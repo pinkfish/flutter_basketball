@@ -1,0 +1,48 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Firebase functions
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "firebase/*.rules"
+      - "firebase/*.indexes.json"
+      - ".github/workflows/firebase-rules.yml"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "firebase/*.rules"
+      - "firebase/*.indexes.json"
+      - ".github/workflows/firebase-rules.yml"
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm install
+        working-directory: firebase/functions
+      - name: Setup and test emulator
+        uses: w9jds/firebase-action@master
+        with:
+          args: |
+            setup:emulators:firestore
+            emulators:exec --only firestore \"npm run test --exit\"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
+          PROJECT_PATH: firebase
+          PROJECT_ID: basketballstats-8ed93
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only storage,firestore
+        env:
+          FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
+          PROJECT_PATH: firebase
+          PROJECT_ID: basketballstats-8ed93
