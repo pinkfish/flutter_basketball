@@ -27,7 +27,7 @@
     "ffprobe-static": "^3.0.0",
     "firebase-admin": "^8.13.0",
     "firebase-function-tools": "^1.1.4",
-    "firebase-functions": "^3.9.1",
+    "firebase-functions": "^3.10.0",
     "fluent-ffmpeg": "^2.1.2",
     "glob": "^7.1.6",
     "handlebars": "^4.7.6",
