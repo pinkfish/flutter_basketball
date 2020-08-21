@@ -33,7 +33,7 @@ jobs:
         with:
           args: |
             setup:emulators:firestore
-            emulators:exec --only firestore \"npm run test --exit\"
+            firebase emulators:exec --only firestore \"npm run test --exit\"
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
           PROJECT_PATH: firebase
