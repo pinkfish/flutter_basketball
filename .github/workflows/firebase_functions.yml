@@ -52,7 +52,7 @@ jobs:
         run: npm run build
         working-directory: firebase/functions
       - name: Setup and test emulator
-        uses: w9jds/firebase-action@master
+        uses: w9jds/firebase-action@feature/jdk
         with:
           args: |
             emulators:exec --only firestore \"npm run test --exit\"
