@@ -51,7 +51,7 @@ async function createLex(): Promise<unknown> {
       .doc("other")
       .set({ users: { lex: { enabled: true } } })
   );
-  return;
+  return dbLuthor;
 }
 
 describe("My app", () => {
@@ -135,22 +135,6 @@ describe("My app", () => {
     await firebase.assertFails(doc.get());
   });
 
-  /*
-  it("require users to be in the season to get season", async () => {
-    const db = authedApp(allowedUserData);
-    db.collection("Teams")
-      .doc("frog")
-      .set({ user: { alice: { added: true } } });
-    //const doc = db.collection("Teams").doc("frog");
-    await firebase.assertSucceeds(
-      db
-        .collection("Teams")
-        .doc("frog")
-        .get()
-    );
-  });
-  */
-
   it("getAllTeams works", async () => {
     await createLex();
     const db = authedApp(allowedUserData);
@@ -169,7 +153,7 @@ describe("My app", () => {
   });
 
   it("require users to be in the teams to get team", async () => {
-    await createLex();
+    dbLex = await createLex();
     const db = authedApp(allowedUserData);
     await firebase.assertSucceeds(
       db
