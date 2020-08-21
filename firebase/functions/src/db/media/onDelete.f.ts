@@ -42,7 +42,7 @@ async function deleteFile(fname: string): Promise<unknown> {
 }
 
 export default functions.firestore.document("Media/{mediaUid}").onDelete(
-  async (doc): Promise<unknown> => {
+  async (doc: FirebaseFirestore.QueryDocumentSnapshot): Promise<unknown> => {
     if (doc.data()?.url !== null) {
       await deleteFile(doc.data()?.url);
     }

@@ -10,9 +10,10 @@ try {
 }
 const db = admin.firestore();
 
-export default functions.firestore
-  .document("Games/{gameUid}")
-  .onWrite(async change => {
+export default functions.firestore.document("Games/{gameUid}").onWrite(
+  async (
+    change: functions.Change<FirebaseFirestore.DocumentData>
+  ): Promise<unknown> => {
     // If it didn't exist or still exists then we update.
     const beforeSummary = change.before.exists
       ? change.before.data()?.summary
@@ -114,4 +115,5 @@ export default functions.firestore
       console.log("Error with media ", error);
       return false;
     }
-  });
+  }
+);

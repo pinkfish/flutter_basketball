@@ -32,10 +32,9 @@ function getContentType(fullBody: AxiosResponse<unknown>): string {
 }
 
 function mailToSender(
-  inviteDoc: FirebaseFirestore.QueryDocumentSnapshot,
+  inviteData: FirebaseFirestore.DocumentData,
   sentByDoc: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>
 ): Promise<unknown> {
-  const data = inviteDoc.data();
   const footerTxt = handlebars.compile(
     fs.readFileSync("db/templates/invites/footer.txt", "utf8")
   );
@@ -56,10 +55,10 @@ function mailToSender(
   ];
 
   const payloadTxt = handlebars.compile(
-    fs.readFileSync("db/templates/invites/" + data.type + ".txt", "utf8")
+    fs.readFileSync("db/templates/invites/" + inviteData.type + ".txt", "utf8")
   );
   const payloadHtml = handlebars.compile(
-    fs.readFileSync("db/templates/invites/" + data.type + ".html", "utf8")
+    fs.readFileSync("db/templates/invites/" + inviteData.type + ".html", "utf8")
   );
 
   const sendByData = sentByDoc.data() ?? {
@@ -71,23 +70,23 @@ function mailToSender(
       '"' +
       sendByData.name +
       '" <' +
-      data.sentByUid +
+      inviteData.sentByUid +
       "@st-email.teamsfuse.com>",
-    to: data.email,
+    to: inviteData.email,
     attachments: attachments
   };
   const context = {
     sentBy: sendByData,
-    invite: inviteDoc.data(),
+    invite: inviteData,
     teaming: "",
-    team: inviteDoc.data()
+    team: inviteData
   };
 
-  if (data.type === "InviteType.Team") {
+  if (inviteData.type === "InviteType.Team") {
     // Find the team details.
     return db
       .collection("Teams")
-      .doc(data.teamUid)
+      .doc(inviteData.teamUid)
       .get()
       .then(snapshot => {
         if (snapshot.exists) {
@@ -106,8 +105,8 @@ function mailToSender(
           // Building Email message.
           context.teaming = "cid:teamurl";
           context.team = teamData;
-          if (data.type === "InviteType.Team") {
-            mailOptions.subject = "Invitation to join " + data.teamName;
+          if (inviteData.type === "InviteType.Team") {
+            mailOptions.subject = "Invitation to join " + inviteData.teamName;
           } else {
             mailOptions.subject =
               "Invitation to be an admin for " + teamData.name;
@@ -146,43 +145,51 @@ function mailToSender(
       });
   }
 
-  return new Promise(resolve => resolve(data));
+  return new Promise(resolve => resolve(inviteData));
+}
+
+//
+// The stuff to be done.
+//
+async function doOnCreate(
+  inviteUid: string,
+  inviteData: FirebaseFirestore.DocumentData | undefined
+): Promise<unknown> {
+  if (inviteData === null || inviteData === undefined) {
+    // Delete...
+    return null;
+  }
+
+  // Already emailed about this invite.
+  if (inviteData.emailedInvite) {
+    return null;
+  }
+  // lookup the person that sent the invite to get
+  // their profile details.
+  return db
+    .collection("Users")
+    .doc(inviteData.sentbyUid)
+    .get()
+    .then(sentByDoc => {
+      return mailToSender(inviteData, sentByDoc);
+    })
+    .then(() => {
+      console.log("Sent email to " + inviteData.email);
+      return db
+        .collection("Invites")
+        .doc(inviteUid)
+        .update({ emailedInvite: true });
+    })
+    .catch(error =>
+      console.error("There was an error while sending the email:", error)
+    );
 }
 
 //
 // The main point for the onCreate call.
 //
-export default functions.firestore
-  .document("Invites/{inviteUid}")
-  .onCreate(snapshot => {
-    const data = snapshot.data();
-
-    if (data === null) {
-      // Delete...
-      return null;
-    }
-
-    // Already emailed about this invite.
-    if (data.emailedInvite) {
-      return null;
-    }
-    // lookup the person that sent the invite to get
-    // their profile details.
-    return db
-      .collection("Users")
-      .doc(data.sentbyUid)
-      .get()
-      .then(sentByDoc => {
-        return mailToSender(snapshot, sentByDoc);
-      })
-      .then(() => {
-        console.log("Sent email to " + data.email);
-        return db
-          .collection("Invites")
-          .doc(snapshot.id)
-          .update({ emailedInvite: true });
-      })
-      .catch(error =>
-        console.error("There was an error while sending the email:", error)
-      );
-  });
+export default functions.firestore.document("Invites/{inviteUid}").onCreate(
+  async (snapshot: FirebaseFirestore.DocumentSnapshot): Promise<unknown> => {
+    return doOnCreate(snapshot.id, snapshot.data());
+  }
+);

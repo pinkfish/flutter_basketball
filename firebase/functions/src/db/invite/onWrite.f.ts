@@ -1,8 +1,11 @@
 import * as functions from "firebase-functions";
-import onCreate from "./onCreate.f";
+import doOnCreate from "./onCreate.f";
 
-export default functions.firestore
-  .document("Invites/{gameUid}")
-  .onWrite(async change => {
-    return onCreate(change.after);
-  });
+export default functions.firestore.document("Invites/{gameUid}").onWrite(
+  async (
+    change: functions.Change<FirebaseFirestore.DocumentData>
+  ): Promise<unknown> => {
+    const inviteData = change.after.data();
+    return doOnCreate(change.after.id, inviteData);
+  }
+);

@@ -6,7 +6,10 @@ service cloud.firestore {
     }
     match /Users/{userUid} {
      allow write: if request.auth.uid == userUid;
-    allow read: if request.auth.uid != null;
+     allow read: if request.auth.uid != null;
+    }
+    match /Teams/{teamUid} {
+      allow read, write: if request.resources.data.users[request.auth.uid].enabled == true;
     }
   }
 }

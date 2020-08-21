@@ -1,8 +1,9 @@
 import * as functions from "firebase-functions";
 
-export default functions.firestore
-  .document("GameEvents/{gameUid}")
-  .onCreate(snapshot => {
+export default functions.firestore.document("GameEvents/{gameUid}").onCreate(
+  async (
+    snapshot: FirebaseFirestore.QueryDocumentSnapshot
+  ): Promise<unknown> => {
     return snapshot;
     /*
   const eventType = snapshot.data()?.type;
@@ -62,4 +63,5 @@ export default functions.firestore
     }
   }
   */
-  });
+  }
+);
