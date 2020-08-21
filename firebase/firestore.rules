@@ -1,15 +1,41 @@
 rules_version = '2';
+
 service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.auth.uid != null;
+    function isSignedIn() {
+        return request.auth != null;
     }
-    match /Users/{userUid} {
-     allow write: if request.auth.uid == userUid;
-     allow read: if request.auth.uid != null;
+
+
+    match /databases/{database}/documents {
+        match /{document=**} {
+            match /Users/{userUid} {
+             allow write: if request.auth.uid == userUid;
+             allow read: if isSignedIn();
+            }
+            match /Teams/{teamUid} {
+              allow read, write: if resource.data.users != null && resource.data.users[request.auth.uid] != null && resource.data.users[request.auth.uid].enabled == true;
+              allow create: if isSignedIn() && request.resource.data.users[request.auth.uid] != null && request.resource.data.users != null && request.resource.data.users[request.auth.uid].enabled == true;
+              allow list: if isSignedIn();
+            }
+
+            match /Invites/{inviteUid} {
+              allow read, write: if isSignedIn();
+            }
+            match /Players/{inviteUid} {
+                allow read, write: if isSignedIn();
+            }
+            match /Games/{inviteUid} {
+                allow read, write: if isSignedIn();
+            }
+            match /Media/{inviteUid} {
+                allow read, write: if isSignedIn();
+            }
+            match /Seasons/{inviteUid} {
+                allow read, write: if isSignedIn();
+            }
+            match /GameEvents/{inviteUid} {
+                allow read, write: if isSignedIn();
+            }
+        }
     }
-    match /Teams/{teamUid} {
-      allow read, write: if request.resources.data.users[request.auth.uid].enabled == true;
-    }
-  }
 }
