@@ -47,7 +47,6 @@ jobs:
           export PATH=$PATH:/usr/local/bin
           ls -l /usr/local/bin/
           echo "Fluff lib"
-          ls -l /usr/local/lib/node_modules/firebase-tools/lib/bin
           echo $PATH
           sudo npm install -g firebase-tools
           echo `which firebase`
