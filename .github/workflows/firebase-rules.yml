@@ -51,7 +51,7 @@ jobs:
           ls -l /usr/local/lib/node_modules/firebase-tools/lib/bin
           echo "Running firebase"
           echo $PATH
-          /usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --only firestore \"npm run test\"
+          /usr/local/bin/node /usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --only firestore \"npm run test\"
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
           PROJECT_PATH: firebase
