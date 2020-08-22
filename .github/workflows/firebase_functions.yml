@@ -1,9 +1,6 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Firebase functions
 
-# Controls when the action will run. Triggers the workflow on push or pull request 
-# events but only for the master branch
+# Update when the functions change or this changes.
 on:
   push:
     branches: [ main ]
@@ -55,6 +52,7 @@ jobs:
         working-directory: firebase/functions
       - name: Setup and test emulator
         run: |
+          echo "::add-path::/usr/local/bin"
           ls -l /usr/local/bin/
           echo "Fluff lib"
           ls -l /usr/local/lib/node_modules/firebase-tools/lib/bin
