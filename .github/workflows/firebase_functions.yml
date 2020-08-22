@@ -57,9 +57,7 @@ jobs:
         run: |
           ls -l /usr/local/bin/
           echo "Fluff lib"
-          ls /usr/local/lib/
-          echo "Fluff node_modules"
-          ls /usr/local/lib/node_modules
+          ls -l /usr/local/lib/node_modules/firebase-tools/lib/bin
           echo "Running firebase"
           /usr/local/bin/firebase emulators:exec --only firestore \"npm run test\"
         env:
