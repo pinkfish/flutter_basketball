@@ -50,8 +50,9 @@ jobs:
           ls -l /usr/local/lib/node_modules/firebase-tools/lib/bin
           echo $PATH
           sudo npm install -g firebase-tools
+          echo `which firebase`
           echo "Running firebase"
-          /usr/local/bin/node /usr/local/lib/node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --only firestore \"npm run test\"
+          firebase emulators:exec --only firestore \"npm run test\"
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
           PROJECT_PATH: firebase
