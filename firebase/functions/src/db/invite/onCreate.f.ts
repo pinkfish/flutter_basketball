@@ -31,6 +31,20 @@ function getContentType(fullBody: AxiosResponse<unknown>): string {
   return contentType;
 }
 
+function makeDynamicLongLink(postId, teamName) {
+  return urlBuilder("https://stats.whelksoft.com/invite/", {
+    queryParams: {
+      link: "https://stats.whelksoft.com/invite/" + postId,
+      apn: "state.whelksoft.com",
+      dfl: "https://stats.whelksoft.com",
+      st: "BasketballStats - for stats and basketball",
+      sd: "Invite to " + teamName,
+      si:
+        "https://stats.whelksoft.com/assets/assets/images/hands_and_trophy.png"
+    }
+  });
+}
+
 function mailToSender(
   inviteData: FirebaseFirestore.DocumentData,
   sentByDoc: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>
@@ -79,7 +93,8 @@ function mailToSender(
     sentBy: sendByData,
     invite: inviteData,
     teaming: "",
-    team: inviteData
+    team: inviteData,
+    dynamicLink: makeDynamicLongLink(inviteData.uid, inviteData.teamName)
   };
 
   if (inviteData.type === "InviteType.Team") {

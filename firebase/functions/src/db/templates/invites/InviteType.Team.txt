@@ -1,0 +1,6 @@
+You are invited to join {{invite.teamName}} by {{sentBy.name}} ({{sentBy.email}}).
+
+You are invited to join the team to track stastistics and details,
+seeing the game statistics over the course of time.
+
+{{dynamicLink}}
