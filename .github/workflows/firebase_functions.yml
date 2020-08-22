@@ -38,7 +38,6 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          sudo npm install -g firebase-tools
         working-directory: firebase/functions
       - name: Copy templates
         working-directory: firebase/functions
@@ -57,8 +56,9 @@ jobs:
           ls -l /usr/local/bin/
           echo "Fluff lib"
           ls -l /usr/local/lib/node_modules/firebase-tools/lib/bin
-          echo "Running firebase"
           echo $PATH
+          sudo npm install -g firebase-tools
+          echo "Running firebase"
           /usr/local/bin/node /usr/local/bin/firebase emulators:exec --only firestore \"npm run test\"
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
