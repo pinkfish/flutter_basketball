@@ -55,10 +55,10 @@ jobs:
         working-directory: firebase/functions
       - name: Setup and test emulator
         run: |
-          ls /usr/local/bin/
-          echo "lib"
+          ls -l /usr/local/bin/
+          echo "Fluff lib"
           ls /usr/local/lib/
-          echo "node_modules"
+          echo "Fluff node_modules"
           ls /usr/local/lib/node_modules
           echo "Running firebase"
           /usr/local/bin/firebase emulators:exec --only firestore \"npm run test\"
