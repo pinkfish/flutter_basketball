@@ -5,6 +5,8 @@ import * as handlebars from "handlebars";
 import * as fs from "fs";
 import * as c from "../../util/constants";
 import admin from "firebase-admin";
+import urlBuilder from "build-url";
+
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 try {
@@ -31,7 +33,7 @@ function getContentType(fullBody: AxiosResponse<unknown>): string {
   return contentType;
 }
 
-function makeDynamicLongLink(postId, teamName) {
+function makeDynamicLongLink(postId: string, teamName: string) {
   return urlBuilder("https://stats.whelksoft.com/invite/", {
     queryParams: {
       link: "https://stats.whelksoft.com/invite/" + postId,
