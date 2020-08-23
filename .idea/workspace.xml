@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/firebase-rules.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase-rules.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
