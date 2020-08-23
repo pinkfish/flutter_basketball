@@ -60,6 +60,7 @@ jobs:
           echo "Running firebase"
           firebase setup:emulators:firestore
           firebase emulators:exec --only firestore "npm run test"
+        working-directory: firebase/functions
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
           PROJECT_PATH: firebase
