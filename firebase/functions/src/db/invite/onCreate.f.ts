@@ -188,7 +188,7 @@ async function mailToSender(
 //
 // The stuff to be done.
 //
-async function doOnCreate(
+export async function doOnCreate(
   inviteUid: string,
   inviteData: FirebaseFirestore.DocumentData | undefined
 ): Promise<unknown> {

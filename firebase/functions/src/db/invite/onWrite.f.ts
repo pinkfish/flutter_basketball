@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import doOnCreate from "./onCreate.f";
+import { doOnCreate } from "./onCreate.f";
 
 export default functions.firestore.document("Invites/{gameUid}").onWrite(
   async (
