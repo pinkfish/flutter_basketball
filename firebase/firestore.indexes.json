@@ -13,16 +13,6 @@
           "order": "ASCENDING"
         }
       ]
-    },
-    {
-      "collectionGroup": "Games",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "eventTime",
-          "order": "ASCENDING"
-        }
-      ]
     }
   ],
   "fieldOverrides": []

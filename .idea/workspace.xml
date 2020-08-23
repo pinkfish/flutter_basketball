@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.github/workflows/firebase-rules.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase-rules.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/firebase_functions.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/firestore.indexes.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/firestore.indexes.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
