@@ -19,12 +19,12 @@
     "appAssociation": "AUTO",
     "rewrites": [
       {
-        "source": "**",
-        "destination": "/index.html"
-      },
-      {
         "source": "/invite/**",
         "dynamicLinks": true
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
       }
     ]
   },

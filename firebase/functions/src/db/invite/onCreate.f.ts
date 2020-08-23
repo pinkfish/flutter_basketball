@@ -18,10 +18,14 @@ try {
 }
 
 const db = admin.firestore();
+const getImageOptions: AxiosRequestConfig = {};
+const api = axios.create(getImageOptions);
+
+interface ShortLinkResponse {
+  shortLink: string;
+}
 
 function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
-  const getImageOptions: AxiosRequestConfig = {};
-  const api = axios.create(getImageOptions);
   return api.get(url);
 }
 
@@ -47,7 +51,21 @@ function makeDynamicLongLink(postId: string, teamName: string) {
   });
 }
 
-function mailToSender(
+async function getShortUrlDynamicLink(url: string) {
+  const data = (await api({
+    method: "post",
+    url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${
+      functions.config().links.key
+    }`,
+    data: {
+      longDynamicLink: url
+    },
+    responseType: "json"
+  })) as AxiosResponse<ShortLinkResponse>;
+  return data.data.shortLink;
+}
+
+async function mailToSender(
   inviteData: FirebaseFirestore.DocumentData,
   sentByDoc: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>
 ): Promise<unknown> {
@@ -96,7 +114,9 @@ function mailToSender(
     invite: inviteData,
     teaming: "",
     team: inviteData,
-    dynamicLink: makeDynamicLongLink(inviteData.uid, inviteData.teamName)
+    dynamicLink: await getShortUrlDynamicLink(
+      makeDynamicLongLink(inviteData.uid, inviteData.teamName)
+    )
   };
 
   if (inviteData.type === "InviteType.Team") {
