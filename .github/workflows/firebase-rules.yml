@@ -50,9 +50,10 @@ jobs:
           echo $PATH
           sudo npm install -g firebase-tools
           echo `which firebase`
-          sudo curl -sL firebase.tools | bash
-          chmod a+x firebase.tools
+          # sudo curl -sL firebase.tools | bash
+          # chmod a+x firebase.tools
           echo "Running firebase  "
+          firebase setup:emulators:firestore
           # firebase emulators:exec --only firestore \"echo frog\"
         working-directory: firebase/functions
         env:
