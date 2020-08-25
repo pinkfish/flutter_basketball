@@ -58,7 +58,7 @@ describe("Invite Tests", () => {
       const doc = test.firestore.makeDocumentSnapshot(
         {
           type: "InviteType.Team",
-          sentbyUid: "sentByFluff",
+          sentbyUid: "sentByFluff ",
           teamUid: "team",
           teamName: "teamName",
           email: "frog@example.com",
