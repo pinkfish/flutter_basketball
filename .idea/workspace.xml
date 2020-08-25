@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b63c4ac8-d61b-4f2e-8f5a-a641f4294c92" name="Default Changelist" comment="First pass on invite flow.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/invite/onCreate.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/invite/onCreate.f.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/firebase/firebase.json" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/firebase.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
