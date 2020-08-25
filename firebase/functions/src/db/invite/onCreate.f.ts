@@ -29,7 +29,7 @@ async function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
       status: 200,
       statusText: "OK",
       headers: {
-        "content-type": "image/png"
+        "content-type": "image/jpeg"
       },
       config: getImageOptions
     };
@@ -134,11 +134,7 @@ async function mailToSender(
 
       // Building Email message.
       context.team = teamData;
-      if (inviteData.type === "InviteType.Team") {
-        mailOptions.subject = "Invitation to join " + inviteData.teamName;
-      } else {
-        mailOptions.subject = "Invitation to be an admin for " + teamData.name;
-      }
+      mailOptions.subject = "Invitation to join " + inviteData.teamName;
       mailOptions.text = payloadTxt(context) + footerTxt(context);
       mailOptions.html = payloadHtml(context) + footerHtml(context);
 
