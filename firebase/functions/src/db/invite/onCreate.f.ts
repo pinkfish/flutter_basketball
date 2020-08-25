@@ -71,13 +71,13 @@ async function mailToSender(
 
   const payloadTxt = handlebars.compile(
     fs.readFileSync(
-      "src/db/templates/invites/" + inviteData.type + ".txt",
+      "src/db/templates/invites/InviteType." + inviteData.invite + ".txt",
       "utf8"
     )
   );
   const payloadHtml = handlebars.compile(
     fs.readFileSync(
-      "src/db/templates/invites/" + inviteData.type + ".html",
+      "src/db/templates/invites/InviteType." + inviteData.invite + ".html",
       "utf8"
     )
   );
@@ -103,15 +103,11 @@ async function mailToSender(
     team: inviteData,
     dynamicLink: ""
   };
-  try {
-    const shortLink = await dl.getShortUrlDynamicLink(
-      dl.makeDynamicLongLink(inviteData.uid, inviteData.teamName),
-      api
-    );
-    context.dynamicLink = shortLink;
-  } catch (error) {
-    throw error;
-  }
+  const shortLink = await dl.getShortUrlDynamicLink(
+    dl.makeDynamicLongLink(inviteData.uid, inviteData.teamName),
+    api
+  );
+  context.dynamicLink = shortLink;
 
   if (inviteData.type === "InviteType.Team") {
     // Find the team details.
@@ -178,23 +174,19 @@ export async function doOnCreate(
   if (inviteData.emailedInvite) {
     return undefined;
   }
-  try {
-    // lookup the person that sent the invite to get
-    // their profile details.
-    const sentByDoc = await db
-      .collection("Users")
-      .doc(inviteData.sentbyUid)
-      .get();
+  // lookup the person that sent the invite to get
+  // their profile details.
+  const sentByDoc = await db
+    .collection("Users")
+    .doc(inviteData.sentByUid)
+    .get();
 
-    const info = await mailToSender(inviteData, sentByDoc);
-    await db
-      .collection("Invites")
-      .doc(inviteUid)
-      .update({ emailedInvite: true });
-    return info;
-  } catch (error) {
-    throw error;
-  }
+  const info = await mailToSender(inviteData, sentByDoc);
+  await db
+    .collection("Invites")
+    .doc(inviteUid)
+    .update({ emailedInvite: true });
+  return info;
 }
 
 //

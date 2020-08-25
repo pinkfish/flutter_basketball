@@ -7,7 +7,7 @@ interface ShortLinkResponse {
   shortLink: string;
 }
 
-export function makeDynamicLongLink(postId: string, teamName: string) {
+export function makeDynamicLongLink(postId: string, teamName: string): string {
   return urlBuilder("https://stats.whelksoft.com/invite/", {
     queryParams: {
       link: "https://stats.whelksoft.com/invite/" + postId,
@@ -26,19 +26,15 @@ export async function getShortUrlDynamicLink(
   api: AxiosInstance
 ): Promise<string> {
   console.log("getShortUrlDynamicLink " + url);
-  try {
-    const data = (await api({
-      method: "post",
-      url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${
-        functions.config().links.key
-      }`,
-      data: {
-        longDynamicLink: url
-      },
-      responseType: "json"
-    })) as AxiosResponse<ShortLinkResponse>;
-    return data.data.shortLink;
-  } catch (error) {
-    throw error;
-  }
+  const data = (await api({
+    method: "post",
+    url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${
+      functions.config().links.key
+    }`,
+    data: {
+      longDynamicLink: url
+    },
+    responseType: "json"
+  })) as AxiosResponse<ShortLinkResponse>;
+  return data.data.shortLink;
 }

@@ -3,7 +3,7 @@
   "private": true,
   "main": "lib/src/index.js",
   "scripts": {
-    "build": "npm run copytemplate && tsc",
+    "build": "npm run lint && npm run copytemplate && tsc",
     "copytemplate": "copyfiles --up 2 --verbose \"src/db/templates/**\" lib/src",
     "deploy": "firebase deploy --only functions",
     "lint": "eslint --ext .ts,.js,.jsx,.tsx src",

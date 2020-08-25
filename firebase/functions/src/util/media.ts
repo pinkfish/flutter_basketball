@@ -16,7 +16,7 @@ const THUMB_MAX_WIDTH = "200x200";
 
 function getFfmpegInstance(source: ReadableStream<Uint8Array>): FfmpegCommand {
   const options: FfmpegCommandOptions = {};
-  return new FfmpegCommand(source as any, options);
+  return new FfmpegCommand(source as any, options); // eslint-disable-line  @typescript-eslint/no-explicit-any
 }
 
 export function generateThumbnailFromUrl(
