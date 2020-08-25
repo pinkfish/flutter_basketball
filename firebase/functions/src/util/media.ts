@@ -76,13 +76,12 @@ export function generateThumbnailFromPath(
   setFfmpegPath(pathToFfmpeg);
   setFfprobePath(pathToFfprobe.path);
 
-  console.log("testffmpeg", testFfmpeg);
   const ffmpeg =
     testFfmpeg !== null && testFfmpeg !== undefined
       ? testFfmpeg(path)
       : Ffmpeg(path);
-  ffmpeg.on("start", (commandLine: string) => {
-    console.log("Ffmpeg command line: " + commandLine);
+  ffmpeg.on("start", () => {
+    //console.log("Ffmpeg command line: " + commandLine);
   });
 
   return new Promise<string[]>((resolve, reject) => {

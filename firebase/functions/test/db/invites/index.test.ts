@@ -1,7 +1,7 @@
 import * as sinon from "sinon";
 import admin from "firebase-admin";
 import firebaseFunctionsTest from "firebase-functions-test";
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import * as dl from "../../../src/util/dynamiclink";
 import * as nodemailer from "nodemailer";
 
@@ -58,7 +58,7 @@ describe("Invite Tests", () => {
       const doc = test.firestore.makeDocumentSnapshot(
         {
           invite: "Team",
-          sentByUid: "sentByFluff ",
+          sentByUid: "sentByFluff",
           teamUid: "team",
           teamName: "teamName",
           email: "frog@example.com",
@@ -97,16 +97,19 @@ describe("Invite Tests", () => {
           },
           authType: "USER"
         });
+        expect(getMailTransportOverride.calledOnce).to.be.true;
         const data = await admin
           .firestore()
           .collection("Invites")
           .doc("1")
           .get();
+        expect(data).to.not.be.null;
         if (data !== null && data !== undefined) {
           assert(data.exists);
           const myData = data.data();
+          expect(myData).to.not.be.null;
           if (myData !== undefined && myData !== null) {
-            assert(myData.emailedInvite);
+            expect(myData.emailedInvite).to.be.true;
           }
         }
       } catch (e) {

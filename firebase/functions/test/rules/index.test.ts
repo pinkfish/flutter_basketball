@@ -56,28 +56,23 @@ async function createLex() {
 
 describe("Firebase rules", () => {
   beforeEach(async () => {
-    console.log("clearFirestoreData");
     // Clear the database between tests
     await firebase.clearFirestoreData({
       projectId: projectName
     });
     // Setup some basic data.
     const db = authedApp(allowedUserData);
-    console.log("setup user");
     await db
       .collection("Users")
       .doc(allowedUserId)
       .set({ email: "alice@luther.com", name: "Alice Luthor" });
-    console.log("end beforeEach");
   });
 
   before(async () => {
-    console.log("start before");
     await firebase.loadFirestoreRules({
       projectId: projectName,
       rules: rules
     });
-    console.log("end before");
   });
 
   after(async () => {

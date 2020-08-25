@@ -38,7 +38,6 @@ export async function internalOnWrite(
     );
     return false;
   }
-  console.log("bing", testFfmpeg);
 
   // Download from this url and upload to storage.
   const bucket = admin.storage().bucket(c.BUCKET_NAME);
