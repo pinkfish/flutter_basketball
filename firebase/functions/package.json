@@ -14,7 +14,7 @@
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "test": "mocha --reporter spec"
+    "test": "npm run build && firebase emulators:exec --only firestore \"mocha --parallel=false --trace-warnings --unhandled-rejections=strict --reporter spec\""
   },
   "husky": {
     "hooks": {

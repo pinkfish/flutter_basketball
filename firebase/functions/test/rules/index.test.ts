@@ -54,7 +54,7 @@ async function createLex() {
   return dbLuthor;
 }
 
-describe("My app", () => {
+describe("Firebase rules", () => {
   beforeEach(async () => {
     console.log("clearFirestoreData");
     // Clear the database between tests
@@ -85,51 +85,45 @@ describe("My app", () => {
     console.log(`View rule coverage information at ${coverageUrl}\n`);
   });
 
-  it("require users to log in before listing teams", async () => {
+  it("Teams.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Teams").doc("frog");
     await firebase.assertFails(doc.get());
   });
-  it("require users to log in before listing invites", async () => {
+  it("Invites.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Invites").doc("frog");
     await firebase.assertFails(doc.get());
   });
-  it("require users to log in before listing games", async () => {
+  it("Games.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Games").doc("frog");
     await firebase.assertFails(doc.get());
   });
-  it("require users to log in before listing games events", async () => {
+  it("GameEvents.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("GameEvents").doc("frog");
     await firebase.assertFails(doc.get());
   });
-  it("require users to log in before listing media", async () => {
+  it("Media.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Media").doc("frog");
     await firebase.assertFails(doc.get());
   });
 
-  it("require users to log in before listing media", async () => {
-    const db = authedApp(undefined);
-    const doc = db.collection("Media").doc("frog");
-    await firebase.assertFails(doc.get());
-  });
-
-  it("require users to log in before listing seasons", async () => {
+  it("Seasons.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Seasons").doc("frog");
     await firebase.assertFails(doc.get());
   });
 
-  it("require users to log in before listing players", async () => {
+  it("Players.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Players").doc("frog");
     await firebase.assertFails(doc.get());
   });
 
-  it("require users to log in before listing users", async () => {
+  it("Users.get - needs auth", async () => {
     const db = authedApp(undefined);
     const doc = db.collection("Users").doc("frog");
     await firebase.assertFails(doc.get());
@@ -152,7 +146,7 @@ describe("My app", () => {
     );
   });
 
-  it("require users to be in the actual user", async () => {
+  it("Users.get - auth == uid", async () => {
     const db = authedApp(allowedUserData);
     const dbLex = await createLex();
 
@@ -200,7 +194,7 @@ describe("My app", () => {
     );
   });
 
-  it("require users to be in the teams to get team", async () => {
+  it("Teams.get -- uid in users", async () => {
     const dbLex = await createLex();
     const db = authedApp(allowedUserData);
     await firebase.assertSucceeds(

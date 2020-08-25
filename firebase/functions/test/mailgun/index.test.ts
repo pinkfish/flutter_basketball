@@ -12,7 +12,7 @@ test.mockConfig({
   }
 });
 
-import { sendMail } from "../../src/util/mailgun";
+import { sendMail, getMailTransport } from "../../src/util/mailgun";
 
 describe("Mailgun Util Tests", () => {
   before(() => {
@@ -30,7 +30,7 @@ describe("Mailgun Util Tests", () => {
       subject: "This is a test"
     };
     try {
-      await sendMail(mailOptions);
+      await sendMail(mailOptions, getMailTransport());
       assert(false);
     } catch (e) {
       expect(e.message).to.include("Forbidden");

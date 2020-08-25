@@ -1,11 +1,11 @@
 import * as functions from "firebase-functions";
 import * as nodemailer from "nodemailer";
 import * as mailgun from "../../util/mailgun";
+import * as dl from "../../util/dynamiclink";
 import * as handlebars from "handlebars";
 import * as fs from "fs";
 import * as c from "../../util/constants";
 import admin from "firebase-admin";
-import urlBuilder from "build-url";
 
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -21,12 +21,21 @@ const db = admin.firestore();
 const getImageOptions: AxiosRequestConfig = {};
 const api = axios.create(getImageOptions);
 
-interface ShortLinkResponse {
-  shortLink: string;
-}
-
-function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
-  return api.get(url);
+async function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
+  if (url.startsWith("src")) {
+    const data = fs.readFileSync(url, "utf8");
+    return {
+      data: data,
+      status: 200,
+      statusText: "OK",
+      headers: {
+        "content-type": "image/png"
+      },
+      config: getImageOptions
+    };
+  } else {
+    return api.get(url);
+  }
 }
 
 function getContentType(fullBody: AxiosResponse<unknown>): string {
@@ -37,62 +46,40 @@ function getContentType(fullBody: AxiosResponse<unknown>): string {
   return contentType;
 }
 
-function makeDynamicLongLink(postId: string, teamName: string) {
-  return urlBuilder("https://stats.whelksoft.com/invite/", {
-    queryParams: {
-      link: "https://stats.whelksoft.com/invite/" + postId,
-      apn: "state.whelksoft.com",
-      dfl: "https://stats.whelksoft.com",
-      st: "BasketballStats - for stats and basketball",
-      sd: "Invite to " + teamName,
-      si:
-        "https://stats.whelksoft.com/assets/assets/images/hands_and_trophy.png"
-    }
-  });
-}
-
-async function getShortUrlDynamicLink(url: string) {
-  const data = (await api({
-    method: "post",
-    url: `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${
-      functions.config().links.key
-    }`,
-    data: {
-      longDynamicLink: url
-    },
-    responseType: "json"
-  })) as AxiosResponse<ShortLinkResponse>;
-  return data.data.shortLink;
-}
-
 async function mailToSender(
   inviteData: FirebaseFirestore.DocumentData,
   sentByDoc: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>
-): Promise<unknown> {
+): Promise<nodemailer.SentMessageInfo> {
   const footerTxt = handlebars.compile(
-    fs.readFileSync("db/templates/invites/footer.txt", "utf8")
+    fs.readFileSync("src/db/templates/invites/footer.txt", "utf8")
   );
   const footerHtml = handlebars.compile(
-    fs.readFileSync("db/templates/invites/footer.html", "utf8")
+    fs.readFileSync("src/db/templates/invites/footer.html", "utf8")
   );
   const attachments = [
     {
       filename: "apple-store-badge.png",
-      path: "db/templates/invites/img/apple-store-badge.png",
+      path: "src/db/templates/invites/img/apple-store-badge.png",
       cid: "apple-store"
     },
     {
       filename: "google-store-badge.png",
-      path: "db/templates/invites/img/google-play-badge.png",
+      path: "src/db/templates/invites/img/google-play-badge.png",
       cid: "google-store"
     }
   ];
 
   const payloadTxt = handlebars.compile(
-    fs.readFileSync("db/templates/invites/" + inviteData.type + ".txt", "utf8")
+    fs.readFileSync(
+      "src/db/templates/invites/" + inviteData.type + ".txt",
+      "utf8"
+    )
   );
   const payloadHtml = handlebars.compile(
-    fs.readFileSync("db/templates/invites/" + inviteData.type + ".html", "utf8")
+    fs.readFileSync(
+      "src/db/templates/invites/" + inviteData.type + ".html",
+      "utf8"
+    )
   );
 
   const sendByData = sentByDoc.data() ?? {
@@ -112,74 +99,68 @@ async function mailToSender(
   const context = {
     sentBy: sendByData,
     invite: inviteData,
-    teaming: "",
+    teamimg: "cid:teamimg",
     team: inviteData,
-    dynamicLink: await getShortUrlDynamicLink(
-      makeDynamicLongLink(inviteData.uid, inviteData.teamName)
-    )
+    dynamicLink: ""
   };
+  try {
+    const shortLink = await dl.getShortUrlDynamicLink(
+      dl.makeDynamicLongLink(inviteData.uid, inviteData.teamName),
+      api
+    );
+    context.dynamicLink = shortLink;
+  } catch (error) {
+    throw error;
+  }
 
   if (inviteData.type === "InviteType.Team") {
     // Find the team details.
-    return db
+    const snapshot = await db
       .collection("Teams")
       .doc(inviteData.teamUid)
-      .get()
-      .then(snapshot => {
-        if (snapshot.exists) {
-          const teamData = snapshot.data() ?? {
-            photourl: null,
-            name: "unknown"
-          };
+      .get();
+    if (snapshot.exists) {
+      const teamData = snapshot.data() ?? {
+        photourl: null,
+        name: "unknown"
+      };
 
-          let url;
-          if (teamData.photourl) {
-            url = teamData.photourl;
-          } else {
-            url = "db/templates/invites/img/defaultteam.jpg";
-          }
+      let url;
+      if (teamData.photourl) {
+        url = teamData.photourl;
+      } else {
+        url = "src/db/templates/invites/img/defaultteam.jpg";
+      }
 
-          // Building Email message.
-          context.teaming = "cid:teamurl";
-          context.team = teamData;
-          if (inviteData.type === "InviteType.Team") {
-            mailOptions.subject = "Invitation to join " + inviteData.teamName;
-          } else {
-            mailOptions.subject =
-              "Invitation to be an admin for " + teamData.name;
-          }
-          mailOptions.text = payloadTxt(context) + footerTxt(context);
-          mailOptions.html = payloadHtml(context) + footerHtml(context);
+      // Building Email message.
+      context.team = teamData;
+      if (inviteData.type === "InviteType.Team") {
+        mailOptions.subject = "Invitation to join " + inviteData.teamName;
+      } else {
+        mailOptions.subject = "Invitation to be an admin for " + teamData.name;
+      }
+      mailOptions.text = payloadTxt(context) + footerTxt(context);
+      mailOptions.html = payloadHtml(context) + footerHtml(context);
 
-          return Promise.all([mailOptions, getImageFromUrl(url)]);
-        } else {
-          return null;
-        }
-      })
-      .then(dataInner => {
-        if (dataInner === null) {
-          return null;
-        }
-        const res = dataInner[1];
-        const myMailOptions = dataInner[0];
-        if (
-          myMailOptions.attachments === null ||
-          myMailOptions.attachments === undefined
-        ) {
-          console.log("Attachments are empty");
-          return null;
-        } else {
-          myMailOptions.attachments.push({
-            filename: "team.jpg",
-            path: Buffer.from(res.data).toString("base64"),
-            cid: "teamimg",
-            contentType: getContentType(res),
-            encoding: "base64"
-          });
+      const res = await getImageFromUrl(url);
+      if (
+        mailOptions.attachments === null ||
+        mailOptions.attachments === undefined
+      ) {
+        console.log("Attachments are empty");
+        return null;
+      } else {
+        mailOptions.attachments.push({
+          filename: "team.jpg",
+          content: Buffer.from(res.data).toString("base64"),
+          cid: "teamimg",
+          contentType: getContentType(res),
+          encoding: "base64"
+        });
 
-          return mailgun.sendMail(myMailOptions);
-        }
-      });
+        return mailgun.sendMail(mailOptions, mailgun.getMailTransport());
+      }
+    }
   }
 
   return new Promise(resolve => resolve(inviteData));
@@ -191,35 +172,33 @@ async function mailToSender(
 export async function doOnCreate(
   inviteUid: string,
   inviteData: FirebaseFirestore.DocumentData | undefined
-): Promise<unknown> {
+): Promise<nodemailer.SentMessageInfo | undefined> {
   if (inviteData === null || inviteData === undefined) {
     // Delete...
-    return null;
+    return undefined;
   }
 
   // Already emailed about this invite.
   if (inviteData.emailedInvite) {
-    return null;
+    return undefined;
   }
-  // lookup the person that sent the invite to get
-  // their profile details.
-  return db
-    .collection("Users")
-    .doc(inviteData.sentbyUid)
-    .get()
-    .then(sentByDoc => {
-      return mailToSender(inviteData, sentByDoc);
-    })
-    .then(() => {
-      console.log("Sent email to " + inviteData.email);
-      return db
-        .collection("Invites")
-        .doc(inviteUid)
-        .update({ emailedInvite: true });
-    })
-    .catch(error =>
-      console.error("There was an error while sending the email:", error)
-    );
+  try {
+    // lookup the person that sent the invite to get
+    // their profile details.
+    const sentByDoc = await db
+      .collection("Users")
+      .doc(inviteData.sentbyUid)
+      .get();
+
+    const info = await mailToSender(inviteData, sentByDoc);
+    await db
+      .collection("Invites")
+      .doc(inviteUid)
+      .update({ emailedInvite: true });
+    return info;
+  } catch (error) {
+    throw error;
+  }
 }
 
 //

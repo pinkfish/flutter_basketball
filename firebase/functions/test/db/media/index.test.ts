@@ -8,24 +8,9 @@ import { FfmpegCommand } from "fluent-ffmpeg";
 
 import { internalOnWrite } from "../../../src/db/media/onWrite.f";
 import onDelete from "../../../src/db/media/onDelete.f";
+import { fakeDefaultExport } from "../../util/fakedefaultexport";
 
 let test = firebaseFunctionsTest();
-
-function fakeDefaultExport(
-  moduleRelativePath: string,
-  stubs: Map<string, sinon.SinonStub>
-) {
-  if (require.cache[require.resolve(moduleRelativePath)]) {
-    delete require.cache[require.resolve(moduleRelativePath)];
-  }
-  for (let [key, value] of stubs) {
-    const mod = tssinon.stubInterface<NodeModule>();
-    mod.exports.returns(value);
-    require.cache[require.resolve(key)] = mod;
-  }
-
-  return require(moduleRelativePath);
-}
 
 describe("Media Util Tests", () => {
   let adminInitStub: sinon.SinonStub;
@@ -45,7 +30,7 @@ describe("Media Util Tests", () => {
     const myMap = new Map();
     myMap.set("fluent-ffmpeg", sinon.stub().returns("fake adding"));
 
-    fakeDefaultExport("../../../src/util/media", myMap);
+    fakeDefaultExport("../../src/util/media", myMap);
 
     const beforeSnap = test.firestore.makeDocumentSnapshot(
       { url: "http://35.186.244.82/bing.mp4" },

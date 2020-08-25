@@ -12,9 +12,24 @@ const mailgunOptions: mailgunTransport.Options = {
 
 const mailTransport = mailgunTransport(mailgunOptions);
 
+// Let this be overrideable for tests.
+export function getMailTransport(): nodemailer.Transporter {
+  console.log("Getting mail transport mailgun");
+  return nodemailer.createTransport(mailTransport);
+}
+
 export function sendMail(
-  mailOptions: nodemailer.SendMailOptions
-): Promise<unknown> {
-  const emailClient = nodemailer.createTransport(mailTransport);
-  return emailClient.sendMail(mailOptions);
+  mailOptions: nodemailer.SendMailOptions,
+  emailClient: nodemailer.Transporter
+): Promise<nodemailer.SentMessageInfo> {
+  return new Promise<nodemailer.SentMessageInfo>((resolve, reject) => {
+    emailClient.sendMail(mailOptions, (error, info) => {
+      if (error !== null) {
+        reject(error);
+      } else {
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        resolve(info);
+      }
+    });
+  });
 }
