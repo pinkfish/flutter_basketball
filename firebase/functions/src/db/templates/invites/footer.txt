@@ -1,0 +1,10 @@
+
+
+-----
+Basketball Stats is an app to help track your basketball team.
+http://stats.whelksoft.com
+
+iPhone download:
+https://testflight.apple.com/join/2v8aiAXh
+Android download:
+https://play.google.com/apps/testing/com.whelksoft.basketballstats

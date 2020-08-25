@@ -109,7 +109,7 @@ async function mailToSender(
   );
   context.dynamicLink = shortLink;
 
-  if (inviteData.type === "InviteType.Team") {
+  if (inviteData.invite === "Team") {
     // Find the team details.
     const snapshot = await db
       .collection("Teams")
@@ -194,6 +194,6 @@ export async function doOnCreate(
 //
 export default functions.firestore.document("Invites/{inviteUid}").onCreate(
   async (snapshot: FirebaseFirestore.DocumentSnapshot): Promise<unknown> => {
-    return doOnCreate(snapshot.id, snapshot.data());
+    return await doOnCreate(snapshot.id, snapshot.data());
   }
 );

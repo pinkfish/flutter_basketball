@@ -6,6 +6,6 @@ export default functions.firestore.document("Invites/{gameUid}").onWrite(
     change: functions.Change<FirebaseFirestore.DocumentData>
   ): Promise<unknown> => {
     const inviteData = change.after.data();
-    return doOnCreate(change.after.id, inviteData);
+    return await doOnCreate(change.after.id, inviteData);
   }
 );

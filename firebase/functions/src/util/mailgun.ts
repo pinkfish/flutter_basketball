@@ -23,8 +23,10 @@ export function sendMail(
   emailClient: nodemailer.Transporter
 ): Promise<nodemailer.SentMessageInfo> {
   return new Promise<nodemailer.SentMessageInfo>((resolve, reject) => {
+    console.log("Sending " + mailOptions);
     emailClient.sendMail(mailOptions, (error, info) => {
       if (error !== null) {
+        console.log("Error sending " + error);
         reject(error);
       } else {
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
