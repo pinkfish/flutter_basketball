@@ -7,7 +7,6 @@
       <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/media/onDelete.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/media/onDelete.f.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/src/db/media/onWrite.f.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/db/media/onWrite.f.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/src/util/media.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/src/util/media.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/firebase/functions/test/db/media/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/test/db/media/index.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/firebase/functions/test/media/index.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
