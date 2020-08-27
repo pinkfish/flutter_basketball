@@ -7,6 +7,7 @@ import * as media from "../../util/media";
 import { generateThumbnailFromPath } from "../../util/media";
 import { setFfmpegPath, FfmpegCommand } from "fluent-ffmpeg";
 import pathToFfmpeg from "ffmpeg-static";
+import { InvalidArgumentError, InvalidPathError } from "../../util/errors";
 
 try {
   admin.initializeApp(c.FIREBASE_APP_OPTIONS);
@@ -50,15 +51,22 @@ export async function internalOnWrite(
     change.after.data()?.seasonUid === undefined
   ) {
     console.log("Invalid input data", afterUrl, " ", change.after.data()?.type);
-    return false;
+    throw new InvalidArgumentError(
+      "Invalid inputData gameUid: " +
+        change.after.data()?.gameUid +
+        " uid: " +
+        change.after.data()?.uid +
+        " teamUid: " +
+        change.after.data()?.teamUid +
+        " seasonUid: " +
+        change.after.data()?.seasonUid
+    );
   }
 
   // Download from this url and upload to storage.
   const bucket = admin.storage().bucket(c.BUCKET_NAME);
 
   // Create a WritableStream from the File
-  //const path =
-  //  change.after.data()?.gameUid + "/" + change.after.data()?.uid + ".mp4";
   const path =
     change.after.data()?.gameUid + "/" + change.after.data()?.uid + ".mp4";
   const thumbPath =
@@ -66,56 +74,47 @@ export async function internalOnWrite(
     "/" +
     change.after.data()?.uid +
     "_thumb.png";
-  //const file = bucket.file(path + ".mp4");
   const tempFileName = os.tmpdir() + "/" + change.after.data()?.uid + ".mp4";
   const writeStream = fs.createWriteStream(tempFileName);
-  //const writeStream = file.createWriteStream();
 
-  try {
-    media.fetchInto(afterUrl, writeStream);
-    writeStream.close();
-    if (fs.existsSync(tempFileName)) {
-      //console.log("exists", fs.fstatSync(tempFileName));
-    } else {
-      console.log("does not exists", tempFileName);
-      return false;
-    }
-    setFfmpegPath(pathToFfmpeg);
-    const thumbFile = await generateThumbnailFromPath(tempFileName, testFfmpeg);
-
-    // Upload the thumbnail first so the storage bit doesn't trigger.
-    await bucket.upload(thumbFile, {
-      destination: thumbPath,
-      resumable: false,
-      metadata: {
-        gameUid: change.after.data()?.gameUid,
-        mediaInfoUid: change.after.id,
-        teamUid: change.after.data()?.teamUid,
-        seasonUid: change.after.data()?.seasonUid
-      }
-    });
-
-    // Upload the main file.
-    await bucket.upload(tempFileName, {
-      destination: path,
-      resumable: false,
-      metadata: {
-        gameUid: change.after.data()?.gameUid,
-        mediaInfoUid: change.after.id,
-        teamUid: change.after.data()?.teamUid,
-        seasonUid: change.after.data()?.seasonUid
-      }
-    });
-
-    await change.after.ref.update({
-      url: "gs://" + c.BUCKET_NAME + "/" + path,
-      thumbnailUrl: "gs://" + c.BUCKET_NAME + "/" + thumbPath
-    });
-    return true;
-  } catch (error) {
-    console.log("Error in this process ", error);
-    return false;
+  media.fetchInto(afterUrl, writeStream);
+  writeStream.close();
+  if (!fs.existsSync(tempFileName)) {
+    console.log("does not exists", tempFileName);
+    throw new InvalidPathError("File does not exist: " + tempFileName);
   }
+  setFfmpegPath(pathToFfmpeg);
+  const thumbFile = await generateThumbnailFromPath(tempFileName, testFfmpeg);
+
+  // Upload the thumbnail first so the storage bit doesn't trigger.
+  await bucket.upload(thumbFile, {
+    destination: thumbPath,
+    resumable: false,
+    metadata: {
+      gameUid: change.after.data()?.gameUid,
+      mediaInfoUid: change.after.id,
+      teamUid: change.after.data()?.teamUid,
+      seasonUid: change.after.data()?.seasonUid
+    }
+  });
+
+  // Upload the main file.
+  await bucket.upload(tempFileName, {
+    destination: path,
+    resumable: false,
+    metadata: {
+      gameUid: change.after.data()?.gameUid,
+      mediaInfoUid: change.after.id,
+      teamUid: change.after.data()?.teamUid,
+      seasonUid: change.after.data()?.seasonUid
+    }
+  });
+
+  await change.after.ref.update({
+    url: "gs://" + c.BUCKET_NAME + "/" + path,
+    thumbnailUrl: "gs://" + c.BUCKET_NAME + "/" + thumbPath
+  });
+  return true;
 }
 
 export default functions.firestore

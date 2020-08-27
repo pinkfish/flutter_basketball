@@ -6,6 +6,7 @@ import * as handlebars from "handlebars";
 import * as fs from "fs";
 import * as c from "../../util/constants";
 import admin from "firebase-admin";
+import { InvalidArgumentError } from "../../util/errors";
 
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -21,7 +22,7 @@ const db = admin.firestore();
 const getImageOptions: AxiosRequestConfig = {};
 const api = axios.create(getImageOptions);
 
-async function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
+async function getImageFromUrl(url: string): Promise<AxiosResponse<Buffer>> {
   if (url.startsWith("src")) {
     const data = fs.readFileSync(url);
     return {
@@ -34,7 +35,14 @@ async function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
       config: getImageOptions
     };
   } else {
-    return api.get(url);
+    const response = await api.get(url, { responseType: "arraybuffer" });
+    return {
+      data: Buffer.from(response.data, "binary"),
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+      config: response.config
+    };
   }
 }
 
@@ -153,6 +161,8 @@ async function mailToSender(
         return mailgun.sendMail(mailOptions, mailgun.getMailTransport());
       }
     }
+  } else {
+    throw new InvalidArgumentError("Unknown invite type: " + inviteData.invite);
   }
 
   return new Promise(resolve => resolve(inviteData));
