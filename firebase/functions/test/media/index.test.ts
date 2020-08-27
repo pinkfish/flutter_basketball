@@ -15,7 +15,7 @@ describe("Media Util Tests", () => {
 
     // Validate they are the same.
     assert(Buffer.compare(newFile, cmpFile) === 0);
-  }).timeout(5000);
+  }).timeout(10000);
 
   it("invalidFile", async () => {
     try {

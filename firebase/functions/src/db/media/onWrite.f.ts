@@ -1,9 +1,9 @@
 import * as functions from "firebase-functions";
 import admin from "firebase-admin";
-import nodeFetch from "node-fetch";
 import * as os from "os";
 import * as fs from "fs";
 import * as c from "../../util/constants";
+import * as media from "../../util/media";
 import { generateThumbnailFromPath } from "../../util/media";
 import { setFfmpegPath, FfmpegCommand } from "fluent-ffmpeg";
 import pathToFfmpeg from "ffmpeg-static";
@@ -39,6 +39,20 @@ export async function internalOnWrite(
     return false;
   }
 
+  if (
+    change.after.data()?.gameUid === null ||
+    change.after.data()?.gameUid === undefined ||
+    change.after.data()?.uid === null ||
+    change.after.data()?.uid === undefined ||
+    change.after.data()?.teamUid === null ||
+    change.after.data()?.teamUid === undefined ||
+    change.after.data()?.seasonUid === null ||
+    change.after.data()?.seasonUid === undefined
+  ) {
+    console.log("Invalid input data", afterUrl, " ", change.after.data()?.type);
+    return false;
+  }
+
   // Download from this url and upload to storage.
   const bucket = admin.storage().bucket(c.BUCKET_NAME);
 
@@ -58,29 +72,14 @@ export async function internalOnWrite(
   //const writeStream = file.createWriteStream();
 
   try {
-    console.log("Fetch ", afterUrl);
-    const fetchResult = await nodeFetch(afterUrl);
-    await new Promise((resolve, reject) => {
-      console.log("Frogs");
-      fetchResult.body.on("end", () => {
-        console.log("end");
-        resolve();
-      });
-      fetchResult.body.on("error", error => {
-        console.log("Error ", error);
-        writeStream.close();
-        reject(error);
-      });
-      fetchResult.body.pipe(writeStream);
-    });
+    media.fetchInto(afterUrl, writeStream);
     writeStream.close();
     if (fs.existsSync(tempFileName)) {
       //console.log("exists", fs.fstatSync(tempFileName));
     } else {
       console.log("does not exists", tempFileName);
+      return false;
     }
-    console.log(pathToFfmpeg);
-    console.log(fs.existsSync(pathToFfmpeg));
     setFfmpegPath(pathToFfmpeg);
     const thumbFile = await generateThumbnailFromPath(tempFileName, testFfmpeg);
 
@@ -97,7 +96,7 @@ export async function internalOnWrite(
     });
 
     // Upload the main file.
-    const uploadFile = await bucket.upload(tempFileName, {
+    await bucket.upload(tempFileName, {
       destination: path,
       resumable: false,
       metadata: {
@@ -107,13 +106,11 @@ export async function internalOnWrite(
         seasonUid: change.after.data()?.seasonUid
       }
     });
-    console.log("Upload resonse ", uploadFile);
 
-    const updateStuff = await change.after.ref.update({
+    await change.after.ref.update({
       url: "gs://" + c.BUCKET_NAME + "/" + path,
       thumbnailUrl: "gs://" + c.BUCKET_NAME + "/" + thumbPath
     });
-    console.log("Upload resonse ", updateStuff);
     return true;
   } catch (error) {
     console.log("Error in this process ", error);

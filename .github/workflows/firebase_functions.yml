@@ -54,7 +54,7 @@ jobs:
           export PATH=$PATH:/usr/local/bin
           sudo npm install -g firebase-tools
           sudo netstat -plnt
-          firebase emulators:exec --only firestore "npm run test"
+          npm run test
         working-directory: firebase/functions
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}

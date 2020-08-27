@@ -47,7 +47,7 @@ export default functions.firestore.document("Media/{mediaUid}").onDelete(
       await deleteFile(doc.data()?.url);
     }
     if (doc.data()?.thumbnailUrl.startsWith("gs://")) {
-      await deleteFile(doc.data()?.url);
+      await deleteFile(doc.data()?.thumbnailUrl);
     }
     // If it didn't exist or still exists then we update.
     if (doc.data()?.type === "VideoStreaming") {

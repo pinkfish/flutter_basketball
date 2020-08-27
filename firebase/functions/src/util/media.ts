@@ -9,10 +9,33 @@ import Ffmpeg from "fluent-ffmpeg";
 import pathToFfmpeg from "ffmpeg-static";
 import * as os from "os";
 import * as pathToFfprobe from "ffprobe-static";
+import nodeFetch from "node-fetch";
+import { WriteStream } from "fs";
 
 import "node-fetch";
 
 const THUMB_MAX_WIDTH = "200x200";
+
+export async function fetchInto(
+  url: string,
+  writeStream: WriteStream
+): Promise<unknown> {
+  const fetchResult = await nodeFetch(url);
+
+  return new Promise((resolve, reject) => {
+    console.log("Frogs");
+    fetchResult.body.on("end", () => {
+      console.log("end");
+      resolve();
+    });
+    fetchResult.body.on("error", error => {
+      console.log("Error ", error);
+      writeStream.close();
+      reject(error);
+    });
+    fetchResult.body.pipe(writeStream);
+  });
+}
 
 function getFfmpegInstance(source: ReadableStream<Uint8Array>): FfmpegCommand {
   const options: FfmpegCommandOptions = {};
