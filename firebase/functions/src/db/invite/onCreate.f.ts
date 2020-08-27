@@ -23,7 +23,7 @@ const api = axios.create(getImageOptions);
 
 async function getImageFromUrl(url: string): Promise<AxiosResponse<string>> {
   if (url.startsWith("src")) {
-    const data = fs.readFileSync(url, "utf8");
+    const data = fs.readFileSync(url);
     return {
       data: data,
       status: 200,
