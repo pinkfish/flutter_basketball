@@ -43,6 +43,18 @@ class S {
 
   // skipped getter for the 'Add User' key
 
+  /// `JOIN`
+  String get JOIN {
+    return Intl.message(
+      'JOIN',
+      name: 'JOIN',
+      desc: 'Button to join the team',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'Join Team' key
+
   /// `GUEST`
   String get GUEST {
     return Intl.message(
@@ -963,6 +975,10 @@ class S {
     );
   }
 
+  // skipped getter for the 'Foul Flagrent' key
+
+  // skipped getter for the 'Foul Technical' key
+
   /// `Subsitution`
   String get Subsitution {
     return Intl.message(
@@ -1007,11 +1023,11 @@ class S {
     );
   }
 
-  /// `Assisted`
-  String get Assisted {
+  /// `Assists`
+  String get Assists {
     return Intl.message(
-      'Assisted',
-      name: 'Assisted',
+      'Assists',
+      name: 'Assists',
       desc: 'Title for the section on a player assist',
       args: [],
     );

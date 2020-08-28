@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "ASST" : MessageLookupByLibrary.simpleMessage("ASST"),
     "About" : MessageLookupByLibrary.simpleMessage("About"),
-    "Assisted" : MessageLookupByLibrary.simpleMessage("Assisted"),
+    "Assists" : MessageLookupByLibrary.simpleMessage("Assists"),
     "BLK" : MessageLookupByLibrary.simpleMessage("BLK"),
     "Blk" : MessageLookupByLibrary.simpleMessage("Blk"),
     "Block" : MessageLookupByLibrary.simpleMessage("Block"),
@@ -75,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "GAMES" : MessageLookupByLibrary.simpleMessage("GAMES"),
     "GUEST" : MessageLookupByLibrary.simpleMessage("GUEST"),
     "Invites" : MessageLookupByLibrary.simpleMessage("Invites"),
+    "JOIN" : MessageLookupByLibrary.simpleMessage("JOIN"),
     "LOGIN" : MessageLookupByLibrary.simpleMessage("LOGIN"),
     "LOGOUT" : MessageLookupByLibrary.simpleMessage("LOGOUT"),
     "Location" : MessageLookupByLibrary.simpleMessage("Location"),

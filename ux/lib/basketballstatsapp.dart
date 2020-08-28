@@ -3,7 +3,7 @@ import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +62,7 @@ class BasketballStatsApp extends StatelessWidget {
           create: (BuildContext context) => UploadFilesBackground(),
           lazy: false,
         ),
-        RepositoryProvider<Router>(
+        RepositoryProvider<fluro.Router>(
           create: (BuildContext context) =>
               BasketballAppRouter.createRouter(startupTrace, analytics),
         )
@@ -145,7 +145,7 @@ class BasketballStatsApp extends StatelessWidget {
       BuildContext context, RouteSettings routeSettings) {
     print("${routeSettings.name}");
     // States on routes.
-    var router = RepositoryProvider.of<Router>(context);
+    var router = RepositoryProvider.of<fluro.Router>(context);
     return router.generator(routeSettings);
   }
 }

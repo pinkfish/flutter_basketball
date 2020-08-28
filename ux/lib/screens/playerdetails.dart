@@ -1,7 +1,7 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/widgets/player/teamdetailsexpansionpanel.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -98,9 +98,9 @@ class _PlayerDetailsState extends State<_PlayerDetails> {
                       _doDelete(context, state);
                       break;
                     case _DropDownMenuItems.Edit:
-                      RepositoryProvider.of<Router>(context).navigateTo(
+                      RepositoryProvider.of<fluro.Router>(context).navigateTo(
                           context, "/Player/Edit/" + state.player.uid,
-                          transition: TransitionType.materialFullScreenDialog);
+                          transition: fluro.TransitionType.materialFullScreenDialog);
                       break;
                   }
                 },

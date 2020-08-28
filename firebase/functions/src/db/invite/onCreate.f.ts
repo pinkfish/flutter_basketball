@@ -184,12 +184,18 @@ export async function doOnCreate(
   if (inviteData.emailedInvite) {
     return undefined;
   }
+  if (inviteData.sentByUid === undefined || inviteData.sentByUid === null) {
+    throw new InvalidArgumentError("Need to specify the sentByUid");
+  }
   // lookup the person that sent the invite to get
   // their profile details.
   const sentByDoc = await db
     .collection("Users")
     .doc(inviteData.sentByUid)
     .get();
+  if (!sentByDoc.exists) {
+    throw new InvalidArgumentError("Invalid userid " + inviteData.sentByUid);
+  }
 
   const info = await mailToSender(inviteData, sentByDoc);
   await db

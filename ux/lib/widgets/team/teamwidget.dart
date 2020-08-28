@@ -1,6 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballstats/widgets/deleted.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -181,9 +181,9 @@ class TeamWidget extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    var r = RepositoryProvider.of<Router>(context);
+    var r = RepositoryProvider.of<fluro.Router>(context);
     r.navigateTo(context, "/Team/View/" + teamUid,
-        transition: TransitionType.inFromRight);
+        transition: fluro.TransitionType.inFromRight);
   }
 }
 

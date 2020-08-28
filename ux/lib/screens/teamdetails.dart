@@ -6,7 +6,7 @@ import 'package:basketballstats/widgets/player/playertile.dart';
 import 'package:basketballstats/widgets/seasons/seasondropdown.dart';
 import 'package:basketballstats/widgets/team/teamstats.dart';
 import 'package:firebase_performance/firebase_performance.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,9 +93,9 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 loadGames: _expandedPanels.contains(g.uid),
                 initiallyExpanded: _expandedPanels.contains(g.uid),
                 onGameTapped: (String gameUid) =>
-                    RepositoryProvider.of<Router>(context).navigateTo(
+                    RepositoryProvider.of<fluro.Router>(context).navigateTo(
                         context, "/Game/View/" + gameUid,
-                        transition: TransitionType.inFromRight),
+                        transition: fluro.TransitionType.inFromRight),
               ),
             )
             .toList(),
@@ -221,19 +221,22 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
                 onSelected: (_TeamDropDown value) {
                   switch (value) {
                     case _TeamDropDown.Edit:
-                      RepositoryProvider.of<Router>(context).navigateTo(
+                      RepositoryProvider.of<fluro.Router>(context).navigateTo(
                           context, "/Team/Edit/" + widget.teamUid,
-                          transition: TransitionType.materialFullScreenDialog);
+                          transition:
+                              fluro.TransitionType.materialFullScreenDialog);
                       break;
                     case _TeamDropDown.Invite:
-                      RepositoryProvider.of<Router>(context).navigateTo(
+                      RepositoryProvider.of<fluro.Router>(context).navigateTo(
                           context, "/Team/Invite/" + widget.teamUid,
-                          transition: TransitionType.materialFullScreenDialog);
+                          transition:
+                              fluro.TransitionType.materialFullScreenDialog);
                       break;
                     case _TeamDropDown.Users:
-                      RepositoryProvider.of<Router>(context).navigateTo(
+                      RepositoryProvider.of<fluro.Router>(context).navigateTo(
                           context, "/Team/Users/" + widget.teamUid,
-                          transition: TransitionType.materialFullScreenDialog);
+                          transition:
+                              fluro.TransitionType.materialFullScreenDialog);
                       break;
                   }
                 },
@@ -252,8 +255,8 @@ class _TeamDetailsScreenState extends State<TeamDetailsScreen> {
               // Setup the opened season.
               if (state is SingleTeamLoaded) {
                 if (!_loaded) {
-                    _expandedPanels.add(state.team.currentSeasonUid);
-                    _seasonPlayers = state.team.currentSeasonUid;
+                  _expandedPanels.add(state.team.currentSeasonUid);
+                  _seasonPlayers = state.team.currentSeasonUid;
                 }
                 _loaded = true;
               }

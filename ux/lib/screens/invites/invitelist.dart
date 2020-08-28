@@ -48,7 +48,6 @@ class _InviteListScreenState extends State<InviteListScreen> {
 
   Widget _buildInviteToTeam(InviteToTeam inviteData) {
     Messages messages = Messages.of(context);
-    ThemeData theme = Theme.of(context);
     return BlocProvider(
       create: (BuildContext context) => SingleInviteBloc(
           db: RepositoryProvider.of<BasketballDatabase>(context),
