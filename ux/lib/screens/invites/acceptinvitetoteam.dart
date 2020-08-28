@@ -1,9 +1,9 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
+import 'package:basketballstats/widgets/invites/deleteinvitedialog.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../messages.dart';
 
@@ -25,6 +25,7 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   SingleInviteBloc _singleInviteBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  bool _popped = false;
 
   @override
   void initState() {
@@ -55,6 +56,10 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
     }
   }
 
+  void _deleteInvite() async {
+    await deleteInviteDialog(context, _singleInviteBloc);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener(
@@ -69,40 +74,31 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
         child: Scaffold(
           key: _scaffoldKey,
           appBar: new AppBar(
-            title: new Text(Messages.of(context).titleOfApp),
-            actions: <Widget>[
-              new FlatButton(
-                onPressed: () {
-                  _savePressed();
-                },
-                child: new Text(
-                  Messages.of(context).saveButtonText,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle1
-                      .copyWith(color: Colors.white),
-                ),
-              ),
-            ],
+            title: new Text(Messages.of(context).joinTeamTitle),
           ),
           body: new Scrollbar(
             child: new SingleChildScrollView(
               child: BlocConsumer(
                 cubit: _singleInviteBloc,
                 listener: (BuildContext context, SingleInviteBlocState state) {
-                  if (state is SingleInviteDeleted) {
+                  if (state is SingleInviteDeleted ||
+                      state is SingleInviteSaveSuccessful) {
                     // go back!
-                    Navigator.pop(context);
+                    if (!_popped) {
+                      Navigator.pop(context);
+                    }
+                    _popped = true;
+                  }
+                  if (state is SingleInviteSaveFailed) {
+                    _showInSnackBar(Messages.of(context).formerror);
                   }
                 },
                 builder: (BuildContext context, SingleInviteBlocState state) {
-                  if (state is SingleInviteDeleted) {
+                  if (state is SingleInviteDeleted ||
+                      state is SingleInviteUninitialized) {
                     // Go back!
                     return Center(child: CircularProgressIndicator());
                   } else {
-                    if (state is SingleInviteSaveFailed) {
-                      _showInSnackBar(Messages.of(context).formerror);
-                    }
                     InviteToTeam invite = state.invite as InviteToTeam;
                     return SavingOverlay(
                       saving: !(state is SingleInviteLoaded),
@@ -110,9 +106,40 @@ class _AcceptInviteToTeamScreenState extends State<AcceptInviteToTeamScreen> {
                         key: _formKey,
                         child: new Column(
                           children: <Widget>[
+                            SizedBox(height: 10.0),
                             new ListTile(
-                              leading: const Icon(MdiIcons.accountGroup),
-                              title: new Text(invite.teamName),
+                              leading:
+                                  Image.asset("assets/images/basketball.png"),
+                              title: new Text(
+                                invite.teamName,
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  text: Messages.of(context).joinDescription,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              ),
+                            ),
+                            ButtonBar(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    _deleteInvite();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text(
+                                    Messages.of(context).joinButton,
+                                    textScaleFactor: 1.5,
+                                  ),
+                                  onPressed: () => _savePressed(),
+                                )
+                              ],
                             )
                           ],
                         ),

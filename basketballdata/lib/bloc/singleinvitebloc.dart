@@ -221,6 +221,9 @@ class SingleInviteBloc extends Bloc<SingleInviteEvent, SingleInviteBlocState> {
           db.updateTeam(team: t.build());
           yield SingleInviteSaveSuccessful(singleInviteState: state);
           yield SingleInviteLoaded(state: state, invite: state.invite);
+          // Now we delete the invite.
+          await db.deleteInvite(inviteUid: state.invite.uid);
+          yield SingleInviteDeleted();
         } else {
           var error = ArgumentError("invite not InviteToTeam");
           yield SingleInviteSaveFailed(singleInviteState: state, error: error);

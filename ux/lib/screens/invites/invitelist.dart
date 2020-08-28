@@ -1,7 +1,6 @@
 import 'package:basketballdata/basketballdata.dart';
 import 'package:basketballdata/db/basketballdatabase.dart';
 import 'package:basketballstats/services/authenticationbloc.dart';
-import 'package:basketballstats/widgets/invites/deleteinvitedialog.dart';
 import 'package:basketballstats/widgets/loading.dart';
 import 'package:basketballstats/widgets/savingoverlay.dart';
 import 'package:built_collection/built_collection.dart';
@@ -13,56 +12,18 @@ import '../../messages.dart';
 
 // Shows the current invites pending for this user.
 class InviteListScreen extends StatefulWidget {
-  static void deletePressed(BuildContext context, SingleInviteBloc bloc) async {
-    Messages mess = Messages.of(context);
-
-    bool result = await showDialog<bool>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            title: new Text(mess.deleteInvite),
-            content: new Scrollbar(
-              child: new SingleChildScrollView(
-                child: new ListBody(
-                  children: <Widget>[
-                    new Text(mess.confirmdeleteinvite(bloc.state.invite)),
-                  ],
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              new FlatButton(
-                child:
-                    new Text(MaterialLocalizations.of(context).okButtonLabel),
-                onPressed: () {
-                  // Do the delete.
-                  Navigator.of(context).pop(true);
-                },
-              ),
-              new FlatButton(
-                child: new Text(
-                    MaterialLocalizations.of(context).cancelButtonLabel),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              ),
-            ],
-          );
-        });
-    if (result) {
-      bloc.add(SingleInviteDelete());
-    }
-  }
-
   @override
-  InviteListScreenState createState() {
-    return new InviteListScreenState();
+  _InviteListScreenState createState() {
+    return new _InviteListScreenState();
   }
 }
 
-class InviteListScreenState extends State<InviteListScreen> {
+///
+/// The internal state to track the invites.
+///
+class _InviteListScreenState extends State<InviteListScreen> {
   InvitesBloc _invitesBloc;
+
   @override
   void initState() {
     super.initState();
@@ -79,10 +40,6 @@ class InviteListScreenState extends State<InviteListScreen> {
 
   void onInviteUpdate() {
     setState(() {});
-  }
-
-  void _deleteInvite(SingleInviteBloc bloc) async {
-    await deleteInviteDialog(context, bloc);
   }
 
   void _addInviteToTeam(Invite invite) {
@@ -105,6 +62,7 @@ class InviteListScreenState extends State<InviteListScreen> {
             // Deleted...
             if (state is SingleInviteDeleted) {
               child = Card(
+                margin: EdgeInsets.all(10.0),
                 child: ListTile(
                   leading: Icon(MaterialIcons.error),
                   title: Text(Messages.of(context).errorForm),
@@ -119,23 +77,18 @@ class InviteListScreenState extends State<InviteListScreen> {
                 invite = state.invite;
               }
               child = Card(
+                margin: EdgeInsets.all(10.0),
                 child: ListTile(
-                  leading: IconButton(
-                    icon: const Icon(Icons.add),
-                    color: theme.accentColor,
-                    onPressed: () {
-                      _addInviteToTeam(invite);
-                    },
-                  ),
+                  contentPadding: EdgeInsets.all(5.0),
+                  leading: Image.asset("assets/images/basketball.png"),
                   title: Text(
                     messages.teamForInvite(invite.teamName),
+                    style: Theme.of(context).textTheme.headline5,
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      _deleteInvite(BlocProvider.of<SingleInviteBloc>(context));
-                    },
-                  ),
+                  subtitle: Text(Messages.of(context).joinTeamTitle),
+                  onTap: () {
+                    _addInviteToTeam(invite);
+                  },
                 ),
               );
             }

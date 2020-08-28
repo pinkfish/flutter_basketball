@@ -39,6 +39,20 @@ class Messages {
   String get addUserButton => Intl.message("Add User",
       desc: "Button to add a user to a team", locale: locale);
 
+  String get joinButton =>
+      Intl.message("JOIN", desc: "Button to join the team", locale: locale);
+
+  String get joinDescription => Intl.message(
+      "Joining this team will allow you to see the stats " +
+          "already recorded for this team and add in stats for any upcoming games."
+              "  Also allows you to manage the team and team members.",
+      desc: "Button to join the team",
+      locale: locale);
+
+  String get joinTeamTitle => Intl.message(
+    "Join Team", desc: "Title for the join team from invite page", locale: locale
+  );
+
   String get addGuestPlayerButton => Intl.message("GUEST",
       desc: "Button text for adding a guest player", locale: locale);
 

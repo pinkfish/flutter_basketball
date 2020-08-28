@@ -583,7 +583,7 @@ class FirestoreDatabase extends BasketballDatabase {
   Future<void> deleteInvite({String inviteUid}) {
     analytics.logEvent(name: "DeleteInvite");
     return Firestore.instance
-        .collection(SQLDBRaw.mediaTable)
+        .collection(SQLDBRaw.invitesTable)
         .document(inviteUid)
         .delete();
   }

@@ -9,7 +9,7 @@ class InviteFactory {
   static Invite makeInviteFromJSON(String uid, Map<String, dynamic> data) {
     assert(uid != null);
     InviteType type = InviteType.values
-        .firstWhere((InviteType ty) => ty.toString() == data["type"]);
+        .firstWhere((InviteType ty) => ty.toString() == data["invite"]);
     switch (type) {
       case InviteType.Team:
         InviteToTeam ret = InviteToTeam.fromMap(data);
