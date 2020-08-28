@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-08-12T16:48:35.220231",
+  "@@last_modified": "2020-08-28T00:24:56.962227",
   "Basketball stats": "Basketball stats",
   "@Basketball stats": {
     "description": "Title of the app",
@@ -27,6 +27,18 @@
   "Add User": "Add User",
   "@Add User": {
     "description": "Button to add a user to a team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "JOIN": "JOIN",
+  "@JOIN": {
+    "description": "Button to join the team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Join Team": "Join Team",
+  "@Join Team": {
+    "description": "Title for the join team from invite page",
     "type": "text",
     "placeholders": {}
   },
@@ -982,6 +994,18 @@
     "type": "text",
     "placeholders": {}
   },
+  "Foul Flagrent": "Foul Flagrent",
+  "@Foul Flagrent": {
+    "description": "Flagrant foul on player",
+    "type": "text",
+    "placeholders": {}
+  },
+  "Foul Technical": "Foul Technical",
+  "@Foul Technical": {
+    "description": "Technical foul on player",
+    "type": "text",
+    "placeholders": {}
+  },
   "Subsitution": "Subsitution",
   "@Subsitution": {
     "description": "Subsitiution of player",
@@ -1016,8 +1040,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "Assisted": "Assisted",
-  "@Assisted": {
+  "Assists": "Assists",
+  "@Assists": {
     "description": "Title for the section on a player assist",
     "type": "text",
     "placeholders": {}
