@@ -27,7 +27,7 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.0.20",
     "@google-cloud/storage": "^4.7.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "build-url": "^3.0.0",
     "camelcase": "^5.3.1",
     "child-process-promise": "^2.2.1",
