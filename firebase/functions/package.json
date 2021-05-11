@@ -40,7 +40,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "glob": "^7.1.6",
     "handlebars": "^4.7.6",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "lodash.set": "^4.3.2",
     "node-fetch": "^2.6.0",
     "nodemailer": "^6.4.11",
