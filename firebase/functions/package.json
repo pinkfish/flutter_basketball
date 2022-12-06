@@ -45,7 +45,7 @@
     "node-fetch": "^2.6.0",
     "nodemailer": "^6.4.11",
     "nodemailer-mailgun-transport": "^2.0.0",
-    "qs": "^6.9.4"
+    "qs": "^6.9.7"
   },
   "devDependencies": {
     "@firebase/testing": "^0.20.11",
